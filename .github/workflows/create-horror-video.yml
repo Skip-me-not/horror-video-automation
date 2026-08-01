@@ -8,8 +8,14 @@ on:
         required: true
         type: string
       job_payload:
-        description: Base64-encoded UTF-8 JSON job
-        required: true
+        description: Optional base64 JSON job; leave empty to use idea_number
+        required: false
+        default: ""
+        type: string
+      idea_number:
+        description: Idea bank number (1-500) when job_payload is empty
+        required: false
+        default: "1"
         type: string
       tts_provider:
         description: Explicit provider; never falls back silently
@@ -72,12 +78,18 @@ jobs:
             torch==2.6.0 torchaudio==2.6.0
           python -m pip install --disable-pip-version-check -r requirements.txt
 
-      - name: Validate compact job payload
+      - name: Select numbered idea or validate compact job payload
         env:
           JOB_PAYLOAD: ${{ inputs.job_payload }}
           EXPECTED_JOB_ID: ${{ inputs.job_id }}
+          IDEA_NUMBER: ${{ inputs.idea_number }}
         run: |
-          python scripts/validate_job.py --payload "$JOB_PAYLOAD" --expected-job-id "$EXPECTED_JOB_ID"
+          if [ -n "$JOB_PAYLOAD" ]; then
+            python scripts/validate_job.py --payload "$JOB_PAYLOAD" --expected-job-id "$EXPECTED_JOB_ID"
+          else
+            python scripts/build_job_from_idea.py --idea-number "$IDEA_NUMBER" --job-id "$EXPECTED_JOB_ID"
+            python scripts/validate_job.py --job output/idea-job.json --expected-job-id "$EXPECTED_JOB_ID"
+          fi
 
       - name: Fetch portrait background from Pexels or use fallback
         run: python scripts/fetch_background.py --job output/job.json

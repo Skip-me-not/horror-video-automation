@@ -61,6 +61,26 @@ narration while the ambience continues.
 Only `private` uploads are accepted. Review the voice, visuals, captions,
 copyright status, and YouTube policy compliance in Studio before publishing.
 
+## Replaceable 500-story idea bank
+
+`ideas/horror-ideas-500.json` contains 500 numbered, ready-to-render English
+horror stories. In **Actions -> Create 30-second horror Short**, leave
+`job_payload` empty, enter a unique `job_id`, and set `idea_number` from 1 to
+500. Existing n8n payload dispatches continue to work without changes.
+
+The repository intentionally does not commit a counter after every run. Track
+the next number in n8n (or enter it manually); this avoids concurrent runs
+overwriting each other and avoids unnecessary GitHub commits. After idea 500,
+replace the JSON entries with another valid bank and restart at 1. Regenerate
+the included starter bank with:
+
+```bash
+python scripts/generate_idea_bank.py
+```
+
+Five hundred text records are small and do not meaningfully load GitHub. Video,
+audio, TTS model, and render outputs remain outside Git history.
+
 ## Local checks
 
 Prerequisites: Python 3.11, FFmpeg/ffprobe, and `espeak-ng` for Kokoro.
