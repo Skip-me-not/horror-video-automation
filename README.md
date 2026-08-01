@@ -15,6 +15,7 @@ the result privately to YouTube, and reports the result to n8n.
 - dark grading, vignette, subtle grain, fades, and a top-center text watermark
 - audible original horror drone, cold wind, distant swells, knocks, heartbeat,
   ending sting, and subtle reversed whispers
+- original cinematic horror music with minor chords, eerie melody, and bass pulses
 - layered dark room tone remains underneath the generated soundscape
 - fresh portrait stock footage from Pexels when an API key is configured
 - YouTube title/description hashtags and Private-only upload

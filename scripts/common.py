@@ -37,7 +37,7 @@ def load_config(path: str | Path) -> dict[str, Any]:
         "min_story_characters", "max_story_characters", "max_payload_bytes",
         "output_width", "output_height", "fps", "crf", "encoding_preset",
         "watermark_text", "watermark_margin_y", "ambience_volume",
-        "sfx_volume", "whisper_volume", "pexels_default_query",
+        "music_volume", "sfx_volume", "whisper_volume", "pexels_default_query",
         "pexels_max_download_bytes",
         "output_directory", "default_privacy_status",
     }
@@ -68,6 +68,8 @@ def load_config(path: str | Path) -> dict[str, Any]:
         raise ValidationError("ambience_volume must be between 0 and 0.25")
     if not 0 <= float(config["sfx_volume"]) <= 0.5:
         raise ValidationError("sfx_volume must be between 0 and 0.5")
+    if not 0 <= float(config["music_volume"]) <= 1.0:
+        raise ValidationError("music_volume must be between 0 and 1.0")
     if not 0 <= float(config["whisper_volume"]) <= 0.08:
         raise ValidationError("whisper_volume must be between 0 and 0.08")
     if not 0 <= int(config["watermark_margin_y"]) <= 400:

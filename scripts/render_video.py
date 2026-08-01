@@ -156,16 +156,28 @@ def render(
             f"afade=t=in:st=0:d={fade},afade=t=out:st={fade_out}:d={fade}[amb]",
         ]
     mix_labels = ["[voice]", "[amb]", "[whisper]"]
+    next_audio_index = ambience_index + 1
     sfx = project / config["output_directory"] / "horror-sfx.wav"
     if sfx.is_file():
         command += ["-i", str(sfx)]
-        sfx_index = ambience_index + 1
         filters.append(
-            f"[{sfx_index}:a]volume={float(config['sfx_volume'])},"
+            f"[{next_audio_index}:a]volume={float(config['sfx_volume'])},"
             f"atrim=duration={duration},afade=t=in:st=0:d=0.4,"
             f"afade=t=out:st={fade_out}:d={fade}[sfx]"
         )
         mix_labels.append("[sfx]")
+        next_audio_index += 1
+    music = project / config["output_directory"] / "horror-music.wav"
+    if music.is_file():
+        command += ["-i", str(music)]
+        filters.append(
+            f"[{next_audio_index}:a]highpass=f=32,lowpass=f=7200,"
+            "aecho=0.8:0.45:360|720:0.14|0.06,"
+            "loudnorm=I=-20:TP=-3:LRA=8,"
+            f"volume={float(config['music_volume'])},atrim=duration={duration},"
+            f"afade=t=in:st=0:d=1.5,afade=t=out:st={fade_out}:d={fade}[music]"
+        )
+        mix_labels.append("[music]")
     filters.append(
         "".join(mix_labels)
         + f"amix=inputs={len(mix_labels)}:duration=longest:normalize=0,"

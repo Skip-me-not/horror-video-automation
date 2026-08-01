@@ -4,6 +4,7 @@ import wave
 
 from scripts.fetch_background import add_credit, select_video_file
 from scripts.generate_sfx import generate_sfx
+from scripts.generate_music import generate_music
 
 
 def test_selects_portrait_pexels_mp4():
@@ -46,3 +47,14 @@ def test_generated_sfx_is_nonempty_pcm(tmp_path):
         assert handle.getnframes() == 24000
     assert report["events"]
     assert report["continuous_layers"] == ["sub_bass_drone", "cold_wind", "distant_tone"]
+
+
+def test_generated_music_has_chords_and_melody(tmp_path):
+    output = tmp_path / "music.wav"
+    report = generate_music("job-1", 4.0, output, sample_rate=8000)
+    with wave.open(str(output), "rb") as handle:
+        assert handle.getnchannels() == 1
+        assert handle.getnframes() == 32000
+    assert report["style"] == "cinematic_minor_horror"
+    assert report["progression"][0] == "D minor"
+    assert report["melody_events"]

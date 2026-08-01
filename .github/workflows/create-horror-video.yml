@@ -88,6 +88,9 @@ jobs:
       - name: Generate original continuous horror soundscape and effects
         run: python scripts/generate_sfx.py --job output/job.json --output output/horror-sfx.wav
 
+      - name: Generate original cinematic horror background music
+        run: python scripts/generate_music.py --job output/job.json --output output/horror-music.wav
+
       - name: Render and validate 30-second portrait MP4
         run: python scripts/render_video.py --job output/job.json --captions output/captions.ass
 
@@ -120,6 +123,7 @@ jobs:
             output/voice-report.json
             output/background-source.json
             output/sfx-report.json
+            output/music-report.json
             output/captions.ass
             output/render-report.json
             output/*.mp4
