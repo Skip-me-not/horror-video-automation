@@ -8,7 +8,7 @@ the result privately to YouTube, and reports the result to n8n.
 ## Output
 
 - 30 seconds, 1080x1920, H.264/AAC at 30 fps
-- Chatterbox Nano English narration on a CPU runner
+- Chatterbox Nano English narration with a deep, dark horror treatment
 - Kokoro as an explicitly selected fallback (never a silent fallback)
 - restrained dark voice processing, short pauses, and a natural-speed guard
 - sentence-aware burned-in captions inside the Shorts safe area
