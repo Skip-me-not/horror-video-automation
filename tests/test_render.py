@@ -22,16 +22,14 @@ def test_ffprobe_result_parsing():
 
 def test_missing_media_fails(valid_job, config, tmp_path):
     with pytest.raises(FileNotFoundError, match="background"):
-        render(valid_job, config, tmp_path, tmp_path / "missing.wav", "mark.png")
+        render(valid_job, config, tmp_path, tmp_path / "missing.wav")
 
 
 @pytest.mark.skipif(not shutil.which("ffmpeg") or not shutil.which("ffprobe"),
                     reason="FFmpeg is required")
 def test_lightweight_fixture_render(valid_job, config, tmp_path):
     backgrounds = tmp_path / "assets/backgrounds"
-    watermark = tmp_path / "assets/watermark"
     backgrounds.mkdir(parents=True)
-    watermark.mkdir(parents=True)
     (tmp_path / "output").mkdir()
     valid_job["background_file"] = "background.mp4"
     subprocess.run([
@@ -45,11 +43,6 @@ def test_lightweight_fixture_render(valid_job, config, tmp_path):
         "-f", "lavfi", "-i", "sine=frequency=220:sample_rate=48000:duration=1.2",
         str(narration)
     ], check=True)
-    subprocess.run([
-        "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
-        "-f", "lavfi", "-i", "color=c=white@0.6:s=32x16,format=rgba",
-        "-frames:v", "1", "-update", "1", str(watermark / "mark.png")
-    ], check=True)
     captions = tmp_path / "captions.ass"
     captions.write_text(
         "[Script Info]\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\n"
@@ -60,7 +53,7 @@ def test_lightweight_fixture_render(valid_job, config, tmp_path):
         encoding="utf-8",
     )
     config["video_duration_seconds"] = 2
-    output, report = render(valid_job, config, tmp_path, narration, "mark.png", captions)
+    output, report = render(valid_job, config, tmp_path, narration, captions)
     assert output.is_file()
     assert report["has_video"] and report["has_audio"]
     assert 1.9 < report["duration"] < 2.1

@@ -32,6 +32,10 @@ def test_pexels_credit_is_added_once():
     assert add_credit(description, video) == description
 
 
+def test_default_text_watermark_is_centered(config):
+    assert config["watermark_text"] == "SKIP IF YOU'RE SCARED"
+
+
 def test_generated_sfx_is_nonempty_pcm(tmp_path):
     output = tmp_path / "sfx.wav"
     report = generate_sfx("job-1", 3.0, output, sample_rate=8000)

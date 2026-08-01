@@ -58,26 +58,16 @@ def ffmpeg_filter_path(path: Path) -> str:
     return value.replace("\\", "\\\\").replace(":", "\\:").replace("'", "\\'")
 
 
-def ffmpeg_text(value: str) -> str:
-    return value.replace("\\", "\\\\").replace(":", "\\:").replace("'", "\\'")
-
-
 def render(
     job: dict,
     config: dict,
     project: Path,
     narration: Path,
-    watermark_name: str = "",
     captions: Path | None = None,
 ) -> tuple[Path, dict[str, Any]]:
     background = resolve_asset(project / "assets/backgrounds", job["background_file"])
     if not background.is_file():
         raise FileNotFoundError(f"background is missing: {background}")
-    watermark = None
-    if watermark_name:
-        watermark = resolve_asset(project / "assets/watermark", watermark_name)
-        if not watermark.is_file():
-            raise FileNotFoundError(f"watermark is missing: {watermark}")
     if not narration.is_file():
         raise FileNotFoundError(f"narration is missing: {narration}")
     ambience = None
@@ -101,15 +91,19 @@ def render(
     captions_path = captions or (project / config["output_directory"] / "captions.ass")
     if not captions_path.is_file():
         raise FileNotFoundError(f"captions are missing: {captions_path}")
-    watermark_text_filter = ""
-    if not watermark:
-        watermark_text = ffmpeg_text(str(job.get("watermark_text") or config["watermark_text"]))
-        watermark_text_filter = (
-            f"drawtext=text='{watermark_text}':font='DejaVu Sans':fontsize=36:"
-            "fontcolor=white@0.82:box=1:boxcolor=black@0.30:boxborderw=10:"
-            f"x=w-text_w-{int(config['watermark_margin_x'])}:"
-            f"y={int(config['watermark_margin_y'])},"
-        )
+    output_dir = project / config["output_directory"]
+    output_dir.mkdir(parents=True, exist_ok=True)
+    watermark_text_file = output_dir / "watermark.txt"
+    watermark_text_file.write_text(
+        str(job.get("watermark_text") or config["watermark_text"]), encoding="utf-8"
+    )
+    watermark_text_filter = (
+        f"drawtext=textfile='{ffmpeg_filter_path(watermark_text_file)}':"
+        "font='DejaVu Sans':fontsize=40:"
+        "fontcolor=white@0.88:box=1:boxcolor=black@0.32:boxborderw=11:"
+        "x=(w-text_w)/2:"
+        f"y={int(config['watermark_margin_y'])},"
+    )
     base_video = (
         f"[0:v]scale={target_w}:{target_h}:force_original_aspect_ratio=increase,"
         f"crop={target_w}:{target_h},fps={int(config['fps'])},"
@@ -124,19 +118,8 @@ def render(
         command += ["-loop", "1", "-framerate", str(int(config["fps"])), "-i", str(background)]
     else:
         command += ["-stream_loop", "-1", "-i", str(background)]
-    filters: list[str] = []
-    if watermark:
-        command += ["-loop", "1", "-i", str(watermark)]
-        filters += [
-            base_video + "[bg]",
-            f"[1:v]scale={int(config['watermark_width'])}:-1,format=rgba,"
-            f"colorchannelmixer=aa={float(config['watermark_opacity'])}[wm]",
-            f"[bg][wm]overlay=W-w-{int(config['watermark_margin_x'])}:"
-            f"{int(config['watermark_margin_y'])}:format=auto[v]",
-        ]
-    else:
-        filters.append(base_video + "[v]")
-    narration_index = 2 if watermark else 1
+    filters: list[str] = [base_video + "[v]"]
+    narration_index = 1
     command += ["-i", str(narration)]
     intro_delay = int(config["narration_intro_delay_ms"])
     filters.append(f"[{narration_index}:a]asplit=2[narrmain][narrghost]")
@@ -188,8 +171,6 @@ def render(
         + f"amix=inputs={len(mix_labels)}:duration=longest:normalize=0,"
         + f"atrim=duration={duration},alimiter=limit=0.8414[a]"
     )
-    output_dir = project / config["output_directory"]
-    output_dir.mkdir(parents=True, exist_ok=True)
     output = output_dir / sanitize_output_name(job["job_id"])
     command += [
         "-filter_complex", ";".join(filters),
@@ -213,13 +194,12 @@ def main() -> int:
     parser.add_argument("--job", required=True)
     parser.add_argument("--config", default="config/default.json")
     parser.add_argument("--narration", default="output/narration.wav")
-    parser.add_argument("--watermark", default="")
     parser.add_argument("--captions", default="output/captions.ass")
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[1]
     output, report = render(
         load_json(args.job), load_config(args.config), project,
-        Path(args.narration), args.watermark, Path(args.captions),
+        Path(args.narration), Path(args.captions),
     )
     print(json.dumps({"output": str(output), "duration": report["duration"]}, indent=2))
     return 0

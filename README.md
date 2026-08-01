@@ -12,7 +12,7 @@ the result privately to YouTube, and reports the result to n8n.
 - Chatterbox Nano remains available as an explicitly selected alternative
 - subtle dark voice processing, continuous storytelling, and a natural-speed guard
 - sentence-aware burned-in captions inside the Shorts safe area
-- dark grading, vignette, subtle grain, fades, and an upper-right watermark
+- dark grading, vignette, subtle grain, fades, and a top-center text watermark
 - original generated knocks, heartbeat, end sting, and subtle reversed whispers
 - low-volume horror ambience; generated dark room tone is used as fallback
 - fresh portrait stock footage from Pexels when an API key is configured
@@ -32,11 +32,8 @@ The included corridor remains the safe fallback. Optional local assets:
 
 - `assets/backgrounds/dark-corridor.png` (an original starter visual is included)
 - `assets/ambience/dark-room-tone.mp3` (optional; leave the job field empty without it)
-- `assets/watermark/channel-watermark.png` (optional)
-
-Without a watermark PNG, the validated `watermark_text` job field is drawn in
-the upper-right safe area. The default is `HORROR FILES`; change it to the real
-channel name before publishing.
+The validated `watermark_text` job field is always drawn in the upper-center
+safe area. The default is `SKIP IF YOU'RE SCARED`; no PNG watermark is used.
 
 For dynamic backgrounds, create a free [Pexels API](https://www.pexels.com/api/)
 key and add it as the `PEXELS_API_KEY` GitHub secret. The workflow requests

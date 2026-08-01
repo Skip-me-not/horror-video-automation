@@ -89,13 +89,7 @@ jobs:
         run: python scripts/generate_sfx.py --job output/job.json --output output/horror-sfx.wav
 
       - name: Render and validate 30-second portrait MP4
-        shell: bash
-        run: |
-          watermark_args=()
-          if [[ -f assets/watermark/channel-watermark.png ]]; then
-            watermark_args=(--watermark channel-watermark.png)
-          fi
-          python scripts/render_video.py --job output/job.json --captions output/captions.ass "${watermark_args[@]}"
+        run: python scripts/render_video.py --job output/job.json --captions output/captions.ass
 
       - name: Resolve output filename
         id: rendered
