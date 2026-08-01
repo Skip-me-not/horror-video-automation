@@ -1,0 +1,193 @@
+{
+  "name": "Daily Horror Video Orchestrator",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "1",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-900, -180]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "horror-video-request",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "2",
+      "name": "Prepared Story Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-900, 40],
+      "webhookId": "replace-horror-video-request-id"
+    },
+    {
+      "parameters": {
+        "jsCode": "const source = $json.body ?? $json;\nconst demo = {\n  job_id: `manual-${Date.now()}`,\n  title: 'The Last Call From Room 17',\n  story: 'At two in the morning, the desk phone rang. Mara answered, but heard only her own breathing. The call came from Room 17, sealed since the fire thirty years ago. The elevator opened by itself. Wet footprints crossed the empty lobby and stopped behind her. Then the phone whispered, Do not turn around.',\n  description: 'An original thirty-second English horror story.',\n  tags: ['horror shorts', 'scary stories', 'creepy stories', 'shorts'],\n  background_file: 'dark-corridor.png',\n  ambience_file: '',\n  thumbnail_file: '',\n  privacy_status: 'private'\n};\nconst v = Object.keys(source).length ? source : demo;\nconst required = ['job_id','title','story','description','tags','background_file'];\nfor (const key of required) if (v[key] === undefined || v[key] === null || v[key] === '') throw new Error(`Missing field: ${key}`);\nif (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(v.job_id)) throw new Error('Invalid job_id');\nif (typeof v.story !== 'string' || v.story.trim().length < 180 || v.story.length > 480) throw new Error('Story length must be 180-480 characters for a 30-second Short');\nif (v.privacy_status && v.privacy_status !== 'private') throw new Error('Only private uploads are permitted');\nfor (const [key, exts] of Object.entries({background_file:['.mp4','.mov','.mkv','.webm','.png','.jpg','.jpeg','.webp'], ambience_file:['.mp3','.wav','.m4a','.aac','.ogg'], thumbnail_file:['.png','.jpg','.jpeg','.webp']})) {\n  const name = v[key] || '';\n  if (!name && key !== 'background_file') continue;\n  if (name.includes('/') || name.includes('\\\\') || name === '..' || !exts.some(ext => name.toLowerCase().endsWith(ext))) throw new Error(`Invalid ${key}`);\n}\nreturn [{json: v}];"
+      },
+      "id": "3",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-640, -70]
+    },
+    {
+      "parameters": {
+        "jsCode": "const CONFIG = {\n  owner: 'REPLACE_GITHUB_OWNER',\n  repository: 'REPLACE_REPOSITORY',\n  branch: 'main',\n  tts_provider: 'chatterbox',\n  callback_url: 'https://REPLACE_N8N_HOST/webhook/horror-video-callback'\n};\nreturn [{json: {config: CONFIG, job: {...$json, privacy_status: 'private', callback_url: CONFIG.callback_url}}}];"
+      },
+      "id": "4",
+      "name": "Construct Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-400, -70]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = JSON.stringify($json.job);\nconst bytes = Buffer.from(raw, 'utf8');\nif (bytes.length > 50000) throw new Error('Payload exceeds the 50 KB workflow limit');\nreturn [{json: {...$json, job_payload: bytes.toString('base64')}}];"
+      },
+      "id": "5",
+      "name": "Base64 Encode Job",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-160, -70]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.github.com/repos/{{$json.config.owner}}/{{$json.config.repository}}/actions/workflows/create-horror-video.yml/dispatches",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "Accept", "value": "application/vnd.github+json"},
+            {"name": "X-GitHub-Api-Version", "value": "2022-11-28"}
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ref: $json.config.branch, inputs: {job_id: $json.job.job_id, job_payload: $json.job_payload, tts_provider: $json.config.tts_provider}}) }}",
+        "options": {
+          "response": {
+            "response": {
+              "neverError": false,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "6",
+      "name": "Dispatch GitHub Workflow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [80, -70],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_N8N_CREDENTIAL_ID",
+          "name": "GitHub Actions Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "horror-video-callback",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "7",
+      "name": "GitHub Result Callback",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-300, 300],
+      "webhookId": "replace-horror-video-callback-id"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ {received: true, job_id: $json.body?.job_id ?? $json.job_id} }}",
+        "options": {}
+      },
+      "id": "8",
+      "name": "Acknowledge Callback",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "REPLACE_TELEGRAM_CHAT_ID",
+        "text": "=Horror video job {{$json.body?.job_id ?? $json.job_id}}: {{$json.body?.status ?? $json.status}}",
+        "additionalFields": {}
+      },
+      "id": "9",
+      "name": "Optional Telegram Notification",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [-40, 300],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Configuration\\n1. Edit **Construct Job**: owner, repository, branch and callback URL.\\n2. Create an n8n Header Auth credential named **GitHub Actions Token** with header `Authorization` and value `Bearer <TOKEN>`.\\n3. The fine-grained token needs Actions: Read and write on this repository. Never paste it into this workflow JSON.",
+        "height": 260,
+        "width": 460,
+        "color": 5
+      },
+      "id": "10",
+      "name": "Credentials Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-40, -440]
+    },
+    {
+      "parameters": {
+        "content": "## English horror Shorts\\nSupply an original 180-480 character English story for a 30-second 9:16 Short. The workflow uses natural Chatterbox narration, burned-in captions, dark grading, optional ambience, and private upload. Test with Manual Trigger before activating both webhooks.",
+        "height": 220,
+        "width": 420,
+        "color": 4
+      },
+      "id": "11",
+      "name": "Operation Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-740, 240]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{"node": "Validate Input", "type": "main", "index": 0}]]
+    },
+    "Prepared Story Webhook": {
+      "main": [[{"node": "Validate Input", "type": "main", "index": 0}]]
+    },
+    "Validate Input": {
+      "main": [[{"node": "Construct Job", "type": "main", "index": 0}]]
+    },
+    "Construct Job": {
+      "main": [[{"node": "Base64 Encode Job", "type": "main", "index": 0}]]
+    },
+    "Base64 Encode Job": {
+      "main": [[{"node": "Dispatch GitHub Workflow", "type": "main", "index": 0}]]
+    },
+    "GitHub Result Callback": {
+      "main": [[{"node": "Optional Telegram Notification", "type": "main", "index": 0}]]
+    },
+    "Optional Telegram Notification": {
+      "main": [[{"node": "Acknowledge Callback", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "25ea11bf-80ed-4ef8-9d09-e7b7ecae8d67",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

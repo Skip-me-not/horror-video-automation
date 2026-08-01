@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.test-deps/
+.test-tools/
+.test-tmp*/
+.coverage
+output/*
+!output/.gitkeep
+assets/voices/
+.cache/
+*.log
+client_secret*.json
+token*.json

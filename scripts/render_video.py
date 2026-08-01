@@ -1,0 +1,195 @@
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any
+
+try:
+    from scripts.common import (
+        ValidationError, load_config, load_json, resolve_asset, sanitize_output_name,
+    )
+except ModuleNotFoundError:  # Support direct script execution.
+    from common import (
+        ValidationError, load_config, load_json, resolve_asset, sanitize_output_name,
+    )
+
+FFMPEG_BIN = os.getenv("FFMPEG_BIN", "ffmpeg")
+FFPROBE_BIN = os.getenv("FFPROBE_BIN", "ffprobe")
+
+
+def ffprobe(path: str | Path) -> dict[str, Any]:
+    result = subprocess.run(
+        [FFPROBE_BIN, "-v", "error", "-show_streams", "-show_format",
+         "-of", "json", str(path)],
+        check=True, capture_output=True, text=True,
+    )
+    return json.loads(result.stdout)
+
+
+def parse_probe(data: dict[str, Any]) -> dict[str, Any]:
+    streams = data.get("streams", [])
+    video = next((s for s in streams if s.get("codec_type") == "video"), None)
+    audio = next((s for s in streams if s.get("codec_type") == "audio"), None)
+    try:
+        duration = float(data.get("format", {}).get("duration", 0))
+    except (TypeError, ValueError):
+        duration = 0
+    return {"has_video": video is not None, "has_audio": audio is not None,
+            "duration": duration, "video": video, "audio": audio}
+
+
+def validate_render(path: Path, expected_duration: float) -> dict[str, Any]:
+    if not path.is_file() or path.stat().st_size == 0:
+        raise ValidationError("rendered output is empty")
+    parsed = parse_probe(ffprobe(path))
+    if not parsed["has_video"] or not parsed["has_audio"]:
+        raise ValidationError("rendered output must contain audio and video")
+    if parsed["duration"] < 1 or abs(parsed["duration"] - expected_duration) > 1.0:
+        raise ValidationError("rendered duration does not match narration")
+    return parsed
+
+
+def ffmpeg_filter_path(path: Path) -> str:
+    value = path.resolve().as_posix()
+    return value.replace("\\", "\\\\").replace(":", "\\:").replace("'", "\\'")
+
+
+def render(
+    job: dict,
+    config: dict,
+    project: Path,
+    narration: Path,
+    watermark_name: str = "",
+    captions: Path | None = None,
+) -> tuple[Path, dict[str, Any]]:
+    background = resolve_asset(project / "assets/backgrounds", job["background_file"])
+    if not background.is_file():
+        raise FileNotFoundError(f"background is missing: {background}")
+    watermark = None
+    if watermark_name:
+        watermark = resolve_asset(project / "assets/watermark", watermark_name)
+        if not watermark.is_file():
+            raise FileNotFoundError(f"watermark is missing: {watermark}")
+    if not narration.is_file():
+        raise FileNotFoundError(f"narration is missing: {narration}")
+    ambience = None
+    if job.get("ambience_file"):
+        ambience = resolve_asset(project / "assets/ambience", job["ambience_file"])
+        if not ambience.is_file():
+            raise FileNotFoundError(f"ambience is missing: {ambience}")
+
+    narration_info = parse_probe(ffprobe(narration))
+    narration_duration = narration_info["duration"]
+    duration = float(config["video_duration_seconds"])
+    source_info = parse_probe(ffprobe(background))
+    source_video = source_info["video"] or {}
+    source_w = int(source_video.get("width", 0))
+    source_h = int(source_video.get("height", 0))
+    target_w, target_h = int(config["output_width"]), int(config["output_height"])
+    if source_w <= 0 or source_h <= 0:
+        raise ValidationError("background video dimensions could not be detected")
+    fade = min(float(config.get("fade_seconds", 1.5)), duration / 4)
+    fade_out = max(0, duration - fade)
+    captions_path = captions or (project / config["output_directory"] / "captions.ass")
+    if not captions_path.is_file():
+        raise FileNotFoundError(f"captions are missing: {captions_path}")
+    base_video = (
+        f"[0:v]scale={target_w}:{target_h}:force_original_aspect_ratio=increase,"
+        f"crop={target_w}:{target_h},fps={int(config['fps'])},"
+        "eq=brightness=-0.02:contrast=1.04:saturation=0.78,"
+        "noise=alls=2:allf=t,"
+        f"subtitles='{ffmpeg_filter_path(captions_path)}',format=yuv420p,"
+        f"fade=t=in:st=0:d={fade},fade=t=out:st={fade_out}:d={fade}"
+    )
+    command = [FFMPEG_BIN, "-hide_banner", "-loglevel", "warning", "-y"]
+    if background.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}:
+        command += ["-loop", "1", "-framerate", str(int(config["fps"])), "-i", str(background)]
+    else:
+        command += ["-stream_loop", "-1", "-i", str(background)]
+    filters: list[str] = []
+    if watermark:
+        command += ["-loop", "1", "-i", str(watermark)]
+        filters += [
+            base_video + "[bg]",
+            f"[1:v]scale={int(config['watermark_width'])}:-1,format=rgba,"
+            f"colorchannelmixer=aa={float(config['watermark_opacity'])}[wm]",
+            "[bg][wm]overlay=W-w-36:60:format=auto[v]",
+        ]
+    else:
+        filters.append(base_video + "[v]")
+    narration_index = 2 if watermark else 1
+    command += ["-i", str(narration)]
+    intro_delay = int(config["narration_intro_delay_ms"])
+    voice_filter = (
+        f"[{narration_index}:a]adelay={intro_delay}:all=1,"
+        f"apad=pad_dur={duration},atrim=duration={duration},"
+        f"afade=t=in:st={intro_delay / 1000}:d={fade},"
+        f"afade=t=out:st={fade_out}:d={fade}[voice]"
+    )
+    filters.append(voice_filter)
+    if ambience:
+        command += ["-stream_loop", "-1", "-i", str(ambience)]
+        ambience_index = narration_index + 1
+        filters += [
+            f"[{ambience_index}:a]volume={float(config['ambience_volume'])},"
+            f"atrim=duration={duration},afade=t=in:st=0:d={fade},"
+            f"afade=t=out:st={fade_out}:d={fade}[amb]",
+            f"[voice][amb]amix=inputs=2:duration=longest:normalize=0,"
+            f"atrim=duration={duration},alimiter=limit=0.8414[a]",
+        ]
+    else:
+        command += [
+            "-f", "lavfi", "-i",
+            "anoisesrc=color=brown:amplitude=0.35:sample_rate=48000",
+        ]
+        ambience_index = narration_index + 1
+        filters += [
+            f"[{ambience_index}:a]highpass=f=35,lowpass=f=240,"
+            f"volume={float(config['ambience_volume'])},atrim=duration={duration},"
+            f"afade=t=in:st=0:d={fade},afade=t=out:st={fade_out}:d={fade}[amb]",
+            f"[voice][amb]amix=inputs=2:duration=longest:normalize=0,"
+            f"atrim=duration={duration},alimiter=limit=0.8414[a]",
+        ]
+    output_dir = project / config["output_directory"]
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output = output_dir / sanitize_output_name(job["job_id"])
+    command += [
+        "-filter_complex", ";".join(filters),
+        "-map", "[v]", "-map", "[a]", "-t", f"{duration:.3f}",
+        "-c:v", "libx264", "-preset", str(config["encoding_preset"]),
+        "-crf", str(config["crf"]), "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
+        "-metadata", f"title={job['title']}", str(output),
+    ]
+    subprocess.run(command, check=True)
+    report = validate_render(output, duration)
+    report["source_background"] = {"width": source_w, "height": source_h}
+    report["narration_duration"] = narration_duration
+    report["output_file"] = str(output)
+    (output_dir / "render-report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    return output, report
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--job", required=True)
+    parser.add_argument("--config", default="config/default.json")
+    parser.add_argument("--narration", default="output/narration.wav")
+    parser.add_argument("--watermark", default="")
+    parser.add_argument("--captions", default="output/captions.ass")
+    args = parser.parse_args()
+    project = Path(__file__).resolve().parents[1]
+    output, report = render(
+        load_json(args.job), load_config(args.config), project,
+        Path(args.narration), args.watermark, Path(args.captions),
+    )
+    print(json.dumps({"output": str(output), "duration": report["duration"]}, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
