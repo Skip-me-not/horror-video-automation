@@ -35,7 +35,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const CONFIG = {\n  owner: 'REPLACE_GITHUB_OWNER',\n  repository: 'REPLACE_REPOSITORY',\n  branch: 'main',\n  tts_provider: 'chatterbox',\n  callback_url: 'https://REPLACE_N8N_HOST/webhook/horror-video-callback'\n};\nreturn [{json: {config: CONFIG, job: {...$json, privacy_status: 'private', callback_url: CONFIG.callback_url}}}];"
+        "jsCode": "const CONFIG = {\n  owner: 'REPLACE_GITHUB_OWNER',\n  repository: 'REPLACE_REPOSITORY',\n  branch: 'main',\n  tts_provider: 'kokoro',\n  callback_url: 'https://REPLACE_N8N_HOST/webhook/horror-video-callback'\n};\nreturn [{json: {config: CONFIG, job: {...$json, privacy_status: 'private', callback_url: CONFIG.callback_url}}}];"
       },
       "id": "4",
       "name": "Construct Job",

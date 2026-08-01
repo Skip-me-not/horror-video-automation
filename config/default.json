@@ -1,5 +1,5 @@
 {
-  "tts_provider": "chatterbox",
+  "tts_provider": "kokoro",
   "tts_seed": 17,
   "tts_chunk_characters": 180,
   "paragraph_pause_ms": 450,

@@ -14,11 +14,11 @@ on:
       tts_provider:
         description: Explicit provider; never falls back silently
         required: true
-        default: chatterbox
+        default: kokoro
         type: choice
         options:
-          - chatterbox
           - kokoro
+          - chatterbox
 
 permissions:
   contents: read

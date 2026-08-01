@@ -8,8 +8,8 @@ the result privately to YouTube, and reports the result to n8n.
 ## Output
 
 - 30 seconds, 1080x1920, H.264/AAC at 30 fps
-- Chatterbox Nano English narration with a deep, dark horror treatment
-- Kokoro as an explicitly selected fallback (never a silent fallback)
+- Kokoro `am_michael` American male narration with a deep horror treatment
+- Chatterbox Nano remains available as an explicitly selected alternative
 - restrained dark voice processing, short pauses, and a natural-speed guard
 - sentence-aware burned-in captions inside the Shorts safe area
 - dark grading, vignette, subtle grain, fades, and optional watermark
@@ -17,9 +17,10 @@ the result privately to YouTube, and reports the result to n8n.
   tone is used when no ambience asset is supplied
 - YouTube title/description hashtags and Private-only upload
 
-Chatterbox Nano is loaded with `ChatterboxTurboTTS.from_pretrained(device="cpu",
-nano=True)`. It is a 110M English model intended for CPU inference and supports
-paralinguistic tags. Only clone a voice when you own it or have clear permission.
+Kokoro's `am_michael` voice is the default so every automated run uses a clearly
+male English narrator. Chatterbox Nano remains selectable and is loaded with
+`ChatterboxTurboTTS.from_pretrained(device="cpu", nano=True)`. Only clone a voice
+when you own it or have clear permission.
 
 Official references: [Chatterbox](https://github.com/resemble-ai/chatterbox),
 [YouTube upload guide](https://developers.google.com/youtube/v3/guides/uploading_a_video).
