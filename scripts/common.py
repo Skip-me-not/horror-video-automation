@@ -36,7 +36,10 @@ def load_config(path: str | Path) -> dict[str, Any]:
         "caption_margin_vertical", "video_duration_seconds",
         "min_story_characters", "max_story_characters", "max_payload_bytes",
         "output_width", "output_height", "fps", "crf", "encoding_preset",
-        "watermark_width", "watermark_opacity", "ambience_volume",
+        "watermark_width", "watermark_opacity", "watermark_text",
+        "watermark_margin_x", "watermark_margin_y", "ambience_volume",
+        "sfx_volume", "whisper_volume", "pexels_default_query",
+        "pexels_max_download_bytes",
         "output_directory", "default_privacy_status",
     }
     missing = required - config.keys()
@@ -68,6 +71,20 @@ def load_config(path: str | Path) -> dict[str, Any]:
         raise ValidationError("watermark_opacity must be between 0 and 1")
     if not 0 <= float(config["ambience_volume"]) <= 0.25:
         raise ValidationError("ambience_volume must be between 0 and 0.25")
+    if not 0 <= float(config["sfx_volume"]) <= 0.5:
+        raise ValidationError("sfx_volume must be between 0 and 0.5")
+    if not 0 <= float(config["whisper_volume"]) <= 0.08:
+        raise ValidationError("whisper_volume must be between 0 and 0.08")
+    if not 0 <= int(config["watermark_margin_x"]) <= 300:
+        raise ValidationError("watermark_margin_x is invalid")
+    if not 0 <= int(config["watermark_margin_y"]) <= 400:
+        raise ValidationError("watermark_margin_y is invalid")
+    if not isinstance(config["watermark_text"], str) or not 1 <= len(config["watermark_text"]) <= 32:
+        raise ValidationError("watermark_text must contain 1 to 32 characters")
+    if not isinstance(config["pexels_default_query"], str) or not 3 <= len(config["pexels_default_query"]) <= 80:
+        raise ValidationError("pexels_default_query must contain 3 to 80 characters")
+    if not 5_000_000 <= int(config["pexels_max_download_bytes"]) <= 250_000_000:
+        raise ValidationError("pexels_max_download_bytes is invalid")
     duration = float(config["video_duration_seconds"])
     narration_limit = float(config["narration_max_seconds"])
     if not 15 <= duration <= 60 or not 5 <= narration_limit < duration:

@@ -5,6 +5,8 @@
   "description": "An original thirty-second English horror story.",
   "tags": ["horror shorts", "scary stories", "creepy stories", "shorts"],
   "background_file": "dark-corridor.png",
+  "background_query": "empty dark corridor abandoned building",
+  "watermark_text": "HORROR FILES",
   "ambience_file": "",
   "thumbnail_file": "",
   "privacy_status": "private",

@@ -55,6 +55,12 @@ def test_rejects_non_text_callback(valid_job, config):
         validate_job(valid_job, config)
 
 
+def test_rejects_people_in_horror_background_query(valid_job, config):
+    valid_job["background_query"] = "scared person in dark hallway"
+    with pytest.raises(ValidationError, match="without people"):
+        validate_job(valid_job, config)
+
+
 def test_youtube_metadata_is_short_safe():
     title = shorts_title("The Thing Behind the Door " * 10)
     assert len(title) <= 100

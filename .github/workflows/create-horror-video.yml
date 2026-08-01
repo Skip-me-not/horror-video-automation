@@ -39,6 +39,7 @@ jobs:
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
       N8N_CALLBACK_URL: ${{ secrets.N8N_CALLBACK_URL }}
     steps:
       - uses: actions/checkout@v4
@@ -78,8 +79,14 @@ jobs:
         run: |
           python scripts/validate_job.py --payload "$JOB_PAYLOAD" --expected-job-id "$EXPECTED_JOB_ID"
 
+      - name: Fetch portrait background from Pexels or use fallback
+        run: python scripts/fetch_background.py --job output/job.json
+
       - name: Generate narration
         run: python scripts/generate_voice.py --job output/job.json --provider "$TTS_PROVIDER"
+
+      - name: Generate original horror sound effects
+        run: python scripts/generate_sfx.py --job output/job.json --output output/horror-sfx.wav
 
       - name: Render and validate 30-second portrait MP4
         shell: bash
@@ -117,6 +124,8 @@ jobs:
           name: failed-${{ inputs.job_id }}
           path: |
             output/voice-report.json
+            output/background-source.json
+            output/sfx-report.json
             output/captions.ass
             output/render-report.json
             output/*.mp4

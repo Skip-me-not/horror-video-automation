@@ -14,7 +14,8 @@ except ModuleNotFoundError:  # Support `python scripts/validate_job.py`.
 
 REQUIRED = {"job_id", "title", "story", "description", "tags", "background_file"}
 ALLOWED = REQUIRED | {
-    "ambience_file", "thumbnail_file", "privacy_status", "callback_url"
+    "ambience_file", "thumbnail_file", "privacy_status", "callback_url",
+    "background_query", "watermark_text",
 }
 
 
@@ -76,12 +77,31 @@ def validate_job(job: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
         raise ValidationError("callback_url must be text")
     if callback and not (len(callback) <= 2048 and callback.startswith("https://")):
         raise ValidationError("callback_url must be an HTTPS URL")
+    background_query = job.get("background_query", config["pexels_default_query"])
+    if (
+        not isinstance(background_query, str)
+        or not 3 <= len(background_query.strip()) <= 80
+        or any(ord(char) < 32 for char in background_query)
+    ):
+        raise ValidationError("background_query must contain 3 to 80 printable characters")
+    unsafe_subjects = {"person", "people", "man", "woman", "child", "face", "portrait"}
+    if unsafe_subjects.intersection(background_query.lower().replace("-", " ").split()):
+        raise ValidationError("background_query must request an empty environment without people")
+    watermark_text = job.get("watermark_text", config["watermark_text"])
+    if (
+        not isinstance(watermark_text, str)
+        or not 1 <= len(watermark_text.strip()) <= 32
+        or any(char not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @_-" for char in watermark_text)
+    ):
+        raise ValidationError("watermark_text contains unsupported characters")
     normalized = dict(job)
     normalized.update(
         ambience_file=job.get("ambience_file", ""),
         thumbnail_file=job.get("thumbnail_file", ""),
         privacy_status="private",
         callback_url=callback,
+        background_query=background_query.strip(),
+        watermark_text=watermark_text.strip(),
     )
     return normalized
 

@@ -12,9 +12,10 @@ the result privately to YouTube, and reports the result to n8n.
 - Chatterbox Nano remains available as an explicitly selected alternative
 - subtle dark voice processing, continuous storytelling, and a natural-speed guard
 - sentence-aware burned-in captions inside the Shorts safe area
-- dark grading, vignette, subtle grain, fades, and optional watermark
-- low-volume looped horror ambience under the narration; a generated dark room
-  tone is used when no ambience asset is supplied
+- dark grading, vignette, subtle grain, fades, and an upper-right watermark
+- original generated knocks, heartbeat, end sting, and subtle reversed whispers
+- low-volume horror ambience; generated dark room tone is used as fallback
+- fresh portrait stock footage from Pexels when an API key is configured
 - YouTube title/description hashtags and Private-only upload
 
 Kokoro's `am_michael` voice is the default so every automated run uses a clearly
@@ -27,11 +28,22 @@ Official references: [Chatterbox](https://github.com/resemble-ai/chatterbox),
 
 ## Required media
 
-Add licensed files before the first run:
+The included corridor remains the safe fallback. Optional local assets:
 
 - `assets/backgrounds/dark-corridor.png` (an original starter visual is included)
 - `assets/ambience/dark-room-tone.mp3` (optional; leave the job field empty without it)
 - `assets/watermark/channel-watermark.png` (optional)
+
+Without a watermark PNG, the validated `watermark_text` job field is drawn in
+the upper-right safe area. The default is `HORROR FILES`; change it to the real
+channel name before publishing.
+
+For dynamic backgrounds, create a free [Pexels API](https://www.pexels.com/api/)
+key and add it as the `PEXELS_API_KEY` GitHub secret. The workflow requests
+portrait environment footage, downloads at most 100 MB, and adds the creator
+and Pexels source link to the YouTube description. If the API is unavailable or
+returns no suitable portrait MP4, the included corridor is used. Keep searches
+limited to empty environments without identifiable people.
 
 A slow-moving 1080x1920 video works best, but the renderer also supports a
 portrait still with animated film grain. Landscape sources are center-cropped.
@@ -78,6 +90,7 @@ Create these under **Settings -> Secrets and variables -> Actions**:
 | `YOUTUBE_CLIENT_ID` | yes | Google OAuth client ID |
 | `YOUTUBE_CLIENT_SECRET` | yes | Google OAuth client secret |
 | `YOUTUBE_REFRESH_TOKEN` | yes | Offline YouTube upload token |
+| `PEXELS_API_KEY` | no | Free dynamic portrait background videos |
 | `N8N_CALLBACK_URL` | no | Overrides the validated callback URL |
 
 The refresh token must be authorized by the Google account that owns the target

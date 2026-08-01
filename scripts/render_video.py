@@ -58,6 +58,10 @@ def ffmpeg_filter_path(path: Path) -> str:
     return value.replace("\\", "\\\\").replace(":", "\\:").replace("'", "\\'")
 
 
+def ffmpeg_text(value: str) -> str:
+    return value.replace("\\", "\\\\").replace(":", "\\:").replace("'", "\\'")
+
+
 def render(
     job: dict,
     config: dict,
@@ -97,11 +101,21 @@ def render(
     captions_path = captions or (project / config["output_directory"] / "captions.ass")
     if not captions_path.is_file():
         raise FileNotFoundError(f"captions are missing: {captions_path}")
+    watermark_text_filter = ""
+    if not watermark:
+        watermark_text = ffmpeg_text(str(job.get("watermark_text") or config["watermark_text"]))
+        watermark_text_filter = (
+            f"drawtext=text='{watermark_text}':font='DejaVu Sans':fontsize=36:"
+            "fontcolor=white@0.82:box=1:boxcolor=black@0.30:boxborderw=10:"
+            f"x=w-text_w-{int(config['watermark_margin_x'])}:"
+            f"y={int(config['watermark_margin_y'])},"
+        )
     base_video = (
         f"[0:v]scale={target_w}:{target_h}:force_original_aspect_ratio=increase,"
         f"crop={target_w}:{target_h},fps={int(config['fps'])},"
         "eq=brightness=-0.02:contrast=1.04:saturation=0.78,"
         "noise=alls=2:allf=t,"
+        f"{watermark_text_filter}"
         f"subtitles='{ffmpeg_filter_path(captions_path)}',format=yuv420p,"
         f"fade=t=in:st=0:d={fade},fade=t=out:st={fade_out}:d={fade}"
     )
@@ -117,20 +131,28 @@ def render(
             base_video + "[bg]",
             f"[1:v]scale={int(config['watermark_width'])}:-1,format=rgba,"
             f"colorchannelmixer=aa={float(config['watermark_opacity'])}[wm]",
-            "[bg][wm]overlay=W-w-36:60:format=auto[v]",
+            f"[bg][wm]overlay=W-w-{int(config['watermark_margin_x'])}:"
+            f"{int(config['watermark_margin_y'])}:format=auto[v]",
         ]
     else:
         filters.append(base_video + "[v]")
     narration_index = 2 if watermark else 1
     command += ["-i", str(narration)]
     intro_delay = int(config["narration_intro_delay_ms"])
+    filters.append(f"[{narration_index}:a]asplit=2[narrmain][narrghost]")
     voice_filter = (
-        f"[{narration_index}:a]adelay={intro_delay}:all=1,"
+        f"[narrmain]adelay={intro_delay}:all=1,"
         f"apad=pad_dur={duration},atrim=duration={duration},"
         f"afade=t=in:st={intro_delay / 1000}:d={fade},"
         f"afade=t=out:st={fade_out}:d={fade}[voice]"
     )
     filters.append(voice_filter)
+    filters.append(
+        "[narrghost]areverse,asetrate=48000*0.82,aresample=48000,atempo=1.219512,"
+        "highpass=f=120,lowpass=f=1800,aecho=0.8:0.55:170|340:0.16|0.07,"
+        f"volume={float(config['whisper_volume'])},adelay=1250:all=1,"
+        f"apad=pad_dur={duration},atrim=duration={duration}[whisper]"
+    )
     if ambience:
         command += ["-stream_loop", "-1", "-i", str(ambience)]
         ambience_index = narration_index + 1
@@ -138,8 +160,6 @@ def render(
             f"[{ambience_index}:a]volume={float(config['ambience_volume'])},"
             f"atrim=duration={duration},afade=t=in:st=0:d={fade},"
             f"afade=t=out:st={fade_out}:d={fade}[amb]",
-            f"[voice][amb]amix=inputs=2:duration=longest:normalize=0,"
-            f"atrim=duration={duration},alimiter=limit=0.8414[a]",
         ]
     else:
         command += [
@@ -151,9 +171,23 @@ def render(
             f"[{ambience_index}:a]highpass=f=35,lowpass=f=240,"
             f"volume={float(config['ambience_volume'])},atrim=duration={duration},"
             f"afade=t=in:st=0:d={fade},afade=t=out:st={fade_out}:d={fade}[amb]",
-            f"[voice][amb]amix=inputs=2:duration=longest:normalize=0,"
-            f"atrim=duration={duration},alimiter=limit=0.8414[a]",
         ]
+    mix_labels = ["[voice]", "[amb]", "[whisper]"]
+    sfx = project / config["output_directory"] / "horror-sfx.wav"
+    if sfx.is_file():
+        command += ["-i", str(sfx)]
+        sfx_index = ambience_index + 1
+        filters.append(
+            f"[{sfx_index}:a]volume={float(config['sfx_volume'])},"
+            f"atrim=duration={duration},afade=t=in:st=0:d=0.4,"
+            f"afade=t=out:st={fade_out}:d={fade}[sfx]"
+        )
+        mix_labels.append("[sfx]")
+    filters.append(
+        "".join(mix_labels)
+        + f"amix=inputs={len(mix_labels)}:duration=longest:normalize=0,"
+        + f"atrim=duration={duration},alimiter=limit=0.8414[a]"
+    )
     output_dir = project / config["output_directory"]
     output_dir.mkdir(parents=True, exist_ok=True)
     output = output_dir / sanitize_output_name(job["job_id"])
