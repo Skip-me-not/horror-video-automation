@@ -29,8 +29,24 @@ def add_burst(samples: list[float], sample_rate: int, start: float, length: floa
 def generate_sfx(job_id: str, duration: float, destination: Path,
                  sample_rate: int = 48000) -> dict[str, object]:
     rng = random.Random(job_id)
-    samples = [0.0] * int(duration * sample_rate)
+    sample_count = int(duration * sample_rate)
+    samples = [0.0] * sample_count
     events: list[dict[str, object]] = []
+
+    # A continuous original horror bed: sub-bass beating, cold air, and an
+    # unstable distant tone. It is deterministic and requires no licensed audio.
+    for index in range(sample_count):
+        t = index / sample_rate
+        slow_breath = 0.55 + 0.45 * math.sin(2 * math.pi * 0.075 * t - 0.8)
+        drone = (
+            0.105 * math.sin(2 * math.pi * 37.0 * t)
+            + 0.075 * math.sin(2 * math.pi * 40.4 * t)
+            + 0.035 * math.sin(2 * math.pi * 73.5 * t)
+        )
+        distant_frequency = 176.0 + 7.0 * math.sin(2 * math.pi * 0.043 * t)
+        distant = 0.028 * math.sin(2 * math.pi * distant_frequency * t)
+        wind = rng.uniform(-1.0, 1.0) * 0.026 * slow_breath
+        samples[index] = drone * (0.72 + 0.28 * slow_breath) + distant * slow_breath + wind
 
     for when in (5.8, 6.28, 6.76):
         if when < duration:
@@ -46,6 +62,11 @@ def generate_sfx(job_id: str, duration: float, destination: Path,
     add_burst(samples, sample_rate, sting_at, 1.1, 390, 0.08, 0.30, rng)
     events.append({"type": "sting", "time": sting_at})
 
+    for when in (11.2, 22.4):
+        if when < duration:
+            add_burst(samples, sample_rate, when, 2.4, 118, 0.10, 0.12, rng)
+            events.append({"type": "distant_swell", "time": when})
+
     destination.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(destination), "wb") as handle:
         handle.setnchannels(1)
@@ -56,7 +77,12 @@ def generate_sfx(job_id: str, duration: float, destination: Path,
             clipped = max(-1.0, min(1.0, value))
             frames.extend(struct.pack("<h", round(clipped * 32767)))
         handle.writeframes(frames)
-    return {"file": str(destination), "duration_seconds": duration, "events": events}
+    return {
+        "file": str(destination),
+        "duration_seconds": duration,
+        "continuous_layers": ["sub_bass_drone", "cold_wind", "distant_tone"],
+        "events": events,
+    }
 
 
 def main() -> int:

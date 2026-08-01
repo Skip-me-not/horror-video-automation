@@ -85,7 +85,7 @@ jobs:
       - name: Generate narration
         run: python scripts/generate_voice.py --job output/job.json --provider "$TTS_PROVIDER"
 
-      - name: Generate original horror sound effects
+      - name: Generate original continuous horror soundscape and effects
         run: python scripts/generate_sfx.py --job output/job.json --output output/horror-sfx.wav
 
       - name: Render and validate 30-second portrait MP4

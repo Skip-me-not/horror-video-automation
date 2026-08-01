@@ -45,3 +45,4 @@ def test_generated_sfx_is_nonempty_pcm(tmp_path):
         assert handle.getframerate() == 8000
         assert handle.getnframes() == 24000
     assert report["events"]
+    assert report["continuous_layers"] == ["sub_bass_drone", "cold_wind", "distant_tone"]

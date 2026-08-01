@@ -13,8 +13,9 @@ the result privately to YouTube, and reports the result to n8n.
 - subtle dark voice processing, continuous storytelling, and a natural-speed guard
 - sentence-aware burned-in captions inside the Shorts safe area
 - dark grading, vignette, subtle grain, fades, and a top-center text watermark
-- original generated knocks, heartbeat, end sting, and subtle reversed whispers
-- low-volume horror ambience; generated dark room tone is used as fallback
+- audible original horror drone, cold wind, distant swells, knocks, heartbeat,
+  ending sting, and subtle reversed whispers
+- layered dark room tone remains underneath the generated soundscape
 - fresh portrait stock footage from Pexels when an API key is configured
 - YouTube title/description hashtags and Private-only upload
 
