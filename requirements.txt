@@ -1,6 +1,7 @@
 # Application and test dependencies (Python 3.11).
-chatterbox-tts==0.1.7
-resemble-perth==1.0.1
+# Nano support is newer than the 0.1.7 PyPI wheel. Pin the official source
+# revision so ChatterboxTurboTTS.from_pretrained(..., nano=True) is reproducible.
+chatterbox-tts @ git+https://github.com/resemble-ai/chatterbox.git@5de7a54aa4e5e2baadb0182dde554908b48b85c2
 kokoro==0.9.4
 soundfile==0.13.1
 numpy==1.26.4
