@@ -8,9 +8,9 @@ the result privately to YouTube, and reports the result to n8n.
 ## Output
 
 - 30 seconds, 1080x1920, H.264/AAC at 30 fps
-- Kokoro `am_michael` American male narration with a deep horror treatment
+- Kokoro `am_michael` natural American male narration with restrained horror tone
 - Chatterbox Nano remains available as an explicitly selected alternative
-- restrained dark voice processing, short pauses, and a natural-speed guard
+- subtle dark voice processing, continuous storytelling, and a natural-speed guard
 - sentence-aware burned-in captions inside the Shorts safe area
 - dark grading, vignette, subtle grain, fades, and optional watermark
 - low-volume looped horror ambience under the narration; a generated dark room
