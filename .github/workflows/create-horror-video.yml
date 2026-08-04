@@ -2,55 +2,42 @@ name: Create 30-second horror Short
 
 on:
   workflow_dispatch:
-    inputs:
-      job_id:
-        description: Safe job ID (must match payload)
-        required: true
-        type: string
-      job_payload:
-        description: Optional base64 JSON job; leave empty to use idea_number
-        required: false
-        default: ""
-        type: string
-      idea_number:
-        description: Idea bank number (1-500) when job_payload is empty
-        required: false
-        default: "1"
-        type: string
-      tts_provider:
-        description: Explicit provider; never falls back silently
-        required: true
-        default: kokoro
-        type: choice
-        options:
-          - kokoro
-          - chatterbox
+
+  schedule:
+    - cron: '0 6,17 * * *'
 
 permissions:
   contents: read
 
 concurrency:
-  group: horror-video-${{ inputs.job_id }}
+  group: horror-short-generation
   cancel-in-progress: false
 
 jobs:
   create-and-upload:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
+
     env:
-      TTS_PROVIDER: ${{ inputs.tts_provider }}
+      TTS_PROVIDER: kokoro
+
       HF_HOME: ${{ github.workspace }}/.cache/huggingface
       TORCH_HOME: ${{ github.workspace }}/.cache/torch
       TTS_CPU_THREADS: "4"
+
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+
       PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
       N8N_CALLBACK_URL: ${{ secrets.N8N_CALLBACK_URL }}
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
@@ -61,83 +48,144 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes ffmpeg espeak-ng
 
+      - name: Prepare automatic job parameters
+        id: params
+        shell: bash
+        run: |
+          JOB_ID="auto-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          IDEA_NUMBER=$(( (GITHUB_RUN_NUMBER - 1) % 500 + 1 ))
+
+          echo "job_id=$JOB_ID" >> "$GITHUB_OUTPUT"
+          echo "idea_number=$IDEA_NUMBER" >> "$GITHUB_OUTPUT"
+
+          echo "Job ID: $JOB_ID"
+          echo "Idea number: $IDEA_NUMBER"
+
       - name: Restore model cache
         uses: actions/cache@v4
         with:
           path: |
             .cache/huggingface
             .cache/torch
-          key: tts-${{ runner.os }}-py311-${{ inputs.tts_provider }}-${{ hashFiles('requirements.txt') }}
+
+          key: tts-${{ runner.os }}-py311-kokoro-${{ hashFiles('requirements.txt') }}
+
           restore-keys: |
-            tts-${{ runner.os }}-py311-${{ inputs.tts_provider }}-
+            tts-${{ runner.os }}-py311-kokoro-
 
       - name: Install Python dependencies
         run: |
-          python -m pip install --disable-pip-version-check \
-            --index-url https://download.pytorch.org/whl/cpu \
-            torch==2.6.0 torchaudio==2.6.0
-          python -m pip install --disable-pip-version-check -r requirements.txt
+          python -m pip install --upgrade pip
 
-      - name: Select numbered idea or validate compact job payload
+          python -m pip install \
+            --disable-pip-version-check \
+            --index-url https://download.pytorch.org/whl/cpu \
+            torch==2.6.0 \
+            torchaudio==2.6.0
+
+          python -m pip install \
+            --disable-pip-version-check \
+            -r requirements.txt
+
+      - name: Build and validate job
         env:
-          JOB_PAYLOAD: ${{ inputs.job_payload }}
-          EXPECTED_JOB_ID: ${{ inputs.job_id }}
-          IDEA_NUMBER: ${{ inputs.idea_number }}
+          EXPECTED_JOB_ID: ${{ steps.params.outputs.job_id }}
+          IDEA_NUMBER: ${{ steps.params.outputs.idea_number }}
+
         run: |
-          if [ -n "$JOB_PAYLOAD" ]; then
-            python scripts/validate_job.py --payload "$JOB_PAYLOAD" --expected-job-id "$EXPECTED_JOB_ID"
-          else
-            python scripts/build_job_from_idea.py --idea-number "$IDEA_NUMBER" --job-id "$EXPECTED_JOB_ID"
-            python scripts/validate_job.py --job output/idea-job.json --expected-job-id "$EXPECTED_JOB_ID"
-          fi
+          python scripts/build_job_from_idea.py \
+            --idea-number "$IDEA_NUMBER" \
+            --job-id "$EXPECTED_JOB_ID"
+
+          python scripts/validate_job.py \
+            --job output/idea-job.json \
+            --expected-job-id "$EXPECTED_JOB_ID"
 
       - name: Fetch portrait background from Pexels or use fallback
-        run: python scripts/fetch_background.py --job output/job.json
+        run: |
+          python scripts/fetch_background.py \
+            --job output/job.json
 
       - name: Generate narration
-        run: python scripts/generate_voice.py --job output/job.json --provider "$TTS_PROVIDER"
+        run: |
+          python scripts/generate_voice.py \
+            --job output/job.json \
+            --provider "$TTS_PROVIDER"
 
       - name: Generate original continuous horror soundscape and effects
-        run: python scripts/generate_sfx.py --job output/job.json --output output/horror-sfx.wav
+        run: |
+          python scripts/generate_sfx.py \
+            --job output/job.json \
+            --output output/horror-sfx.wav
 
       - name: Generate original cinematic horror background music
-        run: python scripts/generate_music.py --job output/job.json --output output/horror-music.wav
+        run: |
+          python scripts/generate_music.py \
+            --job output/job.json \
+            --output output/horror-music.wav
 
       - name: Render and validate 30-second portrait MP4
-        run: python scripts/render_video.py --job output/job.json --captions output/captions.ass
+        run: |
+          python scripts/render_video.py \
+            --job output/job.json \
+            --captions output/captions.ass
 
       - name: Resolve output filename
         id: rendered
         shell: bash
         run: |
-          video_path="$(python -c "import json; print(json.load(open('output/render-report.json'))['output_file'])")"
-          echo "video_path=$video_path" >> "$GITHUB_OUTPUT"
+          video_path="$(python -c "import json; print(json.load(open('output/render-report.json', encoding='utf-8'))['output_file'])")"
 
-      - name: Upload to YouTube as Private
+          if [ ! -f "$video_path" ]; then
+            echo "Rendered video not found: $video_path"
+            exit 1
+          fi
+
+          echo "video_path=$video_path" >> "$GITHUB_OUTPUT"
+          echo "Rendered video: $video_path"
+
+      - name: Upload to YouTube as Public
         id: youtube
         run: |
-          python scripts/upload_youtube.py --job output/job.json --video "${{ steps.rendered.outputs.video_path }}"
+          python scripts/upload_youtube.py \
+            --job output/job.json \
+            --video "${{ steps.rendered.outputs.video_path }}" \
+            --privacy public
 
       - name: Notify n8n of success
         if: success()
-        run: python scripts/notify_n8n.py --job output/job.json --status success --result output/upload-result.json
+        continue-on-error: true
+        run: |
+          python scripts/notify_n8n.py \
+            --job output/job.json \
+            --status success \
+            --result output/upload-result.json
 
       - name: Notify n8n of failure
-        if: failure() && hashFiles('output/job.json') != ''
-        run: python scripts/notify_n8n.py --job output/job.json --status failure --error "GitHub Actions run failed; inspect the private run logs."
+        if: ${{ failure() && hashFiles('output/job.json') != '' }}
+        continue-on-error: true
+        run: |
+          python scripts/notify_n8n.py \
+            --job output/job.json \
+            --status failure \
+            --error "GitHub Actions run failed; inspect the GitHub Actions logs."
 
       - name: Upload short-retention diagnostics on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: failed-${{ inputs.job_id }}
+          name: failed-${{ steps.params.outputs.job_id }}
+
           path: |
+            output/job.json
             output/voice-report.json
             output/background-source.json
             output/sfx-report.json
             output/music-report.json
             output/captions.ass
             output/render-report.json
+            output/upload-result.json
             output/*.mp4
+
           retention-days: 1
           if-no-files-found: ignore
