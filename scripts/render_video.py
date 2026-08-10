@@ -10,11 +10,11 @@ from typing import Any
 
 try:
     from scripts.common import (
-        ValidationError, load_config, load_json, resolve_asset, sanitize_output_name,
+        ValidationError, effective_video_duration, load_config, load_json, resolve_asset, sanitize_output_name,
     )
 except ModuleNotFoundError:  # Support direct script execution.
     from common import (
-        ValidationError, load_config, load_json, resolve_asset, sanitize_output_name,
+        ValidationError, effective_video_duration, load_config, load_json, resolve_asset, sanitize_output_name,
     )
 
 FFMPEG_BIN = os.getenv("FFMPEG_BIN", "ffmpeg")
@@ -78,7 +78,7 @@ def render(
 
     narration_info = parse_probe(ffprobe(narration))
     narration_duration = narration_info["duration"]
-    duration = float(config["video_duration_seconds"])
+    duration = effective_video_duration(narration_duration, config, job["job_id"])
     source_info = parse_probe(ffprobe(background))
     source_video = source_info["video"] or {}
     source_w = int(source_video.get("width", 0))

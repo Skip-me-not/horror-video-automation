@@ -9,9 +9,9 @@ import wave
 from pathlib import Path
 
 try:
-    from scripts.common import load_config, load_json
+    from scripts.common import effective_video_duration, load_config, load_json
 except ModuleNotFoundError:
-    from common import load_config, load_json
+    from common import effective_video_duration, load_config, load_json
 
 
 def add_burst(samples: list[float], sample_rate: int, start: float, length: float,
@@ -48,11 +48,11 @@ def generate_sfx(job_id: str, duration: float, destination: Path,
         wind = rng.uniform(-1.0, 1.0) * 0.026 * slow_breath
         samples[index] = drone * (0.72 + 0.28 * slow_breath) + distant * slow_breath + wind
 
-    for when in (5.8, 6.28, 6.76):
+    for when in (duration * 0.19, duration * 0.21, duration * 0.23):
         if when < duration:
             add_burst(samples, sample_rate, when, 0.32, 72, 0.48, 0.28, rng)
             events.append({"type": "knock", "time": when})
-    for when in (16.7, 17.35, 18.15):
+    for when in (duration * 0.55, duration * 0.58, duration * 0.61):
         if when < duration:
             add_burst(samples, sample_rate, when, 0.22, 49, 0.30, 0.05, rng)
             add_burst(samples, sample_rate, when + 0.18, 0.16, 55, 0.22, 0.04, rng)
@@ -62,7 +62,7 @@ def generate_sfx(job_id: str, duration: float, destination: Path,
     add_burst(samples, sample_rate, sting_at, 1.1, 390, 0.08, 0.30, rng)
     events.append({"type": "sting", "time": sting_at})
 
-    for when in (11.2, 22.4):
+    for when in [duration * fraction for fraction in (0.36, 0.72)]:
         if when < duration:
             add_burst(samples, sample_rate, when, 2.4, 118, 0.10, 0.12, rng)
             events.append({"type": "distant_swell", "time": when})
@@ -93,7 +93,9 @@ def main() -> int:
     args = parser.parse_args()
     job = load_json(args.job)
     config = load_config(args.config)
-    report = generate_sfx(job["job_id"], float(config["video_duration_seconds"]), Path(args.output))
+    voice_report = load_json(Path(config["output_directory"]) / "voice-report.json")
+    duration = effective_video_duration(float(voice_report["duration_seconds"]), config, job["job_id"])
+    report = generate_sfx(job["job_id"], duration, Path(args.output))
     report_path = Path(args.output).with_name("sfx-report.json")
     report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report, indent=2))

@@ -12,7 +12,8 @@
     `assets/backgrounds/dark-corridor.png`. Add licensed ambience later if desired.
 6. Activate the workflow. Send prepared stories as JSON with `POST` to the
     production URL shown by **Prepared Story Webhook**. Stories must be original
-    English text between 180 and 480 characters for the 30-second format.
+    English text between 220 and 2200 characters. Narration determines the
+    final duration, up to 179 seconds.
 7. Optionally configure Telegram credentials/chat ID, then enable the disabled
    Telegram node. It is not needed for the callback or upload.
 

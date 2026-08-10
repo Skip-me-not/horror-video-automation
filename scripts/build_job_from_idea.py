@@ -35,7 +35,7 @@ def build_job(idea: dict[str, Any], job_id: str) -> dict[str, Any]:
         raise ValidationError("job_id must use only letters, digits, underscore, and hyphen")
     allowed = {
         "title", "story", "description", "tags", "background_file",
-        "background_query", "watermark_text", "ambience_file", "thumbnail_file",
+        "background_query", "background_queries", "genre", "watermark_text", "ambience_file", "thumbnail_file",
     }
     job = {key: value for key, value in idea.items() if key in allowed}
     job.update(job_id=job_id, privacy_status="private", callback_url="")
@@ -44,7 +44,7 @@ def build_job(idea: dict[str, Any], job_id: str) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Create one video job from the numbered idea bank.")
-    parser.add_argument("--bank", default="ideas/horror-ideas-500.json")
+    parser.add_argument("--bank", default="ideas/horror-stories.json")
     parser.add_argument("--idea-number", type=int, required=True)
     parser.add_argument("--job-id", required=True)
     parser.add_argument("--output", default="output/idea-job.json")

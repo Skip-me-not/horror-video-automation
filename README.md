@@ -1,13 +1,14 @@
 # English Horror Shorts Automation
 
-A private-first pipeline for original 30-second English horror Shorts. n8n sends
+A review-first pipeline for original, variable-length English horror Shorts. n8n sends
 a compact story job to GitHub Actions; GitHub generates realistic narration,
 burns readable captions into a dark 9:16 video, mixes creepy ambience, uploads
-the result privately to YouTube, and reports the result to n8n.
+manual results privately to YouTube, while scheduled runs publish publicly after
+the workflow has been verified, and reports the result to n8n.
 
 ## Output
 
-- 30 seconds, 1080x1920, H.264/AAC at 30 fps
+- 20-179 seconds, 1080x1920, H.264/AAC at 30 fps; narration determines length
 - Kokoro `am_michael` natural American male narration with restrained horror tone
 - Chatterbox Nano remains available as an explicitly selected alternative
 - subtle dark voice processing, continuous storytelling, and a natural-speed guard
@@ -17,7 +18,8 @@ the result privately to YouTube, and reports the result to n8n.
   ending sting, and subtle reversed whispers
 - original cinematic horror music with minor chords, eerie melody, and bass pulses
 - layered dark room tone remains underneath the generated soundscape
-- fresh portrait stock footage from Pexels when an API key is configured
+- 3-10 changing scenes from Pexels, Pixabay, Wikimedia Commons, and Internet Archive
+- deterministic provider/page rotation so concurrent jobs do not all choose the same clip
 - YouTube title/description hashtags and Private-only upload
 
 Kokoro's `am_michael` voice is the default so every automated run uses a clearly
@@ -37,12 +39,13 @@ The included corridor remains the safe fallback. Optional local assets:
 The validated `watermark_text` job field is always drawn in the upper-center
 safe area. The default is `SKIP IF YOU'RE SCARED`; no PNG watermark is used.
 
-For dynamic backgrounds, create a free [Pexels API](https://www.pexels.com/api/)
-key and add it as the `PEXELS_API_KEY` GitHub secret. The workflow requests
-portrait environment footage, downloads at most 100 MB, and adds the creator
-and Pexels source link to the YouTube description. If the API is unavailable or
-returns no suitable portrait MP4, the included corridor is used. Keep searches
-limited to empty environments without identifiable people.
+For the largest pool, create free Pexels and Pixabay API keys and add them as
+`PEXELS_API_KEY` and `PIXABAY_API_KEY` GitHub secrets. Wikimedia Commons and
+Internet Archive are keyless fallbacks. Every provider is queried through its
+documented API, downloads are capped at 60 MB per scene, licenses are filtered,
+and source/creator credits are appended to the YouTube description. A failed
+provider does not stop the job: the next provider is tried, then the included
+corridor is used for any scene that still cannot be filled.
 
 A slow-moving 1080x1920 video works best, but the renderer also supports a
 portrait still with animated film grain. Landscape sources are center-cropped.
@@ -52,25 +55,30 @@ of committed; update the workflow before relying on GitHub LFS or release URLs.
 
 ## Job format
 
-See `examples/job.example.json`. Stories must be original English text from 180
-to 480 characters. If synthesized narration cannot fit within 27.5 seconds
-without exceeding a 1.12x speed adjustment, generation stops and asks for a
-shorter story. The remaining time provides a brief horror beat before/after the
-narration while the ambience continues.
+See `examples/job.example.json`. Stories may contain 220-2200 characters. The
+voice is kept at its natural speed. The final duration is narration plus a
+job-seeded 1.5-4.5 second ending beat, clamped to 20-179 seconds so the vertical
+result remains within YouTube's three-minute Shorts limit. Scene count grows
+from 3 to 10 with the duration.
 
-Only `private` uploads are accepted. Review the voice, visuals, captions,
-copyright status, and YouTube policy compliance in Studio before publishing.
+Manual runs default to `private` for review and may explicitly use `unlisted` or
+`public`. Scheduled runs publish as `public`. Review the voice, visuals,
+captions, copyright status, and YouTube policy compliance before enabling the
+schedule on a new channel.
 
-## Replaceable 500-story idea bank
+## Genre-balanced story bank
 
-`ideas/horror-ideas-500.json` contains 500 numbered, ready-to-render English
-horror stories. In **Actions -> Create 30-second horror Short**, leave
+`ideas/horror-stories.json` contains 180 numbered scripts across 15 distinct
+horror genres: paranormal, psychological, cosmic, folk, gothic, body, creature,
+technology, analog, liminal, urban legend, occult, survival, maritime, and time
+horror. Scripts also rotate among confession, incident-report, and traditional
+narration structures. In **Actions -> Create dynamic horror Short**, leave
 `job_payload` empty, enter a unique `job_id`, and set `idea_number` from 1 to
-500. Existing n8n payload dispatches continue to work without changes.
+180. Existing n8n payload dispatches remain supported.
 
 The repository intentionally does not commit a counter after every run. Track
 the next number in n8n (or enter it manually); this avoids concurrent runs
-overwriting each other and avoids unnecessary GitHub commits. After idea 500,
+overwriting each other and avoids unnecessary GitHub commits. After idea 180,
 replace the JSON entries with another valid bank and restart at 1. Regenerate
 the included starter bank with:
 
@@ -78,7 +86,7 @@ the included starter bank with:
 python scripts/generate_idea_bank.py
 ```
 
-Five hundred text records are small and do not meaningfully load GitHub. Video,
+The text catalog is small and does not meaningfully load GitHub. Video,
 audio, TTS model, and render outputs remain outside Git history.
 
 ## Local checks
@@ -97,7 +105,7 @@ Use **Actions -> Test voice** first. It downloads the selected local TTS model,
 generates a short sample and captions, and uploads them as a one-day artifact.
 The workflow explicitly installs PyTorch's CPU wheels so GitHub does not waste
 runner disk or setup time on unused CUDA packages.
-After listening to that sample, dispatch **Create 30-second horror Short** from
+After listening to that sample, dispatch **Create dynamic horror Short** from
 n8n or GitHub Actions.
 
 ## GitHub secrets
@@ -110,6 +118,7 @@ Create these under **Settings -> Secrets and variables -> Actions**:
 | `YOUTUBE_CLIENT_SECRET` | yes | Google OAuth client secret |
 | `YOUTUBE_REFRESH_TOKEN` | yes | Offline YouTube upload token |
 | `PEXELS_API_KEY` | no | Free dynamic portrait background videos |
+| `PIXABAY_API_KEY` | no | Additional free background-video pool |
 | `N8N_CALLBACK_URL` | no | Overrides the validated callback URL |
 
 The refresh token must be authorized by the Google account that owns the target

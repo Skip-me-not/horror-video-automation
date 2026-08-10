@@ -1,44 +1,19 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path
 from typing import Any
 
-
 ALLOWED_MEDIA = {
-    "background_file": {
-        ".mp4",
-        ".mov",
-        ".mkv",
-        ".webm",
-        ".png",
-        ".jpg",
-        ".jpeg",
-        ".webp",
-    },
-    "ambience_file": {
-        ".mp3",
-        ".wav",
-        ".m4a",
-        ".aac",
-        ".ogg",
-    },
-    "thumbnail_file": {
-        ".png",
-        ".jpg",
-        ".jpeg",
-        ".webp",
-    },
+    "background_file": {".mp4", ".mov", ".mkv", ".webm", ".png", ".jpg", ".jpeg", ".webp"},
+    "ambience_file": {".mp3", ".wav", ".m4a", ".aac", ".ogg"},
+    "thumbnail_file": {".png", ".jpg", ".jpeg", ".webp"},
 }
-
-SAFE_FILENAME = re.compile(
-    r"^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$"
-)
-
-SAFE_JOB_ID = re.compile(
-    r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$"
-)
+ALLOWED_PRIVACY = {"private", "unlisted", "public"}
+SAFE_FILENAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$")
+SAFE_JOB_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$")
 
 
 class ValidationError(ValueError):
@@ -46,405 +21,139 @@ class ValidationError(ValueError):
 
 
 def load_json(path: str | Path) -> dict[str, Any]:
-    with Path(path).open(
-        encoding="utf-8"
-    ) as handle:
+    with Path(path).open(encoding="utf-8") as handle:
         value = json.load(handle)
-
     if not isinstance(value, dict):
-        raise ValidationError(
-            f"{path} must contain a JSON object"
-        )
-
+        raise ValidationError(f"{path} must contain a JSON object")
     return value
 
 
-def load_config(
-    path: str | Path,
-) -> dict[str, Any]:
-
+def load_config(path: str | Path) -> dict[str, Any]:
     config = load_json(path)
-
     required = {
-        "tts_provider",
-        "tts_seed",
-        "tts_chunk_characters",
-        "paragraph_pause_ms",
-        "section_pause_ms",
-        "narration_max_seconds",
-        "narration_max_speedup",
-        "narration_intro_delay_ms",
-        "creepy_voice_filter",
-        "caption_max_characters",
-        "caption_font_size",
-        "caption_margin_vertical",
-        "video_duration_seconds",
-        "min_story_characters",
-        "max_story_characters",
-        "max_payload_bytes",
-        "output_width",
-        "output_height",
-        "fps",
-        "crf",
-        "encoding_preset",
-        "watermark_text",
-        "watermark_margin_y",
-        "ambience_volume",
-        "music_volume",
-        "sfx_volume",
-        "whisper_volume",
-        "pexels_default_query",
-        "pexels_max_download_bytes",
-        "output_directory",
-        "default_privacy_status",
+        "tts_provider", "tts_seed", "tts_chunk_characters", "paragraph_pause_ms",
+        "section_pause_ms", "narration_max_seconds", "narration_max_speedup",
+        "narration_intro_delay_ms", "creepy_voice_filter", "caption_max_characters",
+        "caption_font_size", "caption_margin_vertical", "minimum_video_duration_seconds",
+        "maximum_video_duration_seconds", "video_tail_min_seconds", "video_tail_max_seconds",
+        "background_scene_seconds", "minimum_background_scenes", "maximum_background_scenes",
+        "min_story_characters", "max_story_characters", "max_payload_bytes",
+        "output_width", "output_height", "fps", "crf", "encoding_preset",
+        "watermark_text", "watermark_margin_y", "ambience_volume", "music_volume",
+        "sfx_volume", "whisper_volume", "background_default_query",
+        "background_max_download_bytes", "output_directory", "default_privacy_status",
     }
-
     missing = required - config.keys()
-
     if missing:
-        raise ValidationError(
-            f"configuration missing: "
-            f"{', '.join(sorted(missing))}"
-        )
-
-    #
-    # TTS
-    #
-    if config["tts_provider"] not in {
-        "chatterbox",
-        "kokoro",
-    }:
-        raise ValidationError(
-            "tts_provider must be chatterbox or kokoro"
-        )
-
-    if not 100 <= int(
-        config["tts_chunk_characters"]
-    ) <= 1000:
-        raise ValidationError(
-            "tts_chunk_characters must be between 100 and 1000"
-        )
-
-    if not 0 <= int(
-        config["paragraph_pause_ms"]
-    ) <= 3000:
-        raise ValidationError(
-            "paragraph_pause_ms must be between 0 and 3000"
-        )
-
-    if not 0 <= int(
-        config["section_pause_ms"]
-    ) <= 5000:
-        raise ValidationError(
-            "section_pause_ms must be between 0 and 5000"
-        )
-
-    #
-    # Story limits
-    #
-    min_story = int(
-        config["min_story_characters"]
-    )
-
-    max_story = int(
-        config["max_story_characters"]
-    )
-
-    if not (
-        0 < min_story < max_story
-    ):
-        raise ValidationError(
-            "story length limits are invalid"
-        )
-
-    #
-    # Video dimensions
-    #
-    resolution = (
-        int(config["output_width"]),
-        int(config["output_height"]),
-    )
-
-    if resolution not in {
-        (1080, 1920),
-        (720, 1280),
-    }:
-        raise ValidationError(
-            "Shorts resolution must be "
-            "1080x1920 or 720x1280"
-        )
-
-    #
-    # FPS
-    #
-    if int(config["fps"]) not in {
-        24,
-        25,
-        30,
-    }:
-        raise ValidationError(
-            "fps must be 24, 25, or 30"
-        )
-
-    #
-    # Encoding
-    #
-    if not 16 <= int(
-        config["crf"]
-    ) <= 32:
-        raise ValidationError(
-            "crf must be between 16 and 32"
-        )
-
-    if config["encoding_preset"] not in {
-        "ultrafast",
-        "superfast",
-        "veryfast",
-        "faster",
-        "fast",
-    }:
-        raise ValidationError(
-            "encoding_preset is not CPU-runner safe"
-        )
-
-    #
-    # Audio volumes
-    #
-    if not 0 <= float(
-        config["ambience_volume"]
-    ) <= 0.25:
-        raise ValidationError(
-            "ambience_volume must be between 0 and 0.25"
-        )
-
-    if not 0 <= float(
-        config["sfx_volume"]
-    ) <= 0.5:
-        raise ValidationError(
-            "sfx_volume must be between 0 and 0.5"
-        )
-
-    if not 0 <= float(
-        config["music_volume"]
-    ) <= 1.0:
-        raise ValidationError(
-            "music_volume must be between 0 and 1.0"
-        )
-
-    if not 0 <= float(
-        config["whisper_volume"]
-    ) <= 0.08:
-        raise ValidationError(
-            "whisper_volume must be between 0 and 0.08"
-        )
-
-    #
-    # Watermark
-    #
-    if not 0 <= int(
-        config["watermark_margin_y"]
-    ) <= 400:
-        raise ValidationError(
-            "watermark_margin_y is invalid"
-        )
-
-    watermark_text = config[
-        "watermark_text"
-    ]
-
-    if (
-        not isinstance(
-            watermark_text,
-            str,
-        )
-        or not 1 <= len(
-            watermark_text
-        ) <= 32
-    ):
-        raise ValidationError(
-            "watermark_text must contain 1 to 32 characters"
-        )
-
-    #
-    # Pexels
-    #
-    pexels_query = config[
-        "pexels_default_query"
-    ]
-
-    if (
-        not isinstance(
-            pexels_query,
-            str,
-        )
-        or not 3 <= len(
-            pexels_query
-        ) <= 80
-    ):
-        raise ValidationError(
-            "pexels_default_query must contain 3 to 80 characters"
-        )
-
-    if not 5_000_000 <= int(
-        config["pexels_max_download_bytes"]
-    ) <= 250_000_000:
-        raise ValidationError(
-            "pexels_max_download_bytes is invalid"
-        )
-
-    #
-    # Video timing
-    #
-    duration = float(
-        config["video_duration_seconds"]
-    )
-
-    narration_limit = float(
-        config["narration_max_seconds"]
-    )
-
-    if (
-        not 15 <= duration <= 60
-        or not 5 <= narration_limit < duration
-    ):
-        raise ValidationError(
-            "video and narration duration limits are invalid"
-        )
-
-    if not 1 <= float(
-        config["narration_max_speedup"]
-    ) <= 1.2:
-        raise ValidationError(
-            "narration_max_speedup must be between 1.0 and 1.2"
-        )
-
-    if not 0 <= int(
-        config["narration_intro_delay_ms"]
-    ) <= 3000:
-        raise ValidationError(
-            "narration_intro_delay_ms must be between 0 and 3000"
-        )
-
-    #
-    # Captions
-    #
-    if not 30 <= int(
-        config["caption_max_characters"]
-    ) <= 120:
-        raise ValidationError(
-            "caption_max_characters must be between 30 and 120"
-        )
-
-    #
-    # YouTube privacy
-    #
-    if config["default_privacy_status"] not in {
-        "private",
-        "unlisted",
-        "public",
-    }:
-        raise ValidationError(
-            "default_privacy_status must be "
-            "private, unlisted, or public"
-        )
-
-    #
-    # Output directory
-    #
-    output_directory = Path(
-        str(
-            config["output_directory"]
-        )
-    )
-
-    if (
-        output_directory.is_absolute()
-        or ".." in output_directory.parts
-    ):
-        raise ValidationError(
-            "output_directory must stay within the project"
-        )
-
+        raise ValidationError(f"configuration missing: {', '.join(sorted(missing))}")
+    if config["tts_provider"] not in {"chatterbox", "kokoro"}:
+        raise ValidationError("tts_provider must be chatterbox or kokoro")
+    if not 100 <= int(config["tts_chunk_characters"]) <= 1000:
+        raise ValidationError("tts_chunk_characters must be between 100 and 1000")
+    if not 0 <= int(config["paragraph_pause_ms"]) <= 3000:
+        raise ValidationError("paragraph_pause_ms must be between 0 and 3000")
+    if not 0 <= int(config["section_pause_ms"]) <= 5000:
+        raise ValidationError("section_pause_ms must be between 0 and 5000")
+    if not 0 < int(config["min_story_characters"]) < int(config["max_story_characters"]):
+        raise ValidationError("story length limits are invalid")
+    if (int(config["output_width"]), int(config["output_height"])) not in {(1080, 1920), (720, 1280)}:
+        raise ValidationError("Shorts resolution must be 1080x1920 or 720x1280")
+    if int(config["fps"]) not in {24, 25, 30}:
+        raise ValidationError("fps must be 24, 25, or 30")
+    if not 16 <= int(config["crf"]) <= 32:
+        raise ValidationError("crf must be between 16 and 32")
+    if config["encoding_preset"] not in {"ultrafast", "superfast", "veryfast", "faster", "fast"}:
+        raise ValidationError("encoding_preset is not CPU-runner safe")
+    if not 0 <= float(config["ambience_volume"]) <= 0.25:
+        raise ValidationError("ambience_volume must be between 0 and 0.25")
+    if not 0 <= float(config["sfx_volume"]) <= 0.5:
+        raise ValidationError("sfx_volume must be between 0 and 0.5")
+    if not 0 <= float(config["music_volume"]) <= 1.0:
+        raise ValidationError("music_volume must be between 0 and 1.0")
+    if not 0 <= float(config["whisper_volume"]) <= 0.08:
+        raise ValidationError("whisper_volume must be between 0 and 0.08")
+    if not 0 <= int(config["watermark_margin_y"]) <= 400:
+        raise ValidationError("watermark_margin_y is invalid")
+    if not isinstance(config["watermark_text"], str) or not 1 <= len(config["watermark_text"]) <= 32:
+        raise ValidationError("watermark_text must contain 1 to 32 characters")
+    if not isinstance(config["background_default_query"], str) or not 3 <= len(config["background_default_query"]) <= 100:
+        raise ValidationError("background_default_query must contain 3 to 100 characters")
+    if not 5_000_000 <= int(config["background_max_download_bytes"]) <= 250_000_000:
+        raise ValidationError("background_max_download_bytes is invalid")
+    minimum_duration = float(config["minimum_video_duration_seconds"])
+    maximum_duration = float(config["maximum_video_duration_seconds"])
+    narration_limit = float(config["narration_max_seconds"])
+    if not 10 <= minimum_duration < maximum_duration <= 180:
+        raise ValidationError("video duration limits are invalid")
+    if not 5 <= narration_limit < maximum_duration:
+        raise ValidationError("narration duration limit is invalid")
+    if not 0 <= float(config["video_tail_min_seconds"]) <= float(config["video_tail_max_seconds"]) <= 15:
+        raise ValidationError("video tail range is invalid")
+    if not 3 <= float(config["background_scene_seconds"]) <= 20:
+        raise ValidationError("background_scene_seconds must be between 3 and 20")
+    if not 1 <= int(config["minimum_background_scenes"]) <= int(config["maximum_background_scenes"]) <= 16:
+        raise ValidationError("background scene limits are invalid")
+    if not 1 <= float(config["narration_max_speedup"]) <= 1.2:
+        raise ValidationError("narration_max_speedup must be between 1.0 and 1.2")
+    if not 0 <= int(config["narration_intro_delay_ms"]) <= 3000:
+        raise ValidationError("narration_intro_delay_ms must be between 0 and 3000")
+    if not 30 <= int(config["caption_max_characters"]) <= 120:
+        raise ValidationError("caption_max_characters must be between 30 and 120")
+    if config["default_privacy_status"] not in ALLOWED_PRIVACY:
+        raise ValidationError("default_privacy_status must be private, unlisted, or public")
+    output_directory = Path(str(config["output_directory"]))
+    if output_directory.is_absolute() or ".." in output_directory.parts:
+        raise ValidationError("output_directory must stay within the project")
     return config
 
 
-def safe_filename(
-    value: str,
-    field: str,
-    *,
-    allow_empty: bool = False,
-) -> str:
+def seeded_fraction(seed: str) -> float:
+    value = int.from_bytes(hashlib.sha256(seed.encode("utf-8")).digest()[:8], "big")
+    return value / ((1 << 64) - 1)
 
+
+def effective_video_duration(narration_seconds: float, config: dict[str, Any], job_id: str) -> float:
+    """Let narration determine length, with a deterministic random ending beat."""
+    tail_min = float(config["video_tail_min_seconds"])
+    tail_max = float(config["video_tail_max_seconds"])
+    tail = tail_min + seeded_fraction(f"{job_id}:tail") * (tail_max - tail_min)
+    wanted = narration_seconds + int(config["narration_intro_delay_ms"]) / 1000 + tail
+    return round(min(
+        float(config["maximum_video_duration_seconds"]),
+        max(float(config["minimum_video_duration_seconds"]), wanted),
+    ), 3)
+
+
+def desired_background_scenes(duration: float, config: dict[str, Any]) -> int:
+    import math
+    wanted = math.ceil(duration / float(config["background_scene_seconds"]))
+    return min(
+        int(config["maximum_background_scenes"]),
+        max(int(config["minimum_background_scenes"]), wanted),
+    )
+
+
+def safe_filename(value: str, field: str, *, allow_empty: bool = False) -> str:
     if allow_empty and value == "":
         return value
-
-    if (
-        not isinstance(value, str)
-        or not SAFE_FILENAME.fullmatch(value)
-    ):
-        raise ValidationError(
-            f"{field} contains an invalid filename"
-        )
-
-    if (
-        value in {".", ".."}
-        or "/" in value
-        or "\\" in value
-        or Path(value).name != value
-    ):
-        raise ValidationError(
-            f"{field} must be a basename without path components"
-        )
-
-    suffix = Path(
-        value
-    ).suffix.lower()
-
+    if not isinstance(value, str) or not SAFE_FILENAME.fullmatch(value):
+        raise ValidationError(f"{field} contains an invalid filename")
+    if value in {".", ".."} or "/" in value or "\\" in value or Path(value).name != value:
+        raise ValidationError(f"{field} must be a basename without path components")
+    suffix = Path(value).suffix.lower()
     if suffix not in ALLOWED_MEDIA[field]:
-        raise ValidationError(
-            f"{field} has unsupported format "
-            f"{suffix or '(none)'}"
-        )
-
+        raise ValidationError(f"{field} has unsupported format {suffix or '(none)'}")
     return value
 
 
-def resolve_asset(
-    root: str | Path,
-    filename: str,
-) -> Path:
-
-    root_path = Path(
-        root
-    ).resolve()
-
-    candidate = (
-        root_path / filename
-    ).resolve()
-
+def resolve_asset(root: str | Path, filename: str) -> Path:
+    root_path = Path(root).resolve()
+    candidate = (root_path / filename).resolve()
     if candidate.parent != root_path:
-        raise ValidationError(
-            "asset path escaped its configured directory"
-        )
-
+        raise ValidationError("asset path escaped its configured directory")
     return candidate
 
 
-def sanitize_output_name(
-    value: str,
-) -> str:
-
-    clean = re.sub(
-        r"[^A-Za-z0-9_-]+",
-        "-",
-        value.strip(),
-    )
-
-    clean = clean.strip(
-        "-_"
-    ).lower()
-
-    return (
-        clean[:64]
-        or "video"
-    ) + ".mp4"
+def sanitize_output_name(value: str) -> str:
+    clean = re.sub(r"[^A-Za-z0-9_-]+", "-", value.strip()).strip("-_").lower()
+    return (clean[:64] or "video") + ".mp4"

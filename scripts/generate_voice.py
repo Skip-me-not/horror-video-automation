@@ -300,7 +300,7 @@ def normalize_and_join(
     speed = duration / limit if duration > limit else 1.0
     if speed > float(config["narration_max_speedup"]):
         raise ValidationError(
-            f"narration is {duration:.1f}s and cannot fit naturally in the 30-second Short; "
+            f"narration is {duration:.1f}s and exceeds the configured Shorts limit; "
             "shorten the story"
         )
     subprocess.run(
