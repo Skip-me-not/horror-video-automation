@@ -15,6 +15,15 @@ except ModuleNotFoundError:
 STILL_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp"}
 
 
+def build_scene_filter(index: int, width: int, height: int, fps: int, segment: float) -> str:
+    """Normalize geometry and sample aspect ratio before concatenating providers."""
+    return (
+        f"[{index}:v]scale={width}:{height}:force_original_aspect_ratio=increase,"
+        f"crop={width}:{height},setsar=1/1,fps={fps},trim=duration={segment:.3f},"
+        f"setpts=PTS-STARTPTS[v{index}]"
+    )
+
+
 def prepare(job: dict, config: dict, project: Path, narration: Path) -> tuple[Path, dict]:
     backgrounds = job.get("background_files") or [job.get("background_file")]
     if not isinstance(backgrounds, list) or not backgrounds or any(not isinstance(item, str) for item in backgrounds):
@@ -33,11 +42,7 @@ def prepare(job: dict, config: dict, project: Path, narration: Path) -> tuple[Pa
             command += ["-loop", "1", "-framerate", str(fps), "-i", str(path)]
         else:
             command += ["-stream_loop", "-1", "-i", str(path)]
-        filters.append(
-            f"[{index}:v]scale={width}:{height}:force_original_aspect_ratio=increase,"
-            f"crop={width}:{height},fps={fps},trim=duration={segment:.3f},"
-            f"setpts=PTS-STARTPTS[v{index}]"
-        )
+        filters.append(build_scene_filter(index, width, height, fps, segment))
     labels = "".join(f"[v{index}]" for index in range(len(paths)))
     filters.append(f"{labels}concat=n={len(paths)}:v=1:a=0[v]")
     destination = project / "assets" / "backgrounds" / f"visual-track-{job['job_id']}.mp4"
