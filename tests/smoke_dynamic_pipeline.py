@@ -20,6 +20,9 @@ def main() -> None:
     assert len({idea["story"] for idea in ideas}) == len(ideas)
     for idea in ideas:
         validate_job(build_job(idea, f"idea-{idea['idea_number']:03d}"), config)
+    public_job = build_job(ideas[0], "public-smoke")
+    public_job["privacy_status"] = "public"
+    assert validate_job(public_job, config)["privacy_status"] == "public"
     short = effective_video_duration(25, config, "short")
     long = effective_video_duration(95, config, "long")
     assert short < long
@@ -37,6 +40,11 @@ def main() -> None:
         "size": 1000, "url": "https://cdn.pixabay.com/video/example.mp4"}},
     }]}, "job")
     assert pixabay["id"] == 8
+    workflow = Path(".github/workflows/create-horror-video.yml").read_text(encoding="utf-8")
+    assert "% 180 + 1" in workflow
+    assert 'UPLOAD_PRIVACY="public"' in workflow
+    assert 'INPUT_UPLOAD_PRIVACY:-private' in workflow
+    assert "<<<<<<<" not in workflow and ">>>>>>>" not in workflow
     print(
         f"validated={len(ideas)} duration={short}/{long} "
         f"scenes={desired_background_scenes(short, config)}/{desired_background_scenes(long, config)}"

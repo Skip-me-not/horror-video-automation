@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import re
 from pathlib import Path
 from typing import Any
@@ -11,6 +11,7 @@ ALLOWED_MEDIA = {
     "ambience_file": {".mp3", ".wav", ".m4a", ".aac", ".ogg"},
     "thumbnail_file": {".png", ".jpg", ".jpeg", ".webp"},
 }
+ALLOWED_PRIVACY = {"private", "unlisted", "public"}
 SAFE_FILENAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$")
 SAFE_JOB_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$")
 
@@ -31,19 +32,16 @@ def load_config(path: str | Path) -> dict[str, Any]:
     config = load_json(path)
     required = {
         "tts_provider", "tts_seed", "tts_chunk_characters", "paragraph_pause_ms",
-        "section_pause_ms",
-        "narration_max_seconds", "narration_max_speedup", "narration_intro_delay_ms",
-        "creepy_voice_filter", "caption_max_characters", "caption_font_size",
-        "caption_margin_vertical", "minimum_video_duration_seconds",
-        "maximum_video_duration_seconds", "video_tail_min_seconds",
-        "video_tail_max_seconds", "background_scene_seconds",
-        "minimum_background_scenes", "maximum_background_scenes",
+        "section_pause_ms", "narration_max_seconds", "narration_max_speedup",
+        "narration_intro_delay_ms", "creepy_voice_filter", "caption_max_characters",
+        "caption_font_size", "caption_margin_vertical", "minimum_video_duration_seconds",
+        "maximum_video_duration_seconds", "video_tail_min_seconds", "video_tail_max_seconds",
+        "background_scene_seconds", "minimum_background_scenes", "maximum_background_scenes",
         "min_story_characters", "max_story_characters", "max_payload_bytes",
         "output_width", "output_height", "fps", "crf", "encoding_preset",
-        "watermark_text", "watermark_margin_y", "ambience_volume",
-        "music_volume", "sfx_volume", "whisper_volume", "background_default_query",
-        "background_max_download_bytes",
-        "output_directory", "default_privacy_status",
+        "watermark_text", "watermark_margin_y", "ambience_volume", "music_volume",
+        "sfx_volume", "whisper_volume", "background_default_query",
+        "background_max_download_bytes", "output_directory", "default_privacy_status",
     }
     missing = required - config.keys()
     if missing:
@@ -56,11 +54,9 @@ def load_config(path: str | Path) -> dict[str, Any]:
         raise ValidationError("paragraph_pause_ms must be between 0 and 3000")
     if not 0 <= int(config["section_pause_ms"]) <= 5000:
         raise ValidationError("section_pause_ms must be between 0 and 5000")
-    if not (0 < int(config["min_story_characters"]) < int(config["max_story_characters"])):
+    if not 0 < int(config["min_story_characters"]) < int(config["max_story_characters"]):
         raise ValidationError("story length limits are invalid")
-    if (int(config["output_width"]), int(config["output_height"])) not in {
-        (1080, 1920), (720, 1280)
-    }:
+    if (int(config["output_width"]), int(config["output_height"])) not in {(1080, 1920), (720, 1280)}:
         raise ValidationError("Shorts resolution must be 1080x1920 or 720x1280")
     if int(config["fps"]) not in {24, 25, 30}:
         raise ValidationError("fps must be 24, 25, or 30")
@@ -88,7 +84,7 @@ def load_config(path: str | Path) -> dict[str, Any]:
     maximum_duration = float(config["maximum_video_duration_seconds"])
     narration_limit = float(config["narration_max_seconds"])
     if not 10 <= minimum_duration < maximum_duration <= 180:
-        raise ValidationError("video and narration duration limits are invalid")
+        raise ValidationError("video duration limits are invalid")
     if not 5 <= narration_limit < maximum_duration:
         raise ValidationError("narration duration limit is invalid")
     if not 0 <= float(config["video_tail_min_seconds"]) <= float(config["video_tail_max_seconds"]) <= 15:
@@ -103,8 +99,8 @@ def load_config(path: str | Path) -> dict[str, Any]:
         raise ValidationError("narration_intro_delay_ms must be between 0 and 3000")
     if not 30 <= int(config["caption_max_characters"]) <= 120:
         raise ValidationError("caption_max_characters must be between 30 and 120")
-    if config["default_privacy_status"] != "private":
-        raise ValidationError("default privacy must remain private")
+    if config["default_privacy_status"] not in ALLOWED_PRIVACY:
+        raise ValidationError("default_privacy_status must be private, unlisted, or public")
     output_directory = Path(str(config["output_directory"]))
     if output_directory.is_absolute() or ".." in output_directory.parts:
         raise ValidationError("output_directory must stay within the project")

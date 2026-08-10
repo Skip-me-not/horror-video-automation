@@ -1,9 +1,10 @@
 # English Horror Shorts Automation
 
-A private-first pipeline for original, variable-length English horror Shorts. n8n sends
+A review-first pipeline for original, variable-length English horror Shorts. n8n sends
 a compact story job to GitHub Actions; GitHub generates realistic narration,
 burns readable captions into a dark 9:16 video, mixes creepy ambience, uploads
-the result privately to YouTube, and reports the result to n8n.
+manual results privately to YouTube, while scheduled runs publish publicly after
+the workflow has been verified, and reports the result to n8n.
 
 ## Output
 
@@ -60,8 +61,10 @@ job-seeded 1.5-4.5 second ending beat, clamped to 20-179 seconds so the vertical
 result remains within YouTube's three-minute Shorts limit. Scene count grows
 from 3 to 10 with the duration.
 
-Only `private` uploads are accepted. Review the voice, visuals, captions,
-copyright status, and YouTube policy compliance in Studio before publishing.
+Manual runs default to `private` for review and may explicitly use `unlisted` or
+`public`. Scheduled runs publish as `public`. Review the voice, visuals,
+captions, copyright status, and YouTube policy compliance before enabling the
+schedule on a new channel.
 
 ## Genre-balanced story bank
 

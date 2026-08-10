@@ -8,9 +8,9 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from scripts.common import SAFE_JOB_ID, ValidationError, load_config, load_json, safe_filename
-except ModuleNotFoundError:  # Support `python scripts/validate_job.py`.
-    from common import SAFE_JOB_ID, ValidationError, load_config, load_json, safe_filename
+    from scripts.common import ALLOWED_PRIVACY, SAFE_JOB_ID, ValidationError, load_config, load_json, safe_filename
+except ModuleNotFoundError:
+    from common import ALLOWED_PRIVACY, SAFE_JOB_ID, ValidationError, load_config, load_json, safe_filename
 
 REQUIRED = {"job_id", "title", "story", "description", "tags", "background_file"}
 ALLOWED = REQUIRED | {
@@ -70,8 +70,8 @@ def validate_job(job: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
     safe_filename(job.get("ambience_file", ""), "ambience_file", allow_empty=True)
     safe_filename(job.get("thumbnail_file", ""), "thumbnail_file", allow_empty=True)
     privacy = job.get("privacy_status", config["default_privacy_status"])
-    if privacy != "private":
-        raise ValidationError("only private YouTube uploads are supported")
+    if privacy not in ALLOWED_PRIVACY:
+        raise ValidationError("privacy_status must be private, unlisted, or public")
     callback = job.get("callback_url", "")
     if not isinstance(callback, str):
         raise ValidationError("callback_url must be text")
@@ -79,8 +79,7 @@ def validate_job(job: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
         raise ValidationError("callback_url must be an HTTPS URL")
     background_query = job.get("background_query", config["background_default_query"])
     if (
-        not isinstance(background_query, str)
-        or not 3 <= len(background_query.strip()) <= 100
+        not isinstance(background_query, str) or not 3 <= len(background_query.strip()) <= 100
         or any(ord(char) < 32 for char in background_query)
     ):
         raise ValidationError("background_query must contain 3 to 100 printable characters")
@@ -106,22 +105,16 @@ def validate_job(job: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
         safe_filename(filename, "background_file")
     watermark_text = job.get("watermark_text", config["watermark_text"])
     if (
-        not isinstance(watermark_text, str)
-        or not 1 <= len(watermark_text.strip()) <= 32
+        not isinstance(watermark_text, str) or not 1 <= len(watermark_text.strip()) <= 32
         or any(char not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @_'!-" for char in watermark_text)
     ):
         raise ValidationError("watermark_text contains unsupported characters")
     normalized = dict(job)
     normalized.update(
-        ambience_file=job.get("ambience_file", ""),
-        thumbnail_file=job.get("thumbnail_file", ""),
-        privacy_status="private",
-        callback_url=callback,
-        background_query=background_query.strip(),
+        ambience_file=job.get("ambience_file", ""), thumbnail_file=job.get("thumbnail_file", ""),
+        privacy_status=privacy, callback_url=callback, background_query=background_query.strip(),
         background_queries=[query.strip() for query in background_queries],
-        background_files=background_files,
-        genre=genre.strip(),
-        watermark_text=watermark_text.strip(),
+        background_files=background_files, genre=genre.strip(), watermark_text=watermark_text.strip(),
     )
     return normalized
 
@@ -137,11 +130,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         config = load_config(args.config)
-        job = (
-            load_json(args.job)
-            if args.job
-            else decode_payload(args.payload, int(config["max_payload_bytes"]))
-        )
+        job = load_json(args.job) if args.job else decode_payload(args.payload, int(config["max_payload_bytes"]))
         normalized = validate_job(job, config)
         if args.expected_job_id and normalized["job_id"] != args.expected_job_id:
             raise ValidationError("payload job_id does not match workflow job_id")
