@@ -15,7 +15,7 @@ except ModuleNotFoundError:  # Support `python scripts/validate_job.py`.
 REQUIRED = {"job_id", "title", "story", "description", "tags", "background_file"}
 ALLOWED = REQUIRED | {
     "ambience_file", "thumbnail_file", "privacy_status", "callback_url",
-    "background_query", "watermark_text",
+    "background_query", "background_queries", "background_files", "genre", "watermark_text",
 }
 
 
@@ -77,16 +77,33 @@ def validate_job(job: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
         raise ValidationError("callback_url must be text")
     if callback and not (len(callback) <= 2048 and callback.startswith("https://")):
         raise ValidationError("callback_url must be an HTTPS URL")
-    background_query = job.get("background_query", config["pexels_default_query"])
+    background_query = job.get("background_query", config["background_default_query"])
     if (
         not isinstance(background_query, str)
-        or not 3 <= len(background_query.strip()) <= 80
+        or not 3 <= len(background_query.strip()) <= 100
         or any(ord(char) < 32 for char in background_query)
     ):
-        raise ValidationError("background_query must contain 3 to 80 printable characters")
+        raise ValidationError("background_query must contain 3 to 100 printable characters")
     unsafe_subjects = {"person", "people", "man", "woman", "child", "face", "portrait"}
     if unsafe_subjects.intersection(background_query.lower().replace("-", " ").split()):
         raise ValidationError("background_query must request an empty environment without people")
+    background_queries = job.get("background_queries", [background_query])
+    if (
+        not isinstance(background_queries, list) or not 1 <= len(background_queries) <= 12
+        or any(not isinstance(query, str) or not 3 <= len(query.strip()) <= 100 for query in background_queries)
+    ):
+        raise ValidationError("background_queries must contain 1 to 12 short search phrases")
+    for query in background_queries:
+        if unsafe_subjects.intersection(query.lower().replace("-", " ").split()):
+            raise ValidationError("background_queries must request environments without people")
+    genre = job.get("genre", "horror")
+    if not isinstance(genre, str) or not 2 <= len(genre.strip()) <= 40:
+        raise ValidationError("genre must contain 2 to 40 characters")
+    background_files = job.get("background_files", [])
+    if not isinstance(background_files, list) or len(background_files) > 16:
+        raise ValidationError("background_files must be a list of up to 16 files")
+    for filename in background_files:
+        safe_filename(filename, "background_file")
     watermark_text = job.get("watermark_text", config["watermark_text"])
     if (
         not isinstance(watermark_text, str)
@@ -101,6 +118,9 @@ def validate_job(job: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
         privacy_status="private",
         callback_url=callback,
         background_query=background_query.strip(),
+        background_queries=[query.strip() for query in background_queries],
+        background_files=background_files,
+        genre=genre.strip(),
         watermark_text=watermark_text.strip(),
     )
     return normalized

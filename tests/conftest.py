@@ -20,7 +20,7 @@ def valid_job() -> dict:
     return {
         "job_id": "safe-job-1",
         "title": "A Safe Title",
-        "story": "A quiet sentence. " * 12,
+        "story": "A quiet sentence. " * 15,
         "description": "Description",
         "tags": ["horror"],
         "background_file": "background.mp4",

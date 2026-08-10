@@ -52,7 +52,8 @@ def test_lightweight_fixture_render(valid_job, config, tmp_path):
         "Dialogue: 0,0:00:00.00,0:00:01.00,Caption,,0,0,0,,Do not look behind you.\n",
         encoding="utf-8",
     )
-    config["video_duration_seconds"] = 2
+    config["minimum_video_duration_seconds"] = 2
+    config["maximum_video_duration_seconds"] = 2
     output, report = render(valid_job, config, tmp_path, narration, captions)
     assert output.is_file()
     assert report["has_video"] and report["has_audio"]

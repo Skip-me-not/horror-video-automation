@@ -1,4 +1,4 @@
-name: Create 30-second horror Short
+name: Create dynamic horror Short
 
 on:
   workflow_dispatch:
@@ -13,7 +13,7 @@ on:
         default: ""
         type: string
       idea_number:
-        description: Idea bank number (1-500) when job_payload is empty
+        description: Genre-balanced story number (1-180) when job_payload is empty
         required: false
         default: "1"
         type: string
@@ -46,6 +46,7 @@ jobs:
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
       PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
       N8N_CALLBACK_URL: ${{ secrets.N8N_CALLBACK_URL }}
     steps:
       - uses: actions/checkout@v4
@@ -91,11 +92,14 @@ jobs:
             python scripts/validate_job.py --job output/idea-job.json --expected-job-id "$EXPECTED_JOB_ID"
           fi
 
-      - name: Fetch portrait background from Pexels or use fallback
-        run: python scripts/fetch_background.py --job output/job.json
-
       - name: Generate narration
         run: python scripts/generate_voice.py --job output/job.json --provider "$TTS_PROVIDER"
+
+      - name: Fetch multiple licensed background scenes
+        run: python scripts/fetch_background.py --job output/job.json
+
+      - name: Build a script-length visual track
+        run: python scripts/prepare_visual_track.py --job output/job.json --narration output/narration.wav
 
       - name: Generate original continuous horror soundscape and effects
         run: python scripts/generate_sfx.py --job output/job.json --output output/horror-sfx.wav
@@ -103,7 +107,7 @@ jobs:
       - name: Generate original cinematic horror background music
         run: python scripts/generate_music.py --job output/job.json --output output/horror-music.wav
 
-      - name: Render and validate 30-second portrait MP4
+      - name: Render and validate dynamic-length portrait MP4
         run: python scripts/render_video.py --job output/job.json --captions output/captions.ass
 
       - name: Resolve output filename
@@ -134,6 +138,7 @@ jobs:
           path: |
             output/voice-report.json
             output/background-source.json
+            output/visual-track-report.json
             output/sfx-report.json
             output/music-report.json
             output/captions.ass

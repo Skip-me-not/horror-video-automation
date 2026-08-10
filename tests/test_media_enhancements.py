@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import wave
 
-from scripts.fetch_background import add_credit, select_video_file
+from scripts.fetch_background import add_credit, provider_order, select_pixabay_video, select_video_file
+from scripts.common import desired_background_scenes, effective_video_duration
 from scripts.generate_sfx import generate_sfx
 from scripts.generate_music import generate_music
 
@@ -31,6 +32,24 @@ def test_pexels_credit_is_added_once():
     description = add_credit("Original story.", video)
     assert "Creator" in description and "Pexels" in description
     assert add_credit(description, video) == description
+
+
+def test_all_background_providers_are_rotated():
+    order = provider_order("job-1", 0, "pexels-key", "pixabay-key")
+    assert set(order) == {"pexels", "pixabay", "wikimedia", "archive"}
+
+
+def test_pixabay_selection_accepts_landscape_for_smart_crop():
+    media = {"width": 1920, "height": 1080, "url": "https://cdn.pixabay.com/video/a.mp4", "size": 1000}
+    video, selected = select_pixabay_video({"hits": [{"id": 9, "videos": {"medium": media}}]}, "seed")
+    assert video["id"] == 9 and selected["url"].endswith("a.mp4")
+
+
+def test_duration_and_scene_count_follow_narration(config):
+    short = effective_video_duration(25, config, "short")
+    long = effective_video_duration(95, config, "long")
+    assert 25 < short < long < 180
+    assert desired_background_scenes(long, config) > desired_background_scenes(short, config)
 
 
 def test_default_text_watermark_is_centered(config):

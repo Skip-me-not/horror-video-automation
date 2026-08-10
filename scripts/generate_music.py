@@ -9,9 +9,9 @@ import wave
 from pathlib import Path
 
 try:
-    from scripts.common import load_config, load_json
+    from scripts.common import effective_video_duration, load_config, load_json
 except ModuleNotFoundError:
-    from common import load_config, load_json
+    from common import effective_video_duration, load_config, load_json
 
 
 CHORDS = (
@@ -34,10 +34,11 @@ def generate_music(job_id: str, duration: float, destination: Path,
     samples = [0.0] * int(duration * sample_rate)
 
     # Sustained detuned pad following an audible minor-key chord progression.
-    for start, end, notes in CHORDS:
-        if start >= duration:
-            continue
-        segment_end = min(end, duration)
+    chord_index = 0
+    for start in [index * 7.5 for index in range(math.ceil(duration / 7.5))]:
+        notes = CHORDS[chord_index % len(CHORDS)][2]
+        chord_index += 1
+        segment_end = min(start + 7.5, duration)
         segment_length = segment_end - start
         detunes = [rng.uniform(-0.22, 0.22) for _ in notes]
         for index in range(int(start * sample_rate), int(segment_end * sample_rate)):
@@ -52,7 +53,7 @@ def generate_music(job_id: str, duration: float, destination: Path,
 
     # A sparse decaying melody makes this music, rather than another sound effect.
     melody_events: list[dict[str, object]] = []
-    starts = (2.0, 5.0, 8.5, 12.0, 15.5, 19.0, 22.5, 26.0, 28.0)
+    starts = [2.0 + index * 3.5 for index in range(max(1, math.ceil((duration - 2.0) / 3.5)))]
     for event_index, start in enumerate(starts):
         if start >= duration:
             continue
@@ -70,7 +71,7 @@ def generate_music(job_id: str, duration: float, destination: Path,
         melody_events.append({"time": start, "frequency": frequency})
 
     # Slow bass pulses provide a cinematic rhythm without overpowering narration.
-    for start in (0.0, 3.75, 7.5, 11.25, 15.0, 18.75, 22.5, 26.25):
+    for start in [index * 3.75 for index in range(math.ceil(duration / 3.75))]:
         if start >= duration:
             continue
         end = min(duration, start + 1.8)
@@ -104,7 +105,9 @@ def main() -> int:
     args = parser.parse_args()
     job = load_json(args.job)
     config = load_config(args.config)
-    report = generate_music(job["job_id"], float(config["video_duration_seconds"]), Path(args.output))
+    voice_report = load_json(Path(config["output_directory"]) / "voice-report.json")
+    duration = effective_video_duration(float(voice_report["duration_seconds"]), config, job["job_id"])
+    report = generate_music(job["job_id"], duration, Path(args.output))
     Path(args.output).with_name("music-report.json").write_text(
         json.dumps(report, indent=2), encoding="utf-8"
     )

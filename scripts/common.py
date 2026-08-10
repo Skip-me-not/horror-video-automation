@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 from pathlib import Path
 from typing import Any
@@ -33,12 +34,15 @@ def load_config(path: str | Path) -> dict[str, Any]:
         "section_pause_ms",
         "narration_max_seconds", "narration_max_speedup", "narration_intro_delay_ms",
         "creepy_voice_filter", "caption_max_characters", "caption_font_size",
-        "caption_margin_vertical", "video_duration_seconds",
+        "caption_margin_vertical", "minimum_video_duration_seconds",
+        "maximum_video_duration_seconds", "video_tail_min_seconds",
+        "video_tail_max_seconds", "background_scene_seconds",
+        "minimum_background_scenes", "maximum_background_scenes",
         "min_story_characters", "max_story_characters", "max_payload_bytes",
         "output_width", "output_height", "fps", "crf", "encoding_preset",
         "watermark_text", "watermark_margin_y", "ambience_volume",
-        "music_volume", "sfx_volume", "whisper_volume", "pexels_default_query",
-        "pexels_max_download_bytes",
+        "music_volume", "sfx_volume", "whisper_volume", "background_default_query",
+        "background_max_download_bytes",
         "output_directory", "default_privacy_status",
     }
     missing = required - config.keys()
@@ -76,14 +80,23 @@ def load_config(path: str | Path) -> dict[str, Any]:
         raise ValidationError("watermark_margin_y is invalid")
     if not isinstance(config["watermark_text"], str) or not 1 <= len(config["watermark_text"]) <= 32:
         raise ValidationError("watermark_text must contain 1 to 32 characters")
-    if not isinstance(config["pexels_default_query"], str) or not 3 <= len(config["pexels_default_query"]) <= 80:
-        raise ValidationError("pexels_default_query must contain 3 to 80 characters")
-    if not 5_000_000 <= int(config["pexels_max_download_bytes"]) <= 250_000_000:
-        raise ValidationError("pexels_max_download_bytes is invalid")
-    duration = float(config["video_duration_seconds"])
+    if not isinstance(config["background_default_query"], str) or not 3 <= len(config["background_default_query"]) <= 100:
+        raise ValidationError("background_default_query must contain 3 to 100 characters")
+    if not 5_000_000 <= int(config["background_max_download_bytes"]) <= 250_000_000:
+        raise ValidationError("background_max_download_bytes is invalid")
+    minimum_duration = float(config["minimum_video_duration_seconds"])
+    maximum_duration = float(config["maximum_video_duration_seconds"])
     narration_limit = float(config["narration_max_seconds"])
-    if not 15 <= duration <= 60 or not 5 <= narration_limit < duration:
+    if not 10 <= minimum_duration < maximum_duration <= 180:
         raise ValidationError("video and narration duration limits are invalid")
+    if not 5 <= narration_limit < maximum_duration:
+        raise ValidationError("narration duration limit is invalid")
+    if not 0 <= float(config["video_tail_min_seconds"]) <= float(config["video_tail_max_seconds"]) <= 15:
+        raise ValidationError("video tail range is invalid")
+    if not 3 <= float(config["background_scene_seconds"]) <= 20:
+        raise ValidationError("background_scene_seconds must be between 3 and 20")
+    if not 1 <= int(config["minimum_background_scenes"]) <= int(config["maximum_background_scenes"]) <= 16:
+        raise ValidationError("background scene limits are invalid")
     if not 1 <= float(config["narration_max_speedup"]) <= 1.2:
         raise ValidationError("narration_max_speedup must be between 1.0 and 1.2")
     if not 0 <= int(config["narration_intro_delay_ms"]) <= 3000:
@@ -96,6 +109,32 @@ def load_config(path: str | Path) -> dict[str, Any]:
     if output_directory.is_absolute() or ".." in output_directory.parts:
         raise ValidationError("output_directory must stay within the project")
     return config
+
+
+def seeded_fraction(seed: str) -> float:
+    value = int.from_bytes(hashlib.sha256(seed.encode("utf-8")).digest()[:8], "big")
+    return value / ((1 << 64) - 1)
+
+
+def effective_video_duration(narration_seconds: float, config: dict[str, Any], job_id: str) -> float:
+    """Let narration determine length, with a deterministic random ending beat."""
+    tail_min = float(config["video_tail_min_seconds"])
+    tail_max = float(config["video_tail_max_seconds"])
+    tail = tail_min + seeded_fraction(f"{job_id}:tail") * (tail_max - tail_min)
+    wanted = narration_seconds + int(config["narration_intro_delay_ms"]) / 1000 + tail
+    return round(min(
+        float(config["maximum_video_duration_seconds"]),
+        max(float(config["minimum_video_duration_seconds"]), wanted),
+    ), 3)
+
+
+def desired_background_scenes(duration: float, config: dict[str, Any]) -> int:
+    import math
+    wanted = math.ceil(duration / float(config["background_scene_seconds"]))
+    return min(
+        int(config["maximum_background_scenes"]),
+        max(int(config["minimum_background_scenes"]), wanted),
+    )
 
 
 def safe_filename(value: str, field: str, *, allow_empty: bool = False) -> str:
