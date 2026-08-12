@@ -68,17 +68,17 @@ schedule on a new channel.
 
 ## Genre-balanced story bank
 
-`ideas/horror-stories.json` contains 180 numbered scripts across 15 distinct
+`ideas/horror-stories.json` contains 500 numbered scripts across 20 distinct
 horror genres: paranormal, psychological, cosmic, folk, gothic, body, creature,
 technology, analog, liminal, urban legend, occult, survival, maritime, and time
 horror. Scripts also rotate among confession, incident-report, and traditional
 narration structures. In **Actions -> Create dynamic horror Short**, leave
 `job_payload` empty, enter a unique `job_id`, and set `idea_number` from 1 to
-180. Existing n8n payload dispatches remain supported.
+500. Existing n8n payload dispatches remain supported.
 
 The repository intentionally does not commit a counter after every run. Track
 the next number in n8n (or enter it manually); this avoids concurrent runs
-overwriting each other and avoids unnecessary GitHub commits. After idea 180,
+overwriting each other and avoids unnecessary GitHub commits. After idea 500,
 replace the JSON entries with another valid bank and restart at 1. Regenerate
 the included starter bank with:
 

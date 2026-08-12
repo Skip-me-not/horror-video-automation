@@ -127,42 +127,133 @@ GENRES = [
         "Power returned at 8:14; every clock now counts down from that moment.", "They prevented the accident and erased the only person who remembered them.",
         "The next voicemail was only the sound of the front door opening.", "Morning came, but the sun rose into the same dark window."],
      ["suburban house storm night", "old clock dark room", "empty hallway lightning"]),
+    ("medical", "an emergency ward sealed for quarantine", [
+        "every recovered patient forgot the same person", "an empty bed produced a perfect heartbeat on three monitors",
+        "blood samples spelled room numbers as they separated", "the night surgeon received instructions in their own handwriting"], [
+        "the cure worked by moving each illness into an erased human life", "the ward was growing a patient from discarded medical records",
+        "the monitors were measuring a second hospital occupying the same rooms", "the operation had already happened and everyone present was donated tissue"], [
+        "At discharge, the nurse called their family and nobody recognized the name.", "The empty bed was wheeled away, leaving fresh footprints beneath the sheet.",
+        "The hospital reopened with one extra floor and no way to reach it.", "Their final scan listed every organ as belonging to tomorrow's patient."],
+     ["empty emergency ward night", "dark hospital monitors", "sealed medical corridor"]),
+    ("environmental", "a weather station inside a dead forest", [
+        "rain fell upward only above polluted ground", "the wind repeated the names of extinct animals",
+        "weather radar showed a storm shaped like a nervous system", "trees leaned away from anyone carrying plastic"], [
+        "the atmosphere had developed an immune response to human settlement", "the forest fire was cauterizing something beneath the soil",
+        "every forecast taught the storm a new human sense", "the ecosystem was rebuilding predators from industrial waste"], [
+        "The forecast ended with a warning addressed to the entire species.", "Clear skies returned, but no bird would fly above the town.",
+        "The storm followed their car without moving across the map.", "By morning every plastic object in the city was warm and breathing."],
+     ["dead forest storm empty", "weather radar anomaly", "abandoned climate station"]),
+    ("crime", "a police evidence warehouse after midnight", [
+        "evidence arrived twenty-four hours before each crime", "a sealed confession changed names whenever it was read",
+        "fingerprints from one case appeared at every unsolved scene", "a murder weapon called the warehouse phone"], [
+        "future trials were manufacturing crimes to justify their verdicts", "the evidence belonged to victims who had successfully escaped their deaths",
+        "the warehouse was choosing innocent people to complete abandoned cases", "the caller was the investigator after years of following the evidence backward"], [
+        "The next evidence bag contained the investigator's keys and fresh blood.", "Every cold case closed at once under the same impossible name.",
+        "The confession printed one final sentence while they watched: YOU BELIEVED IT.", "Police found the warehouse empty and every shelf labelled with tomorrow's date."],
+     ["empty evidence warehouse", "sealed evidence bags dark", "forensic archive corridor"]),
+    ("social", "a perfect gated community during a blackout", [
+        "every helpful neighbour received someone else's good luck", "unpopular residents vanished from group photographs",
+        "compliments left bruises shaped like fingerprints", "the community app assigned one household to blame each night"], [
+        "collective approval had become a predator feeding on isolation", "the neighbourhood transferred every consequence to whoever had the fewest friends",
+        "the residents were copies produced whenever the original broke a social rule", "the app was not ranking people; it was deciding who counted as real"], [
+        "At sunrise, a whole new city sent them friend requests at once.", "Their house remained, but every neighbour insisted the street had always been empty.",
+        "The app congratulated the final resident for achieving perfect agreement.", "Family photos updated with smiling strangers standing in their place."],
+     ["empty gated community night", "identical suburban houses dark", "community notice board rain"]),
+    ("alien contact", "a translation laboratory beneath an airfield", [
+        "the visitors asked permission before making every harmless movement", "a signal translated itself differently for each listener",
+        "the recovered object answered questions with childhood memories", "every device displayed the same polite request"], [
+        "the visitors could not invade a species capable of refusing consistently", "the translation was editing human language to remove the word no",
+        "the object was an escape pod for an idea rather than a body", "each answer given twice became consent on behalf of everyone"], [
+        "Every screen on Earth lit up with the words PLEASE CONFIRM.", "The runway lights pointed upward and something enormous changed direction.",
+        "They refused the final request; their own voice accepted it from behind them.", "The object departed, leaving one additional moon in the daylight sky."],
+     ["empty airfield laboratory", "alien signal control room", "sealed hangar strange lights"]),
 ]
 
-FORMS = ("confession", "incident report", "third-person tale")
+FORMS = ("confession", "incident report", "third-person tale", "emergency call", "recovered transcript")
+
+# Each pressure changes the escalation, survival decision, and lasting cost.
+PLOT_PRESSURES = [
+    ("It only advanced while nobody was speaking", "keep one terrified witness talking or let the silence reach them", "Their voice never returned, but something now answers when they think."),
+    ("Every locked exit transferred the danger to a different room", "open the final door without knowing who was behind it", "All their doors now open into places they have tried to forget."),
+    ("Recording proof made the next event happen sooner", "destroy the evidence or preserve a warning nobody would believe", "The deleted footage reappeared on a stranger's phone."),
+    ("Each person remembered a different version of the first incident", "choose one memory to make real and erase the others", "Their chosen memory still changes whenever they sleep."),
+    ("The safest instruction became dangerous after it was obeyed twice", "break the rule before a frightened stranger repeated it", "A printed copy of the rule arrived at their home."),
+    ("It copied useful objects but always added one tiny flaw", "identify the original before someone used the copy", "Their reflection now has the same tiny flaw."),
+    ("Every warning saved one person and selected another", "stop the warning or knowingly pass the risk onward", "The next warning arrived in their own voice."),
+    ("The phenomenon could only enter places described accurately", "lie about the room while trapped people demanded directions", "Maps now blur around every place they visit."),
+    ("Fear made it visible, but calm allowed it to move", "keep watching without reacting until the exit opened", "They have not felt fear since, even when they should."),
+    ("It exchanged one private memory for each clue", "forget someone they loved or remain without the final answer", "A stranger remembers the relationship they sacrificed."),
+    ("Every attempt to escape removed five minutes from the night", "spend the remaining time rescuing someone else", "Their clocks lose five minutes whenever the phone rings."),
+    ("It obeyed literal requests and punished their intended meaning", "give an instruction with no hidden assumption", "Ordinary conversation now changes small parts of reality."),
+    ("Only the least trusted witness could see the safe route", "follow the person everyone had already accused", "Nobody remembers the witness, except the survivor."),
+    ("The building rearranged itself around every lie", "confess the secret holding the final wall in place", "A new room appears at home whenever they avoid the truth."),
+    ("Each light revealed the danger but erased a possible exit", "switch on the last lamp or step into darkness", "Their shadow still searches for the exit they erased."),
+    ("The threat treated written names as invitations", "erase their identity from every surviving record", "They escaped, but official systems insist they never existed."),
+    ("Helping an injured person made the helper share the wound", "divide the final injury among everyone present", "Old scars appear whenever someone nearby asks for help."),
+    ("The anomaly repeated choices rather than actions", "make a decision they could not predict themselves", "Sometimes their body chooses several seconds before they do."),
+    ("It remained harmless until someone correctly explained it", "leave the mystery unsolved while an expert approached the truth", "The explanation appears word by word in their dreams."),
+    ("Every electronic signal strengthened it while analog noise confused it", "destroy the last working phone and trust an obsolete machine", "Static follows every call they make."),
+    ("It could imitate anyone except the person who hated it most", "ask a cruel question only the real person could answer", "The correct answer ruined the relationship it saved."),
+    ("The event reset whenever somebody died", "escape without allowing the exhausted group to trigger another reset", "They remember hundreds of deaths that never happened."),
+    ("It moved through promises that people intended to keep", "break a sacred promise before the promise carried it outside", "Nobody trusts them now, which may be the only protection."),
+    ("The danger ignored observers who genuinely did not care", "abandon the need to understand what was happening", "Curiosity now causes the same sound behind their walls."),
+    ("It offered a perfect rescue in exchange for one unknown future consequence", "refuse certainty and attempt an ordinary, dangerous escape", "Years later, the unused rescue offer is still counting down."),
+]
 
 
-def render_story(genre: str, setting: str, hook: str, reveal: str, ending: str, form: str, number: int) -> str:
-    sensory = ["A low vibration travelled through the floor.", "The air smelled of rain and hot metal.", "Every light dimmed in sequence.", "Silence arrived so suddenly it hurt."][number % 4]
+def render_story(
+    genre: str, setting: str, hook: str, reveal: str, ending: str,
+    form: str, number: int, pressure: tuple[str, str, str],
+) -> str:
+    escalation, decision, cost = pressure
+    sensory = [
+        "A low vibration travelled through the floor.", "The air smelled of rain and hot metal.",
+        "Every light dimmed in sequence.", "Silence arrived so suddenly it hurt.",
+        "Condensation formed on the wrong side of the glass.", "Every clock stopped with a distant alarm.",
+        "Dust rose from the floor in the shape of footprints.", "The temperature dropped whenever anyone said they were safe.",
+    ][number % 8]
     false_lead = [
         "At first, faulty wiring seemed like an answer, until the main breaker was found disconnected.",
         "They blamed exhaustion, but a second witness described the same impossible detail.",
         "The cameras showed nothing unusual, except that their timestamps were counting backward.",
         "A careful search found no intruder and no route by which anyone could have entered.",
-    ][(number * 3) % 4]
+        "A maintenance log offered an answer, but its author did not exist.",
+        "A second witness laughed until the same detail appeared in a private photograph.",
+        "Dispatch confirmed the address, then insisted the building did not exist.",
+        "They found a mechanical cause, but it continued after the mechanism was removed.",
+    ][(number * 3) % 8]
     pressure = [
         "Each repetition came closer and removed one ordinary detail from the room.",
         "Phone service failed, the exits changed position, and familiar voices began giving dangerous advice.",
         "Every attempt to record proof produced a different version of the same event.",
         "The phenomenon waited whenever it was watched and moved whenever anyone spoke.",
-    ][(number * 5) % 4]
+        "The group separated briefly and returned with incompatible memories.",
+        "The only safe room shrank each time they checked it.",
+        "An ordinary object moved closer during every distraction.",
+        "Emergency lights formed an arrow pointing away from every marked exit.",
+    ][(number * 5) % 8]
     if form == "confession":
-        return f"I need someone to believe what happened in {setting}. {hook.capitalize()}. {sensory} {false_lead} I tried to leave, but every safe choice pulled me deeper. {pressure} Then I understood: {reveal}. {ending}"
+        return f"I need someone to believe what happened in {setting}. {hook.capitalize()}. {sensory} {false_lead} I tried to leave, but every safe choice pulled me deeper. {pressure} We learned the rule too late: {escalation}. I had to {decision}. Then I understood that {reveal}. {ending} {cost}"
     if form == "incident report":
-        return f"INCIDENT {number:03d}. Location: {setting.capitalize()}. Initial anomaly: {hook}. {sensory} {false_lead} The witness followed procedure: secure the area, preserve the recordings, and wait for daylight. None of those steps worked. {pressure} Audio recovered from the scene contains a second voice repeating each sentence several seconds before it was spoken. Investigators concluded that {reveal}. The report was sealed, but three copies appeared in offices that had never requested it. {ending}"
-    return f"Nobody expected trouble in {setting}. Then {hook}. {sensory} {false_lead} Searching for a rational cause only made the pattern clearer and more personal. {pressure} The witness marked the walls, checked every clock, and left messages for anyone who might arrive later. The marks moved. The clocks disagreed. The replies were written in the witness's handwriting. A final attempt to escape revealed that {reveal}. For several minutes, everything became perfectly normal, which was worse than the noise. {ending}"
+        return f"INCIDENT {number:03d}. Location: {setting.capitalize()}. Initial anomaly: {hook}. {sensory} {false_lead} Standard containment failed. {pressure} Recovered evidence established a rule: {escalation}. The witness chose to {decision}. Investigators concluded that {reveal}. The report was sealed before three unauthorized copies appeared. {ending} {cost}"
+    if form == "emergency call":
+        return f"CALLER: I am inside {setting}. {hook.capitalize()}. DISPATCH: Stay calm and find an exit. CALLER: There are no exits now. {sensory} {false_lead} {pressure} Listen carefully: {escalation}. If the line cuts out, I must {decision}. DISPATCH: Who told you that? CALLER: The thing we misunderstood. {reveal.capitalize()}. {ending} {cost}"
+    if form == "recovered transcript":
+        return f"RECOVERED FILE {number:03d}. [00:01] {hook.capitalize()}. [00:07] {sensory} [00:14] {false_lead} [00:22] {pressure} [00:31] Rule confirmed: {escalation}. [00:39] The recorder says they must {decision}. [00:48] Final analysis: {reveal}. [00:56] {ending} Archive note: {cost}"
+    return f"Nobody expected trouble in {setting}. Then {hook}. {sensory} {false_lead} Searching for a rational cause made the pattern personal. {pressure} The survivors discovered that {escalation}. Their last move was to {decision}. Only then did they learn that {reveal}. For several minutes everything became perfectly normal, which was worse than the noise. {ending} {cost}"
 
 
 def build_ideas() -> list[dict[str, object]]:
     ideas: list[dict[str, object]] = []
     number = 1
-    for genre, setting, hooks, reveals, endings, queries in GENRES:
-        for variant in range(12):
-            form = FORMS[variant % len(FORMS)]
+    # Interleave genres so scheduled uploads never repeat a genre back-to-back.
+    for variant, pressure in enumerate(PLOT_PRESSURES):
+        for genre_index, (genre, setting, hooks, reveals, endings, queries) in enumerate(GENRES):
+            form = FORMS[(variant + genre_index) % len(FORMS)]
             hook = hooks[variant % 4]
-            reveal = reveals[(variant * 3 + variant // 4) % 4]
-            ending = endings[(variant * 2 + variant // 3) % 4]
-            story = render_story(genre, setting, hook, reveal, ending, form, number)
+            reveal = reveals[(variant // 4 + genre_index) % 4]
+            ending = endings[(variant * 3 + genre_index) % 4]
+            story = render_story(genre, setting, hook, reveal, ending, form, number, pressure)
             ideas.append({
                 "idea_number": number, "genre": genre,
                 "title": f"{genre.title()} {number:03d}: {hook.title()}"[:100],
@@ -177,7 +268,7 @@ def build_ideas() -> list[dict[str, object]]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Generate a genre-balanced horror story bank.")
+    parser = argparse.ArgumentParser(description="Generate 500 premise-distinct, genre-balanced horror scripts.")
     parser.add_argument("--output", default="ideas/horror-stories.json")
     args = parser.parse_args()
     ideas = build_ideas()
