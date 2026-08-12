@@ -57,7 +57,7 @@ jobs:
 
       - name: Create static smoke-test job
         run: |
-          python -c "import json,pathlib; p=pathlib.Path('output'); p.mkdir(exist_ok=True); story=('The night watchman heard three slow knocks beneath the floor. ' 'He checked the basement, but the door was still sealed. ' 'When he returned, wet footprints circled his chair, and the telephone whispered his name. ' 'He did not answer. The knocking began again, this time from inside the desk.'); job={'job_id':'voice-smoke','title':'Voice smoke test','story':story,'description':'Local test only','tags':['test'],'background_file':'unused.mp4','privacy_status':'private'}; (p/'smoke-job.json').write_text(json.dumps(job),encoding='utf-8')"
+          python -c "import json,pathlib; p=pathlib.Path('output'); p.mkdir(exist_ok=True); story=('The night watchman heard three slow knocks beneath the floor. ' 'He checked the basement, but the door was still sealed. ' 'When he returned, wet footprints circled his chair, and the telephone whispered his name. ' 'He did not answer. The knocking began again, this time from inside the desk.'); job={'job_id':'voice-smoke','title':'Voice smoke test','story':story,'description':'Local test only','tags':['test'],'background_file':'unused.mp4','privacy_status':'public'}; (p/'smoke-job.json').write_text(json.dumps(job),encoding='utf-8')"
 
       - name: Generate 20-30 second sample
         run: |

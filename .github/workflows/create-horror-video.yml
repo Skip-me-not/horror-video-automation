@@ -26,16 +26,6 @@ on:
         options:
           - kokoro
           - chatterbox
-      upload_privacy:
-        description: Manual runs default to Private for review
-        required: true
-        default: private
-        type: choice
-        options:
-          - private
-          - unlisted
-          - public
-
   schedule:
     - cron: "30 22 * * *"
     - cron: "30 1 * * *"
@@ -87,16 +77,10 @@ jobs:
         env:
           INPUT_JOB_ID: ${{ inputs.job_id }}
           INPUT_IDEA_NUMBER: ${{ inputs.idea_number }}
-          INPUT_UPLOAD_PRIVACY: ${{ inputs.upload_privacy }}
         run: |
           JOB_ID="${INPUT_JOB_ID:-auto-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}}"
           IDEA_NUMBER="${INPUT_IDEA_NUMBER:-$(( (GITHUB_RUN_NUMBER - 1) % 500 + 1 ))}"
-
-          if [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
-            UPLOAD_PRIVACY="public"
-          else
-            UPLOAD_PRIVACY="${INPUT_UPLOAD_PRIVACY:-private}"
-          fi
+          UPLOAD_PRIVACY="public"
 
           echo "job_id=$JOB_ID" >> "$GITHUB_OUTPUT"
           echo "idea_number=$IDEA_NUMBER" >> "$GITHUB_OUTPUT"

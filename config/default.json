@@ -43,5 +43,5 @@
   "background_max_download_bytes": 62914560,
   "fade_seconds": 1.0,
   "output_directory": "output",
-  "default_privacy_status": "private"
+  "default_privacy_status": "public"
 }

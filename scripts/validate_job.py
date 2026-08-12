@@ -70,8 +70,8 @@ def validate_job(job: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
     safe_filename(job.get("ambience_file", ""), "ambience_file", allow_empty=True)
     safe_filename(job.get("thumbnail_file", ""), "thumbnail_file", allow_empty=True)
     privacy = job.get("privacy_status", config["default_privacy_status"])
-    if privacy not in ALLOWED_PRIVACY:
-        raise ValidationError("privacy_status must be private, unlisted, or public")
+    if privacy != "public":
+        raise ValidationError("privacy_status must be public")
     callback = job.get("callback_url", "")
     if not isinstance(callback, str):
         raise ValidationError("callback_url must be text")
