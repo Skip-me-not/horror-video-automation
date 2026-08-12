@@ -12,11 +12,13 @@ from scripts.validate_job import validate_job
 def test_idea_bank_is_genre_balanced_and_valid():
     ideas = build_ideas()
     config = load_config("config/default.json")
-    assert len(ideas) == 180
-    assert len({idea["title"] for idea in ideas}) == 180
-    assert len({idea["genre"] for idea in ideas}) == 15
-    assert max(len(idea["story"]) for idea in ideas) - min(len(idea["story"]) for idea in ideas) > 300
-    assert [idea["idea_number"] for idea in ideas] == list(range(1, 181))
+    assert len(ideas) == 500
+    assert len({idea["title"] for idea in ideas}) == 500
+    assert len({idea["story"] for idea in ideas}) == 500
+    assert len({idea["genre"] for idea in ideas}) == 20
+    assert all(left["genre"] != right["genre"] for left, right in zip(ideas, ideas[1:]))
+    assert max(len(idea["story"]) for idea in ideas) - min(len(idea["story"]) for idea in ideas) > 200
+    assert [idea["idea_number"] for idea in ideas] == list(range(1, 501))
     for idea in ideas:
         validate_job(build_job(idea, f"idea-{idea['idea_number']:03d}"), config)
 

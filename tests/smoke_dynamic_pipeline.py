@@ -14,8 +14,8 @@ from scripts.validate_job import validate_job
 def main() -> None:
     config = load_config("config/default.json")
     ideas = build_ideas()
-    assert len(ideas) == 180
-    assert len({idea["genre"] for idea in ideas}) == 15
+    assert len(ideas) == 500
+    assert len({idea["genre"] for idea in ideas}) == 20
     assert len({idea["title"] for idea in ideas}) == len(ideas)
     assert len({idea["story"] for idea in ideas}) == len(ideas)
     for idea in ideas:
@@ -41,7 +41,7 @@ def main() -> None:
     }]}, "job")
     assert pixabay["id"] == 8
     workflow = Path(".github/workflows/create-horror-video.yml").read_text(encoding="utf-8")
-    assert "% 180 + 1" in workflow
+    assert "% 500 + 1" in workflow
     assert 'UPLOAD_PRIVACY="public"' in workflow
     assert 'INPUT_UPLOAD_PRIVACY:-private' in workflow
     assert "<<<<<<<" not in workflow and ">>>>>>>" not in workflow
