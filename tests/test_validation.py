@@ -12,7 +12,7 @@ from scripts.upload_youtube import shorts_description, shorts_title
 
 def test_valid_job_is_normalized(valid_job, config):
     result = validate_job(valid_job, config)
-    assert result["privacy_status"] == "private"
+    assert result["privacy_status"] == "public"
     assert result["callback_url"] == ""
 
 

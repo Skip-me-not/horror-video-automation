@@ -20,7 +20,7 @@ except ModuleNotFoundError:  # Support direct script execution.
 
 SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
 TRANSIENT = {429, 500, 502, 503, 504}
-ALLOWED_PRIVACY = {"private", "unlisted", "public"}
+ALLOWED_PRIVACY = {"public"}
 
 
 def shorts_title(value: str) -> str:
@@ -133,7 +133,7 @@ def upload(
 
     if privacy not in ALLOWED_PRIVACY:
         raise ValidationError(
-            "privacy must be private, unlisted, or public"
+            "privacy must be public"
         )
 
     if not video.is_file():
@@ -223,8 +223,8 @@ def main() -> int:
 
     parser.add_argument(
         "--privacy",
-        choices=["private", "unlisted", "public"],
-        default="private",
+        choices=["public"],
+        default="public",
     )
 
     parser.add_argument(

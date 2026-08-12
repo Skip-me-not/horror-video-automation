@@ -11,7 +11,7 @@ ALLOWED_MEDIA = {
     "ambience_file": {".mp3", ".wav", ".m4a", ".aac", ".ogg"},
     "thumbnail_file": {".png", ".jpg", ".jpeg", ".webp"},
 }
-ALLOWED_PRIVACY = {"private", "unlisted", "public"}
+ALLOWED_PRIVACY = {"public"}
 SAFE_FILENAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._ -]{0,127}$")
 SAFE_JOB_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$")
 
@@ -100,7 +100,7 @@ def load_config(path: str | Path) -> dict[str, Any]:
     if not 30 <= int(config["caption_max_characters"]) <= 120:
         raise ValidationError("caption_max_characters must be between 30 and 120")
     if config["default_privacy_status"] not in ALLOWED_PRIVACY:
-        raise ValidationError("default_privacy_status must be private, unlisted, or public")
+        raise ValidationError("default_privacy_status must be public")
     output_directory = Path(str(config["output_directory"]))
     if output_directory.is_absolute() or ".." in output_directory.parts:
         raise ValidationError("output_directory must stay within the project")

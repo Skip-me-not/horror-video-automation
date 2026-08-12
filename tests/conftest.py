@@ -26,6 +26,6 @@ def valid_job() -> dict:
         "background_file": "background.mp4",
         "ambience_file": "",
         "thumbnail_file": "",
-        "privacy_status": "private",
+        "privacy_status": "public",
     }
 

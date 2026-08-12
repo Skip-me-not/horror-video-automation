@@ -5,7 +5,7 @@ def test_callback_payload_whitelists_result_fields():
     payload = build_callback_payload(
         "job-1", "success",
         {"youtube_video_id": "abc", "watch_url": "https://example.test",
-         "privacy_status": "private", "secret": "do-not-copy"},
+         "privacy_status": "public", "secret": "do-not-copy"},
     )
     assert payload["youtube_video_id"] == "abc"
     assert "secret" not in payload

@@ -43,7 +43,7 @@ def main() -> None:
     workflow = Path(".github/workflows/create-horror-video.yml").read_text(encoding="utf-8")
     assert "% 500 + 1" in workflow
     assert 'UPLOAD_PRIVACY="public"' in workflow
-    assert 'INPUT_UPLOAD_PRIVACY:-private' in workflow
+    assert "INPUT_UPLOAD_PRIVACY" not in workflow
     assert "<<<<<<<" not in workflow and ">>>>>>>" not in workflow
     print(
         f"validated={len(ideas)} duration={short}/{long} "

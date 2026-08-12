@@ -1,10 +1,9 @@
 # English Horror Shorts Automation
 
-A review-first pipeline for original, variable-length English horror Shorts. n8n sends
+A public-upload pipeline for original, variable-length English horror Shorts. n8n sends
 a compact story job to GitHub Actions; GitHub generates realistic narration,
 burns readable captions into a dark 9:16 video, mixes creepy ambience, uploads
-manual results privately to YouTube, while scheduled runs publish publicly after
-the workflow has been verified, and reports the result to n8n.
+manual and scheduled results publicly to YouTube and reports the result to n8n.
 
 ## Output
 
@@ -20,7 +19,7 @@ the workflow has been verified, and reports the result to n8n.
 - layered dark room tone remains underneath the generated soundscape
 - 3-10 changing scenes from Pexels, Pixabay, Wikimedia Commons, and Internet Archive
 - deterministic provider/page rotation so concurrent jobs do not all choose the same clip
-- YouTube title/description hashtags and Private-only upload
+- YouTube title/description hashtags and Public-only upload
 
 Kokoro's `am_michael` voice is the default so every automated run uses a clearly
 male English narrator. Chatterbox Nano remains selectable and is loaded with
@@ -61,10 +60,9 @@ job-seeded 1.5-4.5 second ending beat, clamped to 20-179 seconds so the vertical
 result remains within YouTube's three-minute Shorts limit. Scene count grows
 from 3 to 10 with the duration.
 
-Manual runs default to `private` for review and may explicitly use `unlisted` or
-`public`. Scheduled runs publish as `public`. Review the voice, visuals,
-captions, copyright status, and YouTube policy compliance before enabling the
-schedule on a new channel.
+Manual and scheduled runs always publish as `public`; the workflow no longer
+offers a privacy selector. Review the voice, visuals, captions, copyright status,
+and YouTube policy compliance before running it on a channel.
 
 ## Genre-balanced story bank
 

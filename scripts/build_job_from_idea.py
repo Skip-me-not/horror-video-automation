@@ -38,7 +38,7 @@ def build_job(idea: dict[str, Any], job_id: str) -> dict[str, Any]:
         "background_query", "background_queries", "genre", "watermark_text", "ambience_file", "thumbnail_file",
     }
     job = {key: value for key, value in idea.items() if key in allowed}
-    job.update(job_id=job_id, privacy_status="private", callback_url="")
+    job.update(job_id=job_id, privacy_status="public", callback_url="")
     return job
 
 
