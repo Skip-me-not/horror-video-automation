@@ -258,7 +258,7 @@ def build_ideas() -> list[dict[str, object]]:
                 "idea_number": number, "genre": genre,
                 "title": f"{genre.title()} {number:03d}: {hook.title()}"[:100],
                 "story": story,
-                "description": f"An original {genre} horror story with script-driven length.",
+                "description": f"An original {genre} horror story.",
                 "tags": [genre, "horror", "scary stories", "shorts"],
                 "background_file": "dark-corridor.png", "background_queries": queries,
                 "watermark_text": "SKIP IF YOU'RE SCARED",
