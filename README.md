@@ -5,10 +5,6 @@ a compact story job to GitHub Actions; GitHub generates realistic narration,
 burns readable captions into a dark 9:16 video, mixes creepy ambience, uploads
 manual and scheduled results publicly to YouTube and reports the result to n8n.
 
-Scheduled publishing is owned by n8n. The included workflow triggers at 05:30,
-08:30, 11:30, and 14:30 in `Asia/Yangon`; GitHub's native cron is disabled so
-activating n8n cannot create duplicate uploads.
-
 ## Output
 
 - 24-59 seconds, 1080x1920, H.264/AAC at 30 fps; narration determines length
@@ -153,10 +149,8 @@ Do not reuse the old repository remote or commit OAuth/client secret files.
 ## n8n
 
 Import `n8n/horror-video-orchestrator.json` and follow `n8n/SETUP.md`. Configure
-the callback URL and a fine-grained token restricted to this repository, select
-the credential on both GitHub dispatch nodes, test once, and activate the
-workflow. The exported workflow contains no secret. Scheduled runs use the
-500-story bank; the prepared-story webhook remains available for custom jobs.
+the new GitHub owner, repository name, branch, callback URL, and a fine-grained
+token restricted to that repository. The exported workflow contains no secret.
 
 ## Safety and operations
 
