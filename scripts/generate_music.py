@@ -14,15 +14,6 @@ except ModuleNotFoundError:
     from common import effective_video_duration, load_config, load_json
 
 
-CHORDS = (
-    (0.0, 7.5, (73.42, 110.00, 146.83, 174.61)),
-    (7.5, 15.0, (58.27, 87.31, 116.54, 146.83)),
-    (15.0, 22.5, (49.00, 73.42, 98.00, 116.54)),
-    (22.5, 30.0, (55.00, 82.41, 110.00, 130.81, 155.56)),
-)
-MELODY = (293.66, 349.23, 440.00, 392.00, 349.23, 311.13, 293.66, 261.63)
-
-
 def smooth_envelope(position: float, length: float, attack: float, release: float) -> float:
     return max(0.0, min(1.0, position / max(attack, 0.001),
                         (length - position) / max(release, 0.001)))
@@ -30,55 +21,89 @@ def smooth_envelope(position: float, length: float, attack: float, release: floa
 
 def generate_music(job_id: str, duration: float, destination: Path,
                    sample_rate: int = 48000) -> dict[str, object]:
-    rng = random.Random(f"music:{job_id}")
-    samples = [0.0] * int(duration * sample_rate)
+    """Create non-melodic dread: beating sub drones, air, scrapes, and a final sting."""
+    rng = random.Random(f"creepy-music:{job_id}")
+    frame_count = int(duration * sample_rate)
+    samples = [0.0] * frame_count
+    brown = 0.0
+    air = 0.0
 
-    # Sustained detuned pad following an audible minor-key chord progression.
-    chord_index = 0
-    for start in [index * 7.5 for index in range(math.ceil(duration / 7.5))]:
-        notes = CHORDS[chord_index % len(CHORDS)][2]
-        chord_index += 1
-        segment_end = min(start + 7.5, duration)
-        segment_length = segment_end - start
-        detunes = [rng.uniform(-0.22, 0.22) for _ in notes]
-        for index in range(int(start * sample_rate), int(segment_end * sample_rate)):
-            t = index / sample_rate - start
-            envelope = smooth_envelope(t, segment_length, 1.4, 1.6)
-            value = 0.0
-            for note, detune in zip(notes, detunes):
-                frequency = note * (2 ** (detune / 12))
-                value += math.sin(2 * math.pi * frequency * t)
-                value += 0.28 * math.sin(2 * math.pi * frequency * 2 * t)
-            samples[index] += value * envelope * (0.082 / len(notes))
+    # Inharmonic, slightly detuned tones never resolve into a musical chord.
+    frequencies = (
+        27.31 + rng.uniform(-0.18, 0.18),
+        28.07 + rng.uniform(-0.18, 0.18),
+        41.17 + rng.uniform(-0.25, 0.25),
+        57.83 + rng.uniform(-0.30, 0.30),
+    )
+    for index in range(frame_count):
+        t = index / sample_rate
+        progress = min(1.0, t / max(duration, 0.001))
+        fade = smooth_envelope(t, duration, 2.4, 2.0)
+        noise = rng.uniform(-1.0, 1.0)
+        brown = brown * 0.9965 + noise * 0.0035
+        previous_air = air
+        air = air * 0.91 + noise * 0.09
+        breath = air - previous_air
+        beating_drone = (
+            math.sin(2 * math.pi * frequencies[0] * t)
+            + 0.82 * math.sin(2 * math.pi * frequencies[1] * t)
+            + 0.34 * math.sin(2 * math.pi * frequencies[2] * t + 1.7)
+            + 0.20 * math.sin(2 * math.pi * frequencies[3] * t + 0.4)
+        )
+        slow_unease = 0.74 + 0.26 * math.sin(2 * math.pi * 0.071 * t + 0.9)
+        samples[index] = fade * (
+            beating_drone * (0.036 + 0.020 * progress) * slow_unease
+            + brown * 0.34
+            + breath * 0.025
+        )
 
-    # A sparse decaying melody makes this music, rather than another sound effect.
-    melody_events: list[dict[str, object]] = []
-    starts = [2.0 + index * 3.5 for index in range(max(1, math.ceil((duration - 2.0) / 3.5)))]
-    for event_index, start in enumerate(starts):
-        if start >= duration:
-            continue
-        frequency = MELODY[event_index % len(MELODY)]
-        end = min(duration, start + 2.8)
-        for index in range(int(start * sample_rate), int(end * sample_rate)):
-            t = index / sample_rate - start
-            envelope = math.exp(-1.55 * t)
-            value = (
-                math.sin(2 * math.pi * frequency * t)
-                + 0.42 * math.sin(2 * math.pi * frequency * 2.01 * t)
-                + 0.16 * math.sin(2 * math.pi * frequency * 3.98 * t)
+    # Long, irregular metallic swells resemble stressed pipes or distant scraping.
+    scrape_events: list[dict[str, float]] = []
+    cursor = rng.uniform(4.0, 7.0)
+    while cursor < duration - 2.0:
+        length = rng.uniform(2.8, 5.8)
+        base = rng.uniform(145.0, 285.0)
+        end = min(duration, cursor + length)
+        for index in range(int(cursor * sample_rate), int(end * sample_rate)):
+            t = index / sample_rate - cursor
+            envelope = smooth_envelope(t, end - cursor, 1.4, 1.8)
+            glide = base * (1.0 + 0.12 * t / max(length, 0.001))
+            scrape = (
+                math.sin(2 * math.pi * glide * t)
+                + 0.52 * math.sin(2 * math.pi * glide * 1.417 * t + 0.6)
+                + 0.23 * math.sin(2 * math.pi * glide * 2.071 * t)
             )
-            samples[index] += 0.055 * envelope * value
-        melody_events.append({"time": start, "frequency": frequency})
+            samples[index] += scrape * envelope * 0.022
+        scrape_events.append({"time": round(cursor, 3), "duration": round(end - cursor, 3)})
+        cursor += rng.uniform(7.5, 14.0)
 
-    # Slow bass pulses provide a cinematic rhythm without overpowering narration.
-    for start in [index * 3.75 for index in range(math.ceil(duration / 3.75))]:
-        if start >= duration:
-            continue
-        end = min(duration, start + 1.8)
-        for index in range(int(start * sample_rate), int(end * sample_rate)):
-            t = index / sample_rate - start
-            samples[index] += 0.10 * math.exp(-2.2 * t) * math.sin(2 * math.pi * 36.71 * t)
+    # A tightening sub pulse raises tension near the end without becoming a beat.
+    pulse_events: list[float] = []
+    cursor = max(2.0, duration * 0.58)
+    interval = 2.6
+    while cursor < duration - 0.7:
+        end = min(duration, cursor + 1.15)
+        for index in range(int(cursor * sample_rate), int(end * sample_rate)):
+            t = index / sample_rate - cursor
+            envelope = math.exp(-3.4 * t)
+            samples[index] += 0.105 * envelope * math.sin(2 * math.pi * 34.1 * t)
+        pulse_events.append(round(cursor, 3))
+        cursor += interval
+        interval = max(1.15, interval * 0.88)
 
+    # Final low impact and dissonant tail create a disturbing cutoff.
+    sting_start = max(0.0, duration - 1.8)
+    for index in range(int(sting_start * sample_rate), frame_count):
+        t = index / sample_rate - sting_start
+        envelope = math.exp(-2.0 * t)
+        samples[index] += envelope * (
+            0.16 * math.sin(2 * math.pi * 31.0 * t)
+            + 0.035 * math.sin(2 * math.pi * 173.7 * t)
+            + 0.028 * math.sin(2 * math.pi * 233.2 * t)
+        )
+
+    peak = max((abs(value) for value in samples), default=1.0)
+    gain = min(1.0, 0.72 / max(peak, 0.001))
     destination.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(destination), "wb") as handle:
         handle.setnchannels(1)
@@ -86,14 +111,16 @@ def generate_music(job_id: str, duration: float, destination: Path,
         handle.setframerate(sample_rate)
         frames = bytearray()
         for value in samples:
-            frames.extend(struct.pack("<h", round(max(-1.0, min(1.0, value)) * 32767)))
+            frames.extend(struct.pack("<h", round(max(-1.0, min(1.0, value * gain)) * 32767)))
         handle.writeframes(frames)
     return {
         "file": str(destination),
         "duration_seconds": duration,
-        "style": "cinematic_minor_horror",
-        "progression": ["D minor", "B-flat", "G minor", "A diminished"],
-        "melody_events": melody_events,
+        "style": "creeping_dissonant_dread",
+        "layers": ["detuned_sub_drone", "brown_room_air", "metal_scrapes", "tightening_sub_pulses", "final_sting"],
+        "drone_frequencies": [round(value, 3) for value in frequencies],
+        "scrape_events": scrape_events,
+        "pulse_events": pulse_events,
     }
 
 

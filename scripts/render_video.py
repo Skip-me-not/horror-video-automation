@@ -107,8 +107,11 @@ def render(
     base_video = (
         f"[0:v]scale={target_w}:{target_h}:force_original_aspect_ratio=increase,"
         f"crop={target_w}:{target_h},fps={int(config['fps'])},"
-        "eq=brightness=-0.02:contrast=1.04:saturation=0.78,"
-        "noise=alls=2:allf=t,"
+        "eq=brightness=-0.075:contrast=1.18:saturation=0.48:gamma=0.88,"
+        "colorbalance=rs=-0.08:gs=-0.025:bs=0.10,"
+        "vignette=PI/3.2:eval=frame,"
+        "unsharp=5:5:0.32:5:5:0.0,"
+        "noise=alls=5:allf=t+u,"
         f"{watermark_text_filter}"
         f"subtitles='{ffmpeg_filter_path(captions_path)}',format=yuv420p,"
         f"fade=t=in:st=0:d={fade},fade=t=out:st={fade_out}:d={fade}"
@@ -171,9 +174,9 @@ def render(
     if music.is_file():
         command += ["-i", str(music)]
         filters.append(
-            f"[{next_audio_index}:a]highpass=f=32,lowpass=f=7200,"
-            "aecho=0.8:0.45:360|720:0.14|0.06,"
-            "loudnorm=I=-20:TP=-3:LRA=8,"
+            f"[{next_audio_index}:a]highpass=f=20,lowpass=f=4300,"
+            "aecho=0.8:0.32:520|970:0.10|0.035,"
+            "loudnorm=I=-23:TP=-4:LRA=10,"
             f"volume={float(config['music_volume'])},atrim=duration={duration},"
             f"afade=t=in:st=0:d=1.5,afade=t=out:st={fade_out}:d={fade}[music]"
         )

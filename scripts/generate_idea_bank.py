@@ -171,6 +171,41 @@ GENRES = [
 
 FORMS = ("confession", "incident report", "third-person tale", "emergency call", "recovered transcript")
 
+MANIFESTATIONS = (
+    "Something breathed against the back of their neck, although the wall was inches behind them.",
+    "A wet handprint appeared on the inside of the locked door and slowly slid downward.",
+    "The darkness in the corner stood up, unfolding joints that had been hidden in its silhouette.",
+    "A voice under the floor whispered their full name, then began counting down from ten.",
+    "The security feed showed a tall shape directly behind them; the room itself looked empty.",
+    "Every reflection turned toward them at once, but none copied their movement.",
+    "Bare footsteps crossed the ceiling and stopped exactly above their head.",
+    "The emergency light flashed once, revealing finger marks pressed into the walls from inside.",
+    "Their phone camera opened by itself and focused on a face peering around the doorway.",
+    "A human-shaped patch of darkness crawled across the floor against the direction of the light.",
+)
+
+PANIC_BEATS = (
+    "Their mouth tasted of blood. They could hear their heartbeat, then a second heartbeat matching it from the dark.",
+    "Nobody screamed. The kind of fear that knows it is being hunted makes people painfully quiet.",
+    "The handle began turning. They held it shut until something on the other side copied their grip.",
+    "When they finally ran, the footsteps behind them never became faster, yet kept getting closer.",
+    "The smell changed to damp soil and spoiled meat. Whatever was nearby had stopped pretending to be human.",
+    "They covered the camera. The live feed continued, now showing the view from beneath their bed.",
+    "A whisper came through the speaker: do not look behind you. Then the same whisper came from behind them.",
+    "The lights went out from the far end of the corridor toward them, one bulb at a time.",
+)
+
+FINAL_WARNINGS = (
+    "If you hear three knocks after this story ends, do not answer the third one.",
+    "The recording stops here, but headphones reveal breathing for another eleven seconds.",
+    "Police found no body. They did find fresh footprints beginning inside the sealed room.",
+    "The final frame is a close-up of something smiling with the survivor's teeth.",
+    "That night, everyone who watched the footage woke with mud beneath their fingernails.",
+    "The last message arrived after the phone was destroyed: it says the viewer is next.",
+    "The door is still locked from the inside, and something knocks whenever its name is mentioned.",
+    "No one knows where the survivor went. Their shadow still appears in new recordings.",
+)
+
 # Each pressure changes the escalation, survival decision, and lasting cost.
 PLOT_PRESSURES = [
     ("It only advanced while nobody was speaking", "keep one terrified witness talking or let the silence reach them", "Their voice never returned, but something now answers when they think."),
@@ -206,6 +241,10 @@ def render_story(
     form: str, number: int, pressure: tuple[str, str, str],
 ) -> str:
     escalation, decision, cost = pressure
+    escalation_mid = escalation[:1].lower() + escalation[1:]
+    manifestation = MANIFESTATIONS[(number * 7) % len(MANIFESTATIONS)]
+    panic = PANIC_BEATS[(number * 5) % len(PANIC_BEATS)]
+    warning = FINAL_WARNINGS[(number * 3) % len(FINAL_WARNINGS)]
     sensory = [
         "A low vibration travelled through the floor.", "The air smelled of rain and hot metal.",
         "Every light dimmed in sequence.", "Silence arrived so suddenly it hurt.",
@@ -222,7 +261,7 @@ def render_story(
         "Dispatch confirmed the address, then insisted the building did not exist.",
         "They found a mechanical cause, but it continued after the mechanism was removed.",
     ][(number * 3) % 8]
-    pressure = [
+    scene_pressure = [
         "Each repetition came closer and removed one ordinary detail from the room.",
         "Phone service failed, the exits changed position, and familiar voices began giving dangerous advice.",
         "Every attempt to record proof produced a different version of the same event.",
@@ -233,14 +272,21 @@ def render_story(
         "Emergency lights formed an arrow pointing away from every marked exit.",
     ][(number * 5) % 8]
     if form == "confession":
-        return f"I need someone to believe what happened in {setting}. {hook.capitalize()}. {sensory} {false_lead} I tried to leave, but every safe choice pulled me deeper. {pressure} We learned the rule too late: {escalation}. I had to {decision}. Then I understood that {reveal}. {ending} {cost}"
+        return f"I need someone to believe what happened in {setting}. {hook.capitalize()}. {sensory} {false_lead} {manifestation} I tried to leave, but every safe choice pulled me deeper. {scene_pressure} {panic} We learned the rule too late: {escalation}. I had to {decision}. Then I understood that {reveal}. {ending} {cost} {warning}"
     if form == "incident report":
-        return f"INCIDENT {number:03d}. Location: {setting.capitalize()}. Initial anomaly: {hook}. {sensory} {false_lead} Standard containment failed. {pressure} Recovered evidence established a rule: {escalation}. The witness chose to {decision}. Investigators concluded that {reveal}. The report was sealed before three unauthorized copies appeared. {ending} {cost}"
+        return f"INCIDENT {number:03d}. Location: {setting.capitalize()}. Initial anomaly: {hook}. {sensory} {false_lead} Standard containment failed. {manifestation} {scene_pressure} {panic} Recovered audio captured chewing directly behind the witness, although the camera showed nothing there. Evidence established a rule: {escalation}. The only remaining choice was to {decision}. Investigators concluded that {reveal}. {ending} {cost} {warning}"
     if form == "emergency call":
-        return f"CALLER: I am inside {setting}. {hook.capitalize()}. DISPATCH: Stay calm and find an exit. CALLER: There are no exits now. {sensory} {false_lead} {pressure} Listen carefully: {escalation}. If the line cuts out, I must {decision}. DISPATCH: Who told you that? CALLER: The thing we misunderstood. {reveal.capitalize()}. {ending} {cost}"
+        return f"CALLER: I am inside {setting}. {hook.capitalize()}. DISPATCH: Stay calm and find an exit. CALLER: There are no exits now. {sensory} {manifestation} DISPATCH: What is breathing beside you? CALLER: I am alone. {false_lead} {scene_pressure} {panic} Listen carefully: {escalation}. If the line cuts out, I must {decision}. DISPATCH: Do not turn around. CALLER: Too late. {reveal.capitalize()}. {ending} {cost} {warning}"
     if form == "recovered transcript":
-        return f"RECOVERED FILE {number:03d}. [00:01] {hook.capitalize()}. [00:07] {sensory} [00:14] {false_lead} [00:22] {pressure} [00:31] Rule confirmed: {escalation}. [00:39] The recorder says they must {decision}. [00:48] Final analysis: {reveal}. [00:56] {ending} Archive note: {cost}"
-    return f"Nobody expected trouble in {setting}. Then {hook}. {sensory} {false_lead} Searching for a rational cause made the pattern personal. {pressure} The survivors discovered that {escalation}. Their last move was to {decision}. Only then did they learn that {reveal}. For several minutes everything became perfectly normal, which was worse than the noise. {ending} {cost}"
+        return f"RECOVERED FILE {number:03d}. [00:01] {hook.capitalize()}. [00:07] {sensory} [00:14] {manifestation} [00:22] {scene_pressure} [00:31] {panic} [00:39] Rule confirmed: {escalation}. [00:47] The recorder says they must {decision}. [00:55] A second voice answers from inches away. Final analysis: {reveal}. [01:03] {ending} Archive note: {cost} {warning}"
+    return f"Nobody expected trouble in {setting}. Then {hook}. {sensory} {false_lead} {manifestation} Searching for a rational cause made the pattern personal. {scene_pressure} {panic} The survivors discovered that {escalation_mid}. Their last move was to {decision}. Only then did they learn that {reveal}. For several minutes everything became perfectly normal. Then the breathing started again. {ending} {cost} {warning}"
+
+
+def creepy_query(query: str) -> str:
+    """Bias every provider toward empty, ominous footage instead of generic stock video."""
+    words = f"eerie creepy horror night fog shadows empty {query}".split()
+    value = " ".join(dict.fromkeys(words))
+    return value[:80].rstrip()
 
 
 def build_ideas() -> list[dict[str, object]]:
@@ -260,7 +306,8 @@ def build_ideas() -> list[dict[str, object]]:
                 "story": story,
                 "description": f"An original {genre} horror story.",
                 "tags": [genre, "horror", "scary stories", "shorts"],
-                "background_file": "dark-corridor.png", "background_queries": queries,
+                "background_file": "dark-corridor.png",
+                "background_queries": [creepy_query(query) for query in queries],
                 "watermark_text": "SKIP IF YOU'RE SCARED",
             })
             number += 1
