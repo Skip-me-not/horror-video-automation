@@ -26,12 +26,6 @@ on:
         options:
           - kokoro
           - chatterbox
-  schedule:
-    - cron: "30 22 * * *"
-    - cron: "30 1 * * *"
-    - cron: "30 4 * * *"
-    - cron: "30 7 * * *"
-
 permissions:
   contents: read
 
