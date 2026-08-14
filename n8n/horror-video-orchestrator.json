@@ -11,71 +11,6 @@
     },
     {
       "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "cronExpression",
-              "expression": "30 5,8,11,14 * * *"
-            }
-          ]
-        }
-      },
-      "id": "12",
-      "name": "Daily Schedule",
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [-900, -420]
-    },
-    {
-      "parameters": {
-        "jsCode": "const CONFIG = {\n  owner: 'Skip-me-not',\n  repository: 'horror-video-automation',\n  branch: 'main',\n  tts_provider: 'kokoro'\n};\nreturn [{json: {config: CONFIG, scheduled_at: new Date().toISOString()}}];"
-      },
-      "id": "13",
-      "name": "Prepare Scheduled Run",
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [-640, -420]
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "=https://api.github.com/repos/{{$json.config.owner}}/{{$json.config.repository}}/actions/workflows/create-horror-video.yml/dispatches",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {"name": "Accept", "value": "application/vnd.github+json"},
-            {"name": "X-GitHub-Api-Version", "value": "2022-11-28"}
-          ]
-        },
-        "sendBody": true,
-        "contentType": "raw",
-        "rawContentType": "application/json",
-        "body": "={{ JSON.stringify({ref: $json.config.branch, inputs: {tts_provider: $json.config.tts_provider}}) }}",
-        "options": {
-          "response": {
-            "response": {
-              "neverError": false,
-              "responseFormat": "text"
-            }
-          }
-        }
-      },
-      "id": "14",
-      "name": "Dispatch Scheduled Story",
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [-380, -420],
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "REPLACE_WITH_N8N_CREDENTIAL_ID",
-          "name": "GitHub Actions Token"
-        }
-      }
-    },
-    {
-      "parameters": {
         "httpMethod": "POST",
         "path": "horror-video-request",
         "responseMode": "onReceived",
@@ -90,7 +25,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const source = $json.body ?? $json;\nconst demo = {\n  job_id: `manual-${Date.now()}`,\n  title: 'The Last Call From Room 17',\n  story: 'At two in the morning, the desk phone rang. Mara answered, but heard only her own breathing. The call came from Room 17, sealed since the fire thirty years ago. The elevator opened by itself. Wet footprints crossed the empty lobby and stopped behind her. Then the phone whispered, Do not turn around.',\n  description: 'An original retention-first English horror story.',\n  tags: ['horror shorts', 'scary stories', 'creepy stories', 'shorts'],\n  genre: 'paranormal',\n  background_file: 'dark-corridor.png',\n  background_queries: ['empty dark hotel corridor', 'old elevator abandoned building', 'rainy apartment windows night'],\n  ambience_file: '',\n  thumbnail_file: '',\n  privacy_status: 'public'\n};\nconst v = Object.keys(source).length ? source : demo;\nconst required = ['job_id','title','story','description','tags','background_file'];\nfor (const key of required) if (v[key] === undefined || v[key] === null || v[key] === '') throw new Error(`Missing field: ${key}`);\nif (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(v.job_id)) throw new Error('Invalid job_id');\nif (typeof v.story !== 'string' || v.story.trim().length < 180 || v.story.length > 1100) throw new Error('Story length must be 180-1100 characters');\nif (v.privacy_status && v.privacy_status !== 'public') throw new Error('Only public uploads are permitted');\nfor (const [key, exts] of Object.entries({background_file:['.mp4','.mov','.mkv','.webm','.png','.jpg','.jpeg','.webp'], ambience_file:['.mp3','.wav','.m4a','.aac','.ogg'], thumbnail_file:['.png','.jpg','.jpeg','.webp']})) {\n  const name = v[key] || '';\n  if (!name && key !== 'background_file') continue;\n  if (name.includes('/') || name.includes('\\\\') || name === '..' || !exts.some(ext => name.toLowerCase().endsWith(ext))) throw new Error(`Invalid ${key}`);\n}\nreturn [{json: v}];"
+        "jsCode": "const source = $json.body ?? $json;\nconst demo = {\n  job_id: `manual-${Date.now()}`,\n  title: 'The Last Call From Room 17',\n  story: 'At two in the morning, the desk phone rang. Mara answered, but heard only her own breathing. The call came from Room 17, sealed since the fire thirty years ago. The elevator opened by itself. Wet footprints crossed the empty lobby and stopped behind her. Then the phone whispered, Do not turn around.',\n  description: 'An original variable-length English horror story.',\n  tags: ['horror shorts', 'scary stories', 'creepy stories', 'shorts'],\n  genre: 'paranormal',\n  background_file: 'dark-corridor.png',\n  background_queries: ['empty dark hotel corridor', 'old elevator abandoned building', 'rainy apartment windows night'],\n  ambience_file: '',\n  thumbnail_file: '',\n  privacy_status: 'public'\n};\nconst v = Object.keys(source).length ? source : demo;\nconst required = ['job_id','title','story','description','tags','background_file'];\nfor (const key of required) if (v[key] === undefined || v[key] === null || v[key] === '') throw new Error(`Missing field: ${key}`);\nif (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/.test(v.job_id)) throw new Error('Invalid job_id');\nif (typeof v.story !== 'string' || v.story.trim().length < 220 || v.story.length > 2200) throw new Error('Story length must be 220-2200 characters');\nif (v.privacy_status && v.privacy_status !== 'public') throw new Error('Only public uploads are permitted');\nfor (const [key, exts] of Object.entries({background_file:['.mp4','.mov','.mkv','.webm','.png','.jpg','.jpeg','.webp'], ambience_file:['.mp3','.wav','.m4a','.aac','.ogg'], thumbnail_file:['.png','.jpg','.jpeg','.webp']})) {\n  const name = v[key] || '';\n  if (!name && key !== 'background_file') continue;\n  if (name.includes('/') || name.includes('\\\\') || name === '..' || !exts.some(ext => name.toLowerCase().endsWith(ext))) throw new Error(`Invalid ${key}`);\n}\nreturn [{json: v}];"
       },
       "id": "3",
       "name": "Validate Input",
@@ -100,7 +35,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const CONFIG = {\n  owner: 'Skip-me-not',\n  repository: 'horror-video-automation',\n  branch: 'main',\n  tts_provider: 'kokoro',\n  callback_url: 'https://REPLACE_N8N_HOST/webhook/horror-video-callback'\n};\nreturn [{json: {config: CONFIG, job: {...$json, privacy_status: 'public', callback_url: CONFIG.callback_url}}}];"
+        "jsCode": "const CONFIG = {\n  owner: 'REPLACE_GITHUB_OWNER',\n  repository: 'REPLACE_REPOSITORY',\n  branch: 'main',\n  tts_provider: 'kokoro',\n  callback_url: 'https://REPLACE_N8N_HOST/webhook/horror-video-callback'\n};\nreturn [{json: {config: CONFIG, job: {...$json, privacy_status: 'public', callback_url: CONFIG.callback_url}}}];"
       },
       "id": "4",
       "name": "Construct Job",
@@ -197,7 +132,7 @@
     },
     {
       "parameters": {
-        "content": "## Configuration\\n1. Set the production callback URL in **Construct Job**. Repository defaults already point to Skip-me-not/horror-video-automation.\\n2. Select the same **GitHub Actions Token** Header Auth credential on both dispatch nodes.\\n3. **Daily Schedule** runs at 05:30, 08:30, 11:30 and 14:30 in the workflow timezone.\\n4. Activate this workflow after testing once. GitHub cron is intentionally disabled to prevent duplicate uploads.",
+        "content": "## Configuration\\n1. Edit **Construct Job**: owner, repository, branch and callback URL.\\n2. Create an n8n Header Auth credential named **GitHub Actions Token** with header `Authorization` and value `Bearer <TOKEN>`.\\n3. The fine-grained token needs Actions: Read and write on this repository. Never paste it into this workflow JSON.",
         "height": 260,
         "width": 460,
         "color": 5
@@ -210,7 +145,7 @@
     },
     {
       "parameters": {
-        "content": "## English horror Shorts\\nScheduled runs rotate through the repository's 500-story bank automatically. Webhook jobs may supply an original 180-1100 character English story. Narration sets a 24-59 second final duration. All successful runs upload publicly. Test both manual and scheduled dispatch nodes before activation.",
+        "content": "## English horror Shorts\\nSupply an original 220-2200 character English story. Narration sets the final 20-179 second duration and background scene count. The workflow uses natural narration, burned-in captions, multi-provider visuals, dark grading, ambience, and public upload. Test with Manual Trigger before activating both webhooks.",
         "height": 220,
         "width": 420,
         "color": 4
@@ -224,12 +159,6 @@
   ],
   "pinData": {},
   "connections": {
-    "Daily Schedule": {
-      "main": [[{"node": "Prepare Scheduled Run", "type": "main", "index": 0}]]
-    },
-    "Prepare Scheduled Run": {
-      "main": [[{"node": "Dispatch Scheduled Story", "type": "main", "index": 0}]]
-    },
     "Manual Trigger": {
       "main": [[{"node": "Validate Input", "type": "main", "index": 0}]]
     },
@@ -254,8 +183,7 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1",
-    "timezone": "Asia/Yangon"
+    "executionOrder": "v1"
   },
   "versionId": "25ea11bf-80ed-4ef8-9d09-e7b7ecae8d67",
   "meta": {
