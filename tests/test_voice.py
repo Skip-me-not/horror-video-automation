@@ -56,7 +56,8 @@ def test_ass_captions_stay_inside_short_narration_window(config, tmp_path):
     content = output.read_text(encoding="utf-8")
     assert "PlayResX: 1080" in content
     assert "PlayResY: 1920" in content
-    assert "Dialogue: 0,0:00:00.70" in content
-    assert "The locked door whispered" in content
-    assert "answered." in content
+    assert "Dialogue: 0,0:00:00.10" in content
+    assert "THE LOCKED DOOR WHISPERED" in content
+    assert "ANSWERED." in content
+    assert r"\fscx108" in content
     assert r"\N" in content

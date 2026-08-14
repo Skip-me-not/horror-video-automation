@@ -62,8 +62,8 @@ def test_duration_and_scene_count_follow_narration(config):
     assert desired_background_scenes(long, config) > desired_background_scenes(short, config)
 
 
-def test_default_text_watermark_is_centered(config):
-    assert config["watermark_text"] == "SKIP IF YOU'RE SCARED"
+def test_default_video_has_no_generic_clickbait_watermark(config):
+    assert config["watermark_text"] == ""
 
 
 def test_generated_sfx_is_nonempty_pcm(tmp_path):

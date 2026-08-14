@@ -150,7 +150,7 @@ def write_captions(
         end = cursor + span
         display_caption = "\n".join(
             textwrap.wrap(
-                caption,
+                caption.upper(),
                 width=max(20, int(config["output_width"]) // 41),
                 break_long_words=False,
                 break_on_hyphens=False,
@@ -158,7 +158,8 @@ def write_captions(
         )
         events.append(
             f"Dialogue: 0,{ass_timestamp(cursor)},{ass_timestamp(end)},Caption,,0,0,0,,"
-            f"{{\\fad(120,160)}}{ass_escape(display_caption)}"
+            f"{{\\fad(35,70)\\fscx108\\fscy108\\t(0,120,\\fscx100\\fscy100)}}"
+            f"{ass_escape(display_caption)}"
         )
         cursor = end
     output.write_text(
@@ -172,7 +173,7 @@ def write_captions(
             "",
             "[V4+ Styles]",
             "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-            f"Style: Caption,DejaVu Sans,{int(config['caption_font_size'])},&H00FFFFFF,&H00FFFFFF,&HE0000000,&H90000000,-1,0,0,0,100,100,0,0,1,5,1,2,80,80,{int(config['caption_margin_vertical'])},1",
+            f"Style: Caption,DejaVu Sans,{int(config['caption_font_size'])},&H00FFFFFF,&H003C3CFF,&HE0000000,&H90000000,-1,0,0,0,100,100,0,0,1,6,2,2,80,80,{int(config['caption_margin_vertical'])},1",
             "",
             "[Events]",
             "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 # Each genre owns its setting, imagery, threat logic, and endings. This avoids
@@ -246,40 +247,59 @@ def render_story(
     panic = PANIC_BEATS[(number * 5) % len(PANIC_BEATS)]
     warning = FINAL_WARNINGS[(number * 3) % len(FINAL_WARNINGS)]
     sensory = [
-        "A low vibration travelled through the floor.", "The air smelled of rain and hot metal.",
-        "Every light dimmed in sequence.", "Silence arrived so suddenly it hurt.",
-        "Condensation formed on the wrong side of the glass.", "Every clock stopped with a distant alarm.",
-        "Dust rose from the floor in the shape of footprints.", "The temperature dropped whenever anyone said they were safe.",
+        "The floor vibrated beneath my shoes.", "The air smelled like rain and hot metal.",
+        "Every light died in order behind me.", "The sudden silence made my ears ache.",
+        "Breath clouded the inside of the locked window.", "Every clock stopped at the same second.",
+        "Dust lifted into a trail of approaching footprints.", "The room turned colder whenever I said I was safe.",
     ][number % 8]
-    false_lead = [
-        "At first, faulty wiring seemed like an answer, until the main breaker was found disconnected.",
-        "They blamed exhaustion, but a second witness described the same impossible detail.",
-        "The cameras showed nothing unusual, except that their timestamps were counting backward.",
-        "A careful search found no intruder and no route by which anyone could have entered.",
-        "A maintenance log offered an answer, but its author did not exist.",
-        "A second witness laughed until the same detail appeared in a private photograph.",
-        "Dispatch confirmed the address, then insisted the building did not exist.",
-        "They found a mechanical cause, but it continued after the mechanism was removed.",
-    ][(number * 3) % 8]
-    scene_pressure = [
-        "Each repetition came closer and removed one ordinary detail from the room.",
-        "Phone service failed, the exits changed position, and familiar voices began giving dangerous advice.",
-        "Every attempt to record proof produced a different version of the same event.",
-        "The phenomenon waited whenever it was watched and moved whenever anyone spoke.",
-        "The group separated briefly and returned with incompatible memories.",
-        "The only safe room shrank each time they checked it.",
-        "An ordinary object moved closer during every distraction.",
-        "Emergency lights formed an arrow pointing away from every marked exit.",
-    ][(number * 5) % 8]
-    if form == "confession":
-        return f"I need someone to believe what happened in {setting}. {hook.capitalize()}. {sensory} {false_lead} {manifestation} I tried to leave, but every safe choice pulled me deeper. {scene_pressure} {panic} We learned the rule too late: {escalation}. I had to {decision}. Then I understood that {reveal}. {ending} {cost} {warning}"
-    if form == "incident report":
-        return f"INCIDENT {number:03d}. Location: {setting.capitalize()}. Initial anomaly: {hook}. {sensory} {false_lead} Standard containment failed. {manifestation} {scene_pressure} {panic} Recovered audio captured chewing directly behind the witness, although the camera showed nothing there. Evidence established a rule: {escalation}. The only remaining choice was to {decision}. Investigators concluded that {reveal}. {ending} {cost} {warning}"
-    if form == "emergency call":
-        return f"CALLER: I am inside {setting}. {hook.capitalize()}. DISPATCH: Stay calm and find an exit. CALLER: There are no exits now. {sensory} {manifestation} DISPATCH: What is breathing beside you? CALLER: I am alone. {false_lead} {scene_pressure} {panic} Listen carefully: {escalation}. If the line cuts out, I must {decision}. DISPATCH: Do not turn around. CALLER: Too late. {reveal.capitalize()}. {ending} {cost} {warning}"
-    if form == "recovered transcript":
-        return f"RECOVERED FILE {number:03d}. [00:01] {hook.capitalize()}. [00:07] {sensory} [00:14] {manifestation} [00:22] {scene_pressure} [00:31] {panic} [00:39] Rule confirmed: {escalation}. [00:47] The recorder says they must {decision}. [00:55] A second voice answers from inches away. Final analysis: {reveal}. [01:03] {ending} Archive note: {cost} {warning}"
-    return f"Nobody expected trouble in {setting}. Then {hook}. {sensory} {false_lead} {manifestation} Searching for a rational cause made the pattern personal. {scene_pressure} {panic} The survivors discovered that {escalation_mid}. Their last move was to {decision}. Only then did they learn that {reveal}. For several minutes everything became perfectly normal. Then the breathing started again. {ending} {cost} {warning}"
+    rule = escalation_mid.rstrip(".")
+    choice = decision.rstrip(".")
+    threat = manifestation if number % 3 else panic
+    final_beat = warning if number % 4 == 0 else ending
+    # Every format starts on the impossible event. There is no greeting, file
+    # number, scene-setting preamble, or explanation before the hook.
+    patterns = (
+        f"{hook.capitalize()}. I was alone in {setting}. {sensory} {threat} It moved by one rule: {rule}. I had to {choice}. That was when I learned {reveal}. {final_beat}",
+        f"{hook.capitalize()}. The emergency call came from {setting}. {threat} The caller whispered that {rule}. Before the line died, they tried to {choice}. The recording proved {reveal}. {final_beat}",
+        f"{hook.capitalize()}. Security footage from {setting} stayed empty for six seconds. Then {threat[:1].lower() + threat[1:]} {sensory} Investigators discovered {reveal}. The last witness tried to {choice}. {final_beat}",
+        f"{hook.capitalize()}. There is one rule for entering {setting}: {rule}. {sensory} {threat} I broke the rule to {choice}. Too late, I understood {reveal}. {final_beat}",
+        f"{hook.capitalize()}. Nobody believed it happened in {setting} until the audio surfaced. {sensory} {threat} The sound revealed {reveal}. Our last option was to {choice}. {cost} {final_beat}",
+    )
+    return patterns[(number + FORMS.index(form)) % len(patterns)]
+
+
+QUERY_STOPWORDS = {
+    "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "from", "of", "for",
+    "with", "without", "into", "their", "they", "them", "my", "our", "was", "were", "is",
+    "it", "its", "began", "every", "only", "someone", "anyone", "person", "people", "man",
+    "woman", "child", "face", "portrait",
+}
+
+
+def visual_phrase(value: str) -> str:
+    words = [word for word in re.findall(r"[a-z]+", value.lower()) if word not in QUERY_STOPWORDS]
+    return " ".join(dict.fromkeys(words))[:58].strip() or "locked room strange shadow"
+
+
+def visual_queries(setting: str, hook: str, manifestation: str, ending: str,
+                   base_queries: list[str]) -> list[str]:
+    """Turn story beats into separate searches instead of repeating one generic backdrop."""
+    phrases = [
+        visual_phrase(setting), visual_phrase(hook),
+        visual_phrase(manifestation), visual_phrase(ending), *base_queries,
+    ]
+    return list(dict.fromkeys(creepy_query(phrase) for phrase in phrases))[:8]
+
+
+def retention_title(hook: str, escalation: str) -> str:
+    def clip_words(value: str, limit: int) -> str:
+        if len(value) <= limit:
+            return value
+        return value[:limit].rsplit(" ", 1)[0].rstrip(" ,;:-")
+
+    first = hook.rstrip(".?!").capitalize()
+    danger = escalation.removeprefix("It ").removeprefix("Every ").rstrip(".?!")
+    return f"{clip_words(first, 58)} — {clip_words(danger, 30)}"[:96]
 
 
 def creepy_query(query: str) -> str:
@@ -300,15 +320,16 @@ def build_ideas() -> list[dict[str, object]]:
             reveal = reveals[(variant // 4 + genre_index) % 4]
             ending = endings[(variant * 3 + genre_index) % 4]
             story = render_story(genre, setting, hook, reveal, ending, form, number, pressure)
+            manifestation = MANIFESTATIONS[(number * 7) % len(MANIFESTATIONS)]
             ideas.append({
                 "idea_number": number, "genre": genre,
-                "title": f"{genre.title()} {number:03d}: {hook.title()}"[:100],
+                "title": retention_title(hook, pressure[0]),
                 "story": story,
-                "description": f"An original {genre} horror story.",
+                "description": f"An original {genre} nightmare. Watch closely; the last detail changes everything.",
                 "tags": [genre, "horror", "scary stories", "shorts"],
                 "background_file": "dark-corridor.png",
-                "background_queries": [creepy_query(query) for query in queries],
-                "watermark_text": "SKIP IF YOU'RE SCARED",
+                "background_queries": visual_queries(setting, hook, manifestation, ending, queries),
+                "watermark_text": "",
             })
             number += 1
     return ideas

@@ -17,15 +17,18 @@ def test_idea_bank_is_genre_balanced_and_valid():
     assert len({idea["story"] for idea in ideas}) == 500
     assert len({idea["genre"] for idea in ideas}) == 20
     assert all(left["genre"] != right["genre"] for left, right in zip(ideas, ideas[1:]))
-    assert all(any(beat in idea["story"] for beat in MANIFESTATIONS) for idea in ideas)
-    assert all(any(beat in idea["story"] for beat in PANIC_BEATS) for idea in ideas)
-    assert all(any(beat in idea["story"] for beat in FINAL_WARNINGS) for idea in ideas)
+    scary_beats = MANIFESTATIONS + PANIC_BEATS
+    assert all(any(beat.casefold() in idea["story"].casefold() for beat in scary_beats) for idea in ideas)
+    assert sum(any(beat in idea["story"] for beat in FINAL_WARNINGS) for idea in ideas) >= 100
+    assert all(180 <= len(idea["story"]) <= 1100 for idea in ideas)
+    assert all(len(idea["background_queries"]) >= 6 for idea in ideas)
+    assert all(not idea["title"].startswith(idea["genre"].title()) for idea in ideas)
     assert all(
         all({"eerie", "creepy", "horror", "night", "empty"} <= set(query.split())
             for query in idea["background_queries"])
         for idea in ideas
     )
-    assert max(len(idea["story"]) for idea in ideas) - min(len(idea["story"]) for idea in ideas) > 200
+    assert max(len(idea["story"]) for idea in ideas) - min(len(idea["story"]) for idea in ideas) > 120
     assert [idea["idea_number"] for idea in ideas] == list(range(1, 501))
     for idea in ideas:
         validate_job(build_job(idea, f"idea-{idea['idea_number']:03d}"), config)
