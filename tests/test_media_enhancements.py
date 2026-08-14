@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import wave
 
-from scripts.fetch_background import add_credit, provider_order, select_pixabay_video, select_video_file
+from scripts.fetch_background import (
+    add_credit, horror_search_query, provider_order, select_pixabay_video,
+    select_video_file, visual_relevance,
+)
 from scripts.common import desired_background_scenes, effective_video_duration
 from scripts.generate_sfx import generate_sfx
 from scripts.generate_music import generate_music
@@ -37,6 +40,13 @@ def test_pexels_credit_is_added_once():
 def test_all_background_providers_are_rotated():
     order = provider_order("job-1", 0, "pexels-key", "pixabay-key")
     assert set(order) == {"pexels", "pixabay", "wikimedia", "archive"}
+    assert set(order[:2]) == {"pexels", "pixabay"}
+
+
+def test_background_search_is_explicitly_creepy_and_empty():
+    query = horror_search_query("old hospital corridor")
+    assert {"eerie", "creepy", "horror", "night", "empty"} <= set(query.split())
+    assert visual_relevance(query) >= 5
 
 
 def test_pixabay_selection_accepts_landscape_for_smart_crop():
@@ -68,12 +78,14 @@ def test_generated_sfx_is_nonempty_pcm(tmp_path):
     assert report["continuous_layers"] == ["sub_bass_drone", "cold_wind", "distant_tone"]
 
 
-def test_generated_music_has_chords_and_melody(tmp_path):
+def test_generated_music_is_non_melodic_creeping_dread(tmp_path):
     output = tmp_path / "music.wav"
     report = generate_music("job-1", 4.0, output, sample_rate=8000)
     with wave.open(str(output), "rb") as handle:
         assert handle.getnchannels() == 1
         assert handle.getnframes() == 32000
-    assert report["style"] == "cinematic_minor_horror"
-    assert report["progression"][0] == "D minor"
-    assert report["melody_events"]
+    assert report["style"] == "creeping_dissonant_dread"
+    assert "detuned_sub_drone" in report["layers"]
+    assert "metal_scrapes" in report["layers"]
+    assert "final_sting" in report["layers"]
+    assert "melody_events" not in report

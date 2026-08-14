@@ -5,7 +5,7 @@ import pytest
 
 from scripts.build_job_from_idea import build_job, select_idea
 from scripts.common import ValidationError, load_config
-from scripts.generate_idea_bank import build_ideas
+from scripts.generate_idea_bank import FINAL_WARNINGS, MANIFESTATIONS, PANIC_BEATS, build_ideas
 from scripts.validate_job import validate_job
 
 
@@ -17,6 +17,14 @@ def test_idea_bank_is_genre_balanced_and_valid():
     assert len({idea["story"] for idea in ideas}) == 500
     assert len({idea["genre"] for idea in ideas}) == 20
     assert all(left["genre"] != right["genre"] for left, right in zip(ideas, ideas[1:]))
+    assert all(any(beat in idea["story"] for beat in MANIFESTATIONS) for idea in ideas)
+    assert all(any(beat in idea["story"] for beat in PANIC_BEATS) for idea in ideas)
+    assert all(any(beat in idea["story"] for beat in FINAL_WARNINGS) for idea in ideas)
+    assert all(
+        all({"eerie", "creepy", "horror", "night", "empty"} <= set(query.split())
+            for query in idea["background_queries"])
+        for idea in ideas
+    )
     assert max(len(idea["story"]) for idea in ideas) - min(len(idea["story"]) for idea in ideas) > 200
     assert [idea["idea_number"] for idea in ideas] == list(range(1, 501))
     for idea in ideas:

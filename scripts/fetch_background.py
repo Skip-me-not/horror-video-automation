@@ -33,6 +33,11 @@ ALLOWED_COMMONS_LICENSES = {
     "cc0", "public domain", "cc by 4.0", "cc by 3.0", "cc by 2.0",
     "cc by-sa 4.0", "cc by-sa 3.0", "cc by-sa 2.0",
 }
+HORROR_VISUAL_TERMS = {
+    "abandoned", "alone", "cemetery", "creepy", "dark", "eerie", "empty",
+    "fog", "haunted", "horror", "liminal", "mist", "night", "ominous",
+    "ruins", "shadow", "storm", "underground", "vhs",
+}
 
 
 def seeded_number(seed: str, modulo: int) -> int:
@@ -56,6 +61,17 @@ def orientation_score(width: int, height: int) -> tuple[int, float]:
         return 3, 99.0
     ratio = width / height
     return (0 if height > width else 1, abs(ratio - 9 / 16))
+
+
+def horror_search_query(query: str) -> str:
+    """Make external or bank-provided searches explicitly request creepy empty scenes."""
+    words = f"eerie creepy horror night fog shadows abandoned empty {query}".split()
+    return " ".join(dict.fromkeys(words))[:100].rstrip()
+
+
+def visual_relevance(value: str) -> int:
+    words = set(re.findall(r"[a-z]+", value.lower()))
+    return len(words & HORROR_VISUAL_TERMS)
 
 
 def pexels_media_host(hostname: str | None) -> bool:
@@ -87,8 +103,12 @@ def select_video_file(
                 candidates.append((video, media))
     if not candidates:
         raise ValidationError("Pexels returned no suitable unused MP4")
-    candidates.sort(key=lambda pair: (*orientation_score(int(pair[1]["width"]), int(pair[1]["height"])), int(pair[0]["id"])))
-    shortlist = candidates[: min(40, len(candidates))]
+    candidates.sort(key=lambda pair: (
+        -visual_relevance(str(pair[0].get("url", ""))),
+        *orientation_score(int(pair[1]["width"]), int(pair[1]["height"])),
+        int(pair[0]["id"]),
+    ))
+    shortlist = candidates[: min(24, len(candidates))]
     return shortlist[seeded_number(job_id, len(shortlist))]
 
 
@@ -113,8 +133,12 @@ def select_pixabay_video(
             candidates.append((video, renditions[0]))
     if not candidates:
         raise ValidationError("Pixabay returned no suitable unused MP4")
-    candidates.sort(key=lambda pair: (*orientation_score(int(pair[1]["width"]), int(pair[1]["height"])), int(pair[0]["id"])))
-    shortlist = candidates[: min(60, len(candidates))]
+    candidates.sort(key=lambda pair: (
+        -visual_relevance(f"{pair[0].get('tags', '')} {pair[0].get('pageURL', '')}"),
+        *orientation_score(int(pair[1]["width"]), int(pair[1]["height"])),
+        int(pair[0]["id"]),
+    ))
+    shortlist = candidates[: min(30, len(candidates))]
     return shortlist[seeded_number(seed, len(shortlist))]
 
 
@@ -314,9 +338,12 @@ def download_file(url: str, destination: Path, max_bytes: int) -> int:
 
 
 def provider_order(job_id: str, slot: int, pexels_key: str, pixabay_key: str) -> list[str]:
-    providers = (["pexels"] if pexels_key else []) + (["pixabay"] if pixabay_key else []) + ["wikimedia", "archive"]
-    start = (seeded_number(f"{job_id}:provider", len(providers)) + slot) % len(providers)
-    return providers[start:] + providers[:start]
+    stock = (["pexels"] if pexels_key else []) + (["pixabay"] if pixabay_key else [])
+    if len(stock) > 1 and (seeded_number(f"{job_id}:provider", 2) + slot) % 2:
+        stock.reverse()
+    # Stock APIs honor cinematic search terms much more consistently. Commons
+    # and Archive remain free fallbacks instead of being randomly selected first.
+    return stock + ["wikimedia", "archive"]
 
 
 def credit_line(index: int, record: dict[str, Any]) -> str:
@@ -344,7 +371,7 @@ def fetch(job_path: Path, config_path: Path, project: Path) -> dict[str, Any]:
     failures: list[str] = []
 
     for slot in range(scene_count):
-        query = str(queries[slot % len(queries)])
+        query = horror_search_query(str(queries[slot % len(queries)]))
         seed = f"{job['job_id']}:{slot}:{query}"
         selected = False
         for provider in provider_order(job["job_id"], slot, pexels_key, pixabay_key):

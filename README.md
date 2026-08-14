@@ -15,9 +15,11 @@ manual and scheduled results publicly to YouTube and reports the result to n8n.
 - dark grading, vignette, subtle grain, fades, and a top-center text watermark
 - audible original horror drone, cold wind, distant swells, knocks, heartbeat,
   ending sting, and subtle reversed whispers
-- original cinematic horror music with minor chords, eerie melody, and bass pulses
+- non-melodic creepy score with detuned sub-bass, room-air noise, metallic
+  scrapes, tightening dread pulses, and a final low impact
 - layered dark room tone remains underneath the generated soundscape
-- 3-10 changing scenes from Pexels, Pixabay, Wikimedia Commons, and Internet Archive
+- 3-10 changing creepy empty-location scenes from Pexels and Pixabay, with
+  Wikimedia Commons and Internet Archive retained as licensed fallbacks
 - deterministic provider/page rotation so concurrent jobs do not all choose the same clip
 - YouTube title/description hashtags and Public-only upload
 
@@ -69,8 +71,10 @@ and YouTube policy compliance before running it on a channel.
 `ideas/horror-stories.json` contains 500 numbered scripts across 20 distinct
 horror genres: paranormal, psychological, cosmic, folk, gothic, body, creature,
 technology, analog, liminal, urban legend, occult, survival, maritime, and time
-horror. Scripts also rotate among confession, incident-report, and traditional
-narration structures. In **Actions -> Create dynamic horror Short**, leave
+horror. Every script now includes a concrete manifestation, panic escalation,
+costly survival choice, and final sting. Scripts rotate among confession,
+incident-report, traditional narration, emergency-call, and recovered-recording
+structures. In **Actions -> Create dynamic horror Short**, leave
 `job_payload` empty, enter a unique `job_id`, and set `idea_number` from 1 to
 500. Existing n8n payload dispatches remain supported.
 
