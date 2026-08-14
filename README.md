@@ -7,18 +7,18 @@ manual and scheduled results publicly to YouTube and reports the result to n8n.
 
 ## Output
 
-- 20-179 seconds, 1080x1920, H.264/AAC at 30 fps; narration determines length
+- 24-59 seconds, 1080x1920, H.264/AAC at 30 fps; narration determines length
 - Kokoro `am_michael` natural American male narration with restrained horror tone
 - Chatterbox Nano remains available as an explicitly selected alternative
 - subtle dark voice processing, continuous storytelling, and a natural-speed guard
-- sentence-aware burned-in captions inside the Shorts safe area
-- dark grading, vignette, subtle grain, fades, and a top-center text watermark
+- punchy 36-character uppercase caption cards with quick pop animation
+- dark grading, vignette, subtle grain, moving crops, rhythmic cuts, and no generic watermark
 - audible original horror drone, cold wind, distant swells, knocks, heartbeat,
   ending sting, and subtle reversed whispers
 - non-melodic creepy score with detuned sub-bass, room-air noise, metallic
   scrapes, tightening dread pulses, and a final low impact
 - layered dark room tone remains underneath the generated soundscape
-- 3-10 changing creepy empty-location scenes from Pexels and Pixabay, with
+- 8-16 beat-specific creepy empty-location scenes from Pexels and Pixabay, with
   Wikimedia Commons and Internet Archive retained as licensed fallbacks
 - deterministic provider/page rotation so concurrent jobs do not all choose the same clip
 - YouTube title/description hashtags and Public-only upload
@@ -37,8 +37,8 @@ The included corridor remains the safe fallback. Optional local assets:
 
 - `assets/backgrounds/dark-corridor.png` (an original starter visual is included)
 - `assets/ambience/dark-room-tone.mp3` (optional; leave the job field empty without it)
-The validated `watermark_text` job field is always drawn in the upper-center
-safe area. The default is `SKIP IF YOU'RE SCARED`; no PNG watermark is used.
+The optional validated `watermark_text` job field is drawn in the upper-center
+safe area only when explicitly supplied. The default output has no clickbait watermark.
 
 For the largest pool, create free Pexels and Pixabay API keys and add them as
 `PEXELS_API_KEY` and `PIXABAY_API_KEY` GitHub secrets. Wikimedia Commons and
@@ -49,18 +49,18 @@ provider does not stop the job: the next provider is tried, then the included
 corridor is used for any scene that still cannot be filled.
 
 A slow-moving 1080x1920 video works best, but the renderer also supports a
-portrait still with animated film grain. Landscape sources are center-cropped.
+portrait still with animated film grain. Every scene receives a deterministic
+slow pan/zoom, while landscape sources are smart-cropped for 9:16.
 Use CC0/Public Domain ambience without speech or recognizable
 copyrighted music. Large or private media can be delivered separately instead
 of committed; update the workflow before relying on GitHub LFS or release URLs.
 
 ## Job format
 
-See `examples/job.example.json`. Stories may contain 220-2200 characters. The
-voice is kept at its natural speed. The final duration is narration plus a
-job-seeded 1.5-4.5 second ending beat, clamped to 20-179 seconds so the vertical
-result remains within YouTube's three-minute Shorts limit. Scene count grows
-from 3 to 10 with the duration.
+See `examples/job.example.json`. Stories may contain 180-1100 characters. The
+voice may speed up gently, never beyond 1.12x, to protect short-form pacing. The
+final duration is narration plus a job-seeded 0.6-1.4 second ending beat, clamped
+to 24-59 seconds. Scene count grows from 8 to 16 with the duration.
 
 Manual and scheduled runs always publish as `public`; the workflow no longer
 offers a privacy selector. Review the voice, visuals, captions, copyright status,
@@ -68,13 +68,15 @@ and YouTube policy compliance before running it on a channel.
 
 ## Genre-balanced story bank
 
-`ideas/horror-stories.json` contains 500 numbered scripts across 20 distinct
+`ideas/horror-stories.json` contains 500 unique scripts across 20 distinct
 horror genres: paranormal, psychological, cosmic, folk, gothic, body, creature,
 technology, analog, liminal, urban legend, occult, survival, maritime, and time
-horror. Every script now includes a concrete manifestation, panic escalation,
-costly survival choice, and final sting. Scripts rotate among confession,
-incident-report, traditional narration, emergency-call, and recovered-recording
-structures. In **Actions -> Create dynamic horror Short**, leave
+horror. Every script opens directly on an impossible event, reaches a concrete
+manifestation quickly, introduces one survival rule, and closes on a reveal or
+sting. Scripts rotate among confession, emergency-call, CCTV, rules-horror, and
+recovered-audio structures. Titles are curiosity hooks rather than genre/file
+numbers, and each story carries 6-8 visual searches tied to its actual beats.
+In **Actions -> Create dynamic horror Short**, leave
 `job_payload` empty, enter a unique `job_id`, and set `idea_number` from 1 to
 500. Existing n8n payload dispatches remain supported.
 
@@ -129,7 +131,7 @@ that expire after seven days.
 
 ## Separate GitHub account
 
-This directory is intended to become its own private repository, independent of
+This directory is intended to remain its own repository, independent of
 the motivational Shorts project:
 
 ```bash
@@ -138,7 +140,7 @@ git add .
 git commit -m "Add English horror Shorts automation"
 git branch -M main
 gh auth login
-gh repo create OWNER/horror-shorts-automation --private --source . --remote origin --push
+gh repo create OWNER/horror-shorts-automation --public --source . --remote origin --push
 ```
 
 Run `gh auth status` first and make sure the active account is the new account.
@@ -152,8 +154,8 @@ token restricted to that repository. The exported workflow contains no secret.
 
 ## Safety and operations
 
-- The repository should be private.
-- Uploads remain Private until a human publishes them.
+- Keep secrets only in GitHub Actions secrets, never in the public repository.
+- Manual and scheduled uploads publish as Public.
 - Do not clone celebrities, creators, or other people without permission.
 - Avoid graphic gore, flashing imagery, misleading real-event claims, and
   repetitive low-value uploads.

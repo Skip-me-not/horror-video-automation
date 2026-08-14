@@ -93,17 +93,18 @@ def render(
         raise FileNotFoundError(f"captions are missing: {captions_path}")
     output_dir = project / config["output_directory"]
     output_dir.mkdir(parents=True, exist_ok=True)
-    watermark_text_file = output_dir / "watermark.txt"
-    watermark_text_file.write_text(
-        str(job.get("watermark_text") or config["watermark_text"]), encoding="utf-8"
-    )
-    watermark_text_filter = (
-        f"drawtext=textfile='{ffmpeg_filter_path(watermark_text_file)}':"
-        "font='DejaVu Sans':fontsize=40:"
-        "fontcolor=white@0.88:box=1:boxcolor=black@0.32:boxborderw=11:"
-        "x=(w-text_w)/2:"
-        f"y={int(config['watermark_margin_y'])},"
-    )
+    watermark = str(job.get("watermark_text", config["watermark_text"])).strip()
+    watermark_text_filter = ""
+    if watermark:
+        watermark_text_file = output_dir / "watermark.txt"
+        watermark_text_file.write_text(watermark, encoding="utf-8")
+        watermark_text_filter = (
+            f"drawtext=textfile='{ffmpeg_filter_path(watermark_text_file)}':"
+            "font='DejaVu Sans':fontsize=34:"
+            "fontcolor=white@0.72:box=1:boxcolor=black@0.24:boxborderw=9:"
+            "x=(w-text_w)/2:"
+            f"y={int(config['watermark_margin_y'])},"
+        )
     base_video = (
         f"[0:v]scale={target_w}:{target_h}:force_original_aspect_ratio=increase,"
         f"crop={target_w}:{target_h},fps={int(config['fps'])},"
@@ -114,7 +115,7 @@ def render(
         "noise=alls=5:allf=t+u,"
         f"{watermark_text_filter}"
         f"subtitles='{ffmpeg_filter_path(captions_path)}',format=yuv420p,"
-        f"fade=t=in:st=0:d={fade},fade=t=out:st={fade_out}:d={fade}"
+        f"fade=t=out:st={fade_out}:d={fade}"
     )
     command = [FFMPEG_BIN, "-hide_banner", "-loglevel", "warning", "-y"]
     if background.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}:
@@ -177,7 +178,9 @@ def render(
             f"[{next_audio_index}:a]highpass=f=20,lowpass=f=4300,"
             "aecho=0.8:0.32:520|970:0.10|0.035,"
             "loudnorm=I=-23:TP=-4:LRA=10,"
-            f"volume={float(config['music_volume'])},atrim=duration={duration},"
+            f"volume='if(between(t,{duration * 0.76:.3f},{duration * 0.80:.3f}),"
+            f"{float(config['music_volume']) * 0.12:.4f},{float(config['music_volume'])})':eval=frame,"
+            f"atrim=duration={duration},"
             f"afade=t=in:st=0:d=1.5,afade=t=out:st={fade_out}:d={fade}[music]"
         )
         mix_labels.append("[music]")

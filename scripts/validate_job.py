@@ -105,7 +105,7 @@ def validate_job(job: dict[str, Any], config: dict[str, Any]) -> dict[str, Any]:
         safe_filename(filename, "background_file")
     watermark_text = job.get("watermark_text", config["watermark_text"])
     if (
-        not isinstance(watermark_text, str) or not 1 <= len(watermark_text.strip()) <= 32
+        not isinstance(watermark_text, str) or len(watermark_text.strip()) > 32
         or any(char not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @_'!-" for char in watermark_text)
     ):
         raise ValidationError("watermark_text contains unsupported characters")

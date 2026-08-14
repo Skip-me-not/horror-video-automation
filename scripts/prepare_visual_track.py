@@ -16,10 +16,15 @@ STILL_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp"}
 
 
 def build_scene_filter(index: int, width: int, height: int, fps: int, segment: float) -> str:
-    """Normalize geometry and sample aspect ratio before concatenating providers."""
+    """Normalize each shot and add opposing slow camera moves."""
+    overscan_w, overscan_h = int(width * 1.10), int(height * 1.10)
+    progress = f"min(1,t/{max(segment, 0.001):.3f})"
+    x = f"(in_w-out_w)*{progress}" if index % 2 == 0 else f"(in_w-out_w)*(1-{progress})"
+    y = f"(in_h-out_h)*(1-{progress})" if index % 3 == 0 else f"(in_h-out_h)*{progress}"
     return (
-        f"[{index}:v]scale={width}:{height}:force_original_aspect_ratio=increase,"
-        f"crop={width}:{height},setsar=1/1,fps={fps},trim=duration={segment:.3f},"
+        f"[{index}:v]scale={overscan_w}:{overscan_h}:force_original_aspect_ratio=increase,"
+        f"crop={width}:{height}:x='{x}':y='{y}',setsar=1/1,fps={fps},"
+        f"trim=duration={segment:.3f},"
         f"setpts=PTS-STARTPTS[v{index}]"
     )
 
@@ -33,11 +38,14 @@ def prepare(job: dict, config: dict, project: Path, narration: Path) -> tuple[Pa
         raise FileNotFoundError("one or more selected background scenes are missing")
     narration_seconds = parse_probe(ffprobe(narration))["duration"]
     duration = effective_video_duration(narration_seconds, config, job["job_id"])
-    segment = duration / len(paths)
+    rhythm = (0.72, 1.00, 0.82, 1.16, 0.76, 0.94, 0.68, 1.12)
+    weights = [rhythm[index % len(rhythm)] for index in range(len(paths))]
+    unit = duration / sum(weights)
+    segments = [unit * weight for weight in weights]
     width, height, fps = int(config["output_width"]), int(config["output_height"]), int(config["fps"])
     command = ["ffmpeg", "-hide_banner", "-loglevel", "warning", "-y"]
     filters: list[str] = []
-    for index, path in enumerate(paths):
+    for index, (path, segment) in enumerate(zip(paths, segments)):
         if path.suffix.lower() in STILL_EXTENSIONS:
             command += ["-loop", "1", "-framerate", str(fps), "-i", str(path)]
         else:
@@ -55,7 +63,8 @@ def prepare(job: dict, config: dict, project: Path, narration: Path) -> tuple[Pa
     job["background_file"] = destination.name
     report = {
         "visual_track": str(destination), "duration_seconds": duration,
-        "scene_count": len(paths), "scene_seconds": round(segment, 3),
+        "scene_count": len(paths), "scene_seconds": round(duration / len(paths), 3),
+        "scene_durations_seconds": [round(value, 3) for value in segments],
         "source_files": [path.name for path in paths],
     }
     Path(config["output_directory"]).mkdir(parents=True, exist_ok=True)

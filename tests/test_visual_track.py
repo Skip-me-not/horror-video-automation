@@ -12,7 +12,9 @@ from scripts.prepare_visual_track import build_scene_filter, prepare
 
 def test_scene_filter_normalizes_sample_aspect_ratio():
     value = build_scene_filter(2, 1080, 1920, 30, 6.94)
-    assert "crop=1080:1920,setsar=1/1,fps=30" in value
+    assert "crop=1080:1920:x='" in value
+    assert "setsar=1/1,fps=30" in value
+    assert "min(1,t/6.940)" in value
     assert value.endswith("setpts=PTS-STARTPTS[v2]")
 
 
@@ -52,4 +54,5 @@ def test_mixed_sar_scenes_can_be_concatenated(config, tmp_path):
     output, report = prepare(job, config, tmp_path, narration)
     assert output.is_file()
     assert report["scene_count"] == 2
+    assert len(set(report["scene_durations_seconds"])) == 2
     assert 1.9 <= report["duration_seconds"] <= 2.1

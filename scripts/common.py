@@ -74,8 +74,8 @@ def load_config(path: str | Path) -> dict[str, Any]:
         raise ValidationError("whisper_volume must be between 0 and 0.08")
     if not 0 <= int(config["watermark_margin_y"]) <= 400:
         raise ValidationError("watermark_margin_y is invalid")
-    if not isinstance(config["watermark_text"], str) or not 1 <= len(config["watermark_text"]) <= 32:
-        raise ValidationError("watermark_text must contain 1 to 32 characters")
+    if not isinstance(config["watermark_text"], str) or len(config["watermark_text"]) > 32:
+        raise ValidationError("watermark_text must contain no more than 32 characters")
     if not isinstance(config["background_default_query"], str) or not 3 <= len(config["background_default_query"]) <= 100:
         raise ValidationError("background_default_query must contain 3 to 100 characters")
     if not 5_000_000 <= int(config["background_max_download_bytes"]) <= 250_000_000:
