@@ -2,6 +2,11 @@
   "version": 1,
   "pending_script_id": null,
   "pending_job_id": null,
-  "stage": "idle",
-  "last_success": null
+  "stage": "complete",
+  "last_success": {
+    "script_id": "HF0001",
+    "youtube_video_id": "ER4Rc4ewpVI",
+    "completed_at": "2026-08-23T09:03:30+00:00"
+  },
+  "reserved_at": "2026-08-23T08:59:56+00:00"
 }
