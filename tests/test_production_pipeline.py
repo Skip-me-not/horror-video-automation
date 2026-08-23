@@ -13,6 +13,7 @@ from src.metadata_generator import MetadataGenerator
 from src.pipeline import HorrorShortPipeline
 from src.script_bank import REQUIRED_FIELDS, ScriptBank, atomic_write_json
 from src.script_judge import ScriptJudge
+from src.tts import fallback_word_timings
 
 
 def ready_script(script_id: str = "HF0001", category: str = "Ghost Oral History") -> dict[str, object]:
@@ -157,3 +158,10 @@ def test_loc_metadata_normalization_labels_the_record_not_the_claim() -> None:
     assert source is not None
     assert source.evidence_type == "oral_history"
     assert source.source_institution == "Library of Congress"
+
+
+def test_fallback_word_timings_cover_the_narration_duration() -> None:
+    timings = fallback_word_timings("Three quiet words", 3.0)
+    assert [item["text"] for item in timings] == ["Three", "quiet", "words"]
+    assert timings[0]["offset"] == 0.0
+    assert timings[-1]["offset"] + timings[-1]["duration"] == pytest.approx(3.0)
