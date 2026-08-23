@@ -4,219 +4,519 @@
     "title": "The Dyatlov Pass Incident Still Has Missing Pieces",
     "hook": "Nine hikers cut their way out of a tent and ran into subzero darkness. Why?",
     "script": "In February 1959, a search party found the group's tent abandoned on a slope in the northern Ural Mountains. Footprints led toward the forest, where the bodies were recovered over several months. Some had severe internal injuries. A 2020 Russian investigation blamed an avalanche, and later modeling showed that a slab avalanche was physically plausible. But missing observations and the hikers' exact decisions still leave parts of the sequence uncertain.",
-    "date": "February 1959", "location": "Dyatlov Pass, northern Ural Mountains, Russia",
-    "source_title": "Dyatlov Pass incident", "source_url": "https://en.wikipedia.org/wiki/Dyatlov_Pass_incident",
-    "important_terms": ["nine hikers", "1959", "tent", "avalanche", "uncertain"],
-    "visual_queries": ["snowbound expedition tent at night", "abandoned tent torn open from inside", "footprints crossing dark snow toward forest", "cold mountain search party archival"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "February 1959",
+    "location": "Dyatlov Pass, northern Ural Mountains, Russia",
+    "source_title": "Dyatlov Pass incident",
+    "source_url": "https://en.wikipedia.org/wiki/Dyatlov_Pass_incident",
+    "important_terms": [
+      "nine hikers",
+      "1959",
+      "tent",
+      "avalanche",
+      "uncertain"
+    ],
+    "visual_queries": [
+      "snowbound expedition tent at night",
+      "abandoned tent torn open from inside",
+      "footprints crossing dark snow toward forest",
+      "cold mountain search party archival"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0002",
     "title": "The Mary Celeste Was Found Sailing Without Her Crew",
     "hook": "A seaworthy ship was discovered drifting in the Atlantic, but every person aboard had vanished.",
     "script": "On December 4, 1872, the Dei Gratia found the Mary Celeste near the Azores. The ship was under partial sail, its cargo was largely intact, and the crew's belongings remained aboard. The lifeboat was missing. No confirmed trace of the captain, his family, or the crew was ever found. Investigators considered weather, leaking alcohol fumes, and a hurried evacuation, but the final reason they abandoned ship remains unknown.",
-    "date": "December 4, 1872", "location": "Atlantic Ocean near the Azores",
-    "source_title": "Mary Celeste", "source_url": "https://en.wikipedia.org/wiki/Mary_Celeste",
-    "important_terms": ["Mary Celeste", "1872", "crew", "lifeboat", "unknown"],
-    "visual_queries": ["nineteenth century sailing ship in dark Atlantic fog", "empty wooden ship deck at night", "abandoned captain cabin lantern shadows", "missing lifeboat stormy ocean"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "December 4, 1872",
+    "location": "Atlantic Ocean near the Azores",
+    "source_title": "Mary Celeste",
+    "source_url": "https://en.wikipedia.org/wiki/Mary_Celeste",
+    "important_terms": [
+      "Mary Celeste",
+      "1872",
+      "crew",
+      "lifeboat",
+      "unknown"
+    ],
+    "visual_queries": [
+      "nineteenth century sailing ship in dark Atlantic fog",
+      "empty wooden ship deck at night",
+      "abandoned captain cabin lantern shadows",
+      "missing lifeboat stormy ocean"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0003",
     "title": "Three Lighthouse Keepers Disappeared from Flannan Isles",
     "hook": "A relief crew reached an isolated lighthouse and found all three keepers gone.",
     "script": "In December 1900, the lighthouse tender Hesperus arrived at Eilean Mòr after the light had reportedly gone dark. Keepers James Ducat, Thomas Marshall, and Donald McArthur were missing. The station was unattended, and later investigation found storm damage near a western landing. Officials concluded that enormous waves probably swept the men away while they secured equipment. No bodies were recovered, allowing exaggerated diary stories and supernatural versions to grow afterward.",
-    "date": "December 1900", "location": "Eilean Mòr, Flannan Isles, Scotland",
-    "source_title": "Flannan Isles Lighthouse", "source_url": "https://en.wikipedia.org/wiki/Flannan_Isles_Lighthouse",
-    "important_terms": ["three keepers", "1900", "lighthouse", "waves", "no bodies"],
-    "visual_queries": ["isolated lighthouse in violent night storm", "empty lighthouse stairwell dark", "wave damaged island landing archival", "three lighthouse keeper coats hanging"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "December 1900",
+    "location": "Eilean Mòr, Flannan Isles, Scotland",
+    "source_title": "Flannan Isles Lighthouse",
+    "source_url": "https://en.wikipedia.org/wiki/Flannan_Isles_Lighthouse",
+    "important_terms": [
+      "three keepers",
+      "1900",
+      "lighthouse",
+      "waves",
+      "no bodies"
+    ],
+    "visual_queries": [
+      "isolated lighthouse in violent night storm",
+      "empty lighthouse stairwell dark",
+      "wave damaged island landing archival",
+      "three lighthouse keeper coats hanging"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0004",
     "title": "The Hinterkaifeck Killer Stayed at the Farm",
     "hook": "Six people were murdered on a remote farm, and evidence suggested the killer remained there afterward.",
     "script": "In March 1922, six members of the Gruber-Gabriel household were killed at Hinterkaifeck farm in Bavaria. Four victims appeared to have been lured into the barn before being attacked; two were killed inside the house. Investigators found signs that animals had been fed and food had been eaten after the deaths. Earlier, Andreas Gruber had reported footprints leading from the woods toward the farm. The murders were never solved.",
-    "date": "March 1922", "location": "Hinterkaifeck, Bavaria, Germany",
-    "source_title": "Hinterkaifeck murders", "source_url": "https://en.wikipedia.org/wiki/Hinterkaifeck_murders",
-    "important_terms": ["six people", "1922", "footprints", "killer remained", "never solved"],
-    "visual_queries": ["remote Bavarian farm at night 1920s", "footprints from dark forest to farmhouse", "empty barn doorway deep shadows", "old farmhouse kitchen single lantern"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "March 1922",
+    "location": "Hinterkaifeck, Bavaria, Germany",
+    "source_title": "Hinterkaifeck murders",
+    "source_url": "https://en.wikipedia.org/wiki/Hinterkaifeck_murders",
+    "important_terms": [
+      "six people",
+      "1922",
+      "footprints",
+      "killer remained",
+      "never solved"
+    ],
+    "visual_queries": [
+      "remote Bavarian farm at night 1920s",
+      "footprints from dark forest to farmhouse",
+      "empty barn doorway deep shadows",
+      "old farmhouse kitchen single lantern"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0005",
     "title": "The Dancing Plague Made People Dance for Days",
     "hook": "In 1518, people in Strasbourg began dancing uncontrollably—and the crowd kept growing.",
     "script": "Historical accounts describe a woman beginning to dance in a Strasbourg street in July 1518. Within days, dozens reportedly joined her, and authorities responded by arranging musicians and a stage, believing more dancing might cure them. That decision appeared to make the crisis worse. Contemporary reports differ on deaths and exact numbers. Modern explanations include mass psychogenic illness under extreme social stress, but no single diagnosis can now be proven.",
-    "date": "July 1518", "location": "Strasbourg, Holy Roman Empire",
-    "source_title": "Dancing plague of 1518", "source_url": "https://en.wikipedia.org/wiki/Dancing_plague_of_1518",
-    "important_terms": ["1518", "dancing", "dozens", "mass psychogenic illness", "unproven"],
-    "visual_queries": ["medieval Strasbourg street night crowd", "distressed people dancing medieval illustration", "empty town square plague atmosphere", "musicians playing ominously medieval stage"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "July 1518",
+    "location": "Strasbourg, Holy Roman Empire",
+    "source_title": "Dancing plague of 1518",
+    "source_url": "https://en.wikipedia.org/wiki/Dancing_plague_of_1518",
+    "important_terms": [
+      "1518",
+      "dancing",
+      "dozens",
+      "mass psychogenic illness",
+      "unproven"
+    ],
+    "visual_queries": [
+      "medieval Strasbourg street night crowd",
+      "distressed people dancing medieval illustration",
+      "empty town square plague atmosphere",
+      "musicians playing ominously medieval stage"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0006",
     "title": "The Lead Masks Case Left Two Men Dead on a Hill",
     "hook": "Two men were found dead wearing homemade lead eye masks beside a note with cryptic instructions.",
     "script": "In August 1966, the bodies of electronics technicians Miguel José Viana and Manoel Pereira da Cruz were found on Morro do Vintém in Brazil. They wore suits, raincoats, and lead masks over their eyes. A note mentioned capsules, a time, and waiting for a signal. There were no obvious signs of violence, and decomposition prevented a clear toxicology result. Their deaths, the capsules, and the intended signal remain unexplained.",
-    "date": "August 1966", "location": "Morro do Vintém, Niterói, Brazil",
-    "source_title": "Lead Masks Case", "source_url": "https://en.wikipedia.org/wiki/Lead_Masks_Case",
-    "important_terms": ["lead masks", "1966", "capsules", "signal", "unexplained"],
-    "visual_queries": ["two lead eye masks on dark ground", "Brazilian hill at dusk 1960s", "cryptic handwritten note close up", "electronics workshop empty vintage"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "August 1966",
+    "location": "Morro do Vintém, Niterói, Brazil",
+    "source_title": "Lead Masks Case",
+    "source_url": "https://en.wikipedia.org/wiki/Lead_Masks_Case",
+    "important_terms": [
+      "lead masks",
+      "1966",
+      "capsules",
+      "signal",
+      "unexplained"
+    ],
+    "visual_queries": [
+      "two lead eye masks on dark ground",
+      "Brazilian hill at dusk 1960s",
+      "cryptic handwritten note close up",
+      "electronics workshop empty vintage"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0007",
     "title": "Five Men Vanished After Abandoning a Working Car",
     "hook": "Five friends left a working car on a mountain road—and one was found months later inside a trailer full of food.",
     "script": "After a basketball game in February 1978, five men from Yuba County disappeared. Their car was found on a remote mountain road, undamaged and still able to run. Months later, four bodies were located in or near a Forest Service trailer. Food and heating supplies were available, yet much of them had not been used. Gary Mathias was never found. Why the group drove into the mountains and abandoned the car remains unresolved.",
-    "date": "February 1978", "location": "Plumas National Forest, California, United States",
-    "source_title": "Yuba County Five", "source_url": "https://en.wikipedia.org/wiki/Yuba_County_Five",
-    "important_terms": ["five men", "1978", "working car", "trailer", "never found"],
-    "visual_queries": ["abandoned vintage car snowy mountain road", "dark forest service trailer winter", "unopened food cans cabin shadows", "search party in snow covered forest"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "February 1978",
+    "location": "Plumas National Forest, California, United States",
+    "source_title": "Yuba County Five",
+    "source_url": "https://en.wikipedia.org/wiki/Yuba_County_Five",
+    "important_terms": [
+      "five men",
+      "1978",
+      "working car",
+      "trailer",
+      "never found"
+    ],
+    "visual_queries": [
+      "abandoned vintage car snowy mountain road",
+      "dark forest service trailer winter",
+      "unopened food cans cabin shadows",
+      "search party in snow covered forest"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0008",
     "title": "The Isdal Woman Had Labels Removed from Everything",
     "hook": "A woman was found dead in Norway with false identities—and the labels cut from her belongings.",
     "script": "In November 1970, a family found a burned body in Norway's Isdalen valley. Police discovered suitcases linked to the woman at Bergen railway station. Clothing labels had been removed, coded notes recorded travel dates, and witnesses remembered several aliases and wigs. Investigators ruled the death a probable suicide involving sleeping pills and carbon monoxide, but her identity and reasons for traveling across Europe remain uncertain despite later forensic work.",
-    "date": "November 1970", "location": "Isdalen valley, Bergen, Norway",
-    "source_title": "Isdal Woman", "source_url": "https://en.wikipedia.org/wiki/Isdal_Woman",
-    "important_terms": ["1970", "false identities", "labels removed", "coded notes", "unknown identity"],
-    "visual_queries": ["foggy Norwegian valley dark autumn", "vintage suitcase railway station", "clothing label cut away close up", "coded travel notes and passport photos"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "November 1970",
+    "location": "Isdalen valley, Bergen, Norway",
+    "source_title": "Isdal Woman",
+    "source_url": "https://en.wikipedia.org/wiki/Isdal_Woman",
+    "important_terms": [
+      "1970",
+      "false identities",
+      "labels removed",
+      "coded notes",
+      "unknown identity"
+    ],
+    "visual_queries": [
+      "foggy Norwegian valley dark autumn",
+      "vintage suitcase railway station",
+      "clothing label cut away close up",
+      "coded travel notes and passport photos"
+    ],
+    "status": "used",
+    "used_at": "2026-08-23T22:04:30+00:00",
+    "youtube_video_id": "ubDnSkUhkIo"
   },
   {
     "id": "EV0009",
     "title": "The Sodder Children Were Never Found",
     "hook": "After a Christmas fire destroyed their home, five children were missing—but no confirmed remains were found.",
     "script": "On Christmas Eve 1945, the Sodder family home in West Virginia burned down. George and Jennie Sodder escaped with four children, but five others were believed trapped upstairs. The family later questioned the official explanation because searches reportedly found no clearly identifiable remains and several details seemed unusual, including a missing ladder and failed telephone line. Later sightings were never verified. The children's fate remains disputed and unresolved.",
-    "date": "December 24, 1945", "location": "Fayetteville, West Virginia, United States",
-    "source_title": "Sodder children disappearance", "source_url": "https://en.wikipedia.org/wiki/Sodder_children_disappearance",
-    "important_terms": ["five children", "1945", "no confirmed remains", "missing ladder", "unresolved"],
-    "visual_queries": ["burning rural house Christmas night 1940s", "empty children's bedroom after fire", "missing ladder beside dark house", "old missing children poster"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "December 24, 1945",
+    "location": "Fayetteville, West Virginia, United States",
+    "source_title": "Sodder children disappearance",
+    "source_url": "https://en.wikipedia.org/wiki/Sodder_children_disappearance",
+    "important_terms": [
+      "five children",
+      "1945",
+      "no confirmed remains",
+      "missing ladder",
+      "unresolved"
+    ],
+    "visual_queries": [
+      "burning rural house Christmas night 1940s",
+      "empty children's bedroom after fire",
+      "missing ladder beside dark house",
+      "old missing children poster"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0010",
     "title": "A Masked Stranger Hijacked Chicago Television",
     "hook": "In 1987, a masked figure interrupted two television stations—and was never identified.",
     "script": "On November 22, 1987, Chicago viewers watching WGN briefly saw a person wearing a Max Headroom mask replace the broadcast signal. About two hours later, a longer intrusion interrupted Doctor Who on WTTW. The figure moved in front of a rotating metal background, spoke in distorted fragments, and ended with a bizarre staged spanking. Engineers could not stop the second takeover quickly. Investigators never publicly identified the people responsible.",
-    "date": "November 22, 1987", "location": "Chicago, Illinois, United States",
-    "source_title": "Max Headroom signal hijacking", "source_url": "https://en.wikipedia.org/wiki/Max_Headroom_signal_hijacking",
-    "important_terms": ["1987", "Max Headroom", "signal hijacking", "two stations", "never identified"],
-    "visual_queries": ["vintage CRT television static dark room", "masked television intruder silhouette", "1980s broadcast control room empty", "analog signal interference monochrome"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "November 22, 1987",
+    "location": "Chicago, Illinois, United States",
+    "source_title": "Max Headroom signal hijacking",
+    "source_url": "https://en.wikipedia.org/wiki/Max_Headroom_signal_hijacking",
+    "important_terms": [
+      "1987",
+      "Max Headroom",
+      "signal hijacking",
+      "two stations",
+      "never identified"
+    ],
+    "visual_queries": [
+      "vintage CRT television static dark room",
+      "masked television intruder silhouette",
+      "1980s broadcast control room empty",
+      "analog signal interference monochrome"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0011",
     "title": "The Wow Signal Appeared Once and Never Returned",
     "hook": "A radio telescope detected a signal so unusual that an astronomer wrote one word beside it: Wow!",
     "script": "On August 15, 1977, Ohio State University's Big Ear radio telescope recorded a strong narrowband signal during a search for possible extraterrestrial transmissions. Astronomer Jerry Ehman circled the computer printout code 6EQUJ5 and wrote “Wow!” beside it. The signal lasted 72 seconds, matching the telescope's observation window. Repeated searches failed to detect it again. Natural explanations have been proposed, but its exact source has never been confirmed.",
-    "date": "August 15, 1977", "location": "Big Ear radio telescope, Ohio, United States",
-    "source_title": "Wow! signal", "source_url": "https://en.wikipedia.org/wiki/Wow!_signal",
-    "important_terms": ["1977", "Wow", "72 seconds", "6EQUJ5", "never confirmed"],
-    "visual_queries": ["giant radio telescope under dark stars", "computer printout 6EQUJ5 close up", "astronomer listening room 1970s", "single radio pulse waveform black screen"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "August 15, 1977",
+    "location": "Big Ear radio telescope, Ohio, United States",
+    "source_title": "Wow! signal",
+    "source_url": "https://en.wikipedia.org/wiki/Wow!_signal",
+    "important_terms": [
+      "1977",
+      "Wow",
+      "72 seconds",
+      "6EQUJ5",
+      "never confirmed"
+    ],
+    "visual_queries": [
+      "giant radio telescope under dark stars",
+      "computer printout 6EQUJ5 close up",
+      "astronomer listening room 1970s",
+      "single radio pulse waveform black screen"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0012",
     "title": "The Tunguska Explosion Flattened a Forest Without a Crater",
     "hook": "An explosion over Siberia flattened millions of trees, yet investigators found no impact crater.",
     "script": "On June 30, 1908, a massive atmospheric explosion occurred over a remote part of Siberia near the Tunguska River. The blast flattened roughly two thousand square kilometers of forest and produced reports of bright light and shock waves far away. Because the region was isolated, scientific expeditions arrived years later. The accepted explanation is an asteroid or comet fragment exploding in the atmosphere, which explains why no conventional crater was left.",
-    "date": "June 30, 1908", "location": "Podkamennaya Tunguska River, Siberia, Russia",
-    "source_title": "Tunguska event", "source_url": "https://en.wikipedia.org/wiki/Tunguska_event",
-    "important_terms": ["1908", "explosion", "two thousand square kilometers", "no crater", "asteroid"],
-    "visual_queries": ["Siberian forest explosion dawn", "millions of flattened trees archival", "remote expedition through dead forest", "asteroid airburst above dark forest"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "June 30, 1908",
+    "location": "Podkamennaya Tunguska River, Siberia, Russia",
+    "source_title": "Tunguska event",
+    "source_url": "https://en.wikipedia.org/wiki/Tunguska_event",
+    "important_terms": [
+      "1908",
+      "explosion",
+      "two thousand square kilometers",
+      "no crater",
+      "asteroid"
+    ],
+    "visual_queries": [
+      "Siberian forest explosion dawn",
+      "millions of flattened trees archival",
+      "remote expedition through dead forest",
+      "asteroid airburst above dark forest"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0013",
     "title": "Lake Nyos Released an Invisible Deadly Cloud",
     "hook": "One night, an African lake released a silent cloud that killed people and animals in nearby villages.",
     "script": "On August 21, 1986, Lake Nyos in Cameroon suddenly released a huge amount of dissolved carbon dioxide. The dense gas flowed downhill, displacing breathable air across surrounding settlements. About 1,700 people and thousands of animals died, often without visible injury. Scientists identified the event as a limnic eruption: gas accumulated in deep water and then rapidly escaped. Degassing pipes were later installed to reduce the risk of another disaster.",
-    "date": "August 21, 1986", "location": "Lake Nyos, Cameroon",
-    "source_title": "Lake Nyos disaster", "source_url": "https://en.wikipedia.org/wiki/Lake_Nyos_disaster",
-    "important_terms": ["1986", "carbon dioxide", "1,700 people", "invisible cloud", "limnic eruption"],
-    "visual_queries": ["dark volcanic crater lake at night", "invisible fog flowing downhill village", "abandoned Cameroon village dawn", "scientific degassing pipe lake"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "August 21, 1986",
+    "location": "Lake Nyos, Cameroon",
+    "source_title": "Lake Nyos disaster",
+    "source_url": "https://en.wikipedia.org/wiki/Lake_Nyos_disaster",
+    "important_terms": [
+      "1986",
+      "carbon dioxide",
+      "1,700 people",
+      "invisible cloud",
+      "limnic eruption"
+    ],
+    "visual_queries": [
+      "dark volcanic crater lake at night",
+      "invisible fog flowing downhill village",
+      "abandoned Cameroon village dawn",
+      "scientific degassing pipe lake"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0014",
     "title": "A Dead Woman's Testimony Helped Convict a Killer",
     "hook": "A murder conviction became linked to testimony that the victim's ghost had named her killer.",
     "script": "In 1897, Zona Heaster Shue was found dead in Greenbrier County, West Virginia. Her mother, Mary Jane Heaster, later claimed Zona's spirit appeared and described how her husband had killed her. Authorities exhumed the body, and an autopsy found a broken neck. During Erasmus Shue's trial, the defense questioned Mary Jane about the ghost story, allowing the jury to hear it. Physical evidence—not supernatural proof—supported his murder conviction.",
-    "date": "1897", "location": "Greenbrier County, West Virginia, United States",
-    "source_title": "Greenbrier Ghost", "source_url": "https://en.wikipedia.org/wiki/Greenbrier_Ghost",
-    "important_terms": ["1897", "ghost", "broken neck", "physical evidence", "conviction"],
-    "visual_queries": ["Victorian woman portrait dark", "nineteenth century bedroom ghostly silhouette", "old courthouse trial shadows", "forensic exhumation document archival"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "1897",
+    "location": "Greenbrier County, West Virginia, United States",
+    "source_title": "Greenbrier Ghost",
+    "source_url": "https://en.wikipedia.org/wiki/Greenbrier_Ghost",
+    "important_terms": [
+      "1897",
+      "ghost",
+      "broken neck",
+      "physical evidence",
+      "conviction"
+    ],
+    "visual_queries": [
+      "Victorian woman portrait dark",
+      "nineteenth century bedroom ghostly silhouette",
+      "old courthouse trial shadows",
+      "forensic exhumation document archival"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0015",
     "title": "The Enfield Poltergeist Divided Investigators",
     "hook": "A London family reported furniture moving, violent knocks, and a girl speaking in a rough unfamiliar voice.",
     "script": "Beginning in 1977, the Hodgson family in Enfield reported repeated disturbances inside their council house. Journalists and paranormal investigators recorded knocks, apparent movement, and unusual vocalizations associated with eleven-year-old Janet. Some witnesses said they saw events they could not explain. Skeptics documented occasions when the children were caught faking activity and argued that suggestion and attention shaped the case. The recordings are real; their paranormal interpretation remains heavily disputed.",
-    "date": "1977-1979", "location": "Enfield, London, England",
-    "source_title": "Enfield poltergeist", "source_url": "https://en.wikipedia.org/wiki/Enfield_poltergeist",
-    "important_terms": ["1977", "Janet", "recordings", "faking", "disputed"],
-    "visual_queries": ["1970s London council house night", "empty child's bedroom chair moved", "vintage tape recorder close up", "newspaper photographer dark hallway"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "1977-1979",
+    "location": "Enfield, London, England",
+    "source_title": "Enfield poltergeist",
+    "source_url": "https://en.wikipedia.org/wiki/Enfield_poltergeist",
+    "important_terms": [
+      "1977",
+      "Janet",
+      "recordings",
+      "faking",
+      "disputed"
+    ],
+    "visual_queries": [
+      "1970s London council house night",
+      "empty child's bedroom chair moved",
+      "vintage tape recorder close up",
+      "newspaper photographer dark hallway"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0016",
     "title": "A Town Exhumed a Girl to Stop a Vampire",
     "hook": "In 1892, frightened neighbors dug up a teenager and burned her heart to protect her brother.",
     "script": "Tuberculosis had killed several members of the Brown family in Exeter, Rhode Island. When Edwin Brown became ill, some neighbors believed a dead relative was draining his life. In March 1892, the family exhumed seventeen-year-old Mercy Brown. Her body appeared unusually preserved because it had been kept in a cold crypt. Her heart was burned, and ashes were given to Edwin as medicine. He died soon afterward. The incident documents vampire panic, not a real vampire.",
-    "date": "March 1892", "location": "Exeter, Rhode Island, United States",
-    "source_title": "Mercy Brown vampire incident", "source_url": "https://en.wikipedia.org/wiki/Mercy_Brown_vampire_incident",
-    "important_terms": ["1892", "Mercy Brown", "heart burned", "tuberculosis", "vampire panic"],
-    "visual_queries": ["snowy New England cemetery 1890s", "cold stone crypt dark", "Victorian townspeople lanterns graveyard", "old tuberculosis medical record"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "March 1892",
+    "location": "Exeter, Rhode Island, United States",
+    "source_title": "Mercy Brown vampire incident",
+    "source_url": "https://en.wikipedia.org/wiki/Mercy_Brown_vampire_incident",
+    "important_terms": [
+      "1892",
+      "Mercy Brown",
+      "heart burned",
+      "tuberculosis",
+      "vampire panic"
+    ],
+    "visual_queries": [
+      "snowy New England cemetery 1890s",
+      "cold stone crypt dark",
+      "Victorian townspeople lanterns graveyard",
+      "old tuberculosis medical record"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0017",
     "title": "The 21 Grams Experiment Tried to Weigh a Soul",
     "hook": "A doctor placed dying patients on a scale and claimed the human soul weighed 21 grams.",
     "script": "In 1907, Massachusetts physician Duncan MacDougall published an experiment involving six dying patients placed on specially constructed scales. He reported a sudden weight loss in one case and connected it to the soul leaving the body. The sample was tiny, the measurements were inconsistent, and several results were discarded. Later attempts did not validate the claim. Twenty-one grams became a famous idea, but the experiment provides no reliable scientific evidence for a soul's weight.",
-    "date": "1907", "location": "Haverhill, Massachusetts, United States",
-    "source_title": "21 grams experiment", "source_url": "https://en.wikipedia.org/wiki/21_grams_experiment",
-    "important_terms": ["1907", "21 grams", "six patients", "discarded", "no reliable evidence"],
-    "visual_queries": ["antique medical scale dark laboratory", "1907 physician notes close up", "empty hospital bed monochrome", "scale needle moving macro shot"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "1907",
+    "location": "Haverhill, Massachusetts, United States",
+    "source_title": "21 grams experiment",
+    "source_url": "https://en.wikipedia.org/wiki/21_grams_experiment",
+    "important_terms": [
+      "1907",
+      "21 grams",
+      "six patients",
+      "discarded",
+      "no reliable evidence"
+    ],
+    "visual_queries": [
+      "antique medical scale dark laboratory",
+      "1907 physician notes close up",
+      "empty hospital bed monochrome",
+      "scale needle moving macro shot"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0018",
     "title": "Creepy Clown Reports Spread Across Countries",
     "hook": "In 2016, clown sightings spread so quickly that schools closed and police issued warnings.",
     "script": "The wave began with reports of people dressed as clowns behaving suspiciously in the United States. Social media amplified photographs, rumors, threats, and copycat behavior. Some incidents involved real arrests or hoaxes, while many alarming claims could not be verified. The panic spread internationally, leading schools and businesses to restrict costumes and authorities to investigate threats. There was no evidence of one coordinated clown organization—attention helped unrelated incidents appear connected.",
-    "date": "2016", "location": "United States and multiple other countries",
-    "source_title": "2016 clown sightings", "source_url": "https://en.wikipedia.org/wiki/2016_clown_sightings",
-    "important_terms": ["2016", "clown sightings", "social media", "hoaxes", "no coordinated organization"],
-    "visual_queries": ["clown silhouette at edge of dark forest", "empty school corridor night", "police lights suburban street", "distorted social media posts phone dark"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "2016",
+    "location": "United States and multiple other countries",
+    "source_title": "2016 clown sightings",
+    "source_url": "https://en.wikipedia.org/wiki/2016_clown_sightings",
+    "important_terms": [
+      "2016",
+      "clown sightings",
+      "social media",
+      "hoaxes",
+      "no coordinated organization"
+    ],
+    "visual_queries": [
+      "clown silhouette at edge of dark forest",
+      "empty school corridor night",
+      "police lights suburban street",
+      "distorted social media posts phone dark"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0019",
     "title": "A Murder Victim Was Said to Speak Through a Coworker",
     "hook": "Police received a new suspect after a woman claimed the murdered victim was speaking through her body.",
     "script": "Chicago respiratory therapist Teresita Basa was murdered in 1977. Months later, Remibias Chua reportedly entered trance-like states and spoke in a voice her family associated with Basa. The voice named Allan Showery and described stolen jewelry. Police found jewelry linked to Basa through Showery's girlfriend, and Showery eventually confessed. The possession claim cannot be verified, but the unusual report did precede evidence that helped investigators solve the killing.",
-    "date": "1977", "location": "Chicago, Illinois, United States",
-    "source_title": "Teresita Basa", "source_url": "https://en.wikipedia.org/wiki/Teresita_Basa",
-    "important_terms": ["1977", "Teresita Basa", "voice", "stolen jewelry", "confessed"],
-    "visual_queries": ["1970s Chicago apartment dark", "respiratory therapist hospital corridor", "stolen jewelry evidence close up", "police interview room vintage"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "1977",
+    "location": "Chicago, Illinois, United States",
+    "source_title": "Teresita Basa",
+    "source_url": "https://en.wikipedia.org/wiki/Teresita_Basa",
+    "important_terms": [
+      "1977",
+      "Teresita Basa",
+      "voice",
+      "stolen jewelry",
+      "confessed"
+    ],
+    "visual_queries": [
+      "1970s Chicago apartment dark",
+      "respiratory therapist hospital corridor",
+      "stolen jewelry evidence close up",
+      "police interview room vintage"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   },
   {
     "id": "EV0020",
     "title": "The Taos Hum Is Heard by Some—but Not Everyone",
     "hook": "Residents described a low mechanical hum that microphones often failed to capture.",
     "script": "In the early 1990s, people around Taos, New Mexico, reported a persistent low-frequency sound compared with a distant diesel engine. Surveys suggested only a small percentage of residents perceived it. Researchers tested possible industrial, acoustic, and electromagnetic sources, but did not identify one signal that explained every report. Similar hum complaints exist elsewhere. Tinnitus, environmental noise, and heightened attention may contribute, yet the Taos reports still lack a single confirmed cause.",
-    "date": "early 1990s", "location": "Taos, New Mexico, United States",
-    "source_title": "The Hum", "source_url": "https://en.wikipedia.org/wiki/The_Hum",
-    "important_terms": ["Taos", "low-frequency", "small percentage", "no single signal", "unconfirmed"],
-    "visual_queries": ["Taos desert town at night", "person awake listening dark bedroom", "audio spectrum low frequency monitor", "distant industrial lights desert"],
-    "status": "ready", "used_at": null, "youtube_video_id": null
+    "date": "early 1990s",
+    "location": "Taos, New Mexico, United States",
+    "source_title": "The Hum",
+    "source_url": "https://en.wikipedia.org/wiki/The_Hum",
+    "important_terms": [
+      "Taos",
+      "low-frequency",
+      "small percentage",
+      "no single signal",
+      "unconfirmed"
+    ],
+    "visual_queries": [
+      "Taos desert town at night",
+      "person awake listening dark bedroom",
+      "audio spectrum low frequency monitor",
+      "distant industrial lights desert"
+    ],
+    "status": "ready",
+    "used_at": null,
+    "youtube_video_id": null
   }
 ]
