@@ -1,163 +1,65 @@
-# English Horror Shorts Automation
+# Automated Sourced Horror Fact Shorts
 
-A public-upload pipeline for original, variable-length English horror Shorts. n8n sends
-a compact story job to GitHub Actions; GitHub generates realistic narration,
-burns readable captions into a dark 9:16 video, mixes creepy ambience, uploads
-manual and scheduled results publicly to YouTube and reports the result to n8n.
+An unattended English YouTube Shorts pipeline for **documented horror facts, recorded experiences, and oral traditions**. It no longer generates fictional first-person stories. Each bank entry is derived from a Library of Congress catalog record and includes a direct source link.
 
-## Output
+## Evidence policy
 
-- 24-59 seconds, 1080x1920, H.264/AAC at 30 fps; narration determines length
-- Kokoro `am_michael` natural American male narration with restrained horror tone
-- Chatterbox Nano remains available as an explicitly selected alternative
-- subtle dark voice processing, continuous storytelling, and a natural-speed guard
-- punchy 36-character uppercase caption cards with quick pop animation
-- dark grading, vignette, subtle grain, moving crops, rhythmic cuts, and no generic watermark
-- audible original horror drone, cold wind, distant swells, knocks, heartbeat,
-  ending sting, and subtle reversed whispers
-- non-melodic creepy score with detuned sub-bass, room-air noise, metallic
-  scrapes, tightening dread pulses, and a final low impact
-- layered dark room tone remains underneath the generated soundscape
-- 8-16 beat-specific creepy empty-location scenes from Pexels and Pixabay, with
-  Wikimedia Commons and Internet Archive retained as licensed fallbacks
-- deterministic provider/page rotation so concurrent jobs do not all choose the same clip
-- YouTube title/description hashtags and Public-only upload
+Every Short clearly separates two claims:
 
-Kokoro's `am_michael` voice is the default so every automated run uses a clearly
-male English narrator. Chatterbox Nano remains selectable and is loaded with
-`ChatterboxTurboTTS.from_pretrained(device="cpu", nano=True)`. Only clone a voice
-when you own it or have clear permission.
+- The archive verifies that an account, performance, belief, interview, or folklore record exists.
+- The archive does **not** prove that a supernatural explanation is true.
 
-Official references: [Chatterbox](https://github.com/resemble-ai/chatterbox),
-[YouTube upload guide](https://developers.google.com/youtube/v3/guides/uploading_a_video).
+Entries use `oral_history`, `folklore_record`, `archival_record`, or `reference_summary`. Titles never use unsupported “TRUE STORY” claims. The description includes the direct URL, rights note, evidence label, and verification caveat.
 
-## Required media
-
-The included corridor remains the safe fallback. Optional local assets:
-
-- `assets/backgrounds/dark-corridor.png` (an original starter visual is included)
-- `assets/ambience/dark-room-tone.mp3` (optional; leave the job field empty without it)
-The optional validated `watermark_text` job field is drawn in the upper-center
-safe area only when explicitly supplied. The default output has no clickbait watermark.
-
-For the largest pool, create free Pexels and Pixabay API keys and add them as
-`PEXELS_API_KEY` and `PIXABAY_API_KEY` GitHub secrets. Wikimedia Commons and
-Internet Archive are keyless fallbacks. Every provider is queried through its
-documented API, downloads are capped at 60 MB per scene, licenses are filtered,
-and source/creator credits are appended to the YouTube description. A failed
-provider does not stop the job: the next provider is tried, then the included
-corridor is used for any scene that still cannot be filled.
-
-A slow-moving 1080x1920 video works best, but the renderer also supports a
-portrait still with animated film grain. Every scene receives a deterministic
-slow pan/zoom, while landscape sources are smart-cropped for 9:16.
-Use CC0/Public Domain ambience without speech or recognizable
-copyrighted music. Large or private media can be delivered separately instead
-of committed; update the workflow before relying on GitHub LFS or release URLs.
-
-## Job format
-
-See `examples/job.example.json`. Stories may contain 180-1100 characters. The
-voice may speed up gently, never beyond 1.12x, to protect short-form pacing. The
-final duration is narration plus a job-seeded 0.6-1.4 second ending beat, clamped
-to 24-59 seconds. Scene count grows from 8 to 16 with the duration.
-
-Manual and scheduled runs always publish as `public`; the workflow no longer
-offers a privacy selector. Review the voice, visuals, captions, copyright status,
-and YouTube policy compliance before running it on a channel.
-
-## Genre-balanced story bank
-
-`ideas/horror-stories.json` contains 500 unique scripts across 20 distinct
-horror genres: paranormal, psychological, cosmic, folk, gothic, body, creature,
-technology, analog, liminal, urban legend, occult, survival, maritime, and time
-horror. Every script opens directly on an impossible event, reaches a concrete
-manifestation quickly, introduces one survival rule, and closes on a reveal or
-sting. Scripts rotate among confession, emergency-call, CCTV, rules-horror, and
-recovered-audio structures. Titles are curiosity hooks rather than genre/file
-numbers, and each story carries 6-8 visual searches tied to its actual beats.
-In **Actions -> Create dynamic horror Short**, leave
-`job_payload` empty, enter a unique `job_id`, and set `idea_number` from 1 to
-500. Existing n8n payload dispatches remain supported.
-
-The repository intentionally does not commit a counter after every run. Track
-the next number in n8n (or enter it manually); this avoids concurrent runs
-overwriting each other and avoids unnecessary GitHub commits. After idea 500,
-replace the JSON entries with another valid bank and restart at 1. Regenerate
-the included starter bank with:
+## Fact bank
 
 ```bash
-python scripts/generate_idea_bank.py
+python scripts/build_script_bank.py --target 500 --refresh-sources
+python scripts/validate_bank.py
 ```
 
-The text catalog is small and does not meaningfully load GitHub. Video,
-audio, TTS model, and render outputs remain outside Git history.
+The builder uses Library of Congress archive metadata plus attributed English Wikipedia reference summaries from horror/folklore categories. It caches metadata in `data/fact_sources.json` and writes scripts to `data/script_bank.json`. IDs run from `HF0001` to `HF0500`. Each script is 60–100 words and has a unique direct source URL. Wikipedia-derived entries are labeled `reference_summary`, not primary evidence.
 
-## Local checks
+The synthetic `ideas/horror-stories.json` bank and fictional premise generators were removed. `data/script_bank.json` is the single authoritative idea/fact bank.
 
-Prerequisites: Python 3.11, FFmpeg/ffprobe, and `espeak-ng` for Kokoro.
+## Run
 
 ```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-pytest -q
-python scripts/validate_job.py --job examples/job.example.json
+python scripts/generate_short.py --dry-run
+python scripts/generate_short.py --no-upload
+python scripts/generate_short.py
+python scripts/generate_short.py --dry-run --script-id HF0042
 ```
 
-Use **Actions -> Test voice** first. It downloads the selected local TTS model,
-generates a short sample and captions, and uploads them as a one-day artifact.
-The workflow explicitly installs PyTorch's CPU wheels so GitHub does not waste
-runner disk or setup time on unused CUDA packages.
-After listening to that sample, dispatch **Create dynamic horror Short** from
-n8n or GitHub Actions.
+`--dry-run` changes no state. `--no-upload` renders without publishing or marking a fact used. Failures leave the fact `ready`.
 
-## GitHub secrets
+## Visuals and audio
 
-Create these under **Settings -> Secrets and variables -> Actions**:
+Each fact becomes 4–8 historically grounded, symbolic scene prompts that do not present generated imagery as evidence. The media layer can use licensed local assets, Pexels, and Pixabay; arbitrary YouTube, film, and television footage is never downloaded.
 
-| Secret | Required | Purpose |
-| --- | --- | --- |
-| `YOUTUBE_CLIENT_ID` | yes | Google OAuth client ID |
-| `YOUTUBE_CLIENT_SECRET` | yes | Google OAuth client secret |
-| `YOUTUBE_REFRESH_TOKEN` | yes | Offline YouTube upload token |
-| `PEXELS_API_KEY` | no | Free dynamic portrait background videos |
-| `PIXABAY_API_KEY` | no | Additional free background-video pool |
-| `N8N_CALLBACK_URL` | no | Overrides the validated callback URL |
+Original creepy ambience, music, and sparse SFX are generated while narration remains dominant. Optional stock keys:
 
-The refresh token must be authorized by the Google account that owns the target
-YouTube channel. An OAuth consent screen left in Testing can issue refresh tokens
-that expire after seven days.
+```text
+PEXELS_API_KEY
+PIXABAY_API_KEY
+```
 
-## Separate GitHub account
+## YouTube and GitHub Actions
 
-This directory is intended to remain its own repository, independent of
-the motivational Shorts project:
+Publishing needs `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and `YOUTUBE_REFRESH_TOKEN` with YouTube upload scope. Never commit credentials.
+
+- `build-bank.yml` manually refreshes and validates the sourced fact bank.
+- `generate-short.yml` runs manually or at 08:00 and 20:00 Myanmar time (`01:30` and `13:30` UTC).
+- Successful uploads update the bank and state files.
+- A shared concurrency group prevents simultaneous state writes.
+
+Scheduled GitHub jobs are best-effort and can start several minutes late.
+
+## Requirements and tests
+
+Python 3.11+, FFmpeg/ffprobe, dependencies from `requirements.txt`, and outbound access for source refresh, edge-tts, stock APIs, and upload.
 
 ```bash
-git init
-git add .
-git commit -m "Add English horror Shorts automation"
-git branch -M main
-gh auth login
-gh repo create OWNER/horror-shorts-automation --public --source . --remote origin --push
+python -m pip install -r requirements.txt
+python -m pytest -q
 ```
-
-Run `gh auth status` first and make sure the active account is the new account.
-Do not reuse the old repository remote or commit OAuth/client secret files.
-
-## n8n
-
-Import `n8n/horror-video-orchestrator.json` and follow `n8n/SETUP.md`. Configure
-the new GitHub owner, repository name, branch, callback URL, and a fine-grained
-token restricted to that repository. The exported workflow contains no secret.
-
-## Safety and operations
-
-- Keep secrets only in GitHub Actions secrets, never in the public repository.
-- Manual and scheduled uploads publish as Public.
-- Do not clone celebrities, creators, or other people without permission.
-- Avoid graphic gore, flashing imagery, misleading real-event claims, and
-  repetitive low-value uploads.
-- GitHub-hosted runners have no exact timing SLA; begin with manual runs.
-- Model caches are retained, but generated narration/video is not cached.

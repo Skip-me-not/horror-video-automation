@@ -1,0 +1,94 @@
+name: Generate and upload sourced horror fact Short
+
+on:
+  workflow_dispatch:
+    inputs:
+      script_id:
+        description: Optional READY fact ID (for example HF0001)
+        required: false
+        default: ""
+        type: string
+      dry_run:
+        description: Plan only; never render or upload
+        required: true
+        default: false
+        type: boolean
+      no_upload:
+        description: Render and validate without publishing
+        required: true
+        default: false
+        type: boolean
+  schedule:
+    # GitHub cron is UTC. These are 08:00 and 20:00 in Myanmar (UTC+06:30).
+    - cron: "30 1 * * *"
+    - cron: "30 13 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: horror-script-bank-state
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      TTS_PROVIDER: edge
+      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install FFmpeg and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Validate bank
+        run: python scripts/validate_bank.py
+      - name: Generate Short
+        shell: bash
+        env:
+          INPUT_SCRIPT_ID: ${{ inputs.script_id }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_NO_UPLOAD: ${{ inputs.no_upload }}
+        run: |
+          args=()
+          if [[ -n "$INPUT_SCRIPT_ID" ]]; then args+=(--script-id "$INPUT_SCRIPT_ID"); fi
+          if [[ "$INPUT_DRY_RUN" == "true" ]]; then
+            args+=(--dry-run)
+          elif [[ "$INPUT_NO_UPLOAD" == "true" ]]; then
+            args+=(--no-upload)
+          fi
+          python scripts/generate_short.py "${args[@]}"
+      - name: Persist successful script state
+        if: ${{ success() && inputs.dry_run != true && inputs.no_upload != true }}
+        run: |
+          if git diff --quiet -- data/; then
+            echo "No persistent state changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/script_bank.json data/used_scripts.json data/generation_state.json data/performance.json
+          git commit -m "state: record uploaded horror Short [skip ci]"
+          git push
+      - name: Upload diagnostics on failure or no-upload run
+        if: ${{ failure() || inputs.no_upload == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: horror-short-${{ github.run_id }}
+          path: output/
+          retention-days: 2
+          if-no-files-found: ignore

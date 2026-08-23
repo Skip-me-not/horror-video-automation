@@ -1,0 +1,44 @@
+name: Build sourced horror fact bank
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Number of READY scripts to maintain (1-500)
+        required: true
+        default: "500"
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: horror-script-bank-state
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build and validate bank
+        run: |
+          python scripts/build_script_bank.py --target "${{ inputs.target }}"
+          python scripts/validate_bank.py
+      - name: Persist bank safely
+        run: |
+          if git diff --quiet -- data/script_bank.json data/fact_sources.json; then
+            echo "No bank changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/script_bank.json data/fact_sources.json
+          git commit -m "chore: update sourced horror fact bank [skip ci]"
+          git push
