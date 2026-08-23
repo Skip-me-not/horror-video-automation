@@ -22,13 +22,22 @@ class ExistingMediaPipelineRenderer:
             import json
             from .config import Settings
             from .subtitles import SubtitleWriter
-            from .tts import EdgeTTSNarrator
+            from .tts import EdgeTTSNarrator, audio_duration
             job = json.loads(job_path.read_text(encoding="utf-8"))
             settings = Settings.from_env(self.root)
             narration = self.root / "output" / "narration.mp3"
             timing = self.root / "output" / "word-timings.json"
-            EdgeTTSNarrator(settings.tts_voice, settings.tts_rate).synthesize(job["story"], narration, timing)
+            timings = EdgeTTSNarrator(settings.tts_voice, settings.tts_rate).synthesize(job["story"], narration, timing)
             SubtitleWriter().from_json(timing, self.root / "output" / "captions.ass")
+            duration = audio_duration(narration)
+            (self.root / "output" / "voice-report.json").write_text(json.dumps({
+                "provider": "edge", "seed": None, "chunks": 1,
+                "chunk_durations_seconds": [round(duration, 3)], "pauses_ms": [],
+                "duration_seconds": round(duration, 3), "runtime_seconds": None,
+                "narration_file": str(narration),
+                "captions_file": str(self.root / "output" / "captions.ass"),
+                "word_boundaries": len(timings),
+            }, indent=2), encoding="utf-8")
         else:
             self._run("scripts/generate_voice.py", "--job", str(job_path), "--provider", provider)
         self._run("scripts/fetch_background.py", "--job", str(job_path))

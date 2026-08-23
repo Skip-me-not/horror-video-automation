@@ -1,5 +1,5 @@
 name: One-time HF0001 render test
-# Retry after enabling Edge TTS word-boundary metadata.
+# Retry after generating the media-stage voice report for Edge TTS.
 
 on:
   push:
