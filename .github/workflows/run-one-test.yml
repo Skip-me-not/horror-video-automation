@@ -32,7 +32,17 @@ jobs:
       - name: Validate sourced fact bank
         run: python scripts/validate_bank.py
       - name: Render HF0001 without publishing
-        run: python scripts/generate_short.py --script-id HF0001 --no-upload
+        shell: bash
+        run: |
+          mkdir -p output
+          set +e
+          python scripts/generate_short.py --script-id HF0001 --no-upload 2>&1 | tee output/run.log
+          status=${PIPESTATUS[0]}
+          if [[ $status -ne 0 ]]; then
+            reason=$(tail -n 1 output/run.log | tr '%' '_' | tr '\r\n' ' ')
+            echo "::error title=HF0001 render failed::$reason"
+          fi
+          exit "$status"
       - name: Upload rendered test artifact
         if: always()
         uses: actions/upload-artifact@v4
