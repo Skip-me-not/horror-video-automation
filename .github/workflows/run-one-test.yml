@@ -1,0 +1,43 @@
+name: One-time HF0001 render test
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/run-one-test.yml
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      TTS_PROVIDER: edge
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install render dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Validate sourced fact bank
+        run: python scripts/validate_bank.py
+      - name: Render HF0001 without publishing
+        run: python scripts/generate_short.py --script-id HF0001 --no-upload
+      - name: Upload rendered test artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: HF0001-render-test-${{ github.run_id }}
+          path: output/
+          retention-days: 2
+          if-no-files-found: warn
