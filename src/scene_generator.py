@@ -21,6 +21,22 @@ def _keywords(text: str) -> list[str]:
 
 
 class SceneGenerator:
+    def generate_incident(self, incident: dict[str, object]) -> list[dict[str, object]]:
+        narration = f"{incident['hook']} {incident['script']}"
+        sentences = _sentences(narration)
+        queries = list(incident.get("visual_queries", []))
+        scenes: list[dict[str, object]] = []
+        for index, sentence in enumerate(sentences, 1):
+            query = str(queries[(index - 1) % len(queries)])
+            prompt = (
+                f"{query}, {incident.get('date')}, {incident.get('location')}, "
+                "dark factual documentary reconstruction, desaturated black and cold blue, deep shadows, "
+                "subtle analog grain, ominous realistic lighting, vertical 9:16, no text, no gore"
+            )
+            scenes.append({"scene_id": index, "incident_id": incident["id"], "narration": sentence,
+                           "visual_prompt": prompt, "keywords": _keywords(query), "duration": 5.0})
+        return scenes[:10]
+
     def generate_bundle(self, scripts: list[dict[str, object]]) -> list[dict[str, object]]:
         scenes: list[dict[str, object]] = []
         for index, script in enumerate(scripts, 1):

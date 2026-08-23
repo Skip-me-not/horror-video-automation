@@ -28,7 +28,10 @@ class ExistingMediaPipelineRenderer:
             narration = self.root / "output" / "narration.mp3"
             timing = self.root / "output" / "word-timings.json"
             timings = EdgeTTSNarrator(settings.tts_voice, settings.tts_rate).synthesize(job["story"], narration, timing)
-            SubtitleWriter().from_json(timing, self.root / "output" / "captions.ass")
+            SubtitleWriter().from_json(
+                timing, self.root / "output" / "captions.ass",
+                emphasis_terms=[str(value) for value in job.get("important_terms", [])],
+            )
             duration = audio_duration(narration)
             (self.root / "output" / "voice-report.json").write_text(json.dumps({
                 "provider": "edge", "seed": None, "chunks": 1,

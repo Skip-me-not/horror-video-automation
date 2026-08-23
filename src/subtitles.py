@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -32,7 +33,8 @@ def _chunk(items: list[dict[str, Any]], size: int = 3) -> list[list[dict[str, An
 
 
 class SubtitleWriter:
-    def from_timings(self, timings: list[dict[str, Any]], output: Path) -> Path:
+    def from_timings(self, timings: list[dict[str, Any]], output: Path,
+                     emphasis_terms: list[str] | None = None) -> Path:
         if not timings:
             raise ValueError("word timings are empty")
         header = """[Script Info]
@@ -53,12 +55,27 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             start = float(words[0]["offset"])
             last = words[-1]
             end = float(last["offset"]) + float(last.get("duration", 0.2))
-            text = " ".join(str(word["text"]) for word in words).upper()
-            styled = r"{\fad(35,70)\fscx103\fscy103}" + _escape(text)
+            terms = {
+                token.casefold() for phrase in (emphasis_terms or [])
+                for token in re.findall(r"[A-Za-z0-9]+", phrase)
+                if len(token) > 2
+            }
+            rendered: list[str] = []
+            for word in words:
+                value = str(word["text"]).upper()
+                normalized = re.sub(r"[^A-Za-z0-9]", "", value).casefold()
+                if normalized in terms or any(character.isdigit() for character in normalized):
+                    rendered.append(r"{\c&H000000FF&}" + _escape(value) + r"{\c&H00FFFFFF&}")
+                else:
+                    rendered.append(_escape(value))
+            styled = r"{\fad(35,70)\fscx103\fscy103}" + " ".join(rendered)
             lines.append(f"Dialogue: 0,{_ass_time(start)},{_ass_time(end)},Main,,0,0,0,,{styled}\n")
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text("".join(lines), encoding="utf-8")
         return output
 
-    def from_json(self, timing_path: Path, output: Path) -> Path:
-        return self.from_timings(json.loads(timing_path.read_text(encoding="utf-8")), output)
+    def from_json(self, timing_path: Path, output: Path,
+                  emphasis_terms: list[str] | None = None) -> Path:
+        return self.from_timings(
+            json.loads(timing_path.read_text(encoding="utf-8")), output, emphasis_terms
+        )

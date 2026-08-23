@@ -1,10 +1,10 @@
-name: Generate and upload sourced horror fact Short
+name: Generate and upload strange incident Short
 
 on:
   workflow_dispatch:
     inputs:
       script_id:
-        description: Optional READY fact ID (for example HF0001)
+        description: Optional READY incident ID (for example EV0001)
         required: false
         default: ""
         type: string
@@ -81,7 +81,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/script_bank.json data/used_scripts.json data/generation_state.json data/performance.json
+          git add data/incident_bank.json data/script_bank.json data/used_scripts.json data/generation_state.json data/performance.json
           git commit -m "state: record uploaded horror Short [skip ci]"
           git push
       - name: Upload diagnostics on failure or no-upload run

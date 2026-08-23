@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.config import Settings
 from src.duplicate_detector import DuplicateDetector
+from src.incident_bank import IncidentBank
 from src.script_bank import EVIDENCE_TYPES, ScriptBank
 from src.script_judge import ScriptJudge
 
@@ -44,6 +45,12 @@ def main() -> int:
             found_evidence = {str(item.get("evidence_type")) for item in bank.items}
             if not found_evidence <= EVIDENCE_TYPES or len(found_evidence) < 2:
                 errors.append("500-item bank must contain at least two valid evidence types")
+        incident_path = settings.root / "data" / "incident_bank.json"
+        incident_count = 0
+        if incident_path.exists():
+            incidents = IncidentBank(incident_path, settings.used_path)
+            incident_count = len(incidents.items)
+            errors.extend(f"incident bank: {error}" for error in incidents.validate())
         if errors:
             for error in errors[:50]:
                 print(f"ERROR: {error}")
@@ -53,6 +60,8 @@ def main() -> int:
         sources = {str(item["source_url"]) for item in bank.items}
         evidence = {str(item["evidence_type"]) for item in bank.items}
         print(f"Fact bank valid: {len(bank.items)} scripts, {len(sources)} sources, {len(counts)} categories, {len(evidence)} evidence types, {sum(1 for i in bank.items if i['status'] == 'ready')} READY.")
+        if incident_count:
+            print(f"Production incident bank valid: {incident_count} documented strange events.")
         return 0
     except (ValueError, OSError) as exc:
         print(f"Bank validation failed: {exc}", file=sys.stderr)

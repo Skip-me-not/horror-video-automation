@@ -16,7 +16,7 @@ def main() -> int:
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--dry-run", action="store_true", help="Select and plan only; never render or upload.")
     mode.add_argument("--no-upload", action="store_true", help="Render and validate without publishing.")
-    parser.add_argument("--script-id", help="Use a specific READY fact script, such as HF0001.")
+    parser.add_argument("--script-id", help="Use a specific READY incident, such as EV0001.")
     parser.add_argument("--reserve-only", action="store_true", help="Persist a selection without rendering.")
     args = parser.parse_args()
     try:
