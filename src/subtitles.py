@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 from typing import Any
 
@@ -18,7 +17,7 @@ def _escape(text: str) -> str:
     return text.replace("\\", r"\\").replace("{", r"\{").replace("}", r"\}")
 
 
-def _chunk(items: list[dict[str, Any]], size: int = 4) -> list[list[dict[str, Any]]]:
+def _chunk(items: list[dict[str, Any]], size: int = 3) -> list[list[dict[str, Any]]]:
     chunks: list[list[dict[str, Any]]] = []
     current: list[dict[str, Any]] = []
     for item in items:
@@ -44,7 +43,7 @@ WrapStyle: 2
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Main,DejaVu Sans,68,&H00FFFFFF,&H0000D7FF,&H00101010,&H80000000,-1,0,0,0,100,100,0,0,1,5,1,2,80,80,390,1
+Style: Main,DejaVu Sans,86,&H00FFFFFF,&H00FFFFFF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,7,2,5,70,70,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -54,12 +53,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
             start = float(words[0]["offset"])
             last = words[-1]
             end = float(last["offset"]) + float(last.get("duration", 0.2))
-            text = " ".join(str(word["text"]) for word in words)
-            emphasis = re.sub(
-                r"\b(behind|inside|dead|camera|door|voice|me|tomorrow)\b",
-                r"{\\c&H00D7FF&}\1{\\c&HFFFFFF&}", text, flags=re.IGNORECASE,
-            )
-            lines.append(f"Dialogue: 0,{_ass_time(start)},{_ass_time(end)},Main,,0,0,0,,{_escape(emphasis)}\n")
+            text = " ".join(str(word["text"]) for word in words).upper()
+            styled = r"{\fad(35,70)\fscx103\fscy103}" + _escape(text)
+            lines.append(f"Dialogue: 0,{_ass_time(start)},{_ass_time(end)},Main,,0,0,0,,{styled}\n")
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text("".join(lines), encoding="utf-8")
         return output

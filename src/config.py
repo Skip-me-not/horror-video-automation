@@ -36,7 +36,7 @@ class Settings:
     hook_similarity_threshold: float = 0.84
     story_similarity_threshold: float = 0.76
     tts_voice: str = "en-US-AndrewMultilingualNeural"
-    tts_rate: str = "-8%"
+    tts_rate: str = "+12%"
     visual_provider: str = "auto"
     upload_privacy: str = "public"
 
@@ -56,7 +56,7 @@ class Settings:
             hook_similarity_threshold=_float("HOOK_SIMILARITY_THRESHOLD", 0.84),
             story_similarity_threshold=_float("STORY_SIMILARITY_THRESHOLD", 0.76),
             tts_voice=os.getenv("EDGE_TTS_VOICE", "en-US-AndrewMultilingualNeural"),
-            tts_rate=os.getenv("EDGE_TTS_RATE", "-8%"),
+            tts_rate=os.getenv("EDGE_TTS_RATE", "+12%"),
             visual_provider=os.getenv("VISUAL_PROVIDER", "auto"),
             upload_privacy=os.getenv("YOUTUBE_PRIVACY_STATUS", "public"),
         )

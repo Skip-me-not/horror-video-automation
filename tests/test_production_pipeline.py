@@ -9,6 +9,7 @@ import pytest
 from src.config import Settings
 from src.duplicate_detector import DuplicateDetector, normalize, similarity
 from src.fact_source_provider import normalize_loc_result
+from src.fact_bundle import build_narration
 from src.metadata_generator import MetadataGenerator
 from src.pipeline import HorrorShortPipeline
 from src.script_bank import REQUIRED_FIELDS, ScriptBank, atomic_write_json
@@ -89,6 +90,24 @@ def test_mark_used_is_the_only_status_transition(tmp_path: Path) -> None:
     assert json.loads(settings.used_path.read_text(encoding="utf-8"))[0]["id"] == "HF0001"
     with pytest.raises(ValueError, match="not READY"):
         bank.mark_used("HF0001", "second")
+
+
+def test_five_fact_bundle_is_fast_and_numbered() -> None:
+    scripts = [ready_script(f"HF{index:04d}") for index in range(1, 6)]
+    narration = build_narration(scripts)
+    assert narration.startswith("5 horror facts you weren't supposed to know.")
+    assert all(f"Fact {word}." in narration for word in ("one", "two", "three", "four", "five"))
+    assert len(narration.split()) <= 125
+
+
+def test_mark_used_many_records_every_fact(tmp_path: Path) -> None:
+    settings = settings_for(tmp_path)
+    scripts = [ready_script(f"HF{index:04d}") for index in range(1, 6)]
+    atomic_write_json(settings.bank_path, scripts)
+    bank = ScriptBank(settings.bank_path, settings.used_path)
+    bank.mark_used_many([str(item["id"]) for item in scripts], "bundle-video")
+    assert all(item["status"] == "used" for item in bank.items)
+    assert len(json.loads(settings.used_path.read_text(encoding="utf-8"))) == 5
 
 
 def test_selection_prefers_category_not_recently_used(tmp_path: Path) -> None:

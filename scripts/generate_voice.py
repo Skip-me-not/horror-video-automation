@@ -173,7 +173,7 @@ def write_captions(
             "",
             "[V4+ Styles]",
             "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
-            f"Style: Caption,DejaVu Sans,{int(config['caption_font_size'])},&H00FFFFFF,&H003C3CFF,&HE0000000,&H90000000,-1,0,0,0,100,100,0,0,1,6,2,2,80,80,{int(config['caption_margin_vertical'])},1",
+            f"Style: Caption,DejaVu Sans,{int(config['caption_font_size'])},&H00FFFFFF,&H00FFFFFF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,7,2,5,80,80,{int(config['caption_margin_vertical'])},1",
             "",
             "[Events]",
             "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",

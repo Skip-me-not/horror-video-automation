@@ -21,6 +21,20 @@ def _keywords(text: str) -> list[str]:
 
 
 class SceneGenerator:
+    def generate_bundle(self, scripts: list[dict[str, object]]) -> list[dict[str, object]]:
+        scenes: list[dict[str, object]] = []
+        for index, script in enumerate(scripts, 1):
+            keys = _keywords(f"{script.get('source_title')} {script.get('script')}")
+            prompt = (
+                f"{script.get('source_title')}, {script.get('category')}, {' '.join(keys[:5])}, "
+                "ominous black and white documentary reconstruction, unsettling close-up, analog film grain, "
+                "deep black background, cold blue shadows, vertical 9:16, no text, no gore"
+            )
+            scenes.append({"scene_id": index, "fact_id": script["id"],
+                           "narration": str(script.get("script", "")),
+                           "visual_prompt": prompt, "keywords": keys, "duration": 6.0})
+        return scenes
+
     def generate(self, script: dict[str, object]) -> list[dict[str, object]]:
         parts = _sentences(str(script["script"]))
         scene_count = min(8, max(4, math.ceil(len(parts) / 1.5)))

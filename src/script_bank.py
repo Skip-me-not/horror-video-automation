@@ -86,6 +86,57 @@ class ScriptBank:
         diverse = [item for item in ready if counts.get(str(item.get("category")), 0) == lowest]
         return (rng or random.SystemRandom()).choice(diverse)
 
+    def select_unused_many(self, count: int = 5, rng: random.Random | None = None,
+                           first_id: str | None = None) -> list[dict[str, object]]:
+        if count < 1:
+            raise ValueError("count must be positive")
+        used = self._load(self.used_path, [])
+        used_ids = {str(item.get("id")) for item in used} if isinstance(used, list) else set()
+        ready = [item for item in self.ready() if str(item.get("id")) not in used_ids]
+        selected: list[dict[str, object]] = []
+        if first_id:
+            first = self.get(first_id)
+            if first not in ready:
+                raise ValueError(f"script {first_id} is not READY")
+            selected.append(first)
+            ready.remove(first)
+        # Reference summaries are actual folklore/creature topics. Prefer them over
+        # loosely related archive search results when assembling a rapid fact list.
+        preferred = [item for item in ready if item.get("evidence_type") != "archival_record"]
+        pool = preferred if len(preferred) >= max(0, count - len(selected)) else ready
+        chooser = rng or random.SystemRandom()
+        while pool and len(selected) < count:
+            category_counts = Counter(str(item.get("category")) for item in selected)
+            lowest = min(category_counts.get(str(item.get("category")), 0) for item in pool)
+            candidates = [item for item in pool if category_counts.get(str(item.get("category")), 0) == lowest]
+            chosen = chooser.choice(candidates)
+            selected.append(chosen)
+            pool.remove(chosen)
+        return selected
+
+    def mark_used_many(self, script_ids: Iterable[str], youtube_video_id: str) -> list[dict[str, object]]:
+        ids = list(dict.fromkeys(script_ids))
+        if not ids:
+            raise ValueError("at least one script ID is required")
+        if not youtube_video_id.strip():
+            raise ValueError("youtube_video_id is required")
+        items = [self.get(script_id) for script_id in ids]
+        if any(item.get("status") != "ready" for item in items):
+            raise ValueError("all bundled scripts must be READY")
+        used_at = utc_now()
+        used = self._load(self.used_path, [])
+        if not isinstance(used, list):
+            raise ValueError("used_scripts.json must be a JSON array")
+        for item in items:
+            item["status"] = "used"
+            item["used_at"] = used_at
+            item["youtube_video_id"] = youtube_video_id
+            used.append({"id": item["id"], "category": item.get("category"),
+                         "used_at": used_at, "youtube_video_id": youtube_video_id})
+        atomic_write_json(self.used_path, used)
+        self.save()
+        return items
+
     def mark_used(self, script_id: str, youtube_video_id: str) -> dict[str, object]:
         if not youtube_video_id.strip():
             raise ValueError("youtube_video_id is required")

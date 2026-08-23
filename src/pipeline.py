@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import Settings
+from .fact_bundle import build_narration
 from .metadata_generator import MetadataGenerator
 from .quality_check import VideoQualityChecker
 from .renderer import ExistingMediaPipelineRenderer
@@ -34,44 +35,63 @@ class HorrorShortPipeline:
 
     def reserve(self, script_id: str | None = None, *, persist: bool = True) -> dict[str, object]:
         state = self._state()
-        pending = state.get("pending_script_id")
-        if pending:
+        pending_ids = state.get("pending_script_ids") or ([state.get("pending_script_id")] if state.get("pending_script_id") else [])
+        if pending_ids:
             try:
-                script = self.bank.get(str(pending))
-                if script.get("status") == "ready":
-                    return self._prepare(script, state)
+                scripts = [self.bank.get(str(value)) for value in pending_ids]
+                if scripts and all(script.get("status") == "ready" for script in scripts):
+                    return self._prepare(scripts, state)
             except KeyError:
                 pass
-        script = self.bank.get(script_id) if script_id else self.bank.select_unused()
-        if script.get("status") != "ready":
-            raise ValueError(f"script {script['id']} is not READY")
+        scripts = self.bank.select_unused_many(5, first_id=script_id)
+        if not scripts:
+            raise RuntimeError("no unused READY scripts remain")
         state.update({
-            "pending_script_id": script["id"],
-            "pending_job_id": f"hs-{script['id'].lower()}-{uuid.uuid4().hex[:8]}",
+            "pending_script_id": scripts[0]["id"],
+            "pending_script_ids": [script["id"] for script in scripts],
+            "pending_job_id": f"hs-{str(scripts[0]['id']).lower()}-{uuid.uuid4().hex[:8]}",
             "reserved_at": utc_now(),
             "stage": "reserved",
         })
         if persist:
             atomic_write_json(self.settings.state_path, state)
-        return self._prepare(script, state)
+        return self._prepare(scripts, state)
 
-    def _prepare(self, script: dict[str, object], state: dict[str, Any]) -> dict[str, object]:
+    def _prepare(self, scripts: list[dict[str, object]], state: dict[str, Any]) -> dict[str, object]:
+        script = scripts[0]
         metadata = self.metadata_generator.generate(script)
+        metadata["title"] = f"{len(scripts)} Horror Facts You Weren't Supposed to Know"
+        source_lines = "\n".join(
+            (f"Source: {item['source_url']} ({item['source_title']})" if index == 1
+             else f"Source {index}: {item['source_url']} ({item['source_title']})")
+            for index, item in enumerate(scripts, 1)
+        )
+        metadata["description"] = (
+            f"{len(scripts)} documented horror and folklore facts, presented as reported beliefs—not paranormal proof.\n\n"
+            f"Sources:\n{source_lines}"
+        )
         errors = self.metadata_generator.validate(metadata)
         if errors:
             raise ValueError("metadata invalid: " + "; ".join(errors))
-        scenes = self.scene_generator.generate(script)
+        scenes = self.scene_generator.generate_bundle(scripts)
+        story = build_narration(scripts)
+        intro_query = (
+            "dark room of vintage CRT televisions showing static, blood red HORROR FACTS title, "
+            "analog VHS interference, black background, vertical 9:16"
+        )
+        background_queries = [intro_query, *[scene["visual_prompt"] for scene in scenes for _ in range(2)]]
         job = {
             "job_id": state.get("pending_job_id") or f"hs-{str(script['id']).lower()}",
             "script_id": script["id"],
+            "script_ids": [item["id"] for item in scripts],
             "title": metadata["title"],
-            "story": script["script"],
+            "story": story,
             "description": metadata["description"] + "\n\n" + " ".join(metadata["hashtags"]),
             "tags": [str(tag).lstrip("#") for tag in metadata["hashtags"]] + [str(script["category"]).lower()],
             "genre": script["category"],
             "background_file": "dark-corridor.png",
             "background_query": scenes[0]["visual_prompt"],
-            "background_queries": [scene["visual_prompt"] for scene in scenes],
+            "background_queries": background_queries,
             "ambience_file": "",
             "thumbnail_file": "",
             "watermark_text": "",
@@ -81,17 +101,20 @@ class HorrorShortPipeline:
         self.settings.output_dir.mkdir(parents=True, exist_ok=True)
         atomic_write_json(self.settings.output_dir / "job.json", job)
         atomic_write_json(self.settings.output_dir / "pipeline-plan.json", {
-            "script": script, "metadata": metadata, "scenes": scenes, "job": job,
+            "scripts": scripts, "script": script, "metadata": metadata, "scenes": scenes, "job": job,
         })
         return job
 
     def run(self, *, dry_run: bool = False, no_upload: bool = False,
             script_id: str | None = None) -> dict[str, object]:
         job = self.reserve(script_id, persist=not dry_run)
-        script = self.bank.get(str(job["script_id"]))
+        scripts = [self.bank.get(str(value)) for value in job.get("script_ids", [job["script_id"]])]
+        script = scripts[0]
         plan = json.loads((self.settings.output_dir / "pipeline-plan.json").read_text(encoding="utf-8"))
         if dry_run:
-            return {"status": "dry-run", "script_id": script["id"], "plan": str(self.settings.output_dir / "pipeline-plan.json")}
+            return {"status": "dry-run", "script_id": script["id"],
+                    "script_ids": [item["id"] for item in scripts],
+                    "plan": str(self.settings.output_dir / "pipeline-plan.json")}
         state = self._state()
         state["stage"] = "rendering"
         atomic_write_json(self.settings.state_path, state)
@@ -110,17 +133,19 @@ class HorrorShortPipeline:
             if no_upload:
                 state["stage"] = "rendered_no_upload"
                 atomic_write_json(self.settings.state_path, state)
-                return {"status": "rendered", "script_id": script["id"], "video": str(video)}
+                return {"status": "rendered", "script_id": script["id"],
+                        "script_ids": [item["id"] for item in scripts], "video": str(video)}
             state["stage"] = "uploading"
             atomic_write_json(self.settings.state_path, state)
             result = upload_video(video, job, self.settings.root, self.settings.upload_privacy)
             video_id = str(result.get("youtube_video_id", ""))
             if not video_id:
                 raise RuntimeError("YouTube upload returned no video ID")
-            self.bank.mark_used(str(script["id"]), video_id)
+            self.bank.mark_used_many([str(item["id"]) for item in scripts], video_id)
             state.update({
-                "stage": "complete", "pending_script_id": None, "pending_job_id": None,
-                "last_success": {"script_id": script["id"], "youtube_video_id": video_id, "completed_at": utc_now()},
+                "stage": "complete", "pending_script_id": None, "pending_script_ids": [], "pending_job_id": None,
+                "last_success": {"script_id": script["id"], "script_ids": [item["id"] for item in scripts],
+                                 "youtube_video_id": video_id, "completed_at": utc_now()},
             })
             atomic_write_json(self.settings.state_path, state)
             return result
