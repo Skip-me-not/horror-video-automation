@@ -24,4 +24,17 @@ def test_important_caption_terms_are_red(tmp_path):
     content = output.read_text(encoding="utf-8")
     assert r"{\c&H000000FF&}1959" in content
     assert r"{\c&H000000FF&}NINE" in content
-    assert "Style: Main,DejaVu Sans,86" in content
+    assert "WrapStyle: 0" in content
+    assert "Style: Main,DejaVu Sans,68" in content
+    assert ",5,120,120,0,1" in content
+
+
+def test_long_caption_uses_smaller_font(tmp_path):
+    timings = [
+        {"text": "UNEXPLAINED", "offset": 0.0, "duration": 0.3},
+        {"text": "DISAPPEARANCE", "offset": 0.3, "duration": 0.4},
+    ]
+    output = tmp_path / "captions.ass"
+    SubtitleWriter().from_timings(timings, output)
+    content = output.read_text(encoding="utf-8")
+    assert r"\fs50" in content

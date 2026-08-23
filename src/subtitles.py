@@ -32,6 +32,19 @@ def _chunk(items: list[dict[str, Any]], size: int = 3) -> list[list[dict[str, An
     return chunks
 
 
+def _font_size(words: list[dict[str, Any]]) -> int:
+    """Keep captions inside a 1080px portrait safe area, even for long words."""
+    characters = len(" ".join(str(word.get("text", "")) for word in words))
+    longest_word = max((len(str(word.get("text", ""))) for word in words), default=0)
+    if characters >= 25 or longest_word > 14:
+        return 50
+    if characters > 20 or longest_word > 11:
+        return 56
+    if characters > 15:
+        return 62
+    return 68
+
+
 class SubtitleWriter:
     def from_timings(self, timings: list[dict[str, Any]], output: Path,
                      emphasis_terms: list[str] | None = None) -> Path:
@@ -41,11 +54,11 @@ class SubtitleWriter:
 ScriptType: v4.00+
 PlayResX: 1080
 PlayResY: 1920
-WrapStyle: 2
+WrapStyle: 0
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Main,DejaVu Sans,86,&H00FFFFFF,&H00FFFFFF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,7,2,5,70,70,0,1
+Style: Main,DejaVu Sans,68,&H00FFFFFF,&H00FFFFFF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,5,1,5,120,120,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -68,7 +81,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                     rendered.append(r"{\c&H000000FF&}" + _escape(value) + r"{\c&H00FFFFFF&}")
                 else:
                     rendered.append(_escape(value))
-            styled = r"{\fad(35,70)\fscx103\fscy103}" + " ".join(rendered)
+            # The explicit size is a final guard for unusually long names/dates.
+            # libass can now wrap at the 120px safe margins because WrapStyle is 0.
+            styled = rf"{{\fad(35,70)\fs{_font_size(words)}}}" + " ".join(rendered)
             lines.append(f"Dialogue: 0,{_ass_time(start)},{_ass_time(end)},Main,,0,0,0,,{styled}\n")
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text("".join(lines), encoding="utf-8")
