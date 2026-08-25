@@ -4,14 +4,14 @@
   "pending_job_id": null,
   "stage": "complete",
   "last_success": {
-    "script_id": "EV0011",
+    "script_id": "EV0018",
     "script_ids": [
-      "EV0011"
+      "EV0018"
     ],
-    "youtube_video_id": "TrsYBR30jE4",
-    "completed_at": "2026-08-24T15:28:44+00:00"
+    "youtube_video_id": "Vrn83DLIu7w",
+    "completed_at": "2026-08-25T04:07:45+00:00"
   },
-  "reserved_at": "2026-08-24T15:26:02+00:00",
+  "reserved_at": "2026-08-25T04:05:00+00:00",
   "pending_incident_id": null,
   "pending_script_ids": []
 }
