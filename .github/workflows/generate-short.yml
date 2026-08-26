@@ -18,10 +18,7 @@ on:
         required: true
         default: false
         type: boolean
-  schedule:
-    # GitHub cron is UTC. These are 08:00 and 20:00 in Myanmar (UTC+06:30).
-    - cron: "30 1 * * *"
-    - cron: "30 13 * * *"
+# Legacy documented-incident generator retained for manual use only.
 
 permissions:
   contents: write

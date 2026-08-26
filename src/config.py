@@ -68,3 +68,34 @@ class Settings:
             raise ValueError("MAX_GENERATION_RETRIES must be positive")
         if self.upload_privacy not in {"public", "private", "unlisted"}:
             raise ValueError("YOUTUBE_PRIVACY_STATUS is invalid")
+
+
+@dataclass(frozen=True)
+class InteractiveSettings:
+    root: Path = ROOT
+    history_path: Path = ROOT / "data" / "history.json"
+    width: int = 1080
+    height: int = 1920
+    fps: int = 30
+    min_duration: float = 15.0
+    max_duration: float = 30.0
+    history_limit: int = 100
+    privacy: str = "private"
+
+    @classmethod
+    def from_env(cls, root: Path | None = None) -> "InteractiveSettings":
+        base = (root or ROOT).resolve()
+        settings = cls(
+            root=base,
+            history_path=Path(os.getenv("INTERACTIVE_HISTORY_PATH", base / "data/history.json")),
+            width=_int("VIDEO_WIDTH", 1080),
+            height=_int("VIDEO_HEIGHT", 1920),
+            fps=_int("VIDEO_FPS", 30),
+            min_duration=_float("MIN_DURATION", 15.0),
+            max_duration=_float("MAX_DURATION", 30.0),
+            history_limit=_int("HISTORY_LIMIT", 100),
+            privacy=os.getenv("YOUTUBE_PRIVACY_STATUS", "private"),
+        )
+        if settings.privacy not in {"private", "unlisted", "public"}:
+            raise ValueError("YOUTUBE_PRIVACY_STATUS must be private, unlisted, or public")
+        return settings

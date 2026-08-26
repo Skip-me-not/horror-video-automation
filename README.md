@@ -1,69 +1,69 @@
-# Automated Strange Incident Shorts
+# Automated Interactive Horror Shorts
 
-An unattended English YouTube Shorts pipeline that explains **one documented strange incident per video**. Each Short opens with a direct hook, reconstructs the event in chronological order, distinguishes confirmed evidence from disputed claims, and links its source.
+This repository generates retention-focused interactive horror mini-games, renders them as validated
+1080x1920 YouTube Shorts, and can upload them through the official YouTube Data API. The scheduled
+pipeline runs entirely on GitHub Actions; no always-on local computer or paid media API is required.
 
-## Evidence policy
+## What it generates
 
-Every Short clearly separates two claims:
+Six game formats are included: `choose_door`, `find_ghost`, `spot_change`, `escape_room`,
+`safe_object`, and `moving_entity`. Every run first creates validated `game.json`, then builds a
+15–30 second timeline with an immediate hook, interaction, countdown, reveal, outcome, and replay cue.
+Visuals, fog, shadows, noise, doors, objects, entities, music, heartbeat, ticks, and impacts are
+generated locally from Python, Pillow, and FFmpeg.
 
-- The archive verifies that an account, performance, belief, interview, or folklore record exists.
-- The archive does **not** prove that a supernatural explanation is true.
+The default YouTube privacy is **private**. Set the repository variable `YOUTUBE_PRIVACY_STATUS` to
+`unlisted` or `public` only after a private upload has been reviewed successfully.
 
-Entries use `oral_history`, `folklore_record`, `archival_record`, or `reference_summary`. Titles never use unsupported “TRUE STORY” claims. The description includes the direct URL, rights note, evidence label, and verification caveat.
+## Test locally
 
-## Production incident bank
-
-`data/incident_bank.json` is the production idea bank. Every `EV` entry contains a hook, a 45–110 word explanation, date, location, source, red-emphasis terms, and at least four event-specific dark visual searches. The older 500-item `data/script_bank.json` remains as a research archive and is not selected while the incident bank exists.
-
-Validate both banks with:
-
-```bash
-python scripts/build_script_bank.py --target 500 --refresh-sources
-python scripts/validate_bank.py
-```
-
-The builder uses Library of Congress archive metadata plus attributed English Wikipedia reference summaries from horror/folklore categories. It caches metadata in `data/fact_sources.json` and writes scripts to `data/script_bank.json`. IDs run from `HF0001` to `HF0500`. Each script is 60–100 words and has a unique direct source URL. Wikipedia-derived entries are labeled `reference_summary`, not primary evidence.
-
-The incident scripts do not claim that legends or paranormal explanations are proven. They state what was recorded, what investigators concluded, and what remains uncertain.
-
-## Run
-
-```bash
-python scripts/generate_short.py --dry-run
-python scripts/generate_short.py --no-upload
-python scripts/generate_short.py
-python scripts/generate_short.py --dry-run --script-id EV0001
-```
-
-`--dry-run` changes no state. `--no-upload` renders without publishing or marking an incident used. Failures leave the incident `ready`.
-
-## Visuals and audio
-
-Each incident becomes 4–10 event-specific dark documentary scenes. Captions use bold white text, red emphasis for names/dates/evidence, and a subtly blurred dark band behind the text. The media layer can use licensed local assets, Pexels, Pixabay, Wikimedia Commons, and Internet Archive; arbitrary YouTube, film, and television footage is never downloaded.
-
-Original creepy ambience, music, and sparse SFX are generated while narration remains dominant. Optional stock keys:
-
-```text
-PEXELS_API_KEY
-PIXABAY_API_KEY
-```
-
-## YouTube and GitHub Actions
-
-Publishing needs `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and `YOUTUBE_REFRESH_TOKEN` with YouTube upload scope. Never commit credentials.
-
-- `build-bank.yml` manually refreshes and validates the sourced fact bank.
-- `generate-short.yml` runs manually or at 08:00 and 20:00 Myanmar time (`01:30` and `13:30` UTC).
-- Successful uploads update the bank and state files.
-- A shared concurrency group prevents simultaneous state writes.
-
-Scheduled GitHub jobs are best-effort and can start several minutes late.
-
-## Requirements and tests
-
-Python 3.11+, FFmpeg/ffprobe, dependencies from `requirements.txt`, and outbound access for source refresh, edge-tts, stock APIs, and upload.
+Install Python 3.11+, FFmpeg/ffprobe, and dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
-python -m pytest -q
+python -m src.main --no-upload
+python -m src.main --game choose_door --seed 1234 --no-upload
 ```
+
+Outputs are written to `output/`, including `short.mp4`, `game.json`, `metadata.json`, validation,
+render logs, and the upload log. A video is never uploaded unless rendering and ffprobe validation pass.
+
+## YouTube OAuth setup
+
+1. Create a Google Cloud project.
+2. Enable **YouTube Data API v3**.
+3. Configure an OAuth consent screen and add your YouTube account as a test user if the app is in testing.
+4. Create an OAuth client of type **Desktop app** and download its JSON file.
+5. Run `python tools/get_refresh_token.py path/to/client_secret.json` once and approve the account.
+6. In GitHub, open **Settings → Secrets and variables → Actions** and create these repository secrets:
+   `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and `YOUTUBE_REFRESH_TOKEN`.
+
+Never commit the client JSON, access token, refresh token, or secret. The uploader refreshes its access
+token on every run and fails clearly without regenerating the video when authentication is invalid.
+
+## GitHub Actions
+
+Use **Actions → Interactive Horror Shorts → Run workflow**. Keep `upload` disabled to render and validate
+without publishing. Enable it only for a deliberate manual private-upload test.
+
+After setup, `.github/workflows/horror-shorts.yml` runs at these Myanmar times:
+
+- 07:00 (`00:30 UTC`)
+- 12:00 (`05:30 UTC`)
+- 15:00 (`08:30 UTC`)
+- 19:00 (`12:30 UTC`)
+
+Scheduled runs upload automatically, initially as private videos. Concurrency prevents overlapping
+uploads. Successful uploads are appended to the last-100 `data/history.json` records and committed back
+to the repository. SHA-256 duplicate detection blocks upload of an identical rendered file.
+
+The older documented-incident workflow remains available for manual use but has no schedule.
+
+## Reliability rules
+
+- Game generation retries up to twice, then uses a deterministic local fallback.
+- Rendering retries once.
+- Authentication failure stops before upload and never triggers regeneration.
+- Transient YouTube 5xx failures use resumable upload retries with exponential backoff.
+- Validation requires 1080x1920, 30 FPS, H.264, AAC, 15–30 seconds, and a non-trivial file size.
+- Actions artifacts retain the video, game, metadata, validation, and logs for three days.

@@ -1,3 +1,3 @@
-# Sound effects
+# Optional sound effects
 
-Place only original, user-provided, or appropriately licensed sound effects here. The default pipeline generates sparse effects programmatically and does not require downloaded audio.
+Place licensed ticks, impacts, doors, glitches, or whispers here. The default generator synthesizes its own effects.

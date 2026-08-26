@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "game_types": ["choose_door", "find_ghost", "spot_change", "escape_room", "safe_object", "moving_entity"],
+  "safe_area": {"left": 90, "right": 250, "top": 180, "bottom": 350},
+  "palette": {"background": "#08090d", "text": "#f5f5f5", "danger": "#dc1f2e", "accent": "#d7b35c"}
+}

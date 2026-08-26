@@ -4,6 +4,9 @@ __pycache__/
 .pytest_cache/
 .test-deps/
 .codex-test-deps/
+.interactive-test-deps/
+.local-test-deps/
+.interactive-basetemp*/
 .test-tools/
 .test-tmp*/
 .coverage

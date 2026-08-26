@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 import re
+from typing import Any
 
 
 VISUAL_STYLE = (
@@ -76,3 +77,35 @@ class SceneGenerator:
                 "duration": round(per_scene, 3),
             })
         return scenes
+
+
+class InteractiveSceneGenerator:
+    """Turns validated game JSON into a deterministic retention timeline."""
+
+    def generate_game(self, game: dict[str, Any]) -> list[dict[str, Any]]:
+        countdown = int(game["countdown_seconds"])
+        phases: list[dict[str, Any]] = [
+            {"kind": "hook", "duration": 2.0, "text": game["hook"]},
+            {"kind": "challenge", "duration": 4.0, "text": self._instruction(game)},
+        ]
+        phases.extend(
+            {"kind": "countdown", "duration": 1.0, "text": str(number), "number": number}
+            for number in range(countdown, 0, -1)
+        )
+        phases.extend([
+            {"kind": "reveal", "duration": 4.0, "text": game["reveal"]},
+            {"kind": "outcome", "duration": 3.0, "text": game["success_text"]},
+            {"kind": "loop", "duration": 2.0, "text": "WATCH AGAIN. DID YOU SEE IT?"},
+        ])
+        return phases
+
+    @staticmethod
+    def _instruction(game: dict[str, Any]) -> str:
+        return {
+            "choose_door": "PICK A DOOR",
+            "find_ghost": "FIND THE GHOST",
+            "spot_change": "MEMORIZE THE ROOM",
+            "escape_room": "WHERE DO YOU HIDE?",
+            "safe_object": "PICK THE SAFE OBJECT",
+            "moving_entity": "WHICH ENTITY MOVED?",
+        }[game["game_type"]]
