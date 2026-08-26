@@ -307,9 +307,9 @@
       "remote expedition through dead forest",
       "asteroid airburst above dark forest"
     ],
-    "status": "ready",
-    "used_at": null,
-    "youtube_video_id": null
+    "status": "used",
+    "used_at": "2026-08-26T16:42:41+00:00",
+    "youtube_video_id": "yNYueUui9-I"
   },
   {
     "id": "EV0013",
