@@ -85,17 +85,18 @@ class InteractiveSceneGenerator:
     def generate_game(self, game: dict[str, Any]) -> list[dict[str, Any]]:
         countdown = int(game["countdown_seconds"])
         phases: list[dict[str, Any]] = [
-            {"kind": "hook", "duration": 2.0, "text": game["hook"]},
-            {"kind": "challenge", "duration": 4.0, "text": self._instruction(game)},
+            {"kind": "hook", "duration": 0.65, "text": game["cold_open"]},
+            {"kind": "challenge", "duration": 2.35, "text": game["hook"]},
+            {"kind": "choice", "duration": 2.0, "text": self._instruction(game)},
         ]
         phases.extend(
             {"kind": "countdown", "duration": 1.0, "text": str(number), "number": number}
             for number in range(countdown, 0, -1)
         )
         phases.extend([
-            {"kind": "reveal", "duration": 4.0, "text": game["reveal"]},
-            {"kind": "outcome", "duration": 3.0, "text": game["success_text"]},
-            {"kind": "loop", "duration": 2.0, "text": "WATCH AGAIN. DID YOU SEE IT?"},
+            {"kind": "reveal", "duration": 2.5, "text": game["reveal"]},
+            {"kind": "outcome", "duration": 2.0, "text": game["failure_text"]},
+            {"kind": "loop", "duration": 1.5, "text": game["loop_text"]},
         ])
         return phases
 

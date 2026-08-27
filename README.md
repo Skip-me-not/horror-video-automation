@@ -8,9 +8,23 @@ pipeline runs entirely on GitHub Actions; no always-on local computer or paid me
 
 Six game formats are included: `choose_door`, `find_ghost`, `spot_change`, `escape_room`,
 `safe_object`, and `moving_entity`. Every run first creates validated `game.json`, then builds a
-15–30 second timeline with an immediate hook, interaction, countdown, reveal, outcome, and replay cue.
-Visuals, fog, shadows, noise, doors, objects, entities, music, heartbeat, ticks, and impacts are
-generated locally from Python, Pillow, and FFmpeg.
+15–16 second timeline with an immediate hook, interaction, countdown, reveal, outcome, and replay cue.
+Three original, project-bound cinematic plates cover the hospital, haunted-room, and CCTV formats;
+Pillow and FFmpeg add safe-area UI, controlled camera drift, scanlines, shadows, and reveal markers.
+The local sound engine builds stereo drones, accelerating heartbeat, countdown ticks, risers, and
+payoff impacts without depending on a copyrighted music library.
+
+## Retention design
+
+- The visual threat and cold-open appear in the first 0.65 seconds.
+- The viewer receives a concrete choice or search task within three seconds.
+- A four- or five-second countdown creates active participation and rising time pressure.
+- The answer is shown visibly on the scene instead of being explained only by text.
+- The final 1.5 seconds reconnect to the opening and invite a replay without a long outro.
+- Game-specific titles and comment prompts ask for a simple answer such as A/B or 01/02/03.
+
+These choices improve the inputs YouTube exposes for evaluation—chose-to-view, watch duration,
+percentage viewed, rewatches, and engagement—but no implementation can guarantee a particular view count.
 
 The default YouTube privacy is **private**. Set the repository variable `YOUTUBE_PRIVACY_STATUS` to
 `unlisted` or `public` only after a private upload has been reviewed successfully.

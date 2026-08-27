@@ -92,118 +92,200 @@ class InteractiveRenderer:
                 return font
         return self._font(36)
 
-    def _background(self, game: dict[str, Any], rng: random.Random):
-        from PIL import Image, ImageDraw
+    def _background(self, game: dict[str, Any], rng: random.Random, kind: str):
+        from PIL import Image, ImageDraw, ImageEnhance, ImageOps
         from .effects import horror_texture, scanlines
-        image = Image.new("RGBA", (self.width, self.height), (5, 7, 11, 255))
-        draw = ImageDraw.Draw(image)
-        # A readable corridor/room built from perspective planes.
-        draw.polygon([(0, 0), (self.width, 0), (790, 1420), (280, 1420)], fill=(13, 17, 24, 255))
-        draw.polygon([(0, 0), (280, 1420), (0, self.height)], fill=(7, 10, 15, 255))
-        draw.polygon([(self.width, 0), (790, 1420), (self.width, self.height)], fill=(8, 10, 14, 255))
-        draw.polygon([(280, 1420), (790, 1420), (self.width, self.height), (0, self.height)], fill=(10, 11, 14, 255))
-        for y in range(360, 1440, 220):
-            shade = 20 + (y // 220) % 2 * 7
-            draw.line((60, y, 1020, y + 30), fill=(shade, shade + 3, shade + 8, 150), width=5)
-        draw.rectangle((350, 500, 710, 1420), fill=(4, 5, 8, 255), outline=(52, 57, 65, 255), width=10)
-        draw.ellipse((425, 630, 635, 900), fill=(0, 0, 0, 70))
-        image = horror_texture(image, rng)
+        asset_names = {
+            "choose_door": "hospital-two-doors.png",
+            "find_ghost": "haunted-bedroom.png", "spot_change": "haunted-bedroom.png",
+            "escape_room": "haunted-bedroom.png", "safe_object": "haunted-bedroom.png",
+            "moving_entity": "cctv-parking-entities.png",
+        }
+        asset = self.root / "assets" / "interactive" / asset_names[game["game_type"]]
+        if asset.is_file():
+            source = Image.open(asset).convert("RGB")
+            image = ImageOps.fit(source, (self.width, self.height), method=Image.Resampling.LANCZOS).convert("RGBA")
+            image = ImageEnhance.Contrast(image).enhance(1.12)
+            image = ImageEnhance.Color(image).enhance(0.82)
+        else:
+            image = Image.new("RGBA", (self.width, self.height), (5, 7, 11, 255))
+            draw = ImageDraw.Draw(image)
+            draw.polygon([(0, 0), (self.width, 0), (790, 1500), (280, 1500)], fill=(13, 17, 24, 255))
+            draw.rectangle((260, 520, 480, 1450), fill=(3, 4, 7), outline=(70, 74, 82), width=8)
+            draw.rectangle((590, 520, 810, 1450), fill=(3, 4, 7), outline=(70, 74, 82), width=8)
+            image = horror_texture(image, rng)
+        tint = Image.new("RGBA", image.size, (0, 0, 0, 0))
+        tint_draw = ImageDraw.Draw(tint)
+        if kind == "hook":
+            tint_draw.rectangle((0, 0, self.width, self.height), fill=(95, 0, 8, 52))
+        elif kind in {"outcome", "loop"}:
+            tint_draw.rectangle((0, 0, self.width, self.height), fill=(0, 0, 0, 88))
+        else:
+            tint_draw.rectangle((0, 0, self.width, self.height), fill=(0, 8, 18, 25))
+        image = Image.alpha_composite(image, tint)
         if game["game_type"] == "moving_entity":
-            image = scanlines(image)
+            image = scanlines(image, opacity=34)
         return image
 
+    @staticmethod
+    def _wrap(text: str, limit: int = 23) -> str:
+        words = text.split()
+        lines: list[str] = []
+        current: list[str] = []
+        for word in words:
+            candidate = " ".join(current + [word])
+            if current and len(candidate) > limit:
+                lines.append(" ".join(current))
+                current = [word]
+            else:
+                current.append(word)
+        if current:
+            lines.append(" ".join(current))
+        return "\n".join(lines[:3])
+
     def _center_text(self, draw: Any, text: str, y: int, size: int = 92,
-                     fill: str = "#f5f5f5", stroke: int = 5) -> None:
+                     fill: str = "#f5f5f5", stroke: int = 5, wrap: int = 23) -> None:
+        rendered = self._wrap(text, wrap)
         maximum = self.SAFE_RIGHT - self.SAFE_LEFT
-        font = self._fitted_font(draw, text, maximum, size)
-        draw.text((self.CENTER_X, y), text, font=font, fill=fill, stroke_width=stroke,
-                  stroke_fill="#080808", anchor="mm", align="center")
+        font = self._font(size)
+        while font.size > 36:
+            box = draw.multiline_textbbox((0, 0), rendered, font=font, stroke_width=stroke,
+                                          spacing=6, align="center")
+            if box[2] - box[0] <= maximum:
+                break
+            font = self._font(font.size - 4)
+        draw.multiline_text((self.CENTER_X, y), rendered, font=font, fill=fill, stroke_width=stroke,
+                            stroke_fill="#050506", anchor="mm", align="center", spacing=6)
+
+    def _draw_hud(self, draw: Any, game: dict[str, Any], phase: dict[str, Any], index: int,
+                  total_phases: int) -> None:
+        label_font = self._font(27)
+        draw.text((self.SAFE_LEFT, 85), f"NIGHT TEST  //  LEVEL {int(game['level']):02d}",
+                  font=label_font, fill="#d7d9de", stroke_width=2, stroke_fill="#050505")
+        bar_y = 138
+        draw.rounded_rectangle((self.SAFE_LEFT, bar_y, self.SAFE_RIGHT, bar_y + 10), radius=5, fill=(50, 53, 60, 190))
+        progress = max(18, round((self.SAFE_RIGHT - self.SAFE_LEFT) * (index + 1) / total_phases))
+        draw.rounded_rectangle((self.SAFE_LEFT, bar_y, self.SAFE_LEFT + progress, bar_y + 10),
+                               radius=5, fill="#d81f32")
+        if phase["kind"] == "countdown":
+            number = int(phase["number"])
+            draw.ellipse((self.CENTER_X - 76, 195, self.CENTER_X + 76, 347),
+                         fill=(3, 4, 7, 205), outline="#e3263c", width=8)
+            font = self._font(105)
+            draw.text((self.CENTER_X, 267), str(number), font=font, fill="#ffffff", anchor="mm",
+                      stroke_width=6, stroke_fill="#050505")
 
     def _draw_choices(self, draw: Any, game: dict[str, Any], reveal: bool = False) -> None:
         choices = game.get("choices", [])
-        count = len(choices)
-        gap = 28
-        total_width = self.SAFE_RIGHT - self.SAFE_LEFT
-        card_width = (total_width - gap * (count - 1)) // count
-        top, bottom = 700, 1160
-        for index, choice in enumerate(choices):
-            left = self.SAFE_LEFT + index * (card_width + gap)
-            right = left + card_width
+        positions = (260, 700) if len(choices) == 2 else (175, 475, 775)
+        y = 1125 if len(choices) == 2 else 1210
+        for choice, x in zip(choices, positions):
             correct = reveal and choice["id"] == game.get("correct_choice")
-            outline = "#d7b35c" if correct else "#9fa5ad"
-            draw.rounded_rectangle((left, top, right, bottom), radius=18, fill="#11141a",
-                                   outline=outline, width=12 if correct else 5)
-            font = self._font(72)
-            draw.text(((left + right) // 2, top + 95), f"[{choice['id']}]", font=font,
-                      fill=outline, anchor="mm", stroke_width=3, stroke_fill="#050505")
-            label_font = self._fitted_font(draw, str(choice["label"]), card_width - 30, 50)
-            draw.text(((left + right) // 2, bottom - 90), str(choice["label"]), font=label_font,
-                      fill="#f5f5f5", anchor="mm", stroke_width=3, stroke_fill="#050505")
-            if game["game_type"] in {"choose_door", "escape_room"}:
-                draw.rectangle((left + 32, top + 155, right - 32, bottom - 165), fill="#08090c",
-                               outline="#343841", width=5)
-                draw.ellipse((right - 62, (top + bottom) // 2, right - 45, (top + bottom) // 2 + 17),
-                             fill="#b89b55")
+            wrong = reveal and not correct
+            outline = "#e5bd55" if correct else ("#8b2430" if wrong else "#e8e9eb")
+            fill = (20, 21, 26, 225 if reveal else 185)
+            left, right = x - 125, x + 125
+            draw.rounded_rectangle((left, y - 58, right, y + 58), radius=24, fill=fill,
+                                   outline=outline, width=10 if correct else 4)
+            label = f"{choice['id']}  {choice['label']}"
+            font = self._fitted_font(draw, label, 220, 47)
+            draw.text((x, y), label, font=font, fill="#ffffff" if not wrong else "#a9a9ad",
+                      anchor="mm", stroke_width=3, stroke_fill="#050505")
+            if correct:
+                safe_font = self._font(29)
+                draw.text((x, y - 88), "SAFE", font=safe_font, fill="#e5bd55", anchor="mm",
+                          stroke_width=3, stroke_fill="#050505")
 
-    def _draw_search(self, draw: Any, game: dict[str, Any], reveal: bool) -> None:
+    def _draw_search(self, draw: Any, game: dict[str, Any], reveal: bool, changed: bool = False) -> None:
         x, y = (int(value) for value in game["target_position"])
-        if game["game_type"] == "moving_entity":
-            for index, entity_x in enumerate((250, 475, 700), 1):
-                draw.ellipse((entity_x - 60, 760, entity_x + 60, 900), fill="#101218", outline="#626772")
-                draw.polygon([(entity_x - 85, 1240), (entity_x - 55, 900), (entity_x + 55, 900),
-                              (entity_x + 85, 1240)], fill="#090a0d", outline="#555a63")
-                self._center_text(draw, f"0{index}", 1310, 48, "#aeb3bb", 3)
-            x, y = 700, 820
-        elif game["game_type"] == "spot_change":
-            draw.ellipse((x - 100, y - 100, x + 100, y + 100), fill="#11141a", outline="#8d9198", width=7)
-            hand_angle = -45 if reveal else -90
-            end_x = x + (70 if hand_angle == -45 else 0)
-            end_y = y - 70
-            draw.line((x, y, end_x, end_y), fill="#d8d8d8", width=8)
+        game_type = game["game_type"]
+        if game_type == "moving_entity":
+            for label, label_x in (("01", 265), ("02", 580), ("03", 870)):
+                draw.rounded_rectangle((label_x - 48, 1090, label_x + 48, 1144), radius=12,
+                                       fill=(0, 0, 0, 180), outline="#8ea29a", width=3)
+                draw.text((label_x, 1117), label, font=self._font(30), fill="#d9e4df", anchor="mm")
+        elif game_type == "spot_change":
+            if changed or reveal:
+                if "MIRROR" in game["target"]:
+                    draw.line((x - 38, y - 90, x + 25, y + 75), fill="#dce8ef", width=7)
+                    draw.line((x + 20, y - 60, x - 45, y + 15), fill="#dce8ef", width=5)
+                elif "DOLL" in game["target"]:
+                    draw.ellipse((x - 35, y - 18, x - 12, y + 5), fill="#e4d9bd")
+                    draw.ellipse((x + 12, y - 18, x + 35, y + 5), fill="#e4d9bd")
+                else:
+                    draw.arc((x - 80, y - 90, x + 80, y + 90), 200, 340, fill="#dce8ef", width=8)
+        elif game_type == "find_ghost":
+            # The target is already embedded in the cinematic bedroom plate.
+            # Only add barely visible eye reflections before the answer, then a
+            # clean locator on reveal; this avoids a pasted-on graphic look.
+            if not reveal:
+                draw.ellipse((x - 12, y - 7, x - 3, y + 1), fill=(140, 150, 150, 65))
+                draw.ellipse((x + 3, y - 7, x + 12, y + 1), fill=(140, 150, 150, 65))
         else:
-            # The face is visible but deliberately low contrast during the search.
-            shade = "#444851" if reveal else "#171a20"
-            draw.ellipse((x - 55, y - 75, x + 55, y + 75), fill=shade)
-            draw.ellipse((x - 28, y - 22, x - 10, y - 4), fill="#ddd7c6" if reveal else "#262a32")
-            draw.ellipse((x + 10, y - 22, x + 28, y - 4), fill="#ddd7c6" if reveal else "#262a32")
+            shade = "#b9b5aa" if reveal else "#262a31"
+            draw.ellipse((x - 48, y - 66, x + 48, y + 66), fill=shade, outline="#090a0c")
+            eye = "#160408" if reveal else "#343942"
+            draw.ellipse((x - 26, y - 16, x - 8, y + 2), fill=eye)
+            draw.ellipse((x + 8, y - 16, x + 26, y + 2), fill=eye)
         if reveal:
-            draw.ellipse((x - 125, y - 135, x + 125, y + 135), outline="#dc1f2e", width=14)
+            draw.ellipse((x - 112, y - 122, x + 112, y + 122), outline="#e3263c", width=13)
+            draw.line((x - 150, y, x - 115, y), fill="#e3263c", width=8)
+            draw.line((x + 115, y, x + 150, y), fill="#e3263c", width=8)
 
-    def _frame(self, game: dict[str, Any], phase: dict[str, Any], index: int):
-        from PIL import ImageDraw
-        rng = random.Random(f"{game['setting']}:{game['monster']}:{index}")
-        image = self._background(game, rng)
-        draw = ImageDraw.Draw(image)
+    def _frame(self, game: dict[str, Any], phase: dict[str, Any], index: int, total_phases: int):
+        from PIL import Image, ImageDraw, ImageFilter
         kind = phase["kind"]
-        draw.rounded_rectangle((self.SAFE_LEFT - 20, self.SAFE_TOP - 40, self.SAFE_RIGHT + 20, 430),
-                               radius=28, fill=(0, 0, 0, 150))
+        rng = random.Random(f"{game['setting']}:{game['monster']}:{index}")
+        image = self._background(game, rng, kind)
+        draw = ImageDraw.Draw(image, "RGBA")
+        self._draw_hud(draw, game, phase, index, total_phases)
+        # Localized text scrims protect readability without hiding the cinematic scene.
+        if kind in {"hook", "challenge", "choice", "reveal", "outcome", "loop"}:
+            draw.rounded_rectangle((self.SAFE_LEFT - 20, 175, self.SAFE_RIGHT + 20, 480),
+                                   radius=30, fill=(0, 0, 0, 145))
         if kind == "hook":
-            self._center_text(draw, str(phase["text"]), 285, 94, "#dc1f2e")
-            self._center_text(draw, "CHOOSE NOW", 650, 68)
+            self._center_text(draw, str(phase["text"]), 305, 102, "#ffffff", 7, 20)
+            # A blurred, half-hidden threat interrupts the first frame while the
+            # cinematic scene remains visible. The tiny eyes reward a second look.
+            threat = Image.new("RGBA", image.size, (0, 0, 0, 0))
+            threat_draw = ImageDraw.Draw(threat, "RGBA")
+            threat_draw.ellipse((self.CENTER_X - 72, 720, self.CENTER_X + 72, 1010),
+                                fill=(0, 0, 0, 135))
+            threat = threat.filter(ImageFilter.GaussianBlur(24))
+            image = Image.alpha_composite(image, threat)
+            draw = ImageDraw.Draw(image, "RGBA")
+            eye_y = 827
+            draw.ellipse((self.CENTER_X - 46, eye_y, self.CENTER_X - 19, eye_y + 15),
+                         fill=(239, 31, 48, 215))
+            draw.ellipse((self.CENTER_X + 19, eye_y, self.CENTER_X + 46, eye_y + 15),
+                         fill=(239, 31, 48, 215))
         elif kind == "challenge":
-            self._center_text(draw, str(phase["text"]), 270, 84)
+            self._center_text(draw, str(phase["text"]), 310, 78, "#ffffff", 6, 22)
+            self._center_text(draw, "LOCK YOUR ANSWER", 525, 39, "#e3263c", 3, 28)
+        elif kind == "choice":
+            self._center_text(draw, str(phase["text"]), 300, 88, "#ffffff", 6, 24)
+            self._center_text(draw, "NO CHANGING YOUR MIND", 440, 37, "#e3263c", 3, 30)
         elif kind == "countdown":
-            self._center_text(draw, "TIME IS RUNNING OUT", 265, 62, "#dc1f2e")
-            self._center_text(draw, str(phase["number"]), 520, 210, "#f5f5f5", 9)
+            self._center_text(draw, "LOCK IT IN", 410, 48, "#ffffff", 4, 24)
         elif kind == "reveal":
-            self._center_text(draw, "ANSWER", 245, 68, "#dc1f2e")
-            self._center_text(draw, str(phase["text"]), 1420, 62)
+            self._center_text(draw, "ANSWER", 245, 45, "#e3263c", 4, 20)
+            self._center_text(draw, str(phase["text"]), 360, 64, "#ffffff", 5, 24)
         elif kind == "outcome":
-            self._center_text(draw, str(phase["text"]), 520, 112, "#d7b35c")
-            self._center_text(draw, "DID YOU CHOOSE RIGHT?", 720, 58)
+            self._center_text(draw, str(phase["text"]), 320, 68, "#ffffff", 6, 22)
+            self._center_text(draw, "DID YOU SURVIVE?", 525, 49, "#e5bd55", 4, 24)
         else:
-            self._center_text(draw, str(phase["text"]), 530, 66, "#dc1f2e")
-        if game["game_type"] in {"choose_door", "escape_room", "safe_object"} and kind in {
-            "challenge", "countdown", "reveal"
-        }:
+            self._center_text(draw, str(phase["text"]), 320, 67, "#ffffff", 6, 22)
+            self._center_text(draw, "LOOK AGAIN", 530, 45, "#e3263c", 4, 24)
+
+        interactive_kinds = {"challenge", "choice", "countdown", "reveal"}
+        if game["game_type"] in {"choose_door", "escape_room", "safe_object"} and kind in interactive_kinds:
             self._draw_choices(draw, game, reveal=kind == "reveal")
-        elif game["game_type"] in {"find_ghost", "spot_change", "moving_entity"} and kind in {
-            "challenge", "countdown", "reveal"
-        }:
-            self._draw_search(draw, game, reveal=kind == "reveal")
-        footer_font = self._font(30)
-        draw.text((self.SAFE_LEFT, self.SAFE_BOTTOM), game["setting"].upper(), font=footer_font,
-                  fill="#737985", stroke_width=2, stroke_fill="#050505")
+        elif game["game_type"] in {"find_ghost", "spot_change", "moving_entity"} and kind in interactive_kinds:
+            changed = game["game_type"] == "spot_change" and kind == "countdown" and int(phase.get("number", 9)) <= 2
+            self._draw_search(draw, game, reveal=kind == "reveal", changed=changed)
+        if kind == "loop":
+            draw.ellipse((self.CENTER_X - 52, 793, self.CENTER_X - 20, 808), fill=(225, 26, 43, 215))
+            draw.ellipse((self.CENTER_X + 20, 793, self.CENTER_X + 52, 808), fill=(225, 26, 43, 215))
         return image.convert("RGB")
 
     def render(self, game: dict[str, Any], phases: list[dict[str, Any]], destination: Path) -> dict[str, Any]:
@@ -212,35 +294,52 @@ class InteractiveRenderer:
         work.mkdir(parents=True, exist_ok=True)
         frame_paths: list[Path] = []
         for index, phase in enumerate(phases):
-            path = work / f"frame-{index:02d}.png"
-            self._frame(game, phase, index).save(path, optimize=True)
+            path = work / f"frame-{index:02d}.jpg"
+            self._frame(game, phase, index, len(phases)).save(path, quality=94, optimize=True)
             frame_paths.append(path)
-        timeline = work / "timeline.txt"
-        entries: list[str] = []
-        for path, phase in zip(frame_paths, phases):
-            escaped = path.resolve().as_posix().replace("'", "'\\''")
-            entries.extend((f"file '{escaped}'", f"duration {float(phase['duration']):.3f}"))
-        entries.append(f"file '{frame_paths[-1].resolve().as_posix()}'")
-        timeline.write_text("\n".join(entries) + "\n", encoding="utf-8")
         total = sum(float(phase["duration"]) for phase in phases)
-        countdown_start = sum(float(phase["duration"]) for phase in phases[:2])
+        countdown_index = next(index for index, phase in enumerate(phases) if phase["kind"] == "countdown")
+        countdown_start = sum(float(phase["duration"]) for phase in phases[:countdown_index])
         reveal_at = countdown_start + int(game["countdown_seconds"])
         audio = destination.parent / "interactive-audio.wav"
         InteractiveAudioGenerator().generate(audio, total, countdown_start,
                                              int(game["countdown_seconds"]), reveal_at,
                                              f"{game['setting']}:{game['hook']}")
         destination.parent.mkdir(parents=True, exist_ok=True)
-        command = [
-            self.ffmpeg, "-y", "-f", "concat", "-safe", "0", "-i", str(timeline),
-            "-i", str(audio), "-t", f"{total:.3f}",
-            "-vf", f"fps={self.fps},scale={self.width}:{self.height}:flags=lanczos,format=yuv420p",
-            "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-profile:v", "high",
-            "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", str(destination),
-        ]
+        command = [self.ffmpeg, "-y"]
+        for path, phase in zip(frame_paths, phases):
+            command.extend(["-loop", "1", "-framerate", str(self.fps), "-t",
+                            f"{float(phase['duration']):.3f}", "-i", str(path)])
+        command.extend(["-i", str(audio)])
+        filters: list[str] = []
+        video_labels: list[str] = []
+        scaled_width = self.width + 80
+        scaled_height = round(scaled_width * self.height / self.width)
+        for index, phase in enumerate(phases):
+            duration = float(phase["duration"])
+            amplitude = 16 if phase["kind"] in {"hook", "reveal"} else 6
+            frequency = 10.0 if phase["kind"] == "hook" else 2.2 + (index % 3) * 0.35
+            label = f"v{index}"
+            filters.append(
+                f"[{index}:v]scale={scaled_width}:{scaled_height}:flags=lanczos,"
+                f"crop={self.width}:{self.height}:"
+                f"x='(iw-ow)/2+{amplitude}*sin(t*{frequency})':"
+                f"y='(ih-oh)/2+{max(3, amplitude // 2)}*cos(t*{frequency * 0.83:.3f})',"
+                f"eq=contrast=1.08:saturation=0.86:brightness='0.012*sin(t*7)',"
+                f"fps={self.fps},trim=duration={duration:.3f},setpts=PTS-STARTPTS[{label}]"
+            )
+            video_labels.append(f"[{label}]")
+        filters.append("".join(video_labels) + f"concat=n={len(phases)}:v=1:a=0,format=yuv420p[vout]")
+        command.extend([
+            "-filter_complex", ";".join(filters), "-map", "[vout]", "-map", f"{len(phases)}:a",
+            "-t", f"{total:.3f}", "-c:v", "libx264", "-preset", "medium", "-crf", "19",
+            "-profile:v", "high", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
+            "-shortest", str(destination),
+        ])
         result = subprocess.run(command, cwd=self.root, capture_output=True, text=True)
         log = destination.parent / "render.log"
         log.write_text("$ " + " ".join(command) + "\n\n" + result.stdout + result.stderr, encoding="utf-8")
         if result.returncode:
             raise RuntimeError(f"FFmpeg render failed; see {log}")
-        return {"output_file": str(destination), "duration": total, "frames": len(frame_paths),
-                "render_log": str(log)}
+        return {"output_file": str(destination), "duration": total, "keyframes": len(frame_paths),
+                "motion_frames": round(total * self.fps), "render_log": str(log)}
