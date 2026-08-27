@@ -55,5 +55,21 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-27T19:29:25.924732+00:00",
+    "game_type": "spot_change",
+    "setting": "dark bedroom",
+    "hook": "ONE OBJECT WASN'T THERE BEFORE.",
+    "monster": "shadow creature",
+    "choices": [],
+    "correct_answer": "THE DOLL TURNED",
+    "ending": "THE DOLL TURNED",
+    "title": "Something Changed. Can You See It?",
+    "video_hash": "5b0313be484ed03abb95520b1c9264c61e72726cc33fe548a2a768a0b85b4313",
+    "youtube_video_id": "OkasBD-ZfF4",
+    "uploaded": true,
+    "seed": null,
+    "duplicate_skipped": false
   }
 ]
