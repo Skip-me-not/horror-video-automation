@@ -25,11 +25,15 @@ on:
         default: false
         type: boolean
   schedule:
-    # UTC equivalents of 07:00, 12:00, 15:00, and 19:00 Myanmar (UTC+06:30).
-    - cron: "30 0 * * *"
-    - cron: "30 5 * * *"
-    - cron: "30 8 * * *"
-    - cron: "30 12 * * *"
+    # GitHub supports IANA timezones, avoiding manual UTC conversion here.
+    - cron: "0 7 * * *"
+      timezone: "Asia/Yangon"
+    - cron: "0 12 * * *"
+      timezone: "Asia/Yangon"
+    - cron: "0 15 * * *"
+      timezone: "Asia/Yangon"
+    - cron: "0 19 * * *"
+      timezone: "Asia/Yangon"
 
 permissions:
   contents: write
