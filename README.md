@@ -64,11 +64,13 @@ token on every run and fails clearly without regenerating the video when authent
 Use **Actions → Interactive Horror Shorts → Run workflow**. Keep `upload` disabled to render and validate
 without publishing. Enable it only for a deliberate manual private-upload test.
 
-After setup, `.github/workflows/horror-shorts.yml` runs at these Myanmar times:
+After setup, `.github/workflows/horror-shorts.yml` targets US viewers four times daily. The IANA
+timezone automatically follows US daylight-saving changes:
 
-- 07:07 (`00:37 UTC`)
-- 12:07 (`05:37 UTC`)
-- 19:07 (`12:37 UTC`)
+- 16:07 Eastern / 13:07 Pacific
+- 19:07 Eastern / 16:07 Pacific
+- 22:07 Eastern / 19:07 Pacific
+- 01:07 Eastern / 22:07 Pacific
 
 Scheduled runs upload automatically, initially as private videos. Concurrency prevents overlapping
 uploads. Successful uploads are appended to the last-100 `data/history.json` records and committed back

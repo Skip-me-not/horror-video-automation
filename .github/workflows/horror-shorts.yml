@@ -27,12 +27,15 @@ on:
   schedule:
     # GitHub supports IANA timezones, avoiding manual UTC conversion here.
     # Avoid minute 0, when GitHub reports the highest scheduled-run load.
-    - cron: "7 7 * * *"
-      timezone: "Asia/Yangon"
-    - cron: "7 12 * * *"
-      timezone: "Asia/Yangon"
+    # Eastern slots span afternoon-to-late-evening on both US coasts.
+    - cron: "7 1 * * *"
+      timezone: "America/New_York"
+    - cron: "7 16 * * *"
+      timezone: "America/New_York"
     - cron: "7 19 * * *"
-      timezone: "Asia/Yangon"
+      timezone: "America/New_York"
+    - cron: "7 22 * * *"
+      timezone: "America/New_York"
 
 permissions:
   contents: write
