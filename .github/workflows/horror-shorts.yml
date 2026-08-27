@@ -26,13 +26,12 @@ on:
         type: boolean
   schedule:
     # GitHub supports IANA timezones, avoiding manual UTC conversion here.
-    - cron: "0 7 * * *"
+    # Avoid minute 0, when GitHub reports the highest scheduled-run load.
+    - cron: "7 7 * * *"
       timezone: "Asia/Yangon"
-    - cron: "0 12 * * *"
+    - cron: "7 12 * * *"
       timezone: "Asia/Yangon"
-    - cron: "0 15 * * *"
-      timezone: "Asia/Yangon"
-    - cron: "0 19 * * *"
+    - cron: "7 19 * * *"
       timezone: "Asia/Yangon"
 
 permissions:

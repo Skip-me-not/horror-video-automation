@@ -66,10 +66,9 @@ without publishing. Enable it only for a deliberate manual private-upload test.
 
 After setup, `.github/workflows/horror-shorts.yml` runs at these Myanmar times:
 
-- 07:00 (`00:30 UTC`)
-- 12:00 (`05:30 UTC`)
-- 15:00 (`08:30 UTC`)
-- 19:00 (`12:30 UTC`)
+- 07:07 (`00:37 UTC`)
+- 12:07 (`05:37 UTC`)
+- 19:07 (`12:37 UTC`)
 
 Scheduled runs upload automatically, initially as private videos. Concurrency prevents overlapping
 uploads. Successful uploads are appended to the last-100 `data/history.json` records and committed back
