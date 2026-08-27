@@ -32,17 +32,18 @@ class OriginalAmbienceGenerator:
 class InteractiveAudioGenerator:
     """Creates a copyright-safe cinematic tension arc with spatialized game cues."""
 
-    def generate(self, destination: Path, duration: float, countdown_start: float,
-                 countdown_seconds: int, reveal_at: float, seed: str,
+    def generate(self, destination: Path, duration: float, tick_times: list[float],
+                 reveal_times: list[float], seed: str,
                  sample_rate: int = 48000) -> Path:
         rng = random.Random(seed)
         destination.parent.mkdir(parents=True, exist_ok=True)
         phase = rng.random() * math.tau
         room_left = 0.0
         room_right = 0.0
-        tension_start = max(5.0, countdown_start - 25.0)
-        heartbeat_start = max(tension_start, countdown_start - 17.0)
-        metallic_cues = (6.2, 18.5, 30.0, max(34.0, countdown_start - 5.5))
+        metallic_cues = tuple(reveal + 2.35 for reveal in reveal_times[:-1])
+        tick_cursor = 0
+        reveal_cursor = 0
+        next_reveal_cursor = 0
         with wave.open(str(destination), "wb") as output:
             output.setnchannels(2)
             output.setsampwidth(2)
@@ -88,7 +89,11 @@ class InteractiveAudioGenerator:
                             left += bowed + shimmer
                             right += bowed * 0.45
 
-                tension = max(0.0, min(1.0, (t - tension_start) / max(0.1, reveal_at - tension_start)))
+                while next_reveal_cursor < len(reveal_times) and t >= reveal_times[next_reveal_cursor]:
+                    next_reveal_cursor += 1
+                next_reveal = (reveal_times[next_reveal_cursor]
+                               if next_reveal_cursor < len(reveal_times) else duration)
+                tension = max(0.0, min(1.0, 1.0 - (next_reveal - t) / 7.0))
                 if tension > 0:
                     high = math.sin(math.tau * (146 + 58 * tension) * t + phase) * 0.006 * tension
                     left += high
@@ -96,9 +101,9 @@ class InteractiveAudioGenerator:
 
                 # The heartbeat enters late, then accelerates naturally toward the
                 # answer. A softer second pulse gives it a recognisable lub-dub.
-                heart_progress = max(0.0, min(1.0, (t - heartbeat_start) /
-                                              max(0.1, reveal_at - heartbeat_start)))
-                if t >= heartbeat_start and t < reveal_at:
+                heartbeat_start = next_reveal - 5.0
+                heart_progress = max(0.0, min(1.0, (t - heartbeat_start) / 5.0))
+                if heartbeat_start <= t < next_reveal:
                     heartbeat_interval = 1.18 - 0.47 * heart_progress
                     heartbeat_phase = (t - heartbeat_start) % heartbeat_interval
                     beat = 0.0
@@ -111,8 +116,10 @@ class InteractiveAudioGenerator:
                     left += beat
                     right += beat * 0.92
 
-                for tick in range(countdown_seconds):
-                    tick_time = countdown_start + tick
+                while tick_cursor < len(tick_times) and t > tick_times[tick_cursor] + 0.09:
+                    tick_cursor += 1
+                if tick_cursor < len(tick_times):
+                    tick_time = tick_times[tick_cursor]
                     distance = t - tick_time
                     if 0 <= distance < 0.09:
                         tick_envelope = 1 - distance / 0.09
@@ -122,14 +129,18 @@ class InteractiveAudioGenerator:
                         ) * tick_envelope
                         left += tick_value
                         right += tick_value * 0.94
-                distance = t - reveal_at
+                while reveal_cursor < len(reveal_times) and t > reveal_times[reveal_cursor] + 4.5:
+                    reveal_cursor += 1
+                reveal_time = (reveal_times[reveal_cursor]
+                               if reveal_cursor < len(reveal_times) else duration + 10.0)
+                distance = t - reveal_time
                 if 0 <= distance < 1.4:
                     impact_envelope = math.exp(-distance * 2.4)
                     impact = math.sin(math.tau * (51 - 9 * distance) * distance) * 0.42 * impact_envelope
                     burst = (room_left + room_right) * 0.28 * math.exp(-distance * 8.0)
                     left += impact + burst
                     right += impact - burst * 0.45
-                aftershock = t - (reveal_at + 2.7)
+                aftershock = t - (reveal_time + 2.7)
                 if 0 <= aftershock < 1.8:
                     tail = math.sin(math.tau * 38 * aftershock) * 0.10 * math.exp(-aftershock * 2.0)
                     left += tail

@@ -18,16 +18,14 @@ def test_all_interactive_game_types_validate(game_type, tmp_path):
     path.write_text(json.dumps(hooks), encoding="utf-8")
     game = GameGenerator(path).generate(random.Random(123), game_type)
     validate_game(game)
+    assert len(game["rounds"]) == 5
     phases = InteractiveSceneGenerator().generate_game(game)
     assert phases[0]["kind"] == "hook"
     assert phases[0]["duration"] <= 1
-    assert phases[1]["kind"] == "challenge"
-    assert phases[2]["kind"] == "observe"
-    assert phases[3]["kind"] == "warning"
-    assert phases[4]["kind"] == "decision"
-    assert phases[5]["kind"] == "escalation"
-    assert any(item["kind"] == "countdown" for item in phases)
-    assert any(item["kind"] == "reveal" for item in phases)
+    assert sum(item["kind"] == "round_intro" for item in phases) == 5
+    assert sum(item["kind"] == "round_play" for item in phases) == 25
+    assert sum(item["kind"] == "round_reveal" for item in phases) == 5
+    assert sum(item["kind"] == "transition" for item in phases) == 4
     assert phases[-1]["kind"] == "loop"
     assert sum(item["duration"] for item in phases) == 60
 
@@ -50,4 +48,4 @@ def test_sha256_and_metadata(tmp_path):
     assert metadata["privacy_status"] == "private"
     assert metadata["category_id"] == "24"
     assert len(metadata["tags"]) <= 5
-    assert "A or B?" in metadata["description"]
+    assert "1, 2, 3, 4, or 5" in metadata["description"]

@@ -160,14 +160,16 @@ class InteractiveRenderer:
     def _draw_hud(self, draw: Any, game: dict[str, Any], phase: dict[str, Any], index: int,
                   total_phases: int) -> None:
         label_font = self._font(27)
-        draw.text((self.SAFE_LEFT, 85), f"NIGHT TEST  //  LEVEL {int(game['level']):02d}",
+        stage = phase.get("round_number")
+        label = f"ESCAPE CHAIN  //  STAGE {stage}/5" if stage else "ESCAPE CHAIN  //  FIVE ROOMS"
+        draw.text((self.SAFE_LEFT, 85), label,
                   font=label_font, fill="#d7d9de", stroke_width=2, stroke_fill="#050505")
         bar_y = 138
         draw.rounded_rectangle((self.SAFE_LEFT, bar_y, self.SAFE_RIGHT, bar_y + 10), radius=5, fill=(50, 53, 60, 190))
         progress = max(18, round((self.SAFE_RIGHT - self.SAFE_LEFT) * (index + 1) / total_phases))
         draw.rounded_rectangle((self.SAFE_LEFT, bar_y, self.SAFE_LEFT + progress, bar_y + 10),
                                radius=5, fill="#d81f32")
-        if phase["kind"] == "countdown":
+        if phase["kind"] in {"countdown", "round_play"} and "number" in phase:
             number = int(phase["number"])
             draw.ellipse((self.CENTER_X - 76, 195, self.CENTER_X + 76, 347),
                          fill=(3, 4, 7, 205), outline="#e3263c", width=8)
@@ -235,13 +237,14 @@ class InteractiveRenderer:
     def _frame(self, game: dict[str, Any], phase: dict[str, Any], index: int, total_phases: int):
         from PIL import Image, ImageDraw, ImageFilter
         kind = phase["kind"]
-        rng = random.Random(f"{game['setting']}:{game['monster']}:{index}")
-        image = self._background(game, rng, kind)
+        scene_game = phase.get("round", game)
+        rng = random.Random(f"{scene_game['setting']}:{scene_game['monster']}:{index}")
+        image = self._background(scene_game, rng, kind)
         draw = ImageDraw.Draw(image, "RGBA")
-        self._draw_hud(draw, game, phase, index, total_phases)
+        self._draw_hud(draw, scene_game, phase, index, total_phases)
         # Localized text scrims protect readability without hiding the cinematic scene.
-        if kind in {"hook", "challenge", "choice", "observe", "warning", "decision",
-                    "escalation", "reveal", "outcome", "loop"}:
+        if kind in {"hook", "round_intro", "round_play", "round_reveal", "transition",
+                    "outcome", "loop"}:
             draw.rounded_rectangle((self.SAFE_LEFT - 20, 175, self.SAFE_RIGHT + 20, 480),
                                    radius=30, fill=(0, 0, 0, 145))
         if kind == "hook":
@@ -260,6 +263,21 @@ class InteractiveRenderer:
                          fill=(239, 31, 48, 215))
             draw.ellipse((self.CENTER_X + 19, eye_y, self.CENTER_X + 46, eye_y + 15),
                          fill=(239, 31, 48, 215))
+        elif kind == "round_intro":
+            self._center_text(draw, f"STAGE {phase['round_number']}", 260, 46, "#e3263c", 4, 20)
+            self._center_text(draw, str(phase["text"]), 365, 78, "#ffffff", 6, 22)
+            self._center_text(draw, "SURVIVE TO UNLOCK THE NEXT ROOM", 505, 33, "#e5bd55", 3, 32)
+        elif kind == "round_play":
+            self._center_text(draw, str(phase["text"]), 315, 68, "#ffffff", 6, 23)
+            self._center_text(draw, str(scene_game["instruction"]), 465, 38, "#e3263c", 3, 28)
+        elif kind == "round_reveal":
+            self._center_text(draw, "CLEARED", 235, 43, "#e5bd55", 4, 20)
+            self._center_text(draw, str(scene_game["reveal"]), 335, 57, "#ffffff", 5, 25)
+            link = str(scene_game["linked_reveal"]).split(". ")[-1]
+            self._center_text(draw, link, 450, 34, "#e3263c", 3, 30)
+        elif kind == "transition":
+            self._center_text(draw, str(phase["text"]), 325, 65, "#ffffff", 6, 22)
+            self._center_text(draw, "KEEP GOING", 485, 40, "#e3263c", 3, 24)
         elif kind == "challenge":
             self._center_text(draw, str(phase["text"]), 310, 78, "#ffffff", 6, 22)
             self._center_text(draw, "LOCK YOUR ANSWER", 525, 39, "#e3263c", 3, 28)
@@ -287,13 +305,13 @@ class InteractiveRenderer:
             self._center_text(draw, str(phase["text"]), 320, 67, "#ffffff", 6, 22)
             self._center_text(draw, "LOOK AGAIN", 530, 45, "#e3263c", 4, 24)
 
-        interactive_kinds = {"challenge", "choice", "observe", "warning", "decision",
-                             "escalation", "countdown", "reveal"}
-        if game["game_type"] in {"choose_door", "escape_room", "safe_object"} and kind in interactive_kinds:
-            self._draw_choices(draw, game, reveal=kind == "reveal")
-        elif game["game_type"] in {"find_ghost", "spot_change", "moving_entity"} and kind in interactive_kinds:
-            changed = game["game_type"] == "spot_change" and kind == "countdown" and int(phase.get("number", 9)) <= 2
-            self._draw_search(draw, game, reveal=kind == "reveal", changed=changed)
+        interactive_kinds = {"round_intro", "round_play", "round_reveal"}
+        if scene_game["game_type"] in {"choose_door", "escape_room", "safe_object"} and kind in interactive_kinds:
+            self._draw_choices(draw, scene_game, reveal=kind == "round_reveal")
+        elif scene_game["game_type"] in {"find_ghost", "spot_change", "moving_entity"} and kind in interactive_kinds:
+            changed = (scene_game["game_type"] == "spot_change" and kind == "round_play"
+                       and int(phase.get("number", 9)) <= 2)
+            self._draw_search(draw, scene_game, reveal=kind == "round_reveal", changed=changed)
         if kind == "loop":
             draw.ellipse((self.CENTER_X - 52, 793, self.CENTER_X - 20, 808), fill=(225, 26, 43, 215))
             draw.ellipse((self.CENTER_X + 20, 793, self.CENTER_X + 52, 808), fill=(225, 26, 43, 215))
@@ -309,13 +327,19 @@ class InteractiveRenderer:
             self._frame(game, phase, index, len(phases)).save(path, quality=94, optimize=True)
             frame_paths.append(path)
         total = sum(float(phase["duration"]) for phase in phases)
-        countdown_index = next(index for index, phase in enumerate(phases) if phase["kind"] == "countdown")
-        countdown_start = sum(float(phase["duration"]) for phase in phases[:countdown_index])
-        reveal_at = countdown_start + int(game["countdown_seconds"])
+        elapsed = 0.0
+        tick_times: list[float] = []
+        reveal_times: list[float] = []
+        for phase in phases:
+            if phase["kind"] == "round_play":
+                tick_times.append(elapsed)
+            elif phase["kind"] == "round_reveal":
+                reveal_times.append(elapsed)
+            elapsed += float(phase["duration"])
         audio = destination.parent / "interactive-audio.wav"
-        InteractiveAudioGenerator().generate(audio, total, countdown_start,
-                                             int(game["countdown_seconds"]), reveal_at,
-                                             f"{game['setting']}:{game['hook']}")
+        InteractiveAudioGenerator().generate(
+            audio, total, tick_times, reveal_times, f"{game['setting']}:{game['hook']}"
+        )
         destination.parent.mkdir(parents=True, exist_ok=True)
         command = [self.ffmpeg, "-y"]
         for path, phase in zip(frame_paths, phases):
@@ -324,19 +348,12 @@ class InteractiveRenderer:
         command.extend(["-i", str(audio)])
         filters: list[str] = []
         video_labels: list[str] = []
-        scaled_width = self.width + 80
-        scaled_height = round(scaled_width * self.height / self.width)
         for index, phase in enumerate(phases):
             duration = float(phase["duration"])
-            amplitude = 16 if phase["kind"] in {"hook", "reveal"} else (9 if phase["kind"] in {"warning", "escalation"} else 6)
-            frequency = 10.0 if phase["kind"] == "hook" else 1.1 + (index % 3) * 0.22
             label = f"v{index}"
             filters.append(
-                f"[{index}:v]scale={scaled_width}:{scaled_height}:flags=lanczos,"
-                f"crop={self.width}:{self.height}:"
-                f"x='(iw-ow)/2+{amplitude}*sin(t*{frequency})':"
-                f"y='(ih-oh)/2+{max(3, amplitude // 2)}*cos(t*{frequency * 0.83:.3f})',"
-                f"eq=contrast=1.08:saturation=0.86:brightness='0.012*sin(t*7)',"
+                f"[{index}:v]scale={self.width}:{self.height}:flags=lanczos,"
+                "eq=contrast=1.08:saturation=0.86:brightness=-0.01,"
                 f"fps={self.fps},trim=duration={duration:.3f},setpts=PTS-STARTPTS[{label}]"
             )
             video_labels.append(f"[{label}]")
@@ -357,4 +374,4 @@ class InteractiveRenderer:
         if result.returncode:
             raise RuntimeError(f"FFmpeg render failed; see {log}")
         return {"output_file": str(destination), "duration": total, "keyframes": len(frame_paths),
-                "motion_frames": round(total * self.fps), "render_log": str(log)}
+                "motion_frames": 0, "hard_cuts": len(frame_paths) - 1, "render_log": str(log)}

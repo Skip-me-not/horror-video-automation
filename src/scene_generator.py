@@ -83,24 +83,26 @@ class InteractiveSceneGenerator:
     """Turns validated game JSON into a deterministic retention timeline."""
 
     def generate_game(self, game: dict[str, Any]) -> list[dict[str, Any]]:
-        countdown = int(game["countdown_seconds"])
-        observation_duration = 15.0 - countdown
         phases: list[dict[str, Any]] = [
             {"kind": "hook", "duration": 1.0, "text": game["cold_open"]},
-            {"kind": "challenge", "duration": 5.0, "text": game["hook"]},
-            {"kind": "observe", "duration": observation_duration, "text": self._instruction(game)},
-            {"kind": "warning", "duration": 8.0, "text": "LOOK AGAIN. SOMETHING IS WRONG."},
-            {"kind": "decision", "duration": 9.0, "text": "TRUST YOUR FIRST ANSWER."},
-            {"kind": "escalation", "duration": 8.0, "text": "FINAL CHANCE. LOCK IT IN."},
         ]
-        phases.extend(
-            {"kind": "countdown", "duration": 1.0, "text": str(number), "number": number}
-            for number in range(countdown, 0, -1)
-        )
+        for index, round_game in enumerate(game["rounds"], 1):
+            phase_base = {"round_number": index, "round": round_game}
+            phases.append({**phase_base, "kind": "round_intro", "duration": 2.0,
+                           "text": round_game["instruction"]})
+            phases.extend(
+                {**phase_base, "kind": "round_play", "duration": 1.0,
+                 "text": round_game["hook"], "number": number}
+                for number in range(5, 0, -1)
+            )
+            phases.append({**phase_base, "kind": "round_reveal", "duration": 2.0,
+                           "text": round_game["linked_reveal"]})
+            if index < 5:
+                phases.append({**phase_base, "kind": "transition", "duration": 2.0,
+                               "text": f"STAGE {index} CLEARED. ENTER STAGE {index + 1}."})
         phases.extend([
-            {"kind": "reveal", "duration": 6.0, "text": game["reveal"]},
-            {"kind": "outcome", "duration": 5.0, "text": game["failure_text"]},
-            {"kind": "loop", "duration": 3.0, "text": game["loop_text"]},
+            {"kind": "outcome", "duration": 4.0, "text": game["failure_text"]},
+            {"kind": "loop", "duration": 2.0, "text": game["loop_text"]},
         ])
         return phases
 

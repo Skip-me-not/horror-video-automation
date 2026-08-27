@@ -8,8 +8,8 @@ pipeline runs entirely on GitHub Actions; no always-on local computer or paid me
 
 Six game formats are included: `choose_door`, `find_ghost`, `spot_change`, `escape_room`,
 `safe_object`, and `moving_entity`. Every run first creates validated `game.json`, then builds a
-60-second timeline with an immediate hook, observation, escalating warnings, a final decision,
-countdown, reveal, outcome, and replay cue.
+60-second connected escape chain. A viewer must clear five different stages in order; every answer
+unlocks the next room, and the fifth answer ends the loop.
 Three original, project-bound cinematic plates cover the hospital, haunted-room, and CCTV formats;
 Pillow and FFmpeg add safe-area UI, controlled camera drift, scanlines, shadows, and reveal markers.
 The local sound engine builds stereo drones, accelerating heartbeat, countdown ticks, risers, and
@@ -18,10 +18,12 @@ payoff impacts without depending on a copyrighted music library.
 ## Retention design
 
 - The visual threat and cold-open appear in the first second.
-- The viewer receives a concrete choice or search task immediately after the five-second setup.
-- Observation, warning, decision, and escalation passes keep the full-minute puzzle structured.
-- A four- or five-second countdown creates active participation and rising time pressure.
-- The answer is shown visibly on the scene instead of being explained only by text.
+- The first stage begins after a one-second cold open.
+- Each stage has a two-second setup, a visible five-second countdown, and a two-second answer.
+- Four two-second transitions explicitly connect one successful answer to the next room.
+- The five-stage route mixes choices, visual searches, cursed objects, CCTV entities, and escape tests.
+- Every answer is marked directly on the scene instead of being explained only by text.
+- Frames stay fixed within a stage; pacing comes from countdown changes and hard scene cuts, not camera shake.
 - The final three seconds reconnect to the opening and invite a replay without a long outro.
 - Game-specific titles and comment prompts ask for a simple answer such as A/B or 01/02/03.
 

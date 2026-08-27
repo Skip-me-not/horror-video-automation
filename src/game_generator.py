@@ -7,6 +7,14 @@ from typing import Any
 
 
 GAME_TYPES = ("choose_door", "find_ghost", "spot_change", "escape_room", "safe_object", "moving_entity")
+CAMPAIGN_PATHS = {
+    "choose_door": ("choose_door", "find_ghost", "safe_object", "moving_entity", "escape_room"),
+    "find_ghost": ("find_ghost", "spot_change", "safe_object", "moving_entity", "choose_door"),
+    "spot_change": ("spot_change", "find_ghost", "safe_object", "moving_entity", "choose_door"),
+    "escape_room": ("escape_room", "choose_door", "find_ghost", "safe_object", "moving_entity"),
+    "safe_object": ("safe_object", "spot_change", "find_ghost", "moving_entity", "choose_door"),
+    "moving_entity": ("moving_entity", "find_ghost", "safe_object", "escape_room", "choose_door"),
+}
 SETTINGS_BY_GAME = {
     "choose_door": ("abandoned hospital", "hotel corridor", "underground tunnel"),
     "find_ghost": ("dark bedroom", "abandoned house", "old bathroom"),
@@ -39,6 +47,37 @@ class GameGenerator:
         return game
 
     def _build(self, game_type: str, rng: random.Random) -> dict[str, Any]:
+        rounds = [self._build_single(kind, rng) for kind in CAMPAIGN_PATHS[game_type]]
+        links = (
+            "THE NEXT ROOM UNLOCKED.",
+            "IT LEFT YOU A KEY.",
+            "THE KEY STARTED THE CAMERA.",
+            "IT POINTED TO THE FINAL EXIT.",
+            "YOU BROKE THE LOOP.",
+        )
+        instructions = {
+            "choose_door": "PICK THE EXIT",
+            "find_ghost": "FIND THE WATCHER",
+            "spot_change": "SPOT WHAT CHANGED",
+            "escape_room": "CHOOSE A HIDING PLACE",
+            "safe_object": "TAKE THE SAFE OBJECT",
+            "moving_entity": "IDENTIFY WHAT MOVED",
+        }
+        for index, (round_game, link) in enumerate(zip(rounds, links), 1):
+            round_game.update(stage=index, instruction=instructions[round_game["game_type"]],
+                              linked_reveal=f"{round_game['reveal']}. {link}")
+        campaign = rounds[0].copy()
+        campaign.update(
+            cold_open="FIVE ROOMS. ONE LIFE.",
+            hook="SURVIVE EACH TEST TO UNLOCK THE NEXT.",
+            reveal="ALL FIVE ROOMS CLEARED",
+            failure_text="HOW MANY ROOMS DID YOU SURVIVE?",
+            loop_text="REPLAY. CAN YOU CLEAR ALL FIVE?",
+            rounds=rounds,
+        )
+        return campaign
+
+    def _build_single(self, game_type: str, rng: random.Random) -> dict[str, Any]:
         setting = rng.choice(SETTINGS_BY_GAME[game_type])
         monster = rng.choice(MONSTERS)
         hook = rng.choice(self.hooks[game_type])
@@ -109,6 +148,11 @@ def validate_game(game: dict[str, Any]) -> None:
         raise ValueError(f"game JSON missing: {', '.join(sorted(missing))}")
     if game["game_type"] not in GAME_TYPES:
         raise ValueError("invalid game_type")
+    rounds = game.get("rounds")
+    if not isinstance(rounds, list) or len(rounds) != 5:
+        raise ValueError("campaign requires exactly five connected rounds")
+    if [int(item.get("stage", 0)) for item in rounds] != [1, 2, 3, 4, 5]:
+        raise ValueError("campaign stages must be ordered 1-5")
     if not 3 <= int(game["countdown_seconds"]) <= 6:
         raise ValueError("countdown_seconds must be 3-6")
     if game["game_type"] in {"choose_door", "escape_room", "safe_object"}:
