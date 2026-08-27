@@ -20,13 +20,16 @@ def test_all_interactive_game_types_validate(game_type, tmp_path):
     validate_game(game)
     phases = InteractiveSceneGenerator().generate_game(game)
     assert phases[0]["kind"] == "hook"
-    assert phases[0]["duration"] < 1
+    assert phases[0]["duration"] <= 1
     assert phases[1]["kind"] == "challenge"
-    assert sum(item["duration"] for item in phases[:2]) <= 3
+    assert phases[2]["kind"] == "observe"
+    assert phases[3]["kind"] == "warning"
+    assert phases[4]["kind"] == "decision"
+    assert phases[5]["kind"] == "escalation"
     assert any(item["kind"] == "countdown" for item in phases)
     assert any(item["kind"] == "reveal" for item in phases)
     assert phases[-1]["kind"] == "loop"
-    assert 15 <= sum(item["duration"] for item in phases) <= 16
+    assert sum(item["duration"] for item in phases) == 60
 
 
 def test_history_limits_and_detects_duplicate(tmp_path):

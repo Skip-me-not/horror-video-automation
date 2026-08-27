@@ -75,7 +75,7 @@ def run(game_type: str | None, seed: int | None, no_upload: bool) -> dict[str, A
     if render_error or render_report is None:
         raise RuntimeError(f"render failed after retry: {render_error}")
     validation = validate_video(video, settings.width, settings.height,
-                                settings.min_duration, settings.max_duration,
+                                59.5, 60.5,
                                 ffprobe=_ffprobe_binary(settings.root))
     _write_json(output / "validation.json", {
         "valid": validation.valid, "errors": validation.errors, "probe": validation.probe,

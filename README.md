@@ -8,7 +8,8 @@ pipeline runs entirely on GitHub Actions; no always-on local computer or paid me
 
 Six game formats are included: `choose_door`, `find_ghost`, `spot_change`, `escape_room`,
 `safe_object`, and `moving_entity`. Every run first creates validated `game.json`, then builds a
-15–16 second timeline with an immediate hook, interaction, countdown, reveal, outcome, and replay cue.
+60-second timeline with an immediate hook, observation, escalating warnings, a final decision,
+countdown, reveal, outcome, and replay cue.
 Three original, project-bound cinematic plates cover the hospital, haunted-room, and CCTV formats;
 Pillow and FFmpeg add safe-area UI, controlled camera drift, scanlines, shadows, and reveal markers.
 The local sound engine builds stereo drones, accelerating heartbeat, countdown ticks, risers, and
@@ -16,11 +17,12 @@ payoff impacts without depending on a copyrighted music library.
 
 ## Retention design
 
-- The visual threat and cold-open appear in the first 0.65 seconds.
-- The viewer receives a concrete choice or search task within three seconds.
+- The visual threat and cold-open appear in the first second.
+- The viewer receives a concrete choice or search task immediately after the five-second setup.
+- Observation, warning, decision, and escalation passes keep the full-minute puzzle structured.
 - A four- or five-second countdown creates active participation and rising time pressure.
 - The answer is shown visibly on the scene instead of being explained only by text.
-- The final 1.5 seconds reconnect to the opening and invite a replay without a long outro.
+- The final three seconds reconnect to the opening and invite a replay without a long outro.
 - Game-specific titles and comment prompts ask for a simple answer such as A/B or 01/02/03.
 
 These choices improve the inputs YouTube exposes for evaluation—chose-to-view, watch duration,
@@ -79,5 +81,5 @@ The older documented-incident workflow remains available for manual use but has 
 - Rendering retries once.
 - Authentication failure stops before upload and never triggers regeneration.
 - Transient YouTube 5xx failures use resumable upload retries with exponential backoff.
-- Validation requires 1080x1920, 30 FPS, H.264, AAC, 15–30 seconds, and a non-trivial file size.
+- Validation requires 1080x1920, 30 FPS, H.264, AAC, 59.5–60.5 seconds, and a non-trivial file size.
 - Actions artifacts retain the video, game, metadata, validation, and logs for three days.

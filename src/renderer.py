@@ -240,7 +240,8 @@ class InteractiveRenderer:
         draw = ImageDraw.Draw(image, "RGBA")
         self._draw_hud(draw, game, phase, index, total_phases)
         # Localized text scrims protect readability without hiding the cinematic scene.
-        if kind in {"hook", "challenge", "choice", "reveal", "outcome", "loop"}:
+        if kind in {"hook", "challenge", "choice", "observe", "warning", "decision",
+                    "escalation", "reveal", "outcome", "loop"}:
             draw.rounded_rectangle((self.SAFE_LEFT - 20, 175, self.SAFE_RIGHT + 20, 480),
                                    radius=30, fill=(0, 0, 0, 145))
         if kind == "hook":
@@ -262,9 +263,18 @@ class InteractiveRenderer:
         elif kind == "challenge":
             self._center_text(draw, str(phase["text"]), 310, 78, "#ffffff", 6, 22)
             self._center_text(draw, "LOCK YOUR ANSWER", 525, 39, "#e3263c", 3, 28)
-        elif kind == "choice":
+        elif kind in {"choice", "observe"}:
             self._center_text(draw, str(phase["text"]), 300, 88, "#ffffff", 6, 24)
-            self._center_text(draw, "NO CHANGING YOUR MIND", 440, 37, "#e3263c", 3, 30)
+            self._center_text(draw, "MEMORIZE EVERY DETAIL", 440, 37, "#e3263c", 3, 30)
+        elif kind == "warning":
+            self._center_text(draw, str(phase["text"]), 300, 76, "#ffffff", 6, 22)
+            self._center_text(draw, "IT MAY HAVE MOVED", 440, 39, "#e3263c", 3, 28)
+        elif kind == "decision":
+            self._center_text(draw, str(phase["text"]), 300, 78, "#ffffff", 6, 22)
+            self._center_text(draw, "DON'T SECOND-GUESS IT", 440, 37, "#e5bd55", 3, 28)
+        elif kind == "escalation":
+            self._center_text(draw, str(phase["text"]), 300, 78, "#ffffff", 6, 22)
+            self._center_text(draw, "THE TIMER STARTS NOW", 440, 37, "#e3263c", 3, 27)
         elif kind == "countdown":
             self._center_text(draw, "LOCK IT IN", 410, 48, "#ffffff", 4, 24)
         elif kind == "reveal":
@@ -277,7 +287,8 @@ class InteractiveRenderer:
             self._center_text(draw, str(phase["text"]), 320, 67, "#ffffff", 6, 22)
             self._center_text(draw, "LOOK AGAIN", 530, 45, "#e3263c", 4, 24)
 
-        interactive_kinds = {"challenge", "choice", "countdown", "reveal"}
+        interactive_kinds = {"challenge", "choice", "observe", "warning", "decision",
+                             "escalation", "countdown", "reveal"}
         if game["game_type"] in {"choose_door", "escape_room", "safe_object"} and kind in interactive_kinds:
             self._draw_choices(draw, game, reveal=kind == "reveal")
         elif game["game_type"] in {"find_ghost", "spot_change", "moving_entity"} and kind in interactive_kinds:
@@ -317,8 +328,8 @@ class InteractiveRenderer:
         scaled_height = round(scaled_width * self.height / self.width)
         for index, phase in enumerate(phases):
             duration = float(phase["duration"])
-            amplitude = 16 if phase["kind"] in {"hook", "reveal"} else 6
-            frequency = 10.0 if phase["kind"] == "hook" else 2.2 + (index % 3) * 0.35
+            amplitude = 16 if phase["kind"] in {"hook", "reveal"} else (9 if phase["kind"] in {"warning", "escalation"} else 6)
+            frequency = 10.0 if phase["kind"] == "hook" else 1.1 + (index % 3) * 0.22
             label = f"v{index}"
             filters.append(
                 f"[{index}:v]scale={scaled_width}:{scaled_height}:flags=lanczos,"
@@ -330,8 +341,12 @@ class InteractiveRenderer:
             )
             video_labels.append(f"[{label}]")
         filters.append("".join(video_labels) + f"concat=n={len(phases)}:v=1:a=0,format=yuv420p[vout]")
+        filters.append(
+            f"[{len(phases)}:a]highpass=f=25,lowpass=f=12000,"
+            "loudnorm=I=-18:TP=-1.5:LRA=10,aresample=48000[aout]"
+        )
         command.extend([
-            "-filter_complex", ";".join(filters), "-map", "[vout]", "-map", f"{len(phases)}:a",
+            "-filter_complex", ";".join(filters), "-map", "[vout]", "-map", "[aout]",
             "-t", f"{total:.3f}", "-c:v", "libx264", "-preset", "medium", "-crf", "19",
             "-profile:v", "high", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
             "-shortest", str(destination),
