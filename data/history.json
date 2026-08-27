@@ -87,5 +87,30 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-27T23:39:00.160637+00:00",
+    "game_type": "choose_door",
+    "setting": "underground tunnel",
+    "hook": "SURVIVE EACH TEST TO UNLOCK THE NEXT.",
+    "monster": "pale watcher",
+    "choices": [
+      {
+        "id": "A",
+        "label": "LEFT"
+      },
+      {
+        "id": "B",
+        "label": "RIGHT"
+      }
+    ],
+    "correct_answer": "A",
+    "ending": "ALL FIVE ROOMS CLEARED",
+    "title": "Can You Survive All 5 Horror Rooms?",
+    "video_hash": "68f196978035f19ebd35238b499b2a7903482eb75c05e9f5560945557e0729c6",
+    "youtube_video_id": "8mHR8Ls0se4",
+    "uploaded": true,
+    "seed": null,
+    "duplicate_skipped": false
   }
 ]
