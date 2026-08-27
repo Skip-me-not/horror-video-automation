@@ -14,5 +14,30 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-27T00:20:55.687041+00:00",
+    "game_type": "choose_door",
+    "setting": "forest cabin",
+    "hook": "DON'T PICK THE WRONG DOOR.",
+    "monster": "faceless nurse",
+    "choices": [
+      {
+        "id": "A",
+        "label": "LEFT"
+      },
+      {
+        "id": "B",
+        "label": "RIGHT"
+      }
+    ],
+    "correct_answer": "A",
+    "ending": "THE OTHER DOOR WAS BREATHING",
+    "title": "Only One Door Is Safe \ud83d\ude28",
+    "video_hash": "d9fb3d15f69f80f19306e78d5f36bd6f4fd5816414af84a3da07428428547f27",
+    "youtube_video_id": "aSE6z7VC7lw",
+    "uploaded": true,
+    "seed": null,
+    "duplicate_skipped": false
   }
 ]
