@@ -39,5 +39,21 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-27T17:20:58.455386+00:00",
+    "game_type": "moving_entity",
+    "setting": "dark bedroom",
+    "hook": "ONE ENTITY JUST TURNED.",
+    "monster": "mirror figure",
+    "choices": [],
+    "correct_answer": "ENTITY 03",
+    "ending": "ENTITY 03 TURNED TOWARD YOU",
+    "title": "Which Entity Moved?",
+    "video_hash": "058775461c66bed2c394bd3a41516fca80c4b8bc3c8308af7d6f9deb3a8bbceb",
+    "youtube_video_id": "2xH-fSfmvMc",
+    "uploaded": true,
+    "seed": null,
+    "duplicate_skipped": false
   }
 ]
