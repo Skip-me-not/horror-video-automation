@@ -71,5 +71,21 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-27T21:57:21.587007+00:00",
+    "game_type": "spot_change",
+    "setting": "dark bedroom",
+    "hook": "WATCH THE OBJECTS, NOT THE SHADOW.",
+    "monster": "mirror figure",
+    "choices": [],
+    "correct_answer": "THE DOLL TURNED",
+    "ending": "THE DOLL TURNED",
+    "title": "Something Changed. Can You See It?",
+    "video_hash": "d0435e05b3302eecd94409d5921d4575afd11e1d53ae2a2fada12458781c57e0",
+    "youtube_video_id": "qyscbnKmQhM",
+    "uploaded": true,
+    "seed": null,
+    "duplicate_skipped": false
   }
 ]
