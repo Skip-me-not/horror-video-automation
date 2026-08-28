@@ -128,5 +128,21 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-28T22:01:52.049729+00:00",
+    "game_type": "moving_entity",
+    "setting": "underground tunnel",
+    "hook": "SURVIVE EACH TEST TO UNLOCK THE NEXT.",
+    "monster": "ceiling crawler",
+    "choices": [],
+    "correct_answer": "ENTITY 01",
+    "ending": "ALL FIVE ROOMS CLEARED",
+    "title": "Can You Survive All 5 Horror Rooms?",
+    "video_hash": "985ad930263b1dabf6826b458bddb91ef4717634cd1fb6f32cc6e23b11188651",
+    "youtube_video_id": "vtbbktsRgu8",
+    "uploaded": true,
+    "seed": null,
+    "duplicate_skipped": false
   }
 ]
