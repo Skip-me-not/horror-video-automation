@@ -112,5 +112,21 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-28T21:56:43.247513+00:00",
+    "game_type": "moving_entity",
+    "setting": "parking garage",
+    "hook": "SURVIVE EACH TEST TO UNLOCK THE NEXT.",
+    "monster": "faceless nurse",
+    "choices": [],
+    "correct_answer": "ENTITY 02",
+    "ending": "ALL FIVE ROOMS CLEARED",
+    "title": "Can You Survive All 5 Horror Rooms?",
+    "video_hash": "d2d9cfb0791a85842851dd667ac63f2faa88c31ca74d00edf5aab844105818ac",
+    "youtube_video_id": "HJki53xpxtU",
+    "uploaded": true,
+    "seed": null,
+    "duplicate_skipped": false
   }
 ]
