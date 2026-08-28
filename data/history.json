@@ -144,5 +144,34 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-28T23:08:59.554089+00:00",
+    "game_type": "safe_object",
+    "setting": "old bathroom",
+    "hook": "SURVIVE EACH TEST TO UNLOCK THE NEXT.",
+    "monster": "mirror figure",
+    "choices": [
+      {
+        "id": "A",
+        "label": "PHONE"
+      },
+      {
+        "id": "B",
+        "label": "CLOCK"
+      },
+      {
+        "id": "C",
+        "label": "MASK"
+      }
+    ],
+    "correct_answer": "B",
+    "ending": "ALL FIVE ROOMS CLEARED",
+    "title": "Can You Survive All 5 Horror Rooms?",
+    "video_hash": "50da05341bf64f7a221983083163dd0177d42a38cbfa5d02facef121172d9315",
+    "youtube_video_id": "99Nd9vw7CII",
+    "uploaded": true,
+    "seed": null,
+    "duplicate_skipped": false
   }
 ]
