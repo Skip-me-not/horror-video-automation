@@ -79,15 +79,26 @@ Other supported controls:
 The five JSON files in `config/` control search terms, horror triggers, reference query mappings,
 scoring, duration, transforms, crop mode, and provider behavior.
 
-Optional GitHub repository secrets:
+Required GitHub repository secrets for public upload:
 
 ```text
+YOUTUBE_CLIENT_ID
+YOUTUBE_CLIENT_SECRET
+YOUTUBE_REFRESH_TOKEN
+```
+
+Source download and stock secrets:
+
+```text
+YOUTUBE_COOKIES_B64          recommended for GitHub-hosted runners
 PEXELS_API_KEY              optional
 PIXABAY_API_KEY             optional
 ```
 
-No source-ID secret is required. Stock keys are optional; generation falls back to source footage when
-both are unavailable.
+`YOUTUBE_COOKIES_B64` is a base64-encoded Netscape cookies file. The pipeline requires the original
+podcast video and will fail safely instead of substituting an audio-only RSS episode when YouTube blocks
+logged-out GitHub runner traffic. Original footage is center-cropped, fixed-zoomed to 108%, and
+horizontally flipped. Stock keys are optional; B-roll falls back to the transformed original footage.
 
 ## GitHub Actions
 
@@ -103,9 +114,10 @@ Scheduled runs preserve the previously selected four daily US audience windows:
 - 01:07 UTC — US East late evening / US West early evening
 
 GitHub evaluates scheduled workflow cron entries in UTC, so local US clock times move by one hour at
-daylight-saving transitions. The job uses `ubuntu-24.04`, dedicated FFmpeg caching, setup-python's pip
-cache, a 45-minute timeout, and one `$RUNNER_TEMP/horror-short` directory. Successful runs commit only
-the lightweight duplicate history. Temporary source/audio/stock media are deleted after upload.
+daylight-saving transitions. The job uses `ubuntu-24.04`, a 45-minute timeout, and one
+`$RUNNER_TEMP/horror-short` directory. Successful runs commit only the lightweight duplicate history.
+Temporary source/audio/stock media, workflow-specific caches, and the local final MP4 are deleted after
+the confirmed public upload.
 
 ## Outputs
 
@@ -123,6 +135,6 @@ output/performance.json
 output/optimization_report.md
 ```
 
-Normal artifacts retain only the final video, edit metadata, logs, performance metrics, and audit report
-for three days. Manual `debug_artifacts` runs upload captions and extra diagnostics separately for five
-days. Downloaded source ranges, analysis audio, stock originals, and render temp files are never uploaded.
+Normal successful runs keep no video artifact because the confirmed public YouTube upload is the output.
+Manual `debug_artifacts` runs may retain small diagnostics for five days. Downloaded source ranges,
+analysis audio, stock originals, and render temp files are never retained.

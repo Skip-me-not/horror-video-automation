@@ -12,13 +12,18 @@ MEDIA_SUFFIXES = {".mp4", ".mkv", ".webm", ".mov", ".m4a", ".opus", ".ogg", ".mp
 
 def _youtube_options() -> dict[str, Any]:
     """Use the CI PO-token helper first, with logged-out client fallbacks."""
+    cookie_file = os.getenv("YOUTUBE_COOKIES_FILE", "").strip()
     extractor_args: dict[str, dict[str, list[str]]] = {
-        "youtube": {"player_client": ["mweb", "web_embedded", "default"]},
+        "youtube": {"player_client": ["default"] if cookie_file else
+                    ["mweb", "web_embedded", "default"]},
     }
     provider_home = os.getenv("YTDLP_BGUTIL_SERVER_HOME", "").strip()
     if provider_home:
         extractor_args["youtubepot-bgutilscript"] = {"server_home": [provider_home]}
-    return {"extractor_args": extractor_args}
+    options: dict[str, Any] = {"extractor_args": extractor_args}
+    if cookie_file:
+        options["cookiefile"] = cookie_file
+    return options
 
 
 def _first_media(directory: Path, prefix: str, allowed: set[str] | None = None) -> Path | None:

@@ -18,6 +18,8 @@ class Settings:
     hard_max_duration: float = 180.0
     source_speed: float = 1.10
     horizontal_flip: bool = True
+    original_video_zoom: float = 1.08
+    require_original_video: bool = True
     hook_min_seconds: float = 2.0
     hook_max_seconds: float = 5.0
     broll_min_seconds: float = 2.5
@@ -58,6 +60,8 @@ def load_settings(root: Path) -> Settings:
     settings = Settings(root=root, **values)
     if not 1.0 <= settings.source_speed <= 2.0:
         raise ValueError("source_speed must be between 1.0 and 2.0")
+    if not 1.0 <= settings.original_video_zoom <= 1.25:
+        raise ValueError("original_video_zoom must be between 1.0 and 1.25")
     if not 60 <= settings.min_final_duration <= settings.max_final_duration <= settings.hard_max_duration <= 180:
         raise ValueError("duration settings must remain within 60-180 seconds")
     if settings.crop_mode not in {"center", "left", "right", "auto_simple", "vertical_canvas"}:

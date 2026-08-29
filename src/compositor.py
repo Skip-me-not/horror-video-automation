@@ -16,6 +16,14 @@ def _fill_frame(width: int, height: int) -> str:
             f"crop={width}:{height},setsar=1")
 
 
+def _original_frame(settings: Settings) -> str:
+    zoom_width = int(settings.output_width * settings.original_video_zoom) // 2 * 2
+    zoom_height = int(settings.output_height * settings.original_video_zoom) // 2 * 2
+    flip = "hflip," if settings.horizontal_flip else ""
+    return (f"{flip}{_fill_frame(settings.output_width, settings.output_height)},"
+            f"scale={zoom_width}:{zoom_height},crop={settings.output_width}:{settings.output_height}")
+
+
 def compose(source: Path, plan: dict[str, Any], captions: Path, destination: Path,
             temp_directory: Path, settings: Settings, ffmpeg: str = "ffmpeg",
             source_trim_start: float = 0.0, source_duration: float | None = None) -> Path:
@@ -36,7 +44,7 @@ def compose(source: Path, plan: dict[str, Any], captions: Path, destination: Pat
     hook_end = float((plan["segments"] or [{}])[0].get("end", 0.0))
     filters = [
         (f"[0:v]trim=start={source_trim_start:.3f}:end={source_trim_start + source_length:.3f},"
-         f"setpts=(PTS-STARTPTS)/{settings.source_speed},hflip,{_fill_frame(settings.output_width, settings.output_height)},"
+         f"setpts=(PTS-STARTPTS)/{settings.source_speed},{_original_frame(settings)},"
          f"fps={settings.fps},format=yuv420p,gblur=sigma=5:enable='between(t,0,{hook_end:.3f})'[base0]"),
         (f"[0:a]atrim=start={source_trim_start:.3f}:end={source_trim_start + source_length:.3f},"
          f"asetpts=PTS-STARTPTS,atempo={settings.source_speed}[aout]"),

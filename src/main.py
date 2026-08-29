@@ -328,6 +328,9 @@ def _choose_and_prepare(args: argparse.Namespace, settings: Settings, target: fl
             attempt_dir = run_dir / f"source-{index}"
             if attempt_dir.is_dir() and run_dir.resolve() in attempt_dir.resolve().parents:
                 shutil.rmtree(attempt_dir)
+    if settings.require_original_video:
+        raise RuntimeError("ORIGINAL_VIDEO_REQUIRED: YouTube original could not be downloaded; "
+                           "RSS audio-only substitution is disabled")
     _log(log, "YouTube sources unavailable; switching to no-login public podcast RSS fallback")
     with perf.stage("podcast_rss_search"):
         episodes = search_podcast_episodes(keyword, settings,

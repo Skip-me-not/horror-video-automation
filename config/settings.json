@@ -8,6 +8,8 @@
   "hard_max_duration": 180,
   "source_speed": 1.1,
   "horizontal_flip": true,
+  "original_video_zoom": 1.08,
+  "require_original_video": true,
   "hook_min_seconds": 2.0,
   "hook_max_seconds": 5.0,
   "broll_min_seconds": 2.5,

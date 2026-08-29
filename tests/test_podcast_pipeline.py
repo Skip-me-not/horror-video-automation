@@ -37,6 +37,8 @@ FFPROBE = shutil.which("ffprobe") or (str(LOCAL_FFPROBE) if LOCAL_FFPROBE.is_fil
 def test_settings_and_random_metadata_filter(repo_root):
     settings = load_settings(repo_root)
     assert settings.source_speed == 1.10
+    assert settings.require_original_video is True
+    assert settings.original_video_zoom == 1.08
     settings = Settings(root=repo_root)
     entries = [
         {"id": "allowed", "duration": 900, "title": "Reusable", "live_status": "not_live",
@@ -215,6 +217,9 @@ def test_compositor_launches_one_final_encode(tmp_path, monkeypatch):
     assert len(calls) == 1
     assert "-filter_complex" in calls[0]
     assert calls[0].count("-c:v") == 1
+    filters = calls[0][calls[0].index("-filter_complex") + 1]
+    assert "hflip" in filters
+    assert "scale=1166:2072,crop=1080:1920" in filters
 
 
 def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
@@ -225,6 +230,7 @@ def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
     assert "timeout-minutes: 45" in workflow
     assert "pip install --upgrade yt-dlp" not in workflow
     assert "Upload finished video to YouTube as public" in workflow
+    assert "YOUTUBE_COOKIES_B64" in workflow
     assert 'startswith("ffmpeg-")' in workflow
     assert 'startswith("setup-python-")' in workflow
     assert "gh cache delete --all" not in workflow

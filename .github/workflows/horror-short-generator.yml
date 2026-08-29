@@ -122,6 +122,21 @@ jobs:
           (cd "$helper/server" && npx tsc)
           test -f "$helper/server/build/main.js"
 
+      - name: Prepare optional YouTube download cookies
+        shell: bash
+        env:
+          YOUTUBE_COOKIES_B64: ${{ secrets.YOUTUBE_COOKIES_B64 }}
+        run: |
+          set -euo pipefail
+          if [[ -n "$YOUTUBE_COOKIES_B64" ]]; then
+            cookie_file="$RUNNER_TEMP/youtube-cookies.txt"
+            printf '%s' "$YOUTUBE_COOKIES_B64" | base64 --decode > "$cookie_file"
+            chmod 600 "$cookie_file"
+            echo "YOUTUBE_COOKIES_FILE=$cookie_file" >> "$GITHUB_ENV"
+          else
+            echo "YOUTUBE_COOKIES_B64 is not configured; logged-out extraction only"
+          fi
+
       - name: Generate optimized edited horror segment
         shell: bash
         env:
@@ -231,6 +246,7 @@ jobs:
                   "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id"
               done
           rm -rf "$RUNNER_TEMP/horror-short" "$RUNNER_TEMP/bgutil-ytdlp-pot-provider"
+          rm -f "$RUNNER_TEMP/youtube-cookies.txt"
           rm -rf "$HOME/.cache/pip" "$HOME/.cache/yt-dlp" "$HOME/.local/horror-tools/ffmpeg"
           rm -f output/short.mp4
 
@@ -243,3 +259,4 @@ jobs:
             rm -rf "$run_temp"
           fi
           rm -rf "$RUNNER_TEMP/bgutil-ytdlp-pot-provider"
+          rm -f "$RUNNER_TEMP/youtube-cookies.txt"
