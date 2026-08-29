@@ -221,5 +221,21 @@
       "human shadow hallway"
     ],
     "generated_timestamp": "2026-08-29T17:49:55.402112+00:00"
+  },
+  {
+    "timestamp": "2026-08-29T17:58:33.608611+00:00",
+    "source_video_id": "rss-622e73b2d892c736",
+    "source_start": 31.92,
+    "source_end": 152.92,
+    "transcript_hash": "49915d75b4054881c09b0c1ef8af126765a30abe4ec757ce46bc78cea6aa9fb0",
+    "hook_template": "Something was already inside the house.",
+    "reference_queries": [
+      "dark hallway",
+      "foggy woods",
+      "security camera dark room",
+      "empty hospital",
+      "human shadow hallway"
+    ],
+    "generated_timestamp": "2026-08-29T17:58:33.608496+00:00"
   }
 ]
