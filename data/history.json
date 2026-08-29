@@ -237,5 +237,21 @@
       "human shadow hallway"
     ],
     "generated_timestamp": "2026-08-29T17:58:33.608496+00:00"
+  },
+  {
+    "timestamp": "2026-08-29T18:03:39.690214+00:00",
+    "source_video_id": "rss-42941d1f3c264714",
+    "source_start": 349.92,
+    "source_end": 470.92,
+    "transcript_hash": "8a0e9f7b11d972730927e80d709293b95672fdb36430b377a9059673581a7ce5",
+    "hook_template": "This is where the story gets disturbing.",
+    "reference_queries": [
+      "dark hallway",
+      "foggy woods",
+      "security camera dark room",
+      "empty hospital",
+      "human shadow hallway"
+    ],
+    "generated_timestamp": "2026-08-29T18:03:39.690086+00:00"
   }
 ]
