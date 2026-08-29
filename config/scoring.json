@@ -1,0 +1,16 @@
+{
+  "weights": {
+    "hook_phrases": 3.0,
+    "paranormal": 2.5,
+    "fear": 2.2,
+    "mystery": 2.7,
+    "sound_events": 2.0,
+    "visual_events": 1.8,
+    "confessions": 2.2,
+    "twists": 3.0
+  },
+  "proximity_window_seconds": 12,
+  "proximity_bonus": 2.5,
+  "minimum_anchor_score": 4.0,
+  "ending_terms": ["left", "ran", "never went back", "called the police", "found out", "to this day", "since then"]
+}

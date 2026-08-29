@@ -7,3 +7,4 @@ google-auth-oauthlib==1.2.2
 pytest==8.4.2
 PyYAML==6.0.3
 Pillow==11.3.0
+yt-dlp>=2025.1.15

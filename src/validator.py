@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -21,7 +22,11 @@ def validate_video(path: Path, width: int = 1080, height: int = 1920,
     errors: list[str] = []
     if not path.is_file() or path.stat().st_size < 100_000:
         return ValidationResult(False, ("video is missing or below 100 KB",), {})
-    command = [ffprobe or os.getenv("FFPROBE_BIN", "ffprobe"), "-v", "error", "-show_streams",
+    fallback = Path(__file__).resolve().parents[1] / ".test-tools" / "ffprobe.exe"
+    probe_binary = ffprobe or os.getenv("FFPROBE_BIN") or shutil.which("ffprobe")
+    if not probe_binary and fallback.is_file():
+        probe_binary = str(fallback)
+    command = [probe_binary or "ffprobe", "-v", "error", "-show_streams",
                "-show_format", "-of", "json", str(path)]
     try:
         result = subprocess.run(command, check=True, capture_output=True, text=True)
@@ -50,3 +55,22 @@ def validate_video(path: Path, width: int = 1080, height: int = 1920,
     except (ValueError, ZeroDivisionError, IndexError):
         errors.append("frame rate could not be read")
     return ValidationResult(not errors, tuple(errors), probe)
+
+
+def validate_story_short(path: Path, minimum: float = 60.0, maximum: float = 180.0,
+                         ffprobe: str | None = None) -> ValidationResult:
+    result = validate_video(path, 1080, 1920, minimum, maximum, ffprobe)
+    errors = list(result.errors)
+    streams = result.probe.get("streams", [])
+    video = next((stream for stream in streams if stream.get("codec_type") == "video"), {})
+    audio = next((stream for stream in streams if stream.get("codec_type") == "audio"), {})
+    try:
+        video_duration = float(video.get("duration") or result.probe.get("format", {}).get("duration") or 0)
+        audio_duration = float(audio.get("duration") or result.probe.get("format", {}).get("duration") or 0)
+        if abs(video_duration - audio_duration) > 0.35:
+            errors.append("audio/video durations differ by more than 0.35 seconds")
+    except (TypeError, ValueError):
+        errors.append("audio/video duration could not be verified")
+    if path.is_file() and path.stat().st_size < 500_000:
+        errors.append("final file is suspiciously small")
+    return ValidationResult(not errors, tuple(errors), result.probe)

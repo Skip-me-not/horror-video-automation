@@ -16,6 +16,11 @@ def config() -> dict:
 
 
 @pytest.fixture
+def repo_root() -> Path:
+    return ROOT
+
+
+@pytest.fixture
 def valid_job() -> dict:
     return {
         "job_id": "safe-job-1",

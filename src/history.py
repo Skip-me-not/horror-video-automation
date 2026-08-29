@@ -29,6 +29,22 @@ class HistoryStore:
     def contains_hash(self, video_hash: str) -> bool:
         return any(item.get("video_hash") == video_hash for item in self.load())
 
+    def used_source_ids(self) -> set[str]:
+        return {str(item["source_video_id"]) for item in self.load() if item.get("source_video_id")}
+
+    def contains_story(self, source_video_id: str, transcript_hash: str,
+                       start: float, end: float) -> bool:
+        for item in self.load():
+            if item.get("source_video_id") != source_video_id:
+                continue
+            if item.get("transcript_hash") == transcript_hash:
+                return True
+            old_start = float(item.get("source_start", -9999))
+            old_end = float(item.get("source_end", -9999))
+            if max(old_start, start) < min(old_end, end) - 5:
+                return True
+        return False
+
     def append(self, record: dict[str, Any]) -> None:
         records = self.load()
         records.append({"timestamp": datetime.now(timezone.utc).isoformat(), **record})

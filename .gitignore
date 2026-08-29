@@ -12,6 +12,12 @@ __pycache__/
 .coverage
 output/*
 !output/.gitkeep
+downloads/*
+!downloads/.gitkeep
+stock/*
+!stock/.gitkeep
+temp/*
+!temp/.gitkeep
 assets/voices/
 .cache/
 *.log

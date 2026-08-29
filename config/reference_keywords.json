@@ -1,0 +1,20 @@
+{
+  "footsteps": ["dark hallway", "empty corridor"],
+  "hallway": ["dark hallway", "empty corridor night"],
+  "knock": ["front door night", "dark old door"],
+  "knocking": ["front door night", "dark old door"],
+  "forest": ["dark forest night", "foggy woods"],
+  "woods": ["dark forest night", "foggy woods"],
+  "camera": ["security camera dark room", "CCTV monitor"],
+  "cctv": ["security camera dark room", "CCTV monitor"],
+  "hospital": ["dark hospital hallway", "empty hospital"],
+  "bedroom": ["dark bedroom", "bedroom at night"],
+  "window": ["window at night", "dark window rain"],
+  "basement": ["dark basement", "old basement"],
+  "stairs": ["dark staircase", "old stairs night"],
+  "road": ["dark forest road night", "empty road fog"],
+  "shadow": ["human shadow hallway", "dark silhouette"],
+  "mirror": ["old mirror dark room", "haunted mirror"],
+  "hotel": ["empty hotel corridor", "dark hotel hallway"],
+  "door": ["front door night", "dark old door"]
+}

@@ -1,0 +1,136 @@
+name: Authorized Horror Story Short Generator
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_url:
+        description: Authorized source URL (leave blank for allowlisted search)
+        required: false
+        type: string
+      keyword:
+        description: Optional horror podcast search keyword
+        required: false
+        type: string
+      source_speed:
+        description: Source playback speed
+        required: true
+        default: "1.10"
+        type: string
+      target_duration:
+        description: Target duration in seconds (65-175)
+        required: true
+        default: "110"
+        type: string
+      use_stock_media:
+        description: Use Pexels/Pixabay reference media
+        required: true
+        default: true
+        type: boolean
+      force_reprocess:
+        description: Allow a source segment already present in history
+        required: true
+        default: false
+        type: boolean
+      authorized:
+        description: I confirm I have permission to download and reuse video_url
+        required: true
+        default: false
+        type: boolean
+  schedule:
+    # Four UTC slots targeting US midday, afternoon, evening, and late evening.
+    - cron: "7 1 * * *"
+    - cron: "7 16 * * *"
+    - cron: "7 19 * * *"
+    - cron: "7 22 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: authorized-horror-story-short
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      AUTHORIZED_VIDEO_IDS: ${{ secrets.AUTHORIZED_VIDEO_IDS }}
+      AUTHORIZED_CHANNEL_IDS: ${{ secrets.AUTHORIZED_CHANNEL_IDS }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install FFmpeg, yt-dlp, fonts, and Python requirements
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg fonts-dejavu-core
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install --upgrade yt-dlp
+      - name: Generate deterministic edited horror Short
+        shell: bash
+        env:
+          INPUT_VIDEO_URL: ${{ inputs.video_url }}
+          INPUT_KEYWORD: ${{ inputs.keyword }}
+          INPUT_SOURCE_SPEED: ${{ inputs.source_speed }}
+          INPUT_TARGET_DURATION: ${{ inputs.target_duration }}
+          INPUT_USE_STOCK: ${{ inputs.use_stock_media }}
+          INPUT_FORCE: ${{ inputs.force_reprocess }}
+          INPUT_AUTHORIZED: ${{ inputs.authorized }}
+        run: |
+          args=()
+          if [[ -n "$INPUT_VIDEO_URL" ]]; then args+=(--video-url "$INPUT_VIDEO_URL"); fi
+          if [[ -n "$INPUT_KEYWORD" ]]; then args+=(--keyword "$INPUT_KEYWORD"); fi
+          if [[ -n "$INPUT_SOURCE_SPEED" ]]; then args+=(--source-speed "$INPUT_SOURCE_SPEED"); fi
+          if [[ -n "$INPUT_TARGET_DURATION" ]]; then args+=(--target-duration "$INPUT_TARGET_DURATION"); fi
+          if [[ "$INPUT_USE_STOCK" == "false" ]]; then args+=(--no-stock); fi
+          if [[ "$INPUT_FORCE" == "true" ]]; then args+=(--force-reprocess); fi
+          if [[ "$INPUT_AUTHORIZED" == "true" ]]; then args+=(--authorized); fi
+          python -m src.main "${args[@]}"
+      - name: Validate final artifact contract
+        run: |
+          python -c "import json, pathlib; p=json.loads(pathlib.Path('output/validation.json').read_text()); assert p['valid'], p['errors']"
+          test -s output/short.mp4
+          test -s output/edit_plan.json
+          test -s output/selected_story.json
+          test -s output/hook.json
+          test -s output/reference_media.json
+          test -s output/processing.log
+      - name: Persist lightweight duplicate history
+        if: success()
+        run: |
+          if git diff --quiet -- data/history.json; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history.json
+          git commit -m "state: record authorized story segment [skip ci]"
+          git pull --rebase
+          git push
+      - name: Upload final Short and edit diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: horror-story-short-${{ github.run_id }}
+          path: |
+            output/short.mp4
+            output/source_info.json
+            output/selected_story.json
+            output/hook.json
+            output/edit_plan.json
+            output/reference_media.json
+            output/captions.ass
+            output/validation.json
+            output/processing.log
+          if-no-files-found: warn
+          retention-days: 5
+      - name: Cleanup downloaded source media
+        if: always()
+        run: |
+          rm -rf downloads/* temp/* stock/*

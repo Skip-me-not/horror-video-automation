@@ -1,0 +1,10 @@
+{
+  "hook_phrases": ["this is where", "what happened next", "i never told", "the worst part", "then i saw"],
+  "paranormal": ["ghost", "shadow", "figure", "apparition", "haunted", "entity", "demon", "possessed"],
+  "fear": ["terrified", "afraid", "panic", "screamed", "couldn't move", "heart stopped", "ran"],
+  "mystery": ["no one was there", "locked from inside", "disappeared", "unexplained", "impossible"],
+  "sound_events": ["knock", "knocking", "footsteps", "whisper", "breathing", "scratching", "scream"],
+  "visual_events": ["camera", "cctv", "mirror", "window", "door", "hallway", "stairs", "shadow"],
+  "confessions": ["i swear", "i still don't know", "i have never", "i didn't believe", "i was alone"],
+  "twists": ["but then", "until", "except", "the problem was", "behind me", "already inside"]
+}

@@ -1,88 +1,122 @@
-# Automated Interactive Horror Shorts
+# Authorized Horror Podcast to Edited Short
 
-This repository generates retention-focused interactive horror mini-games, renders them as validated
-1080x1920 YouTube Shorts, and can upload them through the official YouTube Data API. The scheduled
-pipeline runs entirely on GitHub Actions; no always-on local computer or paid media API is required.
+This repository creates 65–175 second vertical horror-story videos from source media that you own or
+are authorized to download and reuse. It uses deterministic transcript, audio-energy, and silence rules;
+there is no AI or LLM moment detector.
 
-## What it generates
+The output is an edited story rather than a continuous podcast crop: a 2–5 second hook, mirrored and
+speed-adjusted speaker footage, animated captions, deterministic crop changes, and transcript-relevant
+Pexels/Pixabay inserts. The original source narration remains continuous beneath every reference visual.
 
-Six game formats are included: `choose_door`, `find_ghost`, `spot_change`, `escape_room`,
-`safe_object`, and `moving_entity`. Every run first creates validated `game.json`, then builds a
-60-second connected escape chain. A viewer must clear five different stages in order; every answer
-unlocks the next room, and the fifth answer ends the loop.
-Three original, project-bound cinematic plates cover the hospital, haunted-room, and CCTV formats;
-Pillow and FFmpeg add safe-area UI, controlled camera drift, scanlines, shadows, and reveal markers.
-The local sound engine builds stereo drones, accelerating heartbeat, countdown ticks, risers, and
-payoff impacts without depending on a copyrighted music library.
+## Safety and source authorization
 
-## Retention design
+Automated search only accepts video IDs or channel IDs listed in the repository settings or supplied by
+the `AUTHORIZED_VIDEO_IDS` and `AUTHORIZED_CHANNEL_IDS` secrets. A manual remote URL also requires the
+`--authorized` flag. Use that flag only when you own the source or have permission to download, edit, and
+republish it. Supplying a local file is treated as an explicit user-provided authorized source.
 
-- The visual threat and cold-open appear in the first second.
-- The first stage begins after a one-second cold open.
-- Each stage has a two-second setup, a visible five-second countdown, and a two-second answer.
-- Four two-second transitions explicitly connect one successful answer to the next room.
-- The five-stage route mixes choices, visual searches, cursed objects, CCTV entities, and escape tests.
-- Every answer is marked directly on the scene instead of being explained only by text.
-- Frames stay fixed within a stage; pacing comes from countdown changes and hard scene cuts, not camera shake.
-- The final three seconds reconnect to the opening and invite a replay without a long outro.
-- Game-specific titles and comment prompts ask for a simple answer such as A/B or 01/02/03.
+Mirroring, cropping, captions, and speed changes do not create copyright permission. Keep written proof
+of the license or creator authorization outside this repository.
 
-These choices improve the inputs YouTube exposes for evaluation—chose-to-view, watch duration,
-percentage viewed, rewatches, and engagement—but no implementation can guarantee a particular view count.
+## Pipeline
 
-The default YouTube privacy is **private**. Set the repository variable `YOUTUBE_PRIVACY_STATUS` to
-`unlisted` or `public` only after a private upload has been reviewed successfully.
+1. Search source metadata before downloading and reject Shorts, livestreams, duplicates, sources under
+   10 minutes, sources over 180 minutes, and sources outside the authorization allowlist.
+2. Download one accepted source and available English VTT captions.
+3. Score caption moments using configured hook, paranormal, fear, mystery, sound, visual, confession,
+   twist, proximity, silence-boundary, and payoff rules.
+4. Expand the strongest anchor into a coherent 70–165 second source segment.
+5. Mirror, play at 1.10x, preserve pitch, and reframe without stretching to 1080x1920.
+6. Generate a deterministic 2–5 second hook and animated ASS captions with highlighted horror terms.
+7. Build short reference queries only from visual transcript events. Pexels falls back to Pixabay, then
+   to uninterrupted speaker footage if no licensed stock asset is available.
+8. Write and validate `edit_plan.json` before rendering. B-roll normally covers 15–35 percent, lasts
+   2–6 seconds per insert, and never replaces the continuous narration track.
+9. Render H.264/AAC at 30 FPS and fail if ffprobe does not confirm the format, duration, audio/video
+   alignment, and minimum file size.
 
-## Test locally
+## Local commands
 
-Install Python 3.11+, FFmpeg/ffprobe, and dependencies:
+Install Python 3.11+, FFmpeg/ffprobe, and the dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
-python -m src.main --no-upload
-python -m src.main --game choose_door --seed 1234 --no-upload
 ```
 
-Outputs are written to `output/`, including `short.mp4`, `game.json`, `metadata.json`, validation,
-render logs, and the upload log. A video is never uploaded unless rendering and ffprobe validation pass.
+Authorized remote source:
 
-## YouTube OAuth setup
+```bash
+python -m src.main --video-url "https://youtube.com/watch?v=AUTHORIZED_ID" --authorized
+```
 
-1. Create a Google Cloud project.
-2. Enable **YouTube Data API v3**.
-3. Configure an OAuth consent screen and add your YouTube account as a test user if the app is in testing.
-4. Create an OAuth client of type **Desktop app** and download its JSON file.
-5. Run `python tools/get_refresh_token.py path/to/client_secret.json` once and approve the account.
-6. In GitHub, open **Settings → Secrets and variables → Actions** and create these repository secrets:
-   `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and `YOUTUBE_REFRESH_TOKEN`.
+Authorized local source with an optional same-name `.vtt` sidecar:
 
-Never commit the client JSON, access token, refresh token, or secret. The uploader refreshes its access
-token on every run and fails clearly without regenerating the video when authentication is invalid.
+```bash
+python -m src.main --video-url "/path/to/authorized-source.mp4" --start 760 --no-stock
+```
+
+Allowlisted metadata search:
+
+```bash
+python -m src.main --keyword "true scary stories podcast"
+```
+
+Other supported controls:
+
+```text
+--source-speed 1.10
+--target-duration 110
+--no-stock
+--force-reprocess
+--debug
+```
+
+## Configuration and secrets
+
+The five JSON files in `config/` control search terms, horror triggers, reference query mappings,
+scoring, duration, transforms, crop mode, and provider behavior.
+
+Configure these GitHub repository secrets:
+
+```text
+AUTHORIZED_VIDEO_IDS       comma-separated exact video IDs
+AUTHORIZED_CHANNEL_IDS     comma-separated exact channel IDs
+PEXELS_API_KEY              optional
+PIXABAY_API_KEY             optional
+```
+
+At least one authorization allowlist secret is required for scheduled source search. Stock keys are
+optional; generation falls back to source footage when both are unavailable.
 
 ## GitHub Actions
 
-Use **Actions → Interactive Horror Shorts → Run workflow**. Keep `upload` disabled to render and validate
-without publishing. Enable it only for a deliberate manual private-upload test.
+Only `.github/workflows/horror-short-generator.yml` is active. Manual runs accept `video_url`,
+`keyword`, `source_speed`, `target_duration`, `use_stock_media`, `force_reprocess`, and an explicit
+authorization confirmation.
 
-After setup, `.github/workflows/horror-shorts.yml` targets US viewers four times daily. The IANA
-timezone automatically follows US daylight-saving changes:
+Scheduled runs preserve the previously selected four daily US audience windows:
 
-- 16:07 Eastern / 13:07 Pacific
-- 19:07 Eastern / 16:07 Pacific
-- 22:07 Eastern / 19:07 Pacific
-- 01:07 Eastern / 22:07 Pacific
+- 16:07 UTC — US East midday / US West morning
+- 19:07 UTC — US East afternoon / US West midday
+- 22:07 UTC — US East evening / US West afternoon
+- 01:07 UTC — US East late evening / US West early evening
 
-Scheduled runs upload automatically, initially as private videos. Concurrency prevents overlapping
-uploads. Successful uploads are appended to the last-100 `data/history.json` records and committed back
-to the repository. SHA-256 duplicate detection blocks upload of an identical rendered file.
+GitHub evaluates scheduled workflow cron entries in UTC, so local US clock times move by one hour at
+daylight-saving transitions. Successful runs commit only the lightweight duplicate history. Downloads
+and temporary media are deleted after artifacts are uploaded.
 
-The older documented-incident workflow remains available for manual use but has no schedule.
+## Outputs
 
-## Reliability rules
+```text
+output/short.mp4
+output/source_info.json
+output/selected_story.json
+output/hook.json
+output/edit_plan.json
+output/reference_media.json
+output/captions.ass
+output/validation.json
+output/processing.log
+```
 
-- Game generation retries up to twice, then uses a deterministic local fallback.
-- Rendering retries once.
-- Authentication failure stops before upload and never triggers regeneration.
-- Transient YouTube 5xx failures use resumable upload retries with exponential backoff.
-- Validation requires 1080x1920, 30 FPS, H.264, AAC, 59.5–60.5 seconds, and a non-trivial file size.
-- Actions artifacts retain the video, game, metadata, validation, and logs for three days.
+Artifacts are retained for five days. The downloaded full source is never included.
