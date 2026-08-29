@@ -21,10 +21,11 @@ from .history import HistoryStore
 from .hook_builder import build_hook
 from .horror_scorer import HorrorScorer
 from .performance import PerformanceTracker, disk_status, write_optimization_report
-from .podcast_rss import (PodcastEpisode, download_episode_audio, download_episode_transcript,
-                          make_audio_visual_source, search_podcast_episodes)
+from .podcast_rss import (PodcastEpisode, download_episode_artwork, download_episode_audio,
+                          download_episode_transcript, make_audio_visual_source,
+                          search_podcast_episodes)
 from .reference_query_builder import build_reference_queries
-from .shot_planner import attach_stock_assets, build_edit_plan
+from .shot_planner import attach_stock_assets, build_continuous_broll_plan, build_edit_plan
 from .silence_detector import detect_silences
 from .stock_media import StockMediaClient
 from .story_segment_builder import build_story_segment
@@ -234,9 +235,14 @@ def _podcast_attempt(episode: PodcastEpisode, attempt_dir: Path, args: argparse.
                                                             float(selected["start"]), float(selected["end"]))):
         raise RuntimeError("EARLY_SKIP_DUPLICATE_RSS_STORY")
     selected["transcript_hash"] = transcript_hash
+    artwork = None
+    try:
+        artwork = download_episode_artwork(episode, attempt_dir / "podcast-artwork.jpg")
+    except Exception as exc:
+        _log(log, f"RSS_ARTWORK_UNAVAILABLE_COLOR_FALLBACK: {str(exc)[:300]}")
     with perf.stage("podcast_visual_source"):
         source = make_audio_visual_source(audio, attempt_dir / "rss_source.mp4",
-                                          float(selected["start"]), float(selected["end"]))
+                                          float(selected["start"]), float(selected["end"]), artwork)
     audio.unlink(missing_ok=True)
     perf.set(range_video_download=False, full_video_downloaded=False,
              source_video_bytes=source.stat().st_size, source_download_bytes=source.stat().st_size,
@@ -406,12 +412,16 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
                         for index, (query, episode_text) in enumerate(
                             zip(fallback_queries, [str(selected.get("transcript") or "podcast horror")]
                                 * len(fallback_queries)))]
+    rss_mode = prepared["authorization_basis"].startswith("public podcast RSS")
     with perf.stage("edit_planning"):
-        draft_plan = build_edit_plan(final_duration, settings.source_speed, settings.horizontal_flip,
-                                     hook, query_events, {}, settings.target_broll_ratio,
-                                     settings.broll_min_seconds, settings.broll_max_seconds,
-                                     settings.max_static_speaker_seconds, settings.target_broll_count,
-                                     settings.max_broll_count)
+        draft_plan = (build_continuous_broll_plan(
+            final_duration, settings.source_speed, settings.horizontal_flip, query_events,
+            settings.target_broll_count, settings.max_broll_count) if rss_mode else
+            build_edit_plan(final_duration, settings.source_speed, settings.horizontal_flip,
+                            hook, query_events, {}, settings.target_broll_ratio,
+                            settings.broll_min_seconds, settings.broll_max_seconds,
+                            settings.max_static_speaker_seconds, settings.target_broll_count,
+                            settings.max_broll_count))
         write_json(output / "edit_plan.json", draft_plan)
 
     assets: dict[str, dict[str, Any]] = {}
@@ -431,6 +441,12 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
                     asset = None
                 if asset:
                     assets[query] = asset.as_dict()
+    if rss_mode and assets:
+        available = list(assets.values())
+        missing_queries = [str(slot["query"]) for slot in draft_plan["segments"]
+                           if slot["type"] == "planned_broll" and str(slot["query"]) not in assets]
+        for index, query in enumerate(missing_queries):
+            assets[query] = available[index % len(available)]
     plan = attach_stock_assets(draft_plan, assets)
     plan["source_media_start"] = prepared["media_start"]
     write_json(output / "edit_plan.json", plan)

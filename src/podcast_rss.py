@@ -27,6 +27,7 @@ class PodcastEpisode:
     duration: float
     description: str
     transcript_url: str
+    artwork_url: str
 
 
 def _local_name(tag: str) -> str:
@@ -58,7 +59,7 @@ def _plain_text(value: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html.unescape(value))).strip()
 
 
-def _episodes_from_feed(feed_url: str, podcast_name: str, settings: Settings,
+def _episodes_from_feed(feed_url: str, podcast_name: str, artwork_url: str, settings: Settings,
                         history_ids: set[str]) -> list[PodcastEpisode]:
     response = requests.get(feed_url, timeout=15, headers={"User-Agent": USER_AGENT})
     response.raise_for_status()
@@ -90,6 +91,7 @@ def _episodes_from_feed(feed_url: str, podcast_name: str, settings: Settings,
             duration=duration,
             description=_plain_text(_text(item, "description") or _text(item, "summary")),
             transcript_url=str(transcript.attrib["url"]) if transcript is not None else "",
+            artwork_url=artwork_url,
         ))
     return episodes
 
@@ -103,13 +105,14 @@ def search_podcast_episodes(keyword: str, settings: Settings, history_ids: set[s
         timeout=15, headers={"User-Agent": USER_AGENT},
     )
     response.raise_for_status()
-    feeds = [(str(item.get("feedUrl") or ""), str(item.get("collectionName") or "Horror podcast"))
+    feeds = [(str(item.get("feedUrl") or ""), str(item.get("collectionName") or "Horror podcast"),
+              str(item.get("artworkUrl600") or item.get("artworkUrl100") or ""))
              for item in response.json().get("results", []) if item.get("feedUrl")]
     random.shuffle(feeds)
     episodes: list[PodcastEpisode] = []
-    for feed_url, name in feeds[:8]:
+    for feed_url, name, artwork_url in feeds[:8]:
         try:
-            candidates = _episodes_from_feed(feed_url, name, settings, history_ids)
+            candidates = _episodes_from_feed(feed_url, name, artwork_url, settings, history_ids)
         except (requests.RequestException, ET.ParseError, ValueError):
             continue
         random.shuffle(candidates)
@@ -146,14 +149,35 @@ def download_episode_transcript(episode: PodcastEpisode, destination: Path) -> P
     return destination
 
 
-def make_audio_visual_source(audio: Path, destination: Path, start: float, end: float) -> Path:
-    """Make a cheap dark base track; stock footage is overlaid by the final compositor."""
+def download_episode_artwork(episode: PodcastEpisode, destination: Path) -> Path | None:
+    if not episode.artwork_url:
+        return None
+    response = requests.get(episode.artwork_url, timeout=20, headers={"User-Agent": USER_AGENT})
+    response.raise_for_status()
+    if not response.content:
+        return None
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(response.content)
+    return destination
+
+
+def make_audio_visual_source(audio: Path, destination: Path, start: float, end: float,
+                             artwork: Path | None = None) -> Path:
+    """Make a visible blurred-art base track; continuous stock footage is overlaid later."""
     destination.parent.mkdir(parents=True, exist_ok=True)
     length = max(1.0, end - start)
+    if artwork and artwork.is_file():
+        visual_input = ["-loop", "1", "-framerate", "2", "-i", str(artwork)]
+        visual_filter = ("scale=540:960:force_original_aspect_ratio=increase,"
+                         "crop=540:960,boxblur=20:10,eq=brightness=-0.22:saturation=0.65")
+    else:
+        visual_input = ["-f", "lavfi", "-i", "color=c=0x151a28:s=540x960:r=2"]
+        visual_filter = "format=yuv420p"
     command = [
-        "ffmpeg", "-y", "-f", "lavfi", "-i", "color=c=0x07080d:s=540x960:r=2",
+        "ffmpeg", "-y", *visual_input,
         "-ss", f"{start:.3f}", "-t", f"{length:.3f}", "-i", str(audio),
         "-map", "0:v", "-map", "1:a", "-t", f"{length:.3f}",
+        "-vf", visual_filter,
         "-c:v", "libx264", "-preset", "ultrafast", "-crf", "32", "-pix_fmt", "yuv420p",
         "-c:a", "aac", "-b:a", "128k", "-shortest", str(destination),
     ]

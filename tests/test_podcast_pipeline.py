@@ -19,7 +19,8 @@ from src.history import HistoryStore
 from src.hook_builder import build_hook
 from src.horror_scorer import HorrorScorer
 from src.reference_query_builder import build_reference_queries
-from src.shot_planner import attach_stock_assets, build_edit_plan, validate_edit_plan
+from src.shot_planner import (attach_stock_assets, build_continuous_broll_plan, build_edit_plan,
+                              validate_edit_plan)
 from src.story_segment_builder import build_story_segment
 from src.utils import ffprobe
 from src.video_transform import transform_source
@@ -228,6 +229,17 @@ def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
     assert 'startswith("setup-python-")' in workflow
     assert "gh cache delete --all" not in workflow
     assert "rm -f output/short.mp4" in workflow
+
+
+def test_rss_plan_has_no_black_visual_gaps():
+    queries = [{"query": f"creepy scene {index}", "keyword": "rss-horror"}
+               for index in range(5)]
+    plan = build_continuous_broll_plan(110.0, 1.1, True, queries, 5, 7)
+    assert plan["broll_ratio"] == 1.0
+    assert plan["segments"][0]["start"] == 0.0
+    assert plan["segments"][-1]["end"] == 110.0
+    assert all(item["type"] == "planned_broll" for item in plan["segments"])
+    validate_edit_plan(plan)
 
 
 @pytest.mark.skipif(shutil.which("ffmpeg") is None or FFPROBE is None,

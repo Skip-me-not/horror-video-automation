@@ -63,6 +63,31 @@ def build_edit_plan(final_duration: float, speed: float, horizontal_flip: bool,
     return plan
 
 
+def build_continuous_broll_plan(final_duration: float, speed: float, horizontal_flip: bool,
+                                query_events: list[dict[str, Any]], target_count: int = 5,
+                                max_count: int = 7) -> dict[str, Any]:
+    """Cover an audio-only podcast timeline with uninterrupted visual slots."""
+    selected = query_events[:max(1, min(target_count, max_count))]
+    if not selected:
+        raise ValueError("continuous B-roll requires at least one visual query")
+    segments: list[dict[str, Any]] = []
+    slot = final_duration / len(selected)
+    cursor = 0.0
+    for index, event in enumerate(selected):
+        end = final_duration if index == len(selected) - 1 else (index + 1) * slot
+        segments.append({"type": "planned_broll", "start": round(cursor, 3),
+                         "end": round(end, 3), "query": event["query"],
+                         "keyword": event.get("keyword", "rss-horror"),
+                         "preferred_media_type": "video"})
+        cursor = end
+    plan = {"final_duration": round(final_duration, 3), "source_speed": speed,
+            "horizontal_flip": horizontal_flip, "broll_ratio": 1.0,
+            "planned_broll_count": len(segments), "segments": segments,
+            "source_audio_continuous": True}
+    validate_edit_plan(plan)
+    return plan
+
+
 def attach_stock_assets(plan: dict[str, Any], stock_assets: dict[str, dict[str, Any]]) -> dict[str, Any]:
     finalized = deepcopy(plan)
     used = 0
