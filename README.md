@@ -4,9 +4,10 @@ This repository creates 65–175 second vertical horror-story videos from source
 choose a random configured keyword, search metadata, and randomly select an eligible result. It uses
 deterministic transcript, audio-energy, and silence rules; there is no AI or LLM moment detector.
 
-The output is an edited story rather than a continuous podcast crop: a 2–5 second hook, mirrored and
-speed-adjusted speaker footage, animated captions, deterministic crop changes, and transcript-relevant
-Pexels/Pixabay inserts. The original source narration remains continuous beneath every reference visual.
+The output is an edited scary podcast segment rather than a blind continuous crop: the pipeline finds a
+high-confidence horror anchor, expands it to a complete setup/payoff window, adds a 2–5 second hook,
+mirrors and speeds the speaker footage, burns animated captions, and inserts transcript-relevant
+Pexels/Pixabay media. Original podcast narration remains continuous beneath every reference visual.
 
 ## Safety and source authorization
 
@@ -22,18 +23,19 @@ of the license or creator authorization outside this repository.
 
 1. Pick a random horror keyword, inspect up to 20 search results before downloading, and reject Shorts,
    livestreams, duplicates, sources under 10 minutes, and sources over 180 minutes.
-2. Download one accepted source and available English VTT captions.
+2. Retrieve English VTT captions without downloading video and reject weak transcripts early.
 3. Score caption moments using configured hook, paranormal, fear, mystery, sound, visual, confession,
    twist, proximity, silence-boundary, and payoff rules.
-4. Expand the strongest anchor into a coherent 70–165 second source segment.
-5. Mirror, play at 1.10x, preserve pitch, and reframe without stretching to 1080x1920.
-6. Generate a deterministic 2–5 second hook and animated ASS captions with highlighted horror terms.
-7. Build short reference queries only from visual transcript events. Pexels falls back to Pixabay, then
+4. Download compressed audio only and scan silence/energy around the top transcript candidates.
+5. Expand the strongest anchor into a coherent 70–165 second source segment, then download only that
+   video timestamp range with three-second edit handles. Full-video download is an explicit fallback.
+6. Generate a deterministic 2–5 second hook and one ASS caption file with highlighted horror terms.
+7. Build exact B-roll slots before downloading anything. Pexels falls back to Pixabay, then
    to uninterrupted speaker footage if no licensed stock asset is available.
-8. Write and validate `edit_plan.json` before rendering. B-roll normally covers 15–35 percent, lasts
-   2–6 seconds per insert, and never replaces the continuous narration track.
-9. Render H.264/AAC at 30 FPS and fail if ffprobe does not confirm the format, duration, audio/video
-   alignment, and minimum file size.
+8. Download at most seven unique B-roll assets, normally five, at 2.5–4.5 seconds each.
+9. Apply trim, 1.10x pitch-preserving playback, horizontal mirror, 9:16 crop, hook treatment, B-roll,
+   captions, and continuous audio in one FFmpeg filter graph and one final full-resolution encode.
+10. Validate H.264/AAC, 1080x1920, 30 FPS, duration, and audio/video alignment with one cached probe.
 
 ## Local commands
 
@@ -68,6 +70,7 @@ Other supported controls:
 --target-duration 110
 --no-stock
 --force-reprocess
+--debug-artifacts
 --debug
 ```
 
@@ -90,7 +93,7 @@ both are unavailable.
 
 Only `.github/workflows/horror-short-generator.yml` is active. Manual runs accept `video_url`,
 `keyword`, `source_speed`, `target_duration`, `use_stock_media`, `force_reprocess`, and an explicit
-authorization confirmation.
+authorization confirmation, and an optional `debug_artifacts` switch.
 
 Scheduled runs preserve the previously selected four daily US audience windows:
 
@@ -100,8 +103,9 @@ Scheduled runs preserve the previously selected four daily US audience windows:
 - 01:07 UTC — US East late evening / US West early evening
 
 GitHub evaluates scheduled workflow cron entries in UTC, so local US clock times move by one hour at
-daylight-saving transitions. Successful runs commit only the lightweight duplicate history. Downloads
-and temporary media are deleted after artifacts are uploaded.
+daylight-saving transitions. The job uses `ubuntu-24.04`, dedicated FFmpeg caching, setup-python's pip
+cache, a 45-minute timeout, and one `$RUNNER_TEMP/horror-short` directory. Successful runs commit only
+the lightweight duplicate history. Temporary source/audio/stock media are deleted after upload.
 
 ## Outputs
 
@@ -115,6 +119,10 @@ output/reference_media.json
 output/captions.ass
 output/validation.json
 output/processing.log
+output/performance.json
+output/optimization_report.md
 ```
 
-Artifacts are retained for five days. The downloaded full source is never included.
+Normal artifacts retain only the final video, edit metadata, logs, performance metrics, and audit report
+for three days. Manual `debug_artifacts` runs upload captions and extra diagnostics separately for five
+days. Downloaded source ranges, analysis audio, stock originals, and render temp files are never uploaded.

@@ -9,8 +9,13 @@ from pathlib import Path
 from typing import Any
 
 
-def run(command: list[str], *, cwd: Path | None = None, check: bool = True) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(command, cwd=cwd, check=check, capture_output=True, text=True)
+_PROBE_CACHE: dict[tuple[str, int, int], dict[str, Any]] = {}
+
+
+def run(command: list[str], *, cwd: Path | None = None, check: bool = True,
+        timeout: float = 900) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(command, cwd=cwd, check=check, capture_output=True, text=True,
+                          timeout=timeout)
 
 
 def write_json(path: Path, value: Any) -> None:
@@ -23,6 +28,10 @@ def sha256_text(value: str) -> str:
 
 
 def ffprobe(path: Path, binary: str | None = None) -> dict[str, Any]:
+    stat = path.stat()
+    key = (str(path.resolve()), stat.st_size, stat.st_mtime_ns)
+    if key in _PROBE_CACHE:
+        return _PROBE_CACHE[key]
     fallback = Path(__file__).resolve().parents[1] / ".test-tools" / "ffprobe.exe"
     executable = binary or os.getenv("FFPROBE_BIN") or shutil.which("ffprobe")
     if not executable and fallback.is_file():
@@ -30,7 +39,9 @@ def ffprobe(path: Path, binary: str | None = None) -> dict[str, Any]:
     if not executable:
         raise FileNotFoundError("ffprobe is required")
     result = run([executable, "-v", "error", "-show_streams", "-show_format", "-of", "json", str(path)])
-    return json.loads(result.stdout)
+    payload = json.loads(result.stdout)
+    _PROBE_CACHE[key] = payload
+    return payload
 
 
 def safe_filename(value: str) -> str:

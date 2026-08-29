@@ -20,19 +20,31 @@ class Settings:
     horizontal_flip: bool = True
     hook_min_seconds: float = 2.0
     hook_max_seconds: float = 5.0
-    broll_min_seconds: float = 2.0
-    broll_max_seconds: float = 6.0
+    broll_min_seconds: float = 2.5
+    broll_max_seconds: float = 4.5
     target_broll_ratio: float = 0.25
+    min_broll_count: int = 3
+    target_broll_count: int = 5
+    max_broll_count: int = 7
     max_static_speaker_seconds: float = 9.0
     download_max_height: int = 720
+    analysis_preview_height: int = 360
     crop_mode: str = "center"
     enable_pexels: bool = True
     enable_pixabay: bool = True
-    crf: int = 21
+    crf: int = 22
+    encoder: str = "libx264"
+    encoder_preset: str = "veryfast"
     authorization_required: bool = True
     min_source_duration: float = 600.0
     max_source_duration: float = 10800.0
     artifact_retention_days: int = 5
+    max_sources_per_run: int = 2
+    stop_after_first_success: bool = True
+    debug_artifacts: bool = False
+    disk_warning_free_gb: float = 5.0
+    disk_abort_free_gb: float = 3.0
+    range_download_padding_seconds: float = 3.0
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -50,4 +62,6 @@ def load_settings(root: Path) -> Settings:
         raise ValueError("duration settings must remain within 60-180 seconds")
     if settings.crop_mode not in {"center", "left", "right", "auto_simple", "vertical_canvas"}:
         raise ValueError("unsupported crop_mode")
+    if not 1 <= settings.target_broll_count <= settings.max_broll_count <= 7:
+        raise ValueError("B-roll counts must satisfy 1 <= target <= max <= 7")
     return settings

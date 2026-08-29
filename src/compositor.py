@@ -3,65 +3,74 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from .audio_mixer import mux_continuous_audio
 from .config_loader import Settings
 from .utils import run
 
 
-def _render_segment(source: Path, segment: dict[str, Any], destination: Path,
-                    settings: Settings, ffmpeg: str) -> None:
-    duration = float(segment["end"]) - float(segment["start"])
-    kind = segment["type"]
-    common = ["-an", "-r", str(settings.fps), "-c:v", "libx264", "-preset", "veryfast",
-              "-crf", str(settings.crf), "-pix_fmt", "yuv420p", str(destination)]
-    if kind in {"hook", "podcast"}:
-        zoom = float(segment.get("crop_variant", 1.0))
-        filters = [f"trim=start={float(segment['start']):.3f}:end={float(segment['end']):.3f}", "setpts=PTS-STARTPTS"]
-        if kind == "hook":
-            filters.extend(["gblur=sigma=7", "eq=brightness=-0.16:saturation=0.7"])
-        elif zoom > 1.0:
-            scaled_w = round(settings.output_width * zoom / 2) * 2
-            scaled_h = round(settings.output_height * zoom / 2) * 2
-            filters.extend([f"scale={scaled_w}:{scaled_h}",
-                            f"crop={settings.output_width}:{settings.output_height}:(iw-ow)/2:(ih-oh)/2"])
-        command = [ffmpeg, "-y", "-i", str(source), "-vf", ",".join(filters), "-t", f"{duration:.3f}", *common]
-    else:
-        asset = Path(segment["asset"]["local_path"])
-        scale_crop = (f"scale={settings.output_width}:{settings.output_height}:force_original_aspect_ratio=increase,"
-                      f"crop={settings.output_width}:{settings.output_height}")
-        if kind == "reference_image":
-            frames = max(1, round(duration * settings.fps))
-            vf = (f"{scale_crop},zoompan=z='min(zoom+0.00035,1.035)':d={frames}:"
-                  f"s={settings.output_width}x{settings.output_height}:fps={settings.fps},"
-                  "eq=brightness=-0.06:saturation=0.78")
-            command = [ffmpeg, "-y", "-loop", "1", "-i", str(asset), "-vf", vf,
-                       "-t", f"{duration:.3f}", *common]
-        else:
-            command = [ffmpeg, "-y", "-stream_loop", "-1", "-i", str(asset), "-vf",
-                       f"{scale_crop},eq=brightness=-0.06:saturation=0.78", "-t", f"{duration:.3f}", *common]
-    result = run(command, check=False)
-    if result.returncode or not destination.is_file() or destination.stat().st_size == 0:
-        raise RuntimeError(f"visual segment render failed ({kind}): {result.stderr[-1800:]}")
+def _ass_path(path: Path) -> str:
+    return str(path.resolve()).replace("\\", "/").replace(":", r"\:").replace("'", r"\'")
+
+
+def _fill_frame(width: int, height: int) -> str:
+    return (f"scale={width}:{height}:force_original_aspect_ratio=increase,"
+            f"crop={width}:{height},setsar=1")
 
 
 def compose(source: Path, plan: dict[str, Any], captions: Path, destination: Path,
-            temp_directory: Path, settings: Settings, ffmpeg: str = "ffmpeg") -> Path:
-    clips = temp_directory / "clips"
-    clips.mkdir(parents=True, exist_ok=True)
-    paths: list[Path] = []
-    for index, segment in enumerate(plan["segments"]):
-        path = clips / f"clip-{index:03d}.mp4"
-        _render_segment(source, segment, path, settings, ffmpeg)
-        paths.append(path)
-    concat_file = temp_directory / "visual-concat.txt"
-    concat_file.write_text("\n".join(f"file '{str(path.resolve()).replace(chr(92), '/')}'" for path in paths) + "\n",
-                           encoding="utf-8")
-    visual = temp_directory / "visual-track.mp4"
-    result = run([ffmpeg, "-y", "-f", "concat", "-safe", "0", "-i", str(concat_file),
-                  "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", str(settings.crf),
-                  "-pix_fmt", "yuv420p", str(visual)], check=False)
-    if result.returncode:
-        raise RuntimeError(f"visual concat failed: {result.stderr[-2200:]}")
+            temp_directory: Path, settings: Settings, ffmpeg: str = "ffmpeg",
+            source_trim_start: float = 0.0, source_duration: float | None = None) -> Path:
+    """Compose source, B-roll, captions, and continuous audio in one full-resolution encode."""
+    del temp_directory  # retained in the API for callers; no intermediate media is created
+    final_duration = float(plan["final_duration"])
+    source_length = source_duration or final_duration * settings.source_speed
+    command = [ffmpeg, "-y", "-i", str(source)]
+    broll = [item for item in plan["segments"]
+             if item["type"] in {"broll_video", "reference_image"} and item.get("asset")]
+    for segment in broll:
+        asset = str(segment["asset"]["local_path"])
+        if segment["type"] == "reference_image":
+            command.extend(["-loop", "1", "-framerate", str(settings.fps), "-i", asset])
+        else:
+            command.extend(["-stream_loop", "-1", "-i", asset])
+
+    hook_end = float((plan["segments"] or [{}])[0].get("end", 0.0))
+    filters = [
+        (f"[0:v]trim=start={source_trim_start:.3f}:end={source_trim_start + source_length:.3f},"
+         f"setpts=(PTS-STARTPTS)/{settings.source_speed},hflip,{_fill_frame(settings.output_width, settings.output_height)},"
+         f"fps={settings.fps},format=yuv420p,gblur=sigma=5:enable='between(t,0,{hook_end:.3f})'[base0]"),
+        (f"[0:a]atrim=start={source_trim_start:.3f}:end={source_trim_start + source_length:.3f},"
+         f"asetpts=PTS-STARTPTS,atempo={settings.source_speed}[aout]"),
+    ]
+    current = "base0"
+    for index, segment in enumerate(broll, start=1):
+        duration = float(segment["end"]) - float(segment["start"])
+        start = float(segment["start"])
+        asset_filter = _fill_frame(settings.output_width, settings.output_height)
+        if segment["type"] == "reference_image":
+            asset_filter += (f",zoompan=z='min(zoom+0.0003,1.035)':d=1:"
+                             f"s={settings.output_width}x{settings.output_height}:fps={settings.fps}")
+        filters.append(
+            f"[{index}:v]trim=duration={duration:.3f},setpts=PTS-STARTPTS+{start:.3f}/TB,"
+            f"{asset_filter},eq=brightness=-0.06:saturation=0.78[asset{index}]"
+        )
+        output_label = f"mix{index}"
+        filters.append(
+            f"[{current}][asset{index}]overlay=0:0:eof_action=pass:shortest=0:"
+            f"enable='between(t,{start:.3f},{float(segment['end']):.3f})'[{output_label}]"
+        )
+        current = output_label
+    filters.append(f"[{current}]trim=duration={final_duration:.3f},setpts=PTS-STARTPTS,"
+                   f"ass='{_ass_path(captions)}'[vout]")
+
     destination.parent.mkdir(parents=True, exist_ok=True)
-    return mux_continuous_audio(visual, source, captions, destination,
-                                float(plan["final_duration"]), settings.crf, ffmpeg)
+    command.extend([
+        "-filter_complex", ";".join(filters), "-map", "[vout]", "-map", "[aout]",
+        "-t", f"{final_duration:.3f}", "-c:v", settings.encoder,
+        "-preset", settings.encoder_preset, "-crf", str(settings.crf),
+        "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
+        "-movflags", "+faststart", str(destination),
+    ])
+    result = run(command, check=False, timeout=1200)
+    if result.returncode or not destination.is_file() or destination.stat().st_size == 0:
+        raise RuntimeError(f"single-pass composition failed: {result.stderr[-3000:]}")
+    return destination
