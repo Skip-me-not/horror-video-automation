@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Any
 
@@ -10,8 +11,14 @@ MEDIA_SUFFIXES = {".mp4", ".mkv", ".webm", ".mov", ".m4a", ".opus", ".ogg", ".mp
 
 
 def _youtube_options() -> dict[str, Any]:
-    """Logged-out clients that give CI more than one extraction path."""
-    return {"extractor_args": {"youtube": {"player_client": ["web_embedded", "default"]}}}
+    """Use the CI PO-token helper first, with logged-out client fallbacks."""
+    extractor_args: dict[str, dict[str, list[str]]] = {
+        "youtube": {"player_client": ["mweb", "web_embedded", "default"]},
+    }
+    provider_home = os.getenv("YTDLP_BGUTIL_SERVER_HOME", "").strip()
+    if provider_home:
+        extractor_args["youtubepot-bgutilscript"] = {"server_home": [provider_home]}
+    return {"extractor_args": extractor_args}
 
 
 def _first_media(directory: Path, prefix: str, allowed: set[str] | None = None) -> Path | None:
