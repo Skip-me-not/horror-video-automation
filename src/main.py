@@ -21,6 +21,8 @@ from .history import HistoryStore
 from .hook_builder import build_hook
 from .horror_scorer import HorrorScorer
 from .performance import PerformanceTracker, disk_status, write_optimization_report
+from .podcast_rss import (PodcastEpisode, download_episode_audio, download_episode_transcript,
+                          make_audio_visual_source, search_podcast_episodes)
 from .reference_query_builder import build_reference_queries
 from .shot_planner import attach_stock_assets, build_edit_plan
 from .silence_detector import detect_silences
@@ -68,11 +70,17 @@ def _known_timestamp(captions: list[Caption], start: float, source_duration: flo
 
 def _audio_only_story(audio: Path, duration: float, settings: Settings, target: float) -> dict[str, Any]:
     changes = energy_changes(audio)
-    if not changes:
-        raise RuntimeError("captions unavailable and audio confidence too low")
-    anchor = max(changes, key=lambda item: abs(item["delta_db"]))
     source_length = min(165.0, max(settings.min_final_duration * settings.source_speed,
                                    target * settings.source_speed))
+    if not changes:
+        start = max(0.0, min(duration - source_length, duration * 0.28))
+        end = min(duration, start + source_length)
+        return {"start": round(start, 3), "end": round(end, 3),
+                "source_duration": round(end - start, 3),
+                "final_duration": round((end - start) / settings.source_speed, 3),
+                "anchor": {}, "transcript": "", "score": 0.0,
+                "has_payoff_signal": False, "selection_mode": "audio-only-safe-fallback"}
+    anchor = max(changes, key=lambda item: abs(item["delta_db"]))
     start = max(0.0, min(duration - source_length, float(anchor["time"]) - source_length * 0.48))
     end = min(duration, start + source_length)
     return {"start": round(start, 3), "end": round(end, 3),
@@ -186,6 +194,63 @@ def _remote_attempt(result: SourceResult, attempt_dir: Path, args: argparse.Name
             "authorization_basis": "automated keyword search; license not enforced"}
 
 
+def _podcast_attempt(episode: PodcastEpisode, attempt_dir: Path, args: argparse.Namespace,
+                     settings: Settings, target: float, triggers: dict[str, Any],
+                     scoring: dict[str, Any], history: HistoryStore, perf: PerformanceTracker,
+                     log: Path) -> dict[str, Any]:
+    attempt_dir.mkdir(parents=True, exist_ok=True)
+    if not args.force_reprocess and episode.episode_id in history.used_source_ids():
+        raise RuntimeError("EARLY_SKIP_ALREADY_PROCESSED_RSS_EPISODE")
+    transcript_path = None
+    try:
+        with perf.stage("podcast_transcript_retrieval"):
+            transcript_path = download_episode_transcript(episode, attempt_dir / "episode.vtt")
+    except Exception as exc:
+        _log(log, f"RSS_TRANSCRIPT_UNAVAILABLE_AUDIO_FALLBACK: {str(exc)[:300]}")
+    captions = parse_vtt(transcript_path) if transcript_path else []
+    disk_status(attempt_dir, settings.disk_warning_free_gb, settings.disk_abort_free_gb,
+                before_download=True)
+    with perf.stage("podcast_audio_download"):
+        audio = download_episode_audio(episode, attempt_dir / "episode_audio.mp3")
+    duration = episode.duration or _duration(audio, {})
+    if not settings.min_source_duration <= duration <= settings.max_source_duration:
+        raise RuntimeError(f"RSS episode duration outside limits: {duration:.1f}s")
+    perf.set(audio_only_analysis=True, audio_bytes=audio.stat().st_size)
+    if captions and args.start is None:
+        candidates = _score_transcript(captions, triggers, scoring)
+        if not candidates:
+            raise RuntimeError("EARLY_SKIP_INSUFFICIENT_RSS_HORROR_SIGNALS")
+        with perf.stage("moment_detection"):
+            selected = _select_caption_story(captions, candidates, audio, duration, settings, target, scoring)
+    elif args.start is not None:
+        selected = _known_timestamp(captions, args.start, duration, settings, target)
+    else:
+        with perf.stage("moment_detection"):
+            selected = _audio_only_story(audio, duration, settings, target)
+        selected["transcript"] = episode.description or episode.title
+    transcript_hash = sha256_text(str(selected.get("transcript") or
+                                      f"audio:{selected['start']:.3f}:{selected['end']:.3f}"))
+    if (not args.force_reprocess and history.contains_story(episode.episode_id, transcript_hash,
+                                                            float(selected["start"]), float(selected["end"]))):
+        raise RuntimeError("EARLY_SKIP_DUPLICATE_RSS_STORY")
+    selected["transcript_hash"] = transcript_hash
+    with perf.stage("podcast_visual_source"):
+        source = make_audio_visual_source(audio, attempt_dir / "rss_source.mp4",
+                                          float(selected["start"]), float(selected["end"]))
+    audio.unlink(missing_ok=True)
+    perf.set(range_video_download=False, full_video_downloaded=False,
+             source_video_bytes=source.stat().st_size, source_download_bytes=source.stat().st_size,
+             full_source_duration_seconds=duration,
+             selected_range_duration_seconds=round(float(selected["end"]) - float(selected["start"]), 3))
+    info = {"id": episode.episode_id, "title": episode.title,
+            "webpage_url": episode.webpage_url, "channel": episode.podcast,
+            "channel_id": "podcast-rss", "duration": duration, "license": ""}
+    _log(log, f"Podcast RSS fallback ready: {episode.podcast} — {episode.title}")
+    return {"source": source, "media_start": float(selected["start"]), "captions": captions,
+            "selected": selected, "info": info,
+            "authorization_basis": "public podcast RSS fallback; license not enforced"}
+
+
 def _local_attempt(path: Path, args: argparse.Namespace, settings: Settings, target: float,
                    triggers: dict[str, Any], scoring: dict[str, Any], history: HistoryStore,
                    perf: PerformanceTracker, log: Path) -> dict[str, Any]:
@@ -243,9 +308,9 @@ def _choose_and_prepare(args: argparse.Namespace, settings: Settings, target: fl
         results = search(keyword, int(search_config.get("videos_per_keyword", 20)), settings,
                          set() if args.force_reprocess else history.used_source_ids())
     random.shuffle(results)
-    if not results:
-        raise RuntimeError("no unused source passed metadata filters")
     errors: list[str] = []
+    if not results:
+        errors.append("youtube-search: no unused source passed metadata filters")
     for index, result in enumerate(results[:settings.max_sources_per_run], start=1):
         _log(log, f"Trying metadata-approved source {index}/{settings.max_sources_per_run}: {result.title}")
         try:
@@ -257,7 +322,22 @@ def _choose_and_prepare(args: argparse.Namespace, settings: Settings, target: fl
             attempt_dir = run_dir / f"source-{index}"
             if attempt_dir.is_dir() and run_dir.resolve() in attempt_dir.resolve().parents:
                 shutil.rmtree(attempt_dir)
-    raise RuntimeError("all source attempts failed: " + " | ".join(errors))
+    _log(log, "YouTube sources unavailable; switching to no-login public podcast RSS fallback")
+    with perf.stage("podcast_rss_search"):
+        episodes = search_podcast_episodes(keyword, settings,
+                                           set() if args.force_reprocess else history.used_source_ids())
+    for index, episode in enumerate(episodes[:settings.max_sources_per_run], start=1):
+        _log(log, f"Trying RSS podcast {index}/{settings.max_sources_per_run}: {episode.title}")
+        try:
+            return _podcast_attempt(episode, run_dir / f"rss-source-{index}", args, settings, target,
+                                    triggers, scoring, history, perf, log)
+        except Exception as exc:
+            errors.append(f"{episode.episode_id}: {exc}")
+            _log(log, f"RSS source skipped before final render: {exc}")
+            attempt_dir = run_dir / f"rss-source-{index}"
+            if attempt_dir.is_dir() and run_dir.resolve() in attempt_dir.resolve().parents:
+                shutil.rmtree(attempt_dir)
+    raise RuntimeError("all YouTube and podcast RSS source attempts failed: " + " | ".join(errors))
 
 
 def _print_performance(payload: dict[str, Any]) -> None:
@@ -317,6 +397,15 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
 
     mappings = read_json(root / "config" / "reference_keywords.json")
     query_events = build_reference_queries(relative_captions, mappings) if relative_captions else []
+    if not query_events and prepared["authorization_basis"].startswith("public podcast RSS"):
+        fallback_queries = ["dark hallway", "foggy woods", "security camera dark room",
+                            "empty hospital", "human shadow hallway"]
+        spacing = max(10.0, (final_duration - hook["duration"] - 10.0) / len(fallback_queries))
+        query_events = [{"time": round(float(hook["duration"]) + 8.0 + index * spacing, 3),
+                         "keyword": "rss-horror", "query": query, "transcript": episode_text}
+                        for index, (query, episode_text) in enumerate(
+                            zip(fallback_queries, [str(selected.get("transcript") or "podcast horror")]
+                                * len(fallback_queries)))]
     with perf.stage("edit_planning"):
         draft_plan = build_edit_plan(final_duration, settings.source_speed, settings.horizontal_flip,
                                      hook, query_events, {}, settings.target_broll_ratio,
