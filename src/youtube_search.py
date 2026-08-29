@@ -50,11 +50,16 @@ def filter_results(entries: list[dict[str, Any]], settings: Settings,
 def search(keyword: str, videos_per_keyword: int, settings: Settings,
            history_ids: set[str]) -> list[SourceResult]:
     import yt_dlp
+    # Keep search flat.  Expanding every result makes yt-dlp open each watch page;
+    # on shared CI IPs a single bot-check response then aborts the entire search.
+    # Flat search results still contain the fields used by filter_results and the
+    # two selected candidates are inspected later by the download stage.
     options = {"quiet": True, "no_warnings": True, "skip_download": True,
-               "extract_flat": False, "playlistend": max(1, videos_per_keyword)}
+               "extract_flat": "in_playlist", "ignoreerrors": True,
+               "playlistend": max(1, videos_per_keyword)}
     with yt_dlp.YoutubeDL(options) as downloader:
         payload = downloader.extract_info(f"ytsearch{videos_per_keyword}:{keyword}", download=False)
-    return filter_results(list(payload.get("entries") or []), settings, history_ids)
+    return filter_results(list((payload or {}).get("entries") or []), settings, history_ids)
 
 
 def inspect_url(url: str) -> dict[str, Any]:

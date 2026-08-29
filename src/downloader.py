@@ -9,6 +9,11 @@ from .config_loader import Settings
 MEDIA_SUFFIXES = {".mp4", ".mkv", ".webm", ".mov", ".m4a", ".opus", ".ogg", ".mp3"}
 
 
+def _youtube_options() -> dict[str, Any]:
+    """Logged-out clients that give CI more than one extraction path."""
+    return {"extractor_args": {"youtube": {"player_client": ["web_embedded", "default"]}}}
+
+
 def _first_media(directory: Path, prefix: str, allowed: set[str] | None = None) -> Path | None:
     suffixes = allowed or MEDIA_SUFFIXES
     return next((path for path in sorted(directory.glob(f"{prefix}.*"))
@@ -20,6 +25,7 @@ def download_captions(url: str, destination: Path) -> dict[str, Any]:
     import yt_dlp
     destination.mkdir(parents=True, exist_ok=True)
     options = {
+        **_youtube_options(),
         "skip_download": True, "writesubtitles": True, "writeautomaticsub": True,
         "subtitleslangs": ["en.*"], "subtitlesformat": "vtt",
         "outtmpl": str(destination / "source"), "quiet": True, "no_warnings": True,
@@ -36,6 +42,7 @@ def download_audio(url: str, destination: Path) -> Path:
     import yt_dlp
     destination.mkdir(parents=True, exist_ok=True)
     options = {
+        **_youtube_options(),
         "format": "bestaudio[abr<=128]/bestaudio",
         "outtmpl": str(destination / "source_audio.%(ext)s"),
         "quiet": True, "no_warnings": True, "noplaylist": True,
@@ -60,6 +67,7 @@ def download_selected_video(url: str, destination: Path, start: float, end: floa
     requested_start = max(0.0, start - padding)
     requested_end = end + padding
     base = {
+        **_youtube_options(),
         "format": (f"bestvideo[height<={settings.download_max_height}]+bestaudio/"
                    f"best[height<={settings.download_max_height}]"),
         "outtmpl": str(destination / "selected.%(ext)s"), "merge_output_format": "mp4",
@@ -97,6 +105,7 @@ def download_source(url: str, destination: Path, settings: Settings) -> dict[str
     destination.mkdir(parents=True, exist_ok=True)
     template = str(destination / "source.%(ext)s")
     options = {
+        **_youtube_options(),
         "format": f"bestvideo[height<={settings.download_max_height}]+bestaudio/best[height<={settings.download_max_height}]",
         "outtmpl": template,
         "merge_output_format": "mp4",
