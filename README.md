@@ -1,9 +1,8 @@
-# Authorized Horror Podcast to Edited Short
+# Random Horror Podcast to Edited Short
 
-This repository creates 65–175 second vertical horror-story videos from reusable source media. Scheduled
-runs choose a random configured keyword, search metadata, and randomly select a result explicitly marked
-Creative Commons/reuse allowed. It uses deterministic transcript, audio-energy, and silence rules; there
-is no AI or LLM moment detector.
+This repository creates 65–175 second vertical horror-story videos from source media. Scheduled runs
+choose a random configured keyword, search metadata, and randomly select an eligible result. It uses
+deterministic transcript, audio-energy, and silence rules; there is no AI or LLM moment detector.
 
 The output is an edited story rather than a continuous podcast crop: a 2–5 second hook, mirrored and
 speed-adjusted speaker footage, animated captions, deterministic crop changes, and transcript-relevant
@@ -11,10 +10,10 @@ Pexels/Pixabay inserts. The original source narration remains continuous beneath
 
 ## Safety and source authorization
 
-Automated search does not require video-ID or channel-ID lists. It rejects results unless their extracted
-metadata says Creative Commons or reuse allowed. A manual remote URL still requires the `--authorized`
-flag. Use that flag only when you own the source or have permission to download, edit, and republish it.
-Supplying a local file is treated as an explicit user-provided authorized source.
+Automated keyword search does not require video-ID/channel-ID lists and does not enforce a reuse-license
+metadata filter. It only filters duration, livestreams, duplicates, and unavailable metadata. You remain
+responsible for confirming permission before publishing the generated edit. A manual remote URL still
+requires the `--authorized` flag. Supplying a local file is treated as user-provided source media.
 
 Mirroring, cropping, captions, and speed changes do not create copyright permission. Keep written proof
 of the license or creator authorization outside this repository.
@@ -22,7 +21,7 @@ of the license or creator authorization outside this repository.
 ## Pipeline
 
 1. Pick a random horror keyword, inspect up to 20 search results before downloading, and reject Shorts,
-   livestreams, duplicates, non-reusable licenses, sources under 10 minutes, and sources over 180 minutes.
+   livestreams, duplicates, sources under 10 minutes, and sources over 180 minutes.
 2. Download one accepted source and available English VTT captions.
 3. Score caption moments using configured hook, paranormal, fear, mystery, sound, visual, confession,
    twist, proximity, silence-boundary, and payoff rules.
@@ -56,7 +55,7 @@ Authorized local source with an optional same-name `.vtt` sidecar:
 python -m src.main --video-url "/path/to/authorized-source.mp4" --start 760 --no-stock
 ```
 
-Random reusable metadata search using a specified keyword:
+Random metadata search using a specified keyword:
 
 ```bash
 python -m src.main --keyword "true scary stories podcast"

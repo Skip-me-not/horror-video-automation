@@ -20,7 +20,6 @@
   "enable_pixabay": true,
   "crf": 21,
   "authorization_required": true,
-  "require_reuse_license_for_search": true,
   "min_source_duration": 600,
   "max_source_duration": 10800,
   "artifact_retention_days": 5

@@ -30,7 +30,6 @@ class Settings:
     enable_pixabay: bool = True
     crf: int = 21
     authorization_required: bool = True
-    require_reuse_license_for_search: bool = True
     min_source_duration: float = 600.0
     max_source_duration: float = 10800.0
     artifact_retention_days: int = 5

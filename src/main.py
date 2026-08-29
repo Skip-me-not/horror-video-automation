@@ -79,11 +79,11 @@ def _select_source(args: argparse.Namespace, settings: Settings, history: Histor
     results = search(keyword, int(search_config.get("videos_per_keyword", 2)), settings,
                      set() if args.force_reprocess else history.used_source_ids())
     if not results:
-        raise RuntimeError("no unused Creative Commons/reuse-allowed source passed duration/live filters")
+        raise RuntimeError("no unused source passed duration/live filters")
     chosen = random.choice(results)
-    _log(log, f"Randomly selected reusable source {chosen.video_id}: {chosen.title}")
+    _log(log, f"Randomly selected keyword source {chosen.video_id}: {chosen.title}")
     payload = download_source(chosen.url, downloads, settings)
-    payload["authorization_basis"] = f"search metadata license: {chosen.license}"
+    payload["authorization_basis"] = "automated keyword search; license not enforced"
     return payload
 
 
@@ -228,7 +228,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Create a deterministic edited horror story Short")
     source = parser.add_mutually_exclusive_group()
     source.add_argument("--video-url", help="Authorized URL or local media path")
-    source.add_argument("--keyword", help="Search configured authorized channels with this keyword")
+    source.add_argument("--keyword", help="Search videos using this keyword")
     parser.add_argument("--source-speed", type=float)
     parser.add_argument("--target-duration", type=float)
     parser.add_argument("--start", type=float, help="Known authorized source timestamp for Phase-1 testing")

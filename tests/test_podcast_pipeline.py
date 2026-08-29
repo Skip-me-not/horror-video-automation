@@ -25,7 +25,7 @@ LOCAL_FFPROBE = Path(__file__).resolve().parents[1] / ".test-tools" / "ffprobe.e
 FFPROBE = shutil.which("ffprobe") or (str(LOCAL_FFPROBE) if LOCAL_FFPROBE.is_file() else None)
 
 
-def test_settings_and_reusable_metadata_filter(repo_root):
+def test_settings_and_random_metadata_filter(repo_root):
     settings = load_settings(repo_root)
     assert settings.source_speed == 1.10
     settings = Settings(root=repo_root)
@@ -40,7 +40,7 @@ def test_settings_and_reusable_metadata_filter(repo_root):
          "license": "Creative Commons"},
     ]
     results = filter_results(entries, settings, set())
-    assert [item.video_id for item in results] == ["allowed"]
+    assert [item.video_id for item in results] == ["allowed", "standard"]
 
 
 def test_vtt_scoring_segment_hook_and_queries(tmp_path, repo_root):

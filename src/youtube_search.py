@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Any
-from urllib.parse import quote_plus
 
 from .config_loader import Settings
 
@@ -20,11 +19,6 @@ class SourceResult:
 
     def as_dict(self) -> dict[str, Any]:
         return self.__dict__.copy()
-
-
-def _reuse_allowed(license_name: str) -> bool:
-    normalized = license_name.casefold()
-    return "creative commons" in normalized or "reuse allowed" in normalized
 
 
 def filter_results(entries: list[dict[str, Any]], settings: Settings,
@@ -49,8 +43,6 @@ def filter_results(entries: list[dict[str, Any]], settings: Settings,
             continue
         if result.live_status != "not_live":
             continue
-        if settings.require_reuse_license_for_search and not _reuse_allowed(result.license):
-            continue
         results.append(result)
     return results
 
@@ -60,11 +52,8 @@ def search(keyword: str, videos_per_keyword: int, settings: Settings,
     import yt_dlp
     options = {"quiet": True, "no_warnings": True, "skip_download": True,
                "extract_flat": False, "playlistend": max(1, videos_per_keyword)}
-    query = quote_plus(keyword)
-    # YouTube's Creative Commons filter. Metadata is still checked below before acceptance.
-    search_url = f"https://www.youtube.com/results?search_query={query}&sp=EgIwAQ%253D%253D"
     with yt_dlp.YoutubeDL(options) as downloader:
-        payload = downloader.extract_info(search_url, download=False)
+        payload = downloader.extract_info(f"ytsearch{videos_per_keyword}:{keyword}", download=False)
     return filter_results(list(payload.get("entries") or []), settings, history_ids)
 
 
