@@ -269,5 +269,21 @@
       "human shadow hallway"
     ],
     "generated_timestamp": "2026-08-29T18:13:28.435658+00:00"
+  },
+  {
+    "timestamp": "2026-08-29T18:18:12.215078+00:00",
+    "source_video_id": "rss-28010556063bc302",
+    "source_start": 3729.92,
+    "source_end": 3850.92,
+    "transcript_hash": "54b9cb333533b0792b271cef0181d97c6a0686b8ece82ea61f12e78c4b2c1c35",
+    "hook_template": "What happened next made him leave.",
+    "reference_queries": [
+      "dark hallway",
+      "foggy woods",
+      "security camera dark room",
+      "empty hospital",
+      "human shadow hallway"
+    ],
+    "generated_timestamp": "2026-08-29T18:18:12.214959+00:00"
   }
 ]
