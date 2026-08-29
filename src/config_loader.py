@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import os
 from dataclasses import dataclass, fields
 from pathlib import Path
 from typing import Any
@@ -31,8 +30,7 @@ class Settings:
     enable_pixabay: bool = True
     crf: int = 21
     authorization_required: bool = True
-    authorized_video_ids: tuple[str, ...] = ()
-    authorized_channel_ids: tuple[str, ...] = ()
+    require_reuse_license_for_search: bool = True
     min_source_duration: float = 600.0
     max_source_duration: float = 10800.0
     artifact_retention_days: int = 5
@@ -46,9 +44,6 @@ def load_settings(root: Path) -> Settings:
     raw = read_json(root / "config" / "settings.json")
     valid = {field.name for field in fields(Settings)} - {"root"}
     values: dict[str, Any] = {key: value for key, value in raw.items() if key in valid}
-    for key in ("authorized_video_ids", "authorized_channel_ids"):
-        env_values = [item.strip() for item in os.getenv(key.upper(), "").split(",") if item.strip()]
-        values[key] = tuple(env_values or values.get(key, ()))
     settings = Settings(root=root, **values)
     if not 1.0 <= settings.source_speed <= 2.0:
         raise ValueError("source_speed must be between 1.0 and 2.0")

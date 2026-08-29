@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       video_url:
-        description: Authorized source URL (leave blank for allowlisted search)
+        description: Authorized source URL (blank = random reusable keyword result)
         required: false
         type: string
       keyword:
@@ -57,8 +57,6 @@ jobs:
     env:
       PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
       PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
-      AUTHORIZED_VIDEO_IDS: ${{ secrets.AUTHORIZED_VIDEO_IDS }}
-      AUTHORIZED_CHANNEL_IDS: ${{ secrets.AUTHORIZED_CHANNEL_IDS }}
     steps:
       - uses: actions/checkout@v4
         with:

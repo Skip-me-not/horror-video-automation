@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Any
+from urllib.parse import quote_plus
 
 from .config_loader import Settings
 
@@ -15,16 +16,15 @@ class SourceResult:
     channel: str
     channel_id: str
     live_status: str
+    license: str
 
     def as_dict(self) -> dict[str, Any]:
         return self.__dict__.copy()
 
 
-def _authorized(result: SourceResult, settings: Settings) -> bool:
-    if not settings.authorization_required:
-        return True
-    return (result.video_id in settings.authorized_video_ids
-            or result.channel_id in settings.authorized_channel_ids)
+def _reuse_allowed(license_name: str) -> bool:
+    normalized = license_name.casefold()
+    return "creative commons" in normalized or "reuse allowed" in normalized
 
 
 def filter_results(entries: list[dict[str, Any]], settings: Settings,
@@ -41,6 +41,7 @@ def filter_results(entries: list[dict[str, Any]], settings: Settings,
             channel=str(entry.get("channel") or entry.get("uploader") or ""),
             channel_id=str(entry.get("channel_id") or entry.get("uploader_id") or ""),
             live_status=str(entry.get("live_status") or "not_live"),
+            license=str(entry.get("license") or ""),
         )
         if not video_id or video_id in history_ids:
             continue
@@ -48,7 +49,7 @@ def filter_results(entries: list[dict[str, Any]], settings: Settings,
             continue
         if result.live_status != "not_live":
             continue
-        if not _authorized(result, settings):
+        if settings.require_reuse_license_for_search and not _reuse_allowed(result.license):
             continue
         results.append(result)
     return results
@@ -59,8 +60,11 @@ def search(keyword: str, videos_per_keyword: int, settings: Settings,
     import yt_dlp
     options = {"quiet": True, "no_warnings": True, "skip_download": True,
                "extract_flat": False, "playlistend": max(1, videos_per_keyword)}
+    query = quote_plus(keyword)
+    # YouTube's Creative Commons filter. Metadata is still checked below before acceptance.
+    search_url = f"https://www.youtube.com/results?search_query={query}&sp=EgIwAQ%253D%253D"
     with yt_dlp.YoutubeDL(options) as downloader:
-        payload = downloader.extract_info(f"ytsearch{videos_per_keyword}:{keyword}", download=False)
+        payload = downloader.extract_info(search_url, download=False)
     return filter_results(list(payload.get("entries") or []), settings, history_ids)
 
 
@@ -73,9 +77,4 @@ def inspect_url(url: str) -> dict[str, Any]:
 def assert_authorized(info: dict[str, Any], settings: Settings, explicit_confirmation: bool) -> None:
     if not settings.authorization_required or explicit_confirmation:
         return
-    video_id = str(info.get("id") or "")
-    channel_id = str(info.get("channel_id") or info.get("uploader_id") or "")
-    if video_id not in settings.authorized_video_ids and channel_id not in settings.authorized_channel_ids:
-        raise PermissionError(
-            "source is not allowlisted; add its video/channel ID or pass --authorized only when you own reuse rights"
-        )
+    raise PermissionError("manual remote URLs require --authorized confirmation of reuse rights")

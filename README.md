@@ -1,8 +1,9 @@
 # Authorized Horror Podcast to Edited Short
 
-This repository creates 65–175 second vertical horror-story videos from source media that you own or
-are authorized to download and reuse. It uses deterministic transcript, audio-energy, and silence rules;
-there is no AI or LLM moment detector.
+This repository creates 65–175 second vertical horror-story videos from reusable source media. Scheduled
+runs choose a random configured keyword, search metadata, and randomly select a result explicitly marked
+Creative Commons/reuse allowed. It uses deterministic transcript, audio-energy, and silence rules; there
+is no AI or LLM moment detector.
 
 The output is an edited story rather than a continuous podcast crop: a 2–5 second hook, mirrored and
 speed-adjusted speaker footage, animated captions, deterministic crop changes, and transcript-relevant
@@ -10,18 +11,18 @@ Pexels/Pixabay inserts. The original source narration remains continuous beneath
 
 ## Safety and source authorization
 
-Automated search only accepts video IDs or channel IDs listed in the repository settings or supplied by
-the `AUTHORIZED_VIDEO_IDS` and `AUTHORIZED_CHANNEL_IDS` secrets. A manual remote URL also requires the
-`--authorized` flag. Use that flag only when you own the source or have permission to download, edit, and
-republish it. Supplying a local file is treated as an explicit user-provided authorized source.
+Automated search does not require video-ID or channel-ID lists. It rejects results unless their extracted
+metadata says Creative Commons or reuse allowed. A manual remote URL still requires the `--authorized`
+flag. Use that flag only when you own the source or have permission to download, edit, and republish it.
+Supplying a local file is treated as an explicit user-provided authorized source.
 
 Mirroring, cropping, captions, and speed changes do not create copyright permission. Keep written proof
 of the license or creator authorization outside this repository.
 
 ## Pipeline
 
-1. Search source metadata before downloading and reject Shorts, livestreams, duplicates, sources under
-   10 minutes, sources over 180 minutes, and sources outside the authorization allowlist.
+1. Pick a random horror keyword, inspect up to 20 search results before downloading, and reject Shorts,
+   livestreams, duplicates, non-reusable licenses, sources under 10 minutes, and sources over 180 minutes.
 2. Download one accepted source and available English VTT captions.
 3. Score caption moments using configured hook, paranormal, fear, mystery, sound, visual, confession,
    twist, proximity, silence-boundary, and payoff rules.
@@ -55,7 +56,7 @@ Authorized local source with an optional same-name `.vtt` sidecar:
 python -m src.main --video-url "/path/to/authorized-source.mp4" --start 760 --no-stock
 ```
 
-Allowlisted metadata search:
+Random reusable metadata search using a specified keyword:
 
 ```bash
 python -m src.main --keyword "true scary stories podcast"
@@ -76,17 +77,15 @@ Other supported controls:
 The five JSON files in `config/` control search terms, horror triggers, reference query mappings,
 scoring, duration, transforms, crop mode, and provider behavior.
 
-Configure these GitHub repository secrets:
+Optional GitHub repository secrets:
 
 ```text
-AUTHORIZED_VIDEO_IDS       comma-separated exact video IDs
-AUTHORIZED_CHANNEL_IDS     comma-separated exact channel IDs
 PEXELS_API_KEY              optional
 PIXABAY_API_KEY             optional
 ```
 
-At least one authorization allowlist secret is required for scheduled source search. Stock keys are
-optional; generation falls back to source footage when both are unavailable.
+No source-ID secret is required. Stock keys are optional; generation falls back to source footage when
+both are unavailable.
 
 ## GitHub Actions
 

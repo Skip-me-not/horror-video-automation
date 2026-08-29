@@ -69,7 +69,8 @@ def _select_source(args: argparse.Namespace, settings: Settings, history: Histor
         assert_authorized(info, settings, args.authorized)
         _log(log, f"Downloading authorized source video {info.get('id')}")
         payload = download_source(args.video_url, downloads, settings)
-        payload["authorization_basis"] = "explicit --authorized confirmation" if args.authorized else "configured allowlist"
+        payload["authorization_basis"] = ("explicit --authorized confirmation" if args.authorized
+                                            else "authorization check disabled in settings")
         return payload
 
     search_config = read_json(settings.root / "config" / "search_keywords.json")
@@ -78,11 +79,11 @@ def _select_source(args: argparse.Namespace, settings: Settings, history: Histor
     results = search(keyword, int(search_config.get("videos_per_keyword", 2)), settings,
                      set() if args.force_reprocess else history.used_source_ids())
     if not results:
-        raise RuntimeError("no unused authorized source passed duration/live/allowlist filters")
-    chosen = results[0]
-    _log(log, f"Selected allowlisted source {chosen.video_id}: {chosen.title}")
+        raise RuntimeError("no unused Creative Commons/reuse-allowed source passed duration/live filters")
+    chosen = random.choice(results)
+    _log(log, f"Randomly selected reusable source {chosen.video_id}: {chosen.title}")
     payload = download_source(chosen.url, downloads, settings)
-    payload["authorization_basis"] = "configured allowlist"
+    payload["authorization_basis"] = f"search metadata license: {chosen.license}"
     return payload
 
 
