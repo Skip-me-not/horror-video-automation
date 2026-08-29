@@ -355,7 +355,7 @@ def _print_performance(payload: dict[str, Any]) -> None:
     for key in ("full_source_duration_seconds", "selected_range_duration_seconds",
                 "full_video_downloaded", "audio_only_analysis", "range_video_download",
                 "source_video_bytes", "stock_bytes", "bytes_downloaded_total", "final_file_bytes",
-                "ffmpeg_full_encodes",
+                "ffmpeg_full_encodes", "stock_asset_count", "visual_coverage_ratio",
                 "ffmpeg_cache_hit", "yt_dlp_cache_hit", "pip_cache_hit"):
         if key in payload:
             print(f"{key:28} {payload[key]}")
@@ -482,6 +482,7 @@ def run_pipeline(args: argparse.Namespace) -> dict[str, Any]:
     downloaded_total = (int(perf.metrics.get("audio_bytes", 0))
                         + int(perf.metrics.get("source_download_bytes", 0)) + stock_bytes)
     perf.set(stock_asset_count=len(assets), stock_bytes=stock_bytes,
+             visual_coverage_ratio=float(plan["broll_ratio"]),
              bytes_downloaded_total=downloaded_total, final_file_bytes=final.stat().st_size,
              final_disk=disk_status(run_dir, settings.disk_warning_free_gb,
                                     settings.disk_abort_free_gb, before_download=False))

@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import subprocess
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -73,4 +74,15 @@ def validate_story_short(path: Path, minimum: float = 60.0, maximum: float = 180
         errors.append("audio/video duration could not be verified")
     if path.is_file() and path.stat().st_size < 500_000:
         errors.append("final file is suspiciously small")
+    ffmpeg_binary = shutil.which("ffmpeg")
+    if ffmpeg_binary and path.is_file():
+        black_check = subprocess.run(
+            [ffmpeg_binary, "-hide_banner", "-i", str(path), "-vf",
+             "blackdetect=d=0.5:pix_th=0.02", "-an", "-f", "null", "-"],
+            capture_output=True, text=True, check=False,
+        )
+        black_durations = [float(value) for value in
+                           re.findall(r"black_duration:([0-9.]+)", black_check.stderr)]
+        if any(duration >= 0.5 for duration in black_durations):
+            errors.append(f"black screen detected ({max(black_durations):.2f}s)")
     return ValidationResult(not errors, tuple(errors), result.probe)

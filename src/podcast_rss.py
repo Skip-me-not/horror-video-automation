@@ -17,6 +17,9 @@ from .utils import run
 USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
               "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
 REQUEST_HEADERS = {"User-Agent": USER_AGENT, "Accept": "*/*", "Accept-Language": "en-US,en;q=0.9"}
+HORROR_TERMS = ("ghost", "haunt", "paranormal", "horror", "scary", "creepy", "supernatural",
+                "unexplained", "folklore", "macabre", "occult", "cryptid", "apparition",
+                "poltergeist", "demon", "witch", "spirit", "nightmare")
 
 
 @dataclass(frozen=True)
@@ -61,6 +64,11 @@ def _plain_text(value: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html.unescape(value))).strip()
 
 
+def is_horror_episode(podcast: str, title: str, description: str) -> bool:
+    searchable = f"{podcast} {title} {description}".casefold()
+    return any(term in searchable for term in HORROR_TERMS)
+
+
 def _episodes_from_feed(feed_url: str, podcast_name: str, artwork_url: str, settings: Settings,
                         history_ids: set[str]) -> list[PodcastEpisode]:
     response = requests.get(feed_url, timeout=15, headers=REQUEST_HEADERS)
@@ -84,14 +92,18 @@ def _episodes_from_feed(feed_url: str, podcast_name: str, artwork_url: str, sett
                            if _local_name(child.tag) == "transcript"
                            and "vtt" in str(child.attrib.get("type", "")).casefold()
                            and child.attrib.get("url")), None)
+        title = _text(item, "title") or "Untitled horror podcast episode"
+        description = _plain_text(_text(item, "description") or _text(item, "summary"))
+        if not is_horror_episode(podcast_name, title, description):
+            continue
         episodes.append(PodcastEpisode(
             episode_id=episode_id,
-            title=_text(item, "title") or "Untitled horror podcast episode",
+            title=title,
             podcast=podcast_name,
             audio_url=audio_url,
             webpage_url=_text(item, "link") or feed_url,
             duration=duration,
-            description=_plain_text(_text(item, "description") or _text(item, "summary")),
+            description=description,
             transcript_url=str(transcript.attrib["url"]) if transcript is not None else "",
             artwork_url=artwork_url,
         ))
