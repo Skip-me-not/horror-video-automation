@@ -14,7 +14,9 @@ from .config_loader import Settings
 from .utils import run
 
 
-USER_AGENT = "horror-video-automation/2.0 (podcast RSS fallback)"
+USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+              "(KHTML, like Gecko) Chrome/126.0 Safari/537.36")
+REQUEST_HEADERS = {"User-Agent": USER_AGENT, "Accept": "*/*", "Accept-Language": "en-US,en;q=0.9"}
 
 
 @dataclass(frozen=True)
@@ -61,7 +63,7 @@ def _plain_text(value: str) -> str:
 
 def _episodes_from_feed(feed_url: str, podcast_name: str, artwork_url: str, settings: Settings,
                         history_ids: set[str]) -> list[PodcastEpisode]:
-    response = requests.get(feed_url, timeout=15, headers={"User-Agent": USER_AGENT})
+    response = requests.get(feed_url, timeout=15, headers=REQUEST_HEADERS)
     response.raise_for_status()
     root = ET.fromstring(response.content)
     episodes: list[PodcastEpisode] = []
@@ -102,7 +104,7 @@ def search_podcast_episodes(keyword: str, settings: Settings, history_ids: set[s
     response = requests.get(
         "https://itunes.apple.com/search",
         params={"term": keyword, "media": "podcast", "entity": "podcast", "country": "US", "limit": 12},
-        timeout=15, headers={"User-Agent": USER_AGENT},
+        timeout=15, headers=REQUEST_HEADERS,
     )
     response.raise_for_status()
     feeds = [(str(item.get("feedUrl") or ""), str(item.get("collectionName") or "Horror podcast"),
@@ -116,7 +118,8 @@ def search_podcast_episodes(keyword: str, settings: Settings, history_ids: set[s
         except (requests.RequestException, ET.ParseError, ValueError):
             continue
         random.shuffle(candidates)
-        episodes.extend(candidates[:2])
+        # Keep source hosts diverse so one CDN policy cannot exhaust a run.
+        episodes.extend(candidates[:1])
         if len(episodes) >= limit:
             break
     random.shuffle(episodes)
@@ -125,8 +128,8 @@ def search_podcast_episodes(keyword: str, settings: Settings, history_ids: set[s
 
 def download_episode_audio(episode: PodcastEpisode, destination: Path) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
-    with requests.get(episode.audio_url, stream=True, timeout=(15, 60),
-                      headers={"User-Agent": USER_AGENT}) as response:
+    headers = {**REQUEST_HEADERS, "Referer": episode.webpage_url}
+    with requests.get(episode.audio_url, stream=True, timeout=(15, 60), headers=headers) as response:
         response.raise_for_status()
         with destination.open("wb") as output:
             for chunk in response.iter_content(1024 * 1024):
@@ -140,7 +143,7 @@ def download_episode_audio(episode: PodcastEpisode, destination: Path) -> Path:
 def download_episode_transcript(episode: PodcastEpisode, destination: Path) -> Path | None:
     if not episode.transcript_url:
         return None
-    response = requests.get(episode.transcript_url, timeout=20, headers={"User-Agent": USER_AGENT})
+    response = requests.get(episode.transcript_url, timeout=20, headers=REQUEST_HEADERS)
     response.raise_for_status()
     if "WEBVTT" not in response.text[:100].upper():
         return None
@@ -152,7 +155,7 @@ def download_episode_transcript(episode: PodcastEpisode, destination: Path) -> P
 def download_episode_artwork(episode: PodcastEpisode, destination: Path) -> Path | None:
     if not episode.artwork_url:
         return None
-    response = requests.get(episode.artwork_url, timeout=20, headers={"User-Agent": USER_AGENT})
+    response = requests.get(episode.artwork_url, timeout=20, headers=REQUEST_HEADERS)
     response.raise_for_status()
     if not response.content:
         return None

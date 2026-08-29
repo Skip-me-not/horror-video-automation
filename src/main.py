@@ -332,8 +332,9 @@ def _choose_and_prepare(args: argparse.Namespace, settings: Settings, target: fl
     with perf.stage("podcast_rss_search"):
         episodes = search_podcast_episodes(keyword, settings,
                                            set() if args.force_reprocess else history.used_source_ids())
-    for index, episode in enumerate(episodes[:settings.max_sources_per_run], start=1):
-        _log(log, f"Trying RSS podcast {index}/{settings.max_sources_per_run}: {episode.title}")
+    rss_attempt_limit = min(4, len(episodes))
+    for index, episode in enumerate(episodes[:rss_attempt_limit], start=1):
+        _log(log, f"Trying RSS podcast {index}/{rss_attempt_limit}: {episode.title}")
         try:
             return _podcast_attempt(episode, run_dir / f"rss-source-{index}", args, settings, target,
                                     triggers, scoring, history, perf, log)
