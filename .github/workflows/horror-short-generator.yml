@@ -49,6 +49,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: horror-short-generator
@@ -69,14 +70,7 @@ jobs:
       - name: Disk status at workflow start
         run: df -h
 
-      - name: Restore FFmpeg tool cache
-        id: ffmpeg-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/horror-tools/ffmpeg
-          key: ffmpeg-${{ runner.os }}-${{ runner.arch }}-ubuntu24-6.x
-
-      - name: Check, restore, or install FFmpeg
+      - name: Check or install FFmpeg
         shell: bash
         run: |
           set -euo pipefail
@@ -85,7 +79,7 @@ jobs:
           if [[ -x "$tool_bin/ffmpeg" && -x "$tool_bin/ffprobe" ]] \
              && "$tool_bin/ffmpeg" -version >/dev/null 2>&1 \
              && "$tool_bin/ffprobe" -version >/dev/null 2>&1; then
-            echo "FFmpeg restored from dedicated cache"
+            echo "FFmpeg available in local runner tools"
           elif command -v ffmpeg >/dev/null 2>&1 && command -v ffprobe >/dev/null 2>&1; then
             echo "FFmpeg already available on runner"
             cp "$(command -v ffmpeg)" "$tool_bin/ffmpeg"
@@ -102,13 +96,11 @@ jobs:
           "$tool_bin/ffmpeg" -version | head -1
           "$tool_bin/ffprobe" -version | head -1
 
-      - name: Set up Python with dependency cache
+      - name: Set up Python
         id: python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
-          cache-dependency-path: requirements.txt
 
       - name: Set up Node for YouTube proof-of-origin tokens
         uses: actions/setup-node@v4
@@ -141,9 +133,9 @@ jobs:
           INPUT_FORCE: ${{ inputs.force_reprocess }}
           INPUT_AUTHORIZED: ${{ inputs.authorized }}
           INPUT_DEBUG_ARTIFACTS: ${{ inputs.debug_artifacts }}
-          FFMPEG_CACHE_HIT: ${{ steps.ffmpeg-cache.outputs.cache-hit }}
-          PIP_CACHE_HIT: ${{ steps.python.outputs.cache-hit }}
-          YTDLP_CACHE_HIT: python-pip
+          FFMPEG_CACHE_HIT: disabled
+          PIP_CACHE_HIT: disabled
+          YTDLP_CACHE_HIT: disabled
           YTDLP_BGUTIL_SERVER_HOME: ${{ runner.temp }}/bgutil-ytdlp-pot-provider/server
         run: |
           args=()
@@ -169,26 +161,31 @@ jobs:
           test -s output/performance.json
           test -s output/optimization_report.md
 
+      - name: Build YouTube upload metadata
+        run: |
+          python scripts/build_podcast_upload_job.py
+          test -s output/upload-job.json
+
+      - name: Upload finished video to YouTube as public
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          python scripts/upload_youtube.py \
+            --job output/upload-job.json \
+            --video output/short.mp4 \
+            --privacy public \
+            --output output/upload-result.json
+
+      - name: Confirm public YouTube upload
+        run: |
+          python -c "import json,pathlib; p=json.loads(pathlib.Path('output/upload-result.json').read_text()); assert p['status']=='success'; assert p['privacy_status']=='public'; assert p['youtube_video_id']; print('Published:', p['watch_url'])"
+          cat output/upload-result.json >> "$GITHUB_STEP_SUMMARY"
+
       - name: Disk status after render
         if: always()
         run: df -h
-
-      - name: Upload minimal production artifact
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: horror-story-short-${{ github.run_id }}
-          path: |
-            output/short.mp4
-            output/edit_plan.json
-            output/selected_story.json
-            output/hook.json
-            output/reference_media.json
-            output/processing.log
-            output/performance.json
-            output/optimization_report.md
-          if-no-files-found: error
-          retention-days: 3
 
       - name: Upload optional debug diagnostics
         if: success() && github.event_name == 'workflow_dispatch' && inputs.debug_artifacts
@@ -200,6 +197,7 @@ jobs:
             output/captions.ass
             output/validation.json
             output/run_report.json
+            output/upload-result.json
           if-no-files-found: warn
           retention-days: 5
 
@@ -214,7 +212,29 @@ jobs:
           git pull --rebase
           git push
 
-      - name: Cleanup run-specific temporary media
+      - name: Remove uploaded media, old artifacts, and Actions caches
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh cache list --limit 100 --json id,key \
+            --jq '.[] | select(.key | startswith("ffmpeg-") or startswith("setup-python-")) | .id' \
+            | while read -r cache_id; do
+                [[ -z "$cache_id" ]] || gh cache delete "$cache_id" || true
+              done
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts" \
+            --jq '.artifacts[] | select(.name | startswith("horror-story-short-")) | .id' \
+            | while read -r artifact_id; do
+                [[ -z "$artifact_id" ]] || gh api --method DELETE \
+                  "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id"
+              done
+          rm -rf "$RUNNER_TEMP/horror-short" "$RUNNER_TEMP/bgutil-ytdlp-pot-provider"
+          rm -rf "$HOME/.cache/pip" "$HOME/.cache/yt-dlp" "$HOME/.local/horror-tools/ffmpeg"
+          rm -f output/short.mp4
+
+      - name: Final runner temp cleanup
         if: always()
         shell: bash
         run: |
@@ -222,3 +242,4 @@ jobs:
           if [[ -d "$run_temp" && "$run_temp" == "$RUNNER_TEMP/horror-short" ]]; then
             rm -rf "$run_temp"
           fi
+          rm -rf "$RUNNER_TEMP/bgutil-ytdlp-pot-provider"

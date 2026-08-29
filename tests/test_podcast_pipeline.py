@@ -216,13 +216,18 @@ def test_compositor_launches_one_final_encode(tmp_path, monkeypatch):
     assert calls[0].count("-c:v") == 1
 
 
-def test_workflow_has_check_first_ffmpeg_cache_and_pinned_runner(repo_root):
+def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
     workflow = (repo_root / ".github" / "workflows" / "horror-short-generator.yml").read_text()
     assert "runs-on: ubuntu-24.04" in workflow
-    assert "actions/cache@v4" in workflow
+    assert "actions/cache@v4" not in workflow
     assert "command -v ffmpeg" in workflow
     assert "timeout-minutes: 45" in workflow
     assert "pip install --upgrade yt-dlp" not in workflow
+    assert "Upload finished video to YouTube as public" in workflow
+    assert 'startswith("ffmpeg-")' in workflow
+    assert 'startswith("setup-python-")' in workflow
+    assert "gh cache delete --all" not in workflow
+    assert "rm -f output/short.mp4" in workflow
 
 
 @pytest.mark.skipif(shutil.which("ffmpeg") is None or FFPROBE is None,
