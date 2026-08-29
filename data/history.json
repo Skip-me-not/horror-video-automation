@@ -173,5 +173,21 @@
     "uploaded": true,
     "seed": null,
     "duplicate_skipped": false
+  },
+  {
+    "timestamp": "2026-08-29T12:53:17.440547+00:00",
+    "source_video_id": "rss-208635b63cb119fb",
+    "source_start": 629.92,
+    "source_end": 750.92,
+    "transcript_hash": "b3cf8f8ffaf568903d805ac10181dbfac9b66588450f307d74d904a8197a4b46",
+    "hook_template": "Something was already inside the house.",
+    "reference_queries": [
+      "dark hallway",
+      "foggy woods",
+      "security camera dark room",
+      "empty hospital",
+      "human shadow hallway"
+    ],
+    "generated_timestamp": "2026-08-29T12:53:17.440447+00:00"
   }
 ]
