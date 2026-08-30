@@ -1,0 +1,7 @@
+{
+  "subreddits": ["Ghosts", "Paranormal", "HighStrangeness", "Unexplained", "Creepy"],
+  "listing": "top",
+  "period": "month",
+  "target_narration_words": 135,
+  "maximum_feed_attempts": 3
+}

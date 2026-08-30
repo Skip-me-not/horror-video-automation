@@ -1,43 +1,10 @@
-name: Random Horror Podcast Segment Editor
+name: Reddit Horror Video Narrator
 
 on:
   workflow_dispatch:
     inputs:
-      video_url:
-        description: Authorized source URL (blank = random keyword result)
-        required: false
-        type: string
-      keyword:
-        description: Optional horror podcast search keyword
-        required: false
-        type: string
-      source_speed:
-        description: Source playback speed
-        required: true
-        default: "1.10"
-        type: string
-      target_duration:
-        description: Target duration in seconds (65-175)
-        required: true
-        default: "110"
-        type: string
-      use_stock_media:
-        description: Use Pexels/Pixabay reference media
-        required: true
-        default: true
-        type: boolean
-      force_reprocess:
-        description: Allow a source already present in history
-        required: true
-        default: false
-        type: boolean
-      authorized:
-        description: I confirm I have permission to download and reuse video_url
-        required: true
-        default: false
-        type: boolean
       debug_artifacts:
-        description: Upload additional diagnostic files
+        description: Upload diagnostic files
         required: true
         default: false
         type: boolean
@@ -52,134 +19,52 @@ permissions:
   actions: write
 
 concurrency:
-  group: horror-short-generator
+  group: reddit-horror-video-narrator
   cancel-in-progress: false
 
 jobs:
   generate:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
-    env:
-      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
-      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Disk status at workflow start
-        run: df -h
-
       - name: Check or install FFmpeg
         shell: bash
         run: |
           set -euo pipefail
-          tool_bin="$HOME/.local/horror-tools/ffmpeg/bin"
-          mkdir -p "$tool_bin"
-          if [[ -x "$tool_bin/ffmpeg" && -x "$tool_bin/ffprobe" ]] \
-             && "$tool_bin/ffmpeg" -version >/dev/null 2>&1 \
-             && "$tool_bin/ffprobe" -version >/dev/null 2>&1; then
-            echo "FFmpeg available in local runner tools"
-          elif command -v ffmpeg >/dev/null 2>&1 && command -v ffprobe >/dev/null 2>&1; then
-            echo "FFmpeg already available on runner"
-            cp "$(command -v ffmpeg)" "$tool_bin/ffmpeg"
-            cp "$(command -v ffprobe)" "$tool_bin/ffprobe"
-          else
-            echo "FFmpeg unavailable; using apt fallback once"
+          if ! command -v ffmpeg >/dev/null 2>&1 || ! command -v ffprobe >/dev/null 2>&1; then
             sudo apt-get update
             sudo apt-get install --yes ffmpeg
-            cp "$(command -v ffmpeg)" "$tool_bin/ffmpeg"
-            cp "$(command -v ffprobe)" "$tool_bin/ffprobe"
           fi
-          chmod +x "$tool_bin/ffmpeg" "$tool_bin/ffprobe"
-          echo "$tool_bin" >> "$GITHUB_PATH"
-          "$tool_bin/ffmpeg" -version | head -1
-          "$tool_bin/ffprobe" -version | head -1
+          ffmpeg -version | head -1
 
       - name: Set up Python
-        id: python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Set up Node for YouTube proof-of-origin tokens
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Install pinned runtime dependencies
+      - name: Install runtime dependencies
         run: |
-          python -m pip install -r requirements.txt
+          python -m pip install --disable-pip-version-check -r requirements.txt
           python -m yt_dlp --version
 
-      - name: Build YouTube proof-of-origin token helper
-        shell: bash
-        run: |
-          set -euo pipefail
-          helper="$RUNNER_TEMP/bgutil-ytdlp-pot-provider"
-          git clone --depth 1 --branch 1.3.2 https://github.com/Brainicism/bgutil-ytdlp-pot-provider.git "$helper"
-          npm ci --prefix "$helper/server"
-          (cd "$helper/server" && npx tsc)
-          test -f "$helper/server/build/main.js"
-
-      - name: Prepare optional YouTube download cookies
-        shell: bash
-        env:
-          YOUTUBE_COOKIES_B64: ${{ secrets.YOUTUBE_COOKIES_B64 }}
-        run: |
-          set -euo pipefail
-          if [[ -n "$YOUTUBE_COOKIES_B64" ]]; then
-            cookie_file="$RUNNER_TEMP/youtube-cookies.txt"
-            printf '%s' "$YOUTUBE_COOKIES_B64" | base64 --decode > "$cookie_file"
-            chmod 600 "$cookie_file"
-            echo "YOUTUBE_COOKIES_FILE=$cookie_file" >> "$GITHUB_ENV"
-          else
-            echo "YOUTUBE_COOKIES_B64 is not configured; logged-out extraction only"
-          fi
-
-      - name: Generate optimized edited horror segment
-        shell: bash
-        env:
-          INPUT_VIDEO_URL: ${{ inputs.video_url }}
-          INPUT_KEYWORD: ${{ inputs.keyword }}
-          INPUT_SOURCE_SPEED: ${{ inputs.source_speed }}
-          INPUT_TARGET_DURATION: ${{ inputs.target_duration }}
-          INPUT_USE_STOCK: ${{ inputs.use_stock_media }}
-          INPUT_FORCE: ${{ inputs.force_reprocess }}
-          INPUT_AUTHORIZED: ${{ inputs.authorized }}
-          INPUT_DEBUG_ARTIFACTS: ${{ inputs.debug_artifacts }}
-          FFMPEG_CACHE_HIT: disabled
-          PIP_CACHE_HIT: disabled
-          YTDLP_CACHE_HIT: disabled
-          YTDLP_BGUTIL_SERVER_HOME: ${{ runner.temp }}/bgutil-ytdlp-pot-provider/server
-        run: |
-          args=()
-          if [[ -n "$INPUT_VIDEO_URL" ]]; then args+=(--video-url "$INPUT_VIDEO_URL"); fi
-          if [[ -n "$INPUT_KEYWORD" ]]; then args+=(--keyword "$INPUT_KEYWORD"); fi
-          if [[ -n "$INPUT_SOURCE_SPEED" ]]; then args+=(--source-speed "$INPUT_SOURCE_SPEED"); fi
-          if [[ -n "$INPUT_TARGET_DURATION" ]]; then args+=(--target-duration "$INPUT_TARGET_DURATION"); fi
-          if [[ "$INPUT_USE_STOCK" == "false" ]]; then args+=(--no-stock); fi
-          if [[ "$INPUT_FORCE" == "true" ]]; then args+=(--force-reprocess); fi
-          if [[ "$INPUT_AUTHORIZED" == "true" ]]; then args+=(--authorized); fi
-          if [[ "$INPUT_DEBUG_ARTIFACTS" == "true" ]]; then args+=(--debug-artifacts); fi
-          python -m src.main "${args[@]}"
+      - name: Build Reddit video story
+        run: python -m src.reddit_pipeline
 
       - name: Validate final artifact contract
         run: |
-          python -c "import json, pathlib; p=json.loads(pathlib.Path('output/validation.json').read_text()); assert p['valid'], p['errors']"
+          python -c "import json,pathlib; p=json.loads(pathlib.Path('output/validation.json').read_text()); assert p['valid'], p['errors']"
           test -s output/short.mp4
-          test -s output/edit_plan.json
+          test -s output/job.json
+          test -s output/source_info.json
           test -s output/selected_story.json
+          test -s output/edit_plan.json
           test -s output/hook.json
-          test -s output/reference_media.json
+          test -s output/captions.ass
           test -s output/processing.log
-          test -s output/performance.json
-          test -s output/optimization_report.md
-
-      - name: Build YouTube upload metadata
-        run: |
-          python scripts/build_podcast_upload_job.py
-          test -s output/upload-job.json
 
       - name: Upload finished video to YouTube as public
         env:
@@ -188,75 +73,49 @@ jobs:
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
         run: |
           python scripts/upload_youtube.py \
-            --job output/upload-job.json \
+            --job output/job.json \
             --video output/short.mp4 \
             --privacy public \
             --output output/upload-result.json
 
-      - name: Confirm public YouTube upload
+      - name: Confirm public upload and record source
         run: |
           python -c "import json,pathlib; p=json.loads(pathlib.Path('output/upload-result.json').read_text()); assert p['status']=='success'; assert p['privacy_status']=='public'; assert p['youtube_video_id']; print('Published:', p['watch_url'])"
+          python scripts/record_reddit_history.py
           cat output/upload-result.json >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Disk status after render
-        if: always()
-        run: df -h
-
-      - name: Upload optional debug diagnostics
-        if: success() && github.event_name == 'workflow_dispatch' && inputs.debug_artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: horror-story-debug-${{ github.run_id }}
-          path: |
-            output/source_info.json
-            output/captions.ass
-            output/validation.json
-            output/run_report.json
-            output/upload-result.json
-          if-no-files-found: warn
-          retention-days: 5
-
       - name: Persist lightweight duplicate history
-        if: success()
         run: |
           if git diff --quiet -- data/history.json; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/history.json
-          git commit -m "state: record podcast segment [skip ci]"
+          git commit -m "state: record Reddit video [skip ci]"
           git pull --rebase
           git push
 
-      - name: Remove uploaded media, old artifacts, and Actions caches
-        if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          gh cache list --limit 100 --json id,key \
-            --jq '.[] | select(.key | startswith("ffmpeg-") or startswith("setup-python-")) | .id' \
-            | while read -r cache_id; do
-                [[ -z "$cache_id" ]] || gh cache delete "$cache_id" || true
-              done
-          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/artifacts" \
-            --jq '.artifacts[] | select(.name | startswith("horror-story-short-")) | .id' \
-            | while read -r artifact_id; do
-                [[ -z "$artifact_id" ]] || gh api --method DELETE \
-                  "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id"
-              done
-          rm -rf "$RUNNER_TEMP/horror-short" "$RUNNER_TEMP/bgutil-ytdlp-pot-provider"
-          rm -f "$RUNNER_TEMP/youtube-cookies.txt"
-          rm -rf "$HOME/.cache/pip" "$HOME/.cache/yt-dlp" "$HOME/.local/horror-tools/ffmpeg"
-          rm -f output/short.mp4
+      - name: Upload optional diagnostics
+        if: success() && github.event_name == 'workflow_dispatch' && inputs.debug_artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: reddit-horror-debug-${{ github.run_id }}
+          path: |
+            output/source_info.json
+            output/selected_story.json
+            output/hook.json
+            output/edit_plan.json
+            output/captions.ass
+            output/validation.json
+            output/upload-result.json
+          if-no-files-found: warn
+          retention-days: 3
 
-      - name: Final runner temp cleanup
+      - name: Remove generated media
         if: always()
         shell: bash
         run: |
-          run_temp="$RUNNER_TEMP/horror-short"
-          if [[ -d "$run_temp" && "$run_temp" == "$RUNNER_TEMP/horror-short" ]]; then
+          run_temp="$RUNNER_TEMP/reddit-horror"
+          if [[ -d "$run_temp" && "$run_temp" == "$RUNNER_TEMP/reddit-horror" ]]; then
             rm -rf "$run_temp"
           fi
-          rm -rf "$RUNNER_TEMP/bgutil-ytdlp-pot-provider"
-          rm -f "$RUNNER_TEMP/youtube-cookies.txt"
+          rm -f output/short.mp4 output/narration.mp3 output/word-timings.json

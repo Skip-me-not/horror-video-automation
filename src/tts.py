@@ -25,11 +25,8 @@ def fallback_word_timings(text: str, duration: float) -> list[dict[str, Any]]:
 
 def audio_duration(path: Path) -> float:
     try:
-        result = subprocess.run(
-            ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=nw=1:nk=1", str(path)],
-            check=True, capture_output=True, text=True,
-        )
-        return float(result.stdout.strip())
+        from .utils import ffprobe
+        return float(ffprobe(path).get("format", {}).get("duration") or 0)
     except (OSError, subprocess.SubprocessError, ValueError) as exc:
         raise TTSError(f"could not measure narration duration: {exc}") from exc
 

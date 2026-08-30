@@ -139,6 +139,25 @@ def download_source(url: str, destination: Path, settings: Settings) -> dict[str
     return {"video": video, "subtitles": subtitles, "info": info}
 
 
+def download_reddit_video(post_url: str, destination: Path, maximum_height: int = 1080) -> dict[str, Any]:
+    """Download a Reddit-hosted video and merge its DASH audio when one exists."""
+    import yt_dlp
+    destination.mkdir(parents=True, exist_ok=True)
+    options = {
+        "format": f"bestvideo[height<={maximum_height}]+bestaudio/best[height<={maximum_height}]/best",
+        "outtmpl": str(destination / "reddit-source.%(ext)s"),
+        "merge_output_format": "mp4", "quiet": True, "no_warnings": True,
+        "noplaylist": True, "retries": 3, "fragment_retries": 3, "socket_timeout": 25,
+        "http_headers": {"User-Agent": "horror-shorts-automation/3.0"},
+    }
+    with yt_dlp.YoutubeDL(options) as downloader:
+        info = downloader.extract_info(post_url, download=True)
+    video = _first_media(destination, "reddit-source", {".mp4", ".mkv", ".webm", ".mov"})
+    if video is None:
+        raise RuntimeError("Reddit video download produced no playable media")
+    return {"video": video, "info": info}
+
+
 def use_local_source(source: Path, destination: Path) -> dict[str, Any]:
     if not source.is_file() or source.stat().st_size == 0:
         raise FileNotFoundError(source)
