@@ -86,7 +86,7 @@ def compose_reddit_short(source: Path, narration: Path, captions: Path, destinat
         filters.append(
             f"[raw{index}]trim=start={start:.3f}:duration={length:.3f},setpts=PTS-STARTPTS,"
             f"{flip}scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},"
-            f"scale={zoom_w}:{zoom_h},crop={width}:{height}:{x}:0,fps={fps},"
+            f"scale={zoom_w}:{zoom_h},crop={width}:{height}:{x}:0,fps={fps},setsar=1,"
             f"{_grade(luma)},"
             f"format=yuv420p[seg{index}]"
         )

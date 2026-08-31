@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
+import src.reddit_compositor as compositor
 from src.reddit_source import RedditVideoPost, build_narration, parse_comment_feed, parse_video_feed
 
 
@@ -37,3 +40,25 @@ def test_subtitle_hook_is_red_and_wraps(tmp_path):
     assert "Style: Hook,DejaVu Sans,78,&H000000FF" in content
     assert r"\N" in content
     assert "Dialogue: 2,0:00:00.00,0:00:02.80,Hook" in content
+
+
+def test_compositor_normalizes_segment_sample_aspect_ratio(tmp_path, monkeypatch):
+    captured: dict[str, list[str]] = {}
+    destination = tmp_path / "short.mp4"
+
+    monkeypatch.setattr(compositor, "media_details", lambda _source: (12.0, False))
+    monkeypatch.setattr(compositor, "average_luma", lambda _source, _ffmpeg: 48.0)
+
+    def fake_run(command, **_kwargs):
+        captured["command"] = command
+        destination.write_bytes(b"0" * 500_001)
+        return SimpleNamespace(returncode=0, stderr="")
+
+    monkeypatch.setattr(compositor, "run", fake_run)
+    report = compositor.compose_reddit_short(
+        tmp_path / "source.mp4", tmp_path / "voice.mp3", tmp_path / "captions.ass",
+        destination, final_duration=8.0, hook_duration=2.8, hook_start=1.0,
+    )
+
+    graph = captured["command"][captured["command"].index("-filter_complex") + 1]
+    assert graph.count("setsar=1") == report["segment_count"]
