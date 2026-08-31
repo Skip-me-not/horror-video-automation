@@ -81,7 +81,7 @@ jobs:
       - name: Confirm public upload and record source
         run: |
           python -c "import json,pathlib; p=json.loads(pathlib.Path('output/upload-result.json').read_text()); assert p['status']=='success'; assert p['privacy_status']=='public'; assert p['youtube_video_id']; print('Published:', p['watch_url'])"
-          python scripts/record_reddit_history.py
+          python -m scripts.record_reddit_history
           cat output/upload-result.json >> "$GITHUB_STEP_SUMMARY"
 
       - name: Persist lightweight duplicate history
