@@ -118,4 +118,4 @@ jobs:
           if [[ -d "$run_temp" && "$run_temp" == "$RUNNER_TEMP/reddit-horror" ]]; then
             rm -rf "$run_temp"
           fi
-          rm -f output/short.mp4 output/narration.mp3 output/word-timings.json
+          rm -f output/short.mp4 output/narration.mp3 output/word-timings.json output/watermark.txt

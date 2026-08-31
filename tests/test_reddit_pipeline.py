@@ -62,3 +62,7 @@ def test_compositor_normalizes_segment_sample_aspect_ratio(tmp_path, monkeypatch
 
     graph = captured["command"][captured["command"].index("-filter_complex") + 1]
     assert graph.count("setsar=1") == report["segment_count"]
+    assert "drawtext=textfile=" in graph
+    assert "x=(w-text_w)/2:y=h-text_h-180" in graph
+    assert (tmp_path / "watermark.txt").read_text(encoding="utf-8") == "SKIP IF YOU'RE SCARED"
+    assert report["watermark_text"] == "SKIP IF YOU'RE SCARED"

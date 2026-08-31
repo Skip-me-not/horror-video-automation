@@ -63,7 +63,8 @@ def _offset(seed: str, index: int, duration: float) -> float:
 def compose_reddit_short(source: Path, narration: Path, captions: Path, destination: Path,
                          final_duration: float, hook_duration: float, hook_start: float,
                          width: int = 1080, height: int = 1920, fps: int = 30,
-                         ffmpeg: str = "ffmpeg") -> dict[str, Any]:
+                         ffmpeg: str = "ffmpeg",
+                         watermark_text: str = "SKIP IF YOU'RE SCARED") -> dict[str, Any]:
     source_duration, has_source_audio = media_details(source)
     luma = average_luma(source, ffmpeg)
     segment_length = 5.2
@@ -91,13 +92,24 @@ def compose_reddit_short(source: Path, narration: Path, captions: Path, destinat
             f"format=yuv420p[seg{index}]"
         )
     concat_labels = "".join(f"[seg{index}]" for index in range(len(durations)))
+    watermark_filter = ""
+    cleaned_watermark = " ".join(watermark_text.split())
+    if cleaned_watermark:
+        watermark_path = destination.parent / "watermark.txt"
+        watermark_path.parent.mkdir(parents=True, exist_ok=True)
+        watermark_path.write_text(cleaned_watermark, encoding="utf-8")
+        watermark_filter = (
+            f",drawtext=textfile='{_ass_path(watermark_path)}':font='DejaVu Sans':"
+            "fontsize=32:fontcolor=white@0.68:box=1:boxcolor=black@0.22:boxborderw=8:"
+            "x=(w-text_w)/2:y=h-text_h-180"
+        )
     filters.extend([
         f"{concat_labels}concat=n={len(durations)}:v=1:a=0[sequence]",
         "[sequence]split=2[clean][captionbase]",
         f"[captionbase]crop={width}:400:0:760,boxblur=luma_radius=18:luma_power=2,"
         "eq=brightness=-0.06,format=rgba,colorchannelmixer=aa=0.48[captionblur]",
         f"[clean][captionblur]overlay=0:760,subtitles='{_ass_path(captions)}',"
-        f"trim=duration={final_duration:.3f},format=yuv420p[vout]",
+        f"trim=duration={final_duration:.3f}{watermark_filter},format=yuv420p[vout]",
         f"[1:a]adelay={round(hook_duration * 1000)}:all=1,highpass=f=70,lowpass=f=11000,"
         f"loudnorm=I=-16:TP=-2:LRA=8,apad,atrim=duration={final_duration:.3f}[voice]",
         f"[2:a]lowpass=f=220,highpass=f=28,volume=0.032,atrim=duration={final_duration:.3f}[drone]",
@@ -125,5 +137,6 @@ def compose_reddit_short(source: Path, narration: Path, captions: Path, destinat
     return {"hook_start": hook_start, "hook_duration": hook_duration,
             "source_duration": source_duration, "source_has_audio": has_source_audio,
             "source_average_luma": luma,
+            "watermark_text": cleaned_watermark,
             "segment_count": len(durations), "segment_durations": durations,
             "source_offsets": offsets}
