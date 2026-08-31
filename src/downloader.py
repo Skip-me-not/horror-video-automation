@@ -139,19 +139,34 @@ def download_source(url: str, destination: Path, settings: Settings) -> dict[str
     return {"video": video, "subtitles": subtitles, "info": info}
 
 
-def download_reddit_video(post_url: str, destination: Path, maximum_height: int = 1080) -> dict[str, Any]:
+def download_reddit_video(post_url: str, destination: Path, maximum_height: int = 1080,
+                          direct_video_url: str = "") -> dict[str, Any]:
     """Download a Reddit-hosted video and merge its DASH audio when one exists."""
     import yt_dlp
     destination.mkdir(parents=True, exist_ok=True)
-    options = {
+    base_options = {
         "format": f"bestvideo[height<={maximum_height}]+bestaudio/best[height<={maximum_height}]/best",
         "outtmpl": str(destination / "reddit-source.%(ext)s"),
         "merge_output_format": "mp4", "quiet": True, "no_warnings": True,
         "noplaylist": True, "retries": 3, "fragment_retries": 3, "socket_timeout": 25,
         "http_headers": {"User-Agent": "horror-shorts-automation/3.0"},
     }
-    with yt_dlp.YoutubeDL(options) as downloader:
-        info = downloader.extract_info(post_url, download=True)
+    errors: list[str] = []
+    info: dict[str, Any] | None = None
+    targets = []
+    if direct_video_url.startswith("https://v.redd.it/"):
+        targets.append((direct_video_url.rstrip("/") + "/DASHPlaylist.mpd", True))
+    targets.append((post_url, False))
+    for target, generic in targets:
+        try:
+            options = {**base_options, "force_generic_extractor": generic}
+            with yt_dlp.YoutubeDL(options) as downloader:
+                info = downloader.extract_info(target, download=True)
+            break
+        except Exception as exc:
+            errors.append(f"{target}: {exc}")
+    if info is None:
+        raise RuntimeError("Reddit CDN and post downloads failed: " + " | ".join(errors))
     video = _first_media(destination, "reddit-source", {".mp4", ".mkv", ".webm", ".mov"})
     if video is None:
         raise RuntimeError("Reddit video download produced no playable media")

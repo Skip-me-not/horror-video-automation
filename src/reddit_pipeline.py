@@ -41,7 +41,8 @@ def run() -> dict[str, object]:
     for index, candidate in enumerate(candidates[:4], start=1):
         note(f"Checking Reddit video {index}/4 from r/{candidate.subreddit}: {candidate.title}")
         try:
-            media = download_reddit_video(candidate.post_url, run_dir / f"source-{index}", 1080)
+            media = download_reddit_video(candidate.post_url, run_dir / f"source-{index}", 1080,
+                                          direct_video_url=candidate.video_url)
             attempted_source = Path(media["video"])
             attempted_duration, _ = media_details(attempted_source)
             luma = average_luma(attempted_source)
