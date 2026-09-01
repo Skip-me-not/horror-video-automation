@@ -9,10 +9,11 @@ on:
         default: false
         type: boolean
   schedule:
-    - cron: "7 1 * * *"
-    - cron: "7 16 * * *"
-    - cron: "7 19 * * *"
-    - cron: "7 22 * * *"
+    # One hour before the four strongest viewer peaks in YouTube Analytics (Myanmar time).
+    - cron: "30 23 * * *"  # 06:00 MMT, ahead of the 07:00 peak
+    - cron: "30 1 * * *"   # 08:00 MMT, ahead of the 09:00 peak
+    - cron: "30 13 * * *"  # 20:00 MMT, ahead of the 21:00 peak
+    - cron: "30 14 * * *"  # 21:00 MMT, ahead of the 22:00 peak
 
 permissions:
   contents: write
