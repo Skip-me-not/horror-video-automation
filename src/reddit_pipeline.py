@@ -34,12 +34,13 @@ def run() -> dict[str, object]:
     history = HistoryStore(root / "data" / "history.json", limit=300)
     candidates = discover_video_posts(root, history.used_source_ids(), seed)
     config = json.loads((root / "config" / "reddit_sources.json").read_text(encoding="utf-8"))
+    maximum_video_attempts = min(len(candidates), int(config.get("maximum_video_attempts", 8)))
     post = None
     source = None
     source_duration = 0.0
     rejections: list[str] = []
-    for index, candidate in enumerate(candidates[:4], start=1):
-        note(f"Checking Reddit video {index}/4 from r/{candidate.subreddit}: {candidate.title}")
+    for index, candidate in enumerate(candidates[:maximum_video_attempts], start=1):
+        note(f"Checking Reddit video {index}/{maximum_video_attempts} from r/{candidate.subreddit}: {candidate.title}")
         try:
             media = download_reddit_video(candidate.post_url, run_dir / f"source-{index}", 1080,
                                           direct_video_url=candidate.video_url)

@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import json
 from types import SimpleNamespace
+from urllib.error import HTTPError
 
 import src.reddit_compositor as compositor
+import src.reddit_source as reddit_source
 from src.reddit_source import RedditVideoPost, build_narration, parse_comment_feed, parse_video_feed
 
 
@@ -66,3 +69,71 @@ def test_compositor_normalizes_segment_sample_aspect_ratio(tmp_path, monkeypatch
     assert "x=(w-text_w)/2:y=h-text_h-180" in graph
     assert (tmp_path / "watermark.txt").read_text(encoding="utf-8") == "SKIP IF YOU'RE SCARED"
     assert report["watermark_text"] == "SKIP IF YOU'RE SCARED"
+
+
+def test_reddit_fetch_retries_rate_limit(monkeypatch):
+    attempts = []
+    delays = []
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def read(self):
+            return b"feed"
+
+    def fake_open(*_args, **_kwargs):
+        attempts.append(1)
+        if len(attempts) == 1:
+            raise HTTPError("https://reddit.test", 429, "rate limited", {}, None)
+        return Response()
+
+    monkeypatch.setattr(reddit_source, "urlopen", fake_open)
+    monkeypatch.setattr(reddit_source.time, "sleep", delays.append)
+    assert reddit_source._fetch("https://reddit.test", attempts=2) == b"feed"
+    assert len(attempts) == 2
+    assert delays == [8.0]
+
+
+def test_cached_reddit_pool_survives_live_rate_limit(tmp_path, monkeypatch):
+    (tmp_path / "config").mkdir()
+    (tmp_path / "data").mkdir()
+    (tmp_path / "config" / "reddit_sources.json").write_text(json.dumps({
+        "subreddits": ["Ghosts"], "listing": "top", "period": "month",
+        "maximum_feed_attempts": 1, "feed_hosts": ["www.reddit.com"],
+        "request_attempts": 1, "refresh_pool_below": 12,
+    }), encoding="utf-8")
+    (tmp_path / "data" / "reddit_source_pool.json").write_text(json.dumps([{
+        "post_id": "cached1", "subreddit": "Ghosts", "title": "Figure in a hospital",
+        "body": "People walked through the shadow.", "author": "/u/tester",
+        "post_url": "https://www.reddit.com/r/Ghosts/comments/cached1/example/",
+        "video_url": "https://v.redd.it/cachedvideo", "published": "2026-01-01T00:00:00Z",
+    }]), encoding="utf-8")
+
+    def rate_limited(*_args, **_kwargs):
+        raise HTTPError("https://reddit.test", 429, "rate limited", {}, None)
+
+    monkeypatch.setattr(reddit_source, "_fetch", rate_limited)
+    posts = reddit_source.discover_video_posts(tmp_path, set(), "seed")
+    assert [post.post_id for post in posts] == ["cached1"]
+
+
+def test_live_reddit_feed_populates_persistent_pool(tmp_path, monkeypatch):
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "reddit_sources.json").write_text(json.dumps({
+        "subreddits": ["Ghosts"], "listing": "top", "period": "month",
+        "maximum_feed_attempts": 1, "feed_hosts": ["www.reddit.com"],
+        "request_attempts": 1, "refresh_pool_below": 12, "target_pool_size": 24,
+        "pool_limit": 120,
+    }), encoding="utf-8")
+    payload = b'''<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
+      <entry><author><name>/u/tester</name></author><content type="html">&lt;div class="md"&gt;&lt;p&gt;A dark figure moved.&lt;/p&gt;&lt;/div&gt;&lt;a href="https://v.redd.it/newvideo"&gt;[link]&lt;/a&gt;</content><id>t3_new1</id><link href="https://www.reddit.com/r/Ghosts/comments/new1/example/"/><published>2026-01-01T00:00:00Z</published><title>Dark figure</title></entry>
+    </feed>'''
+    monkeypatch.setattr(reddit_source, "_fetch", lambda *_args, **_kwargs: payload)
+    posts = reddit_source.discover_video_posts(tmp_path, set(), "seed")
+    saved = json.loads((tmp_path / "data" / "reddit_source_pool.json").read_text(encoding="utf-8"))
+    assert [post.post_id for post in posts] == ["new1"]
+    assert saved[0]["video_url"] == "https://v.redd.it/newvideo"

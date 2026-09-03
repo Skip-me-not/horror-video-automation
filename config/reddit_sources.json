@@ -3,5 +3,11 @@
   "listing": "top",
   "period": "month",
   "target_narration_words": 135,
-  "maximum_feed_attempts": 3
+  "maximum_feed_attempts": 5,
+  "feed_hosts": ["www.reddit.com", "old.reddit.com"],
+  "request_attempts": 3,
+  "maximum_video_attempts": 8,
+  "refresh_pool_below": 12,
+  "target_pool_size": 24,
+  "pool_limit": 120
 }
