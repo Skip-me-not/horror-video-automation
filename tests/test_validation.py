@@ -65,6 +65,7 @@ def test_youtube_metadata_is_short_safe():
     title = shorts_title("The Thing Behind the Door " * 10)
     assert len(title) <= 100
     assert title.endswith("#shorts")
-    description = shorts_description("A thirty-second original horror story.")
-    assert "#horror" in description
+    description = shorts_description("A Lululala celebrity recap.")
+    assert "#celebrity" in description
+    assert "#kpop" in description
     assert "#shorts" in description

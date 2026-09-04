@@ -45,7 +45,7 @@ def shorts_title(value: str) -> str:
 
 def shorts_description(value: str) -> str:
     cleaned = value.strip()
-    hashtags = "#horror #scarystories #creepy #shorts"
+    hashtags = "#Lululala #celebrity #kpop #popculture #shorts"
 
     return (
         cleaned

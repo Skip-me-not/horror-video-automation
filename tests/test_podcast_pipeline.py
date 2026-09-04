@@ -232,7 +232,8 @@ def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
     assert "Upload finished video to YouTube as public" in workflow
     assert "YOUTUBE_COOKIES_B64" not in workflow
     assert "python -m src.reddit_pipeline" in workflow
-    assert 'run_temp="$RUNNER_TEMP/reddit-horror"' in workflow
+    assert "name: Lululala Celebrity Shorts" in workflow
+    assert 'run_temp="$RUNNER_TEMP/lululala-celebrity"' in workflow
     assert "gh cache delete --all" not in workflow
     assert "rm -f output/short.mp4" in workflow
 

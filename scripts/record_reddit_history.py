@@ -12,7 +12,7 @@ def main() -> int:
     upload = json.loads((root / "output" / "upload-result.json").read_text(encoding="utf-8"))
     HistoryStore(root / "data" / "history.json", limit=300).append({
         "source_video_id": source["video_id"], "source_url": source["source_url"],
-        "source_type": "reddit-video", "youtube_video_id": upload["youtube_video_id"],
+        "source_type": "reddit-celebrity-video", "youtube_video_id": upload["youtube_video_id"],
     })
     return 0
 

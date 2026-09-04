@@ -12,7 +12,7 @@ def test_production_incident_bank_is_valid():
     assert not bank.validate()
 
 
-def test_important_caption_terms_are_red(tmp_path):
+def test_important_caption_terms_are_pink(tmp_path):
     timings = [
         {"text": "In", "offset": 0.0, "duration": 0.2},
         {"text": "1959", "offset": 0.2, "duration": 0.3},
@@ -22,8 +22,8 @@ def test_important_caption_terms_are_red(tmp_path):
     output = tmp_path / "captions.ass"
     SubtitleWriter().from_timings(timings, output, ["nine hikers", "1959"])
     content = output.read_text(encoding="utf-8")
-    assert r"{\c&H000000FF&}1959" in content
-    assert r"{\c&H000000FF&}NINE" in content
+    assert r"{\c&H00D86BFF&}1959" in content
+    assert r"{\c&H00D86BFF&}NINE" in content
     assert "WrapStyle: 0" in content
     assert "Style: Main,DejaVu Sans,68" in content
     assert ",5,120,120,0,1" in content

@@ -19,7 +19,7 @@ from .validator import validate_story_short
 def run() -> dict[str, object]:
     root = Path(__file__).resolve().parents[1]
     output = root / "output"
-    run_dir = Path(os.getenv("RUNNER_TEMP") or root / "temp") / "reddit-horror" / os.getenv("GITHUB_RUN_ID", "local")
+    run_dir = Path(os.getenv("RUNNER_TEMP") or root / "temp") / "lululala-celebrity" / os.getenv("GITHUB_RUN_ID", "local")
     output.mkdir(parents=True, exist_ok=True)
     run_dir.mkdir(parents=True, exist_ok=True)
     log = output / "processing.log"
@@ -64,7 +64,7 @@ def run() -> dict[str, object]:
 
     narration = output / "narration.mp3"
     timing_path = output / "word-timings.json"
-    timings = EdgeTTSNarrator("en-US-AndrewMultilingualNeural", "+3%").synthesize(
+    timings = EdgeTTSNarrator("en-US-AvaMultilingualNeural", "+5%").synthesize(
         str(script["narration"]), narration, timing_path,
     )
     hook_duration = 2.8
@@ -76,11 +76,11 @@ def run() -> dict[str, object]:
         shifted, output / "captions.ass", list(script["important_terms"]),
         hook_text=str(script["hook"]), hook_duration=hook_duration,
     )
-    final_duration = round(max(45.0, narration_seconds + hook_duration + 0.65), 3)
+    final_duration = round(max(55.0, narration_seconds + hook_duration + 0.65), 3)
     hook_start = find_hook_start(source, source_duration, hook_duration)
     edit = compose_reddit_short(source, narration, captions, output / "short.mp4",
                                 final_duration, hook_duration, hook_start)
-    validation = validate_story_short(output / "short.mp4", 44.0, 60.0)
+    validation = validate_story_short(output / "short.mp4", 54.0, 60.0)
     write_json(output / "validation.json", {"valid": validation.valid,
                                                "errors": list(validation.errors), "probe": validation.probe})
     if not validation.valid:
@@ -88,22 +88,24 @@ def run() -> dict[str, object]:
 
     source_info = {"video_id": post.post_id, "title": post.title, "source_url": post.post_url,
                    "channel": f"r/{post.subreddit}", "author": post.author,
-                   "video_url": post.video_url,
+                   "video_url": post.video_url, "subject": script["subject"],
+                   "is_kpop": script["is_kpop"],
                    "authorization_basis": "Reddit-hosted video transformed with narration and attribution"}
     hook = {"text": script["hook"], "duration": hook_duration, "source_start": hook_start,
             "method": "scene-change cold open from original Reddit video"}
     job = {
-        "job_id": seed, "title": post.title[:88],
-        "description": (f"A narrated analysis of a video shared by {post.author} in r/{post.subreddit}. "
-                        "The claim is unverified.\n\n"
+        "job_id": seed, "title": str(script["title"])[:88],
+        "description": (f"A Lululala recap of a {script['subject']} video shared by {post.author} "
+                        f"in r/{post.subreddit}. Reddit reactions and unverified context are clearly attributed.\n\n"
                         f"Original Reddit post: {post.post_url}\n\n"
-                        "#redditstories #scarystories #paranormal #horror #shorts"),
-        "tags": ["reddit stories", "scary videos", "paranormal", "horror", "shorts"],
+                        "#Lululala #celebrity #kpop #popculture #shorts"),
+        "tags": ["Lululala", "celebrity", "K-pop", "pop culture", "Reddit", "shorts"],
         "privacy_status": "public", "thumbnail_file": "", "source_video_id": post.post_id,
     }
     selected = {"post_id": post.post_id, "subreddit": post.subreddit, "author": post.author,
                 "title": post.title, "body": post.body, "comments_used": list(post.comments[:2]),
-                "narration": script["narration"], "word_count": script["word_count"]}
+                "narration": script["narration"], "word_count": script["word_count"],
+                "subject": script["subject"], "is_kpop": script["is_kpop"]}
     write_json(output / "source_info.json", source_info)
     write_json(output / "selected_story.json", selected)
     write_json(output / "hook.json", hook)
@@ -115,14 +117,14 @@ def run() -> dict[str, object]:
                                                "source_bytes": source.stat().st_size,
                                                "final_bytes": (output / "short.mp4").stat().st_size})
     (output / "optimization_report.md").write_text(
-        "# Reddit horror edit\n\nOriginal Reddit video, cold-open scene hook, clean narration, fixed-frame cuts, and red emphasis captions.\n",
+        "# Lululala celebrity edit\n\nOriginal Reddit-hosted video, cold-open hook, attributed fan-reaction narration, fixed-frame cuts, and pink emphasis captions.\n",
         encoding="utf-8",
     )
     report = {"source": source_info, "selected_story": selected, "hook": hook,
               "edit_plan": edit, "validation": {"valid": True, "errors": []},
               "output": str(output / "short.mp4")}
     write_json(output / "run_report.json", report)
-    note(f"SUCCESS: {final_duration:.2f}s Reddit video story ready for YouTube")
+    note(f"SUCCESS: {final_duration:.2f}s Lululala celebrity Short ready for YouTube")
     return report
 
 

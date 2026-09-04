@@ -6,41 +6,43 @@ from urllib.error import HTTPError
 
 import src.reddit_compositor as compositor
 import src.reddit_source as reddit_source
-from src.reddit_source import RedditVideoPost, build_narration, parse_comment_feed, parse_video_feed
+from src.reddit_source import RedditVideoPost, build_narration, featured_subject, parse_comment_feed, parse_video_feed
 
 
 def test_parse_reddit_hosted_video_feed():
     payload = b'''<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
-      <entry><author><name>/u/tester</name></author><content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;People walked through the figure.&lt;/p&gt;&lt;/div&gt;&lt;!-- SC_ON --&gt;&lt;a href="https://v.redd.it/abc123"&gt;[link]&lt;/a&gt;</content><id>t3_post1</id><link href="https://www.reddit.com/r/Ghosts/comments/post1/example/"/><published>2026-01-01T00:00:00Z</published><title>Figure in a hospital</title></entry>
+      <entry><author><name>/u/tester</name></author><content type="html">&lt;!-- SC_OFF --&gt;&lt;div class="md"&gt;&lt;p&gt;Jennie surprised fans during the performance.&lt;/p&gt;&lt;/div&gt;&lt;!-- SC_ON --&gt;&lt;a href="https://v.redd.it/abc123"&gt;[link]&lt;/a&gt;</content><id>t3_post1</id><link href="https://www.reddit.com/r/BlackPink/comments/post1/example/"/><published>2026-01-01T00:00:00Z</published><title>Jennie viral stage moment</title></entry>
     </feed>'''
-    posts = parse_video_feed(payload, "Ghosts")
+    posts = parse_video_feed(payload, "BlackPink")
     assert len(posts) == 1
     assert posts[0].post_id == "post1"
     assert posts[0].video_url == "https://v.redd.it/abc123"
-    assert "People walked" in posts[0].body
+    assert "Jennie surprised" in posts[0].body
 
 
 def test_comment_context_and_narration_are_attributed():
-    comment_feed = b'''<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom"><entry><id>t1_c1</id><content type="html">&lt;div class="md"&gt;&lt;p&gt;That shape stays still while everyone walks past it.&lt;/p&gt;&lt;/div&gt;</content></entry></feed>'''
+    comment_feed = b'''<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom"><entry><id>t1_c1</id><content type="html">&lt;div class="md"&gt;&lt;p&gt;Her timing and expression make this moment so memorable.&lt;/p&gt;&lt;/div&gt;</content></entry></feed>'''
     comments = parse_comment_feed(comment_feed, "post1")
-    post = RedditVideoPost("post1", "Ghosts", "A figure in the hospital", "People walked through him.",
+    post = RedditVideoPost("post1", "BlackPink", "Jennie viral stage moment", "Fans replayed her expression.",
                            "/u/tester", "https://reddit.test/post1", "https://v.redd.it/abc", "", comments)
     result = build_narration(post)
-    assert "r Ghosts" in result["narration"]
+    assert "r BlackPink" in result["narration"]
     assert "tester" in result["narration"]
-    assert "comment section" in result["narration"]
-    assert result["hook"].startswith("WATCH CLOSELY")
+    assert "Reddit comments" in result["narration"]
+    assert result["subject"] == "Jennie"
+    assert result["is_kpop"] is True
+    assert result["hook"].startswith("JENNIE MOMENT")
     assert len(result["hook"]) <= 58
 
 
-def test_subtitle_hook_is_red_and_wraps(tmp_path):
+def test_subtitle_hook_is_pink_and_wraps(tmp_path):
     from src.subtitles import SubtitleWriter
     output = SubtitleWriter().from_timings(
         [{"text": "Something", "offset": 2.8, "duration": 0.4}], tmp_path / "captions.ass",
         hook_text="WATCH THE CENTER OF THE ORIGINAL REDDIT VIDEO", hook_duration=2.8,
     )
     content = output.read_text(encoding="utf-8")
-    assert "Style: Hook,DejaVu Sans,78,&H000000FF" in content
+    assert "Style: Hook,DejaVu Sans,78,&H00D86BFF" in content
     assert r"\N" in content
     assert "Dialogue: 2,0:00:00.00,0:00:02.80,Hook" in content
 
@@ -67,8 +69,8 @@ def test_compositor_normalizes_segment_sample_aspect_ratio(tmp_path, monkeypatch
     assert graph.count("setsar=1") == report["segment_count"]
     assert "drawtext=textfile=" in graph
     assert "x=(w-text_w)/2:y=h-text_h-180" in graph
-    assert (tmp_path / "watermark.txt").read_text(encoding="utf-8") == "SKIP IF YOU'RE SCARED"
-    assert report["watermark_text"] == "SKIP IF YOU'RE SCARED"
+    assert (tmp_path / "watermark.txt").read_text(encoding="utf-8") == "Lululala"
+    assert report["watermark_text"] == "Lululala"
 
 
 def test_reddit_fetch_retries_rate_limit(monkeypatch):
@@ -102,14 +104,14 @@ def test_cached_reddit_pool_survives_live_rate_limit(tmp_path, monkeypatch):
     (tmp_path / "config").mkdir()
     (tmp_path / "data").mkdir()
     (tmp_path / "config" / "reddit_sources.json").write_text(json.dumps({
-        "subreddits": ["Ghosts"], "listing": "top", "period": "month",
+        "subreddits": ["BlackPink"], "listing": "top", "period": "week",
         "maximum_feed_attempts": 1, "feed_hosts": ["www.reddit.com"],
         "request_attempts": 1, "refresh_pool_below": 12,
     }), encoding="utf-8")
-    (tmp_path / "data" / "reddit_source_pool.json").write_text(json.dumps([{
-        "post_id": "cached1", "subreddit": "Ghosts", "title": "Figure in a hospital",
-        "body": "People walked through the shadow.", "author": "/u/tester",
-        "post_url": "https://www.reddit.com/r/Ghosts/comments/cached1/example/",
+    (tmp_path / "data" / "celebrity_source_pool.json").write_text(json.dumps([{
+        "post_id": "cached1", "subreddit": "BlackPink", "title": "Jennie stage moment",
+        "body": "Fans replayed the performance.", "author": "/u/tester",
+        "post_url": "https://www.reddit.com/r/BlackPink/comments/cached1/example/",
         "video_url": "https://v.redd.it/cachedvideo", "published": "2026-01-01T00:00:00Z",
     }]), encoding="utf-8")
 
@@ -124,16 +126,46 @@ def test_cached_reddit_pool_survives_live_rate_limit(tmp_path, monkeypatch):
 def test_live_reddit_feed_populates_persistent_pool(tmp_path, monkeypatch):
     (tmp_path / "config").mkdir()
     (tmp_path / "config" / "reddit_sources.json").write_text(json.dumps({
-        "subreddits": ["Ghosts"], "listing": "top", "period": "month",
+        "subreddits": ["BlackPink"], "listing": "top", "period": "week",
         "maximum_feed_attempts": 1, "feed_hosts": ["www.reddit.com"],
         "request_attempts": 1, "refresh_pool_below": 12, "target_pool_size": 24,
         "pool_limit": 120,
     }), encoding="utf-8")
     payload = b'''<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
-      <entry><author><name>/u/tester</name></author><content type="html">&lt;div class="md"&gt;&lt;p&gt;A dark figure moved.&lt;/p&gt;&lt;/div&gt;&lt;a href="https://v.redd.it/newvideo"&gt;[link]&lt;/a&gt;</content><id>t3_new1</id><link href="https://www.reddit.com/r/Ghosts/comments/new1/example/"/><published>2026-01-01T00:00:00Z</published><title>Dark figure</title></entry>
+      <entry><author><name>/u/tester</name></author><content type="html">&lt;div class="md"&gt;&lt;p&gt;Jennie owned the stage.&lt;/p&gt;&lt;/div&gt;&lt;a href="https://v.redd.it/newvideo"&gt;[link]&lt;/a&gt;</content><id>t3_new1</id><link href="https://www.reddit.com/r/BlackPink/comments/new1/example/"/><published>2026-01-01T00:00:00Z</published><title>Jennie performance</title></entry>
     </feed>'''
     monkeypatch.setattr(reddit_source, "_fetch", lambda *_args, **_kwargs: payload)
     posts = reddit_source.discover_video_posts(tmp_path, set(), "seed")
-    saved = json.loads((tmp_path / "data" / "reddit_source_pool.json").read_text(encoding="utf-8"))
+    saved = json.loads((tmp_path / "data" / "celebrity_source_pool.json").read_text(encoding="utf-8"))
     assert [post.post_id for post in posts] == ["new1"]
     assert saved[0]["video_url"] == "https://v.redd.it/newvideo"
+
+
+def test_discovery_uses_canonical_top_rss_url(tmp_path, monkeypatch):
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "reddit_sources.json").write_text(json.dumps({
+        "subreddits": ["BlackPink"], "listing": "top", "period": "week",
+        "maximum_feed_attempts": 1, "feed_hosts": ["www.reddit.com"],
+        "request_attempts": 1, "refresh_pool_below": 1,
+    }), encoding="utf-8")
+    payload = b'''<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
+      <entry><author><name>/u/fan</name></author><content type="html">&lt;div class="md"&gt;&lt;p&gt;Jennie performed.&lt;/p&gt;&lt;/div&gt;&lt;a href="https://v.redd.it/canonical"&gt;[link]&lt;/a&gt;</content><id>t3_canonical</id><link href="https://www.reddit.com/r/BlackPink/comments/canonical/example/"/><published>2026-01-01T00:00:00Z</published><title>Jennie performance</title></entry>
+    </feed>'''
+    requested: list[str] = []
+
+    def capture(url, **_kwargs):
+        requested.append(url)
+        return payload
+
+    monkeypatch.setattr(reddit_source, "_fetch", capture)
+    reddit_source.discover_video_posts(tmp_path, set(), "seed")
+    assert requested == ["https://www.reddit.com/r/BlackPink/top.rss?t=week"]
+
+
+def test_global_celebrity_subject_is_detected_without_kpop_label():
+    post = RedditVideoPost("p2", "popculturechat", "Sadie Sink at the premiere", "A fan-recorded interview.",
+                           "/u/fan", "https://reddit.test/p2", "https://v.redd.it/p2", "")
+    assert featured_subject(post) == ("Sadie Sink", False)
+    result = build_narration(post)
+    assert result["hook"].startswith("WHY EVERYONE IS TALKING ABOUT SADIE SINK")
+    assert "rumors" in result["narration"]

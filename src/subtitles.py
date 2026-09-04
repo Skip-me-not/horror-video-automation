@@ -60,7 +60,7 @@ WrapStyle: 0
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
 Style: Main,DejaVu Sans,68,&H00FFFFFF,&H00FFFFFF,&H00000000,&H90000000,-1,0,0,0,100,100,0,0,1,5,1,5,120,120,0,1
-Style: Hook,DejaVu Sans,78,&H000000FF,&H000000FF,&H00101010,&HA0000000,-1,0,0,0,100,100,1,0,1,7,2,5,110,110,0,1
+Style: Hook,DejaVu Sans,78,&H00D86BFF,&H00D86BFF,&H00101010,&HA0000000,-1,0,0,0,100,100,1,0,1,7,2,5,110,110,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -90,7 +90,7 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                 value = str(word["text"]).upper()
                 normalized = re.sub(r"[^A-Za-z0-9]", "", value).casefold()
                 if normalized in terms or any(character.isdigit() for character in normalized):
-                    rendered.append(r"{\c&H000000FF&}" + _escape(value) + r"{\c&H00FFFFFF&}")
+                    rendered.append(r"{\c&H00D86BFF&}" + _escape(value) + r"{\c&H00FFFFFF&}")
                 else:
                     rendered.append(_escape(value))
             # The explicit size is a final guard for unusually long names/dates.

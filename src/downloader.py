@@ -149,7 +149,7 @@ def download_reddit_video(post_url: str, destination: Path, maximum_height: int 
         "outtmpl": str(destination / "reddit-source.%(ext)s"),
         "merge_output_format": "mp4", "quiet": True, "no_warnings": True,
         "noplaylist": True, "retries": 3, "fragment_retries": 3, "socket_timeout": 25,
-        "http_headers": {"User-Agent": "horror-shorts-automation/3.0"},
+        "http_headers": {"User-Agent": "lululala-celebrity-shorts/1.0"},
     }
     errors: list[str] = []
     info: dict[str, Any] | None = None

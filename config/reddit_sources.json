@@ -1,13 +1,19 @@
 {
-  "subreddits": ["Ghosts", "Paranormal", "HighStrangeness", "Unexplained", "Creepy"],
+  "subreddits": [
+    "kpop", "kpopthoughts", "kpop_uncensored", "BlackPink", "bangtan", "twice",
+    "aespa", "IVE", "lesserafim", "straykids", "seventeen", "NCT", "EXO",
+    "BABYMONSTER", "illit", "GIDLE", "ATEEZ", "riize", "KATSEYE",
+    "popculturechat", "Fauxmoi", "entertainment", "movies", "television", "Music"
+  ],
   "listing": "top",
-  "period": "month",
+  "period": "week",
+  "kpop_selection_weight": 0.75,
   "target_narration_words": 135,
-  "maximum_feed_attempts": 5,
-  "feed_hosts": ["www.reddit.com", "old.reddit.com"],
-  "request_attempts": 3,
+  "maximum_feed_attempts": 12,
+  "feed_hosts": ["www.reddit.com"],
+  "request_attempts": 1,
   "maximum_video_attempts": 8,
   "refresh_pool_below": 12,
   "target_pool_size": 24,
-  "pool_limit": 120
+  "pool_limit": 160
 }

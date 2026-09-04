@@ -34,10 +34,10 @@ def average_luma(source: Path, ffmpeg: str = "ffmpeg") -> float:
 
 def _grade(luma: float) -> str:
     if luma < 32:
-        return "eq=brightness=0.095:contrast=1.18:saturation=0.82:gamma=1.55"
+        return "eq=brightness=0.10:contrast=1.08:saturation=1.20:gamma=1.35"
     if luma < 52:
-        return "eq=brightness=0.035:contrast=1.14:saturation=0.76:gamma=1.22"
-    return "eq=brightness=-0.025:contrast=1.14:saturation=0.72:gamma=1.02"
+        return "eq=brightness=0.04:contrast=1.08:saturation=1.16:gamma=1.12"
+    return "eq=brightness=0.00:contrast=1.06:saturation=1.12:gamma=1.00"
 
 
 def find_hook_start(source: Path, duration: float, hook_duration: float,
@@ -64,7 +64,7 @@ def compose_reddit_short(source: Path, narration: Path, captions: Path, destinat
                          final_duration: float, hook_duration: float, hook_start: float,
                          width: int = 1080, height: int = 1920, fps: int = 30,
                          ffmpeg: str = "ffmpeg",
-                         watermark_text: str = "SKIP IF YOU'RE SCARED") -> dict[str, Any]:
+                         watermark_text: str = "Lululala") -> dict[str, Any]:
     source_duration, has_source_audio = media_details(source)
     luma = average_luma(source, ffmpeg)
     segment_length = 5.2
@@ -75,7 +75,7 @@ def compose_reddit_short(source: Path, narration: Path, captions: Path, destinat
         durations.append(min(segment_length, remaining - index * segment_length))
     command = [ffmpeg, "-hide_banner", "-loglevel", "warning", "-y",
                "-stream_loop", "-1", "-i", str(source), "-i", str(narration),
-               "-f", "lavfi", "-i", "anoisesrc=color=brown:amplitude=0.15:sample_rate=48000"]
+               "-f", "lavfi", "-i", "anoisesrc=color=pink:amplitude=0.04:sample_rate=48000"]
     split_labels = "".join(f"[raw{index}]" for index in range(len(durations)))
     filters = [f"[0:v]split={len(durations)}{split_labels}"]
     offsets = [hook_start] + [_offset(source.stem, index, source_duration) for index in range(regular_count)]
@@ -112,9 +112,9 @@ def compose_reddit_short(source: Path, narration: Path, captions: Path, destinat
         f"trim=duration={final_duration:.3f}{watermark_filter},format=yuv420p[vout]",
         f"[1:a]adelay={round(hook_duration * 1000)}:all=1,highpass=f=70,lowpass=f=11000,"
         f"loudnorm=I=-16:TP=-2:LRA=8,apad,atrim=duration={final_duration:.3f}[voice]",
-        f"[2:a]lowpass=f=220,highpass=f=28,volume=0.032,atrim=duration={final_duration:.3f}[drone]",
+        f"[2:a]lowpass=f=5200,highpass=f=90,volume=0.012,atrim=duration={final_duration:.3f}[bed]",
     ])
-    mix = ["[voice]", "[drone]"]
+    mix = ["[voice]", "[bed]"]
     if has_source_audio:
         filters.append(
             f"[0:a]atrim=start={hook_start:.3f}:duration={hook_duration:.3f},asetpts=PTS-STARTPTS,"
