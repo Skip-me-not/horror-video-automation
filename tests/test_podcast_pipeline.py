@@ -237,6 +237,9 @@ def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
     assert 'run_temp="$RUNNER_TEMP/lululala-celebrity"' in workflow
     assert "gh cache delete --all" not in workflow
     assert "rm -f output/short.mp4" in workflow
+    assert "python scripts/merge_reddit_state.py" in workflow
+    assert "git pull --rebase" not in workflow
+    assert "git push origin state-update:main" in workflow
 
 
 def test_lululala_workflow_has_exactly_four_daily_schedules(repo_root):
