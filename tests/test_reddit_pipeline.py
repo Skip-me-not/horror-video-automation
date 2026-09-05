@@ -6,7 +6,8 @@ from urllib.error import HTTPError
 
 import src.reddit_compositor as compositor
 import src.reddit_source as reddit_source
-from src.reddit_source import RedditVideoPost, build_narration, featured_subject, parse_comment_feed, parse_video_feed
+from src.reddit_source import (RedditVideoPost, build_narration, featured_subject,
+                               is_celebrity_post, parse_comment_feed, parse_video_feed)
 
 
 def test_parse_reddit_hosted_video_feed():
@@ -169,3 +170,21 @@ def test_global_celebrity_subject_is_detected_without_kpop_label():
     result = build_narration(post)
     assert result["hook"].startswith("WHY EVERYONE IS TALKING ABOUT SADIE SINK")
     assert "rumors" in result["narration"]
+
+
+def test_generic_movie_video_is_not_a_celebrity_candidate():
+    trailer = RedditVideoPost("movie1", "movies", "Days of Thunder 2. Summer 2028.", "New trailer.",
+                              "/u/poster", "https://www.reddit.com/r/movies/comments/movie1/x/",
+                              "https://v.redd.it/movie1", "")
+    sadie = RedditVideoPost("celeb1", "movies", "Sadie Sink at the premiere", "Fan interview.",
+                            "/u/poster", "https://www.reddit.com/r/movies/comments/celeb1/x/",
+                            "https://v.redd.it/celeb1", "")
+    assert is_celebrity_post(trailer) is False
+    assert is_celebrity_post(sadie) is True
+
+
+def test_search_feed_uses_the_post_subreddit():
+    payload = b'''<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom">
+      <entry><author><name>/u/fan</name></author><content type="html">&lt;a href="https://v.redd.it/searchvideo"&gt;[link]&lt;/a&gt;</content><id>t3_search1</id><link href="https://www.reddit.com/r/popculturechat/comments/search1/example/"/><published>2026-01-01T00:00:00Z</published><title>Sadie Sink interview</title></entry>
+    </feed>'''
+    assert parse_video_feed(payload, "search")[0].subreddit == "popculturechat"

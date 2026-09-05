@@ -22,8 +22,8 @@ KPOP_NAMES = (
     "LE SSERAFIM", "Stray Kids", "BABYMONSTER", "NewJeans", "SEVENTEEN",
     "BLACKPINK", "KATSEYE", "ENHYPEN", "G-IDLE", "(G)I-DLE", "ATEEZ",
     "TWICE", "aespa", "ILLIT", "RIIZE", "NCT", "EXO", "TXT", "IVE", "BTS",
-    "Jungkook", "J-Hope", "Jennie", "Rosé", "Jisoo", "Lisa", "Jimin", "Suga",
-    "Karina", "Winter", "Wonyoung", "Yujin", "Chaewon", "Sakura", "Felix", "Hyunjin", "Jin", "RM",
+    "Jungkook", "Taehyung", "J-Hope", "Jennie", "Rosé", "Jisoo", "Lisa", "Jimin", "Suga",
+    "Karina", "Winter", "Wonyoung", "Yujin", "Chaewon", "Sakura", "Felix", "Hyunjin", "Jin",
 )
 GLOBAL_NAMES = (
     "Millie Bobby Brown", "Anya Taylor-Joy", "Timothée Chalamet", "Sabrina Carpenter",
@@ -45,6 +45,9 @@ BLOCKED_COMMENT_TERMS = {
     "automoderator", "i am a bot", "kill yourself", "ugly", "fat", "skinny",
     "slut", "whore", "bitch", "drug addict", "looks drunk", "mental illness",
 }
+AMBIGUOUS_KPOP_NAMES = {"Lisa", "Winter", "Sakura", "Suga", "Jin"}
+KPOP_CONTEXT_TERMS = {"blackpink", "aespa", "le sserafim", "bts", "k-pop", "kpop", "idol"}
+UNSAFE_POST_TERMS = {"[nsfw]", " nsfw ", "nude", "naked", "upskirt", "leaked private"}
 
 
 @dataclass(frozen=True)
@@ -99,8 +102,10 @@ def parse_video_feed(payload: bytes, subreddit: str) -> list[RedditVideoPost]:
         post_url = str(link_node.attrib.get("href") or "") if link_node is not None else ""
         raw_id = entry.findtext(f"{ATOM}id") or post_url
         post_id = raw_id.removeprefix("t3_").rstrip("/").rsplit("/", 1)[-1]
+        subreddit_match = re.search(r"https://(?:www\.)?reddit\.com/r/([^/]+)/", post_url, re.I)
+        actual_subreddit = subreddit_match.group(1) if subreddit_match else subreddit
         posts.append(RedditVideoPost(
-            post_id, subreddit, _plain_text(entry.findtext(f"{ATOM}title") or ""),
+            post_id, actual_subreddit, _plain_text(entry.findtext(f"{ATOM}title") or ""),
             _plain_text(raw_content), author, post_url, video_match.group(1),
             entry.findtext(f"{ATOM}published") or entry.findtext(f"{ATOM}updated") or "",
         ))
@@ -161,18 +166,36 @@ def _excerpt(value: str, maximum_words: int) -> str:
     return " ".join(re.sub(r"\s+", " ", value).strip().split()[:maximum_words]).rstrip(" ,;:")
 
 
-def featured_subject(post: RedditVideoPost) -> tuple[str, bool]:
+def recognized_subject(post: RedditVideoPost) -> tuple[str, bool]:
     searchable = f"{post.title} {post.body}"
     kpop = _name_match(searchable, KPOP_NAMES)
+    if (kpop in AMBIGUOUS_KPOP_NAMES and post.subreddit.casefold() not in KPOP_SUBREDDITS
+            and not any(term in searchable.casefold() for term in KPOP_CONTEXT_TERMS)):
+        kpop = ""
     if kpop:
         return kpop, True
     global_name = _name_match(searchable, GLOBAL_NAMES)
     if global_name:
         return global_name, False
+    return "", False
+
+
+def featured_subject(post: RedditVideoPost) -> tuple[str, bool]:
+    recognized, is_kpop = recognized_subject(post)
+    if recognized:
+        return recognized, is_kpop
     fallback = _excerpt(post.title, 4).strip(" -:|[]()")
     if post.subreddit.casefold() in KPOP_SUBREDDITS:
         return fallback or "this K-pop artist", True
     return fallback or "this celebrity", False
+
+
+def is_celebrity_post(post: RedditVideoPost) -> bool:
+    searchable = f" {post.title} {post.body} ".casefold()
+    if any(term in searchable for term in UNSAFE_POST_TERMS):
+        return False
+    recognized, _ = recognized_subject(post)
+    return bool(recognized) or post.subreddit.casefold() in KPOP_SUBREDDITS
 
 
 def _score(post: RedditVideoPost) -> float:
@@ -203,17 +226,19 @@ def _load_pool(root: Path, used_ids: set[str]) -> list[RedditVideoPost]:
         post_id, post_url, video_url = str(item.get("post_id") or ""), str(item.get("post_url") or ""), str(item.get("video_url") or "")
         if (not post_id or post_id in used_ids or not post_url.startswith("https://www.reddit.com/") or not video_url.startswith("https://v.redd.it/")):
             continue
-        posts.append(RedditVideoPost(
+        post = RedditVideoPost(
             post_id=post_id, subreddit=str(item.get("subreddit") or "popculturechat"),
             title=str(item.get("title") or "Celebrity moment shared on Reddit"), body=str(item.get("body") or ""),
             author=str(item.get("author") or "unknown"), post_url=post_url, video_url=video_url,
             published=str(item.get("published") or ""), comments=tuple(str(value) for value in item.get("comments", [])[:2]),
-        ))
+        )
+        if is_celebrity_post(post):
+            posts.append(post)
     return posts
 
 
 def _save_pool(root: Path, posts: list[RedditVideoPost], used_ids: set[str], limit: int) -> None:
-    unique = {post.post_id: post for post in posts if post.post_id not in used_ids}
+    unique = {post.post_id: post for post in posts if post.post_id not in used_ids and is_celebrity_post(post)}
     ordered = sorted(unique.values(), key=lambda item: (_score(item), item.published), reverse=True)[:limit]
     write_json(_pool_path(root), [{"post_id": post.post_id, "subreddit": post.subreddit, "title": post.title,
         "body": post.body, "author": post.author, "post_url": post.post_url, "video_url": post.video_url,
@@ -243,11 +268,26 @@ def discover_video_posts(root: Path, used_ids: set[str], seed: str = "") -> list
                     errors.append(f"r/{subreddit} via {host}: {exc}")
             if fetched and len({post.post_id for post in candidates}) >= target_size:
                 break
+        if len({post.post_id for post in candidates if is_celebrity_post(post)}) < target_size:
+            queries = [str(value) for value in config.get("search_queries", [])]
+            random.Random(seed + ":searches").shuffle(queries)
+            for query_text in queries[: int(config.get("maximum_search_attempts", len(queries)))]:
+                try:
+                    url = ("https://www.reddit.com/search.rss?q=" + quote(query_text)
+                           + "&sort=top&t=" + quote(str(config.get("period", "week"))))
+                    candidates.extend(post for post in parse_video_feed(
+                        _fetch(url, attempts=request_attempts), "search") if post.post_id not in used_ids)
+                except (HTTPError, URLError, TimeoutError, ET.ParseError, OSError) as exc:
+                    errors.append(f"Reddit search {query_text!r}: {exc}")
+                if len({post.post_id for post in candidates if is_celebrity_post(post)}) >= target_size:
+                    break
         if len(candidates) > len(cached):
             _save_pool(root, candidates, used_ids, int(config.get("pool_limit", 160)))
     if not candidates:
         raise RuntimeError("no unused Reddit-hosted celebrity video was available: " + " | ".join(errors))
-    unique = list({post.post_id: post for post in candidates}.values())
+    unique = list({post.post_id: post for post in candidates if is_celebrity_post(post)}.values())
+    if not unique:
+        raise RuntimeError("Reddit returned videos, but none featured a configured celebrity or K-pop artist")
     kpop = sorted((post for post in unique if featured_subject(post)[1]), key=lambda item: (_score(item), item.published), reverse=True)
     global_celeb = sorted((post for post in unique if not featured_subject(post)[1]), key=lambda item: (_score(item), item.published), reverse=True)
     prefer_kpop = random.Random(seed + ":category").random() < float(config.get("kpop_selection_weight", 0.75))

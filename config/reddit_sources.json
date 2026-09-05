@@ -5,11 +5,22 @@
     "BABYMONSTER", "illit", "GIDLE", "ATEEZ", "riize", "KATSEYE",
     "popculturechat", "Fauxmoi", "entertainment", "movies", "television", "Music"
   ],
+  "search_queries": [
+    "url:v.redd.it (BLACKPINK OR Jennie OR Lisa OR Rose OR Jisoo)",
+    "url:v.redd.it (BTS OR Jungkook OR Jimin OR Taehyung)",
+    "url:v.redd.it (aespa OR Karina OR Winter)",
+    "url:v.redd.it (IVE OR Wonyoung OR Yujin)",
+    "url:v.redd.it (Stray Kids OR Felix OR Hyunjin)",
+    "url:v.redd.it (LE SSERAFIM OR Chaewon OR Sakura)",
+    "url:v.redd.it (Sadie Sink OR Jenna Ortega OR Zendaya)",
+    "url:v.redd.it (Sabrina Carpenter OR Taylor Swift OR Ariana Grande)"
+  ],
   "listing": "top",
   "period": "week",
   "kpop_selection_weight": 0.75,
   "target_narration_words": 135,
   "maximum_feed_attempts": 12,
+  "maximum_search_attempts": 8,
   "feed_hosts": ["www.reddit.com"],
   "request_attempts": 1,
   "maximum_video_attempts": 8,

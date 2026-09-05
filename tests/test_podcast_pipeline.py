@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -236,6 +237,19 @@ def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
     assert 'run_temp="$RUNNER_TEMP/lululala-celebrity"' in workflow
     assert "gh cache delete --all" not in workflow
     assert "rm -f output/short.mp4" in workflow
+
+
+def test_lululala_workflow_has_exactly_four_daily_schedules(repo_root):
+    workflows = list((repo_root / ".github" / "workflows").glob("*.yml"))
+    assert [path.name for path in workflows] == ["horror-short-generator.yml"]
+    workflow = workflows[0].read_text(encoding="utf-8")
+    assert workflow.count("- cron:") == 4
+    assert {"30 23 * * *", "30 1 * * *", "30 13 * * *", "30 14 * * *"} <= set(
+        re.findall(r'cron: "([^"]+)"', workflow)
+    )
+    assert "actions/checkout@v6" in workflow
+    assert "actions/setup-python@v7" in workflow
+    assert "actions/upload-artifact@v7" in workflow
 
 
 def test_rss_plan_has_no_black_visual_gaps():
