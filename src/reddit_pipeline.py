@@ -16,6 +16,16 @@ from .utils import write_json
 from .validator import validate_story_short
 
 
+MAX_NARRATION_SECONDS = 55.2
+
+
+def _next_word_target(current_target: int, actual_words: int,
+                      actual_seconds: float, maximum_seconds: float) -> int:
+    """Choose a meaningfully shorter target instead of retrying identical audio."""
+    proportional = int(actual_words * maximum_seconds / max(0.1, actual_seconds) * 0.94)
+    return max(78, min(current_target - 8, proportional))
+
+
 def run() -> dict[str, object]:
     root = Path(__file__).resolve().parents[1]
     output = root / "output"
@@ -59,16 +69,35 @@ def run() -> dict[str, object]:
     if post is None or source is None:
         raise RuntimeError("no visually usable Reddit video passed quality checks: " + " | ".join(rejections))
     post = enrich_with_comments(post)
-    script = build_narration(post, int(config.get("target_narration_words", 125)))
     note(f"Selected Reddit video r/{post.subreddit}: {post.title}")
 
     narration = output / "narration.mp3"
     timing_path = output / "word-timings.json"
-    timings = EdgeTTSNarrator("en-US-AvaMultilingualNeural", "+5%").synthesize(
-        str(script["narration"]), narration, timing_path,
-    )
+    narrator = EdgeTTSNarrator("en-US-AvaMultilingualNeural", "+5%")
+    word_target = int(config.get("target_narration_words", 120))
+    script: dict[str, object] = {}
+    timings: list[dict[str, object]] = []
+    narration_seconds = 0.0
+    for fit_attempt in range(1, 4):
+        script = build_narration(post, word_target)
+        timings = narrator.synthesize(str(script["narration"]), narration, timing_path)
+        narration_seconds = audio_duration(narration)
+        if narration_seconds <= MAX_NARRATION_SECONDS:
+            break
+        if fit_attempt == 3:
+            raise RuntimeError(
+                f"could not fit narration below {MAX_NARRATION_SECONDS:.1f}s after three reductions: "
+                f"{narration_seconds:.2f}s"
+            )
+        next_target = _next_word_target(
+            word_target, int(script["word_count"]), narration_seconds, MAX_NARRATION_SECONDS,
+        )
+        note(
+            f"Narration measured {narration_seconds:.2f}s; shortening from "
+            f"{int(script['word_count'])} to at most {next_target} words"
+        )
+        word_target = next_target
     hook_duration = 2.8
-    narration_seconds = audio_duration(narration)
     if narration_seconds + hook_duration > 58.6:
         raise RuntimeError(f"narration is too long for a one-minute Short: {narration_seconds:.2f}s")
     shifted = [{**item, "offset": round(float(item["offset"]) + hook_duration, 3)} for item in timings]

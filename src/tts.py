@@ -4,6 +4,7 @@ import asyncio
 import json
 import re
 import subprocess
+import time
 from pathlib import Path
 from typing import Any
 
@@ -63,5 +64,17 @@ class EdgeTTSNarrator:
         timing_path.write_text(json.dumps(boundaries, indent=2), encoding="utf-8")
         return boundaries
 
-    def synthesize(self, text: str, audio_path: Path, timing_path: Path) -> list[dict[str, Any]]:
-        return asyncio.run(self._synthesize(text, audio_path, timing_path))
+    def synthesize(self, text: str, audio_path: Path, timing_path: Path,
+                   attempts: int = 3) -> list[dict[str, Any]]:
+        """Synthesize with short retries for Edge's intermittent empty responses."""
+        last_error: Exception | None = None
+        for attempt in range(max(1, attempts)):
+            try:
+                return asyncio.run(self._synthesize(text, audio_path, timing_path))
+            except Exception as exc:
+                last_error = exc
+                audio_path.unlink(missing_ok=True)
+                timing_path.unlink(missing_ok=True)
+                if attempt < attempts - 1:
+                    time.sleep(2.0 * (attempt + 1))
+        raise TTSError(f"Edge TTS failed after {max(1, attempts)} attempts: {last_error}") from last_error

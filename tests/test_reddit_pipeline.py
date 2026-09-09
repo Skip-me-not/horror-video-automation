@@ -6,6 +6,7 @@ from urllib.error import HTTPError
 
 import src.reddit_compositor as compositor
 import src.reddit_source as reddit_source
+from src.reddit_pipeline import _next_word_target
 from src.reddit_source import (RedditVideoPost, build_narration, featured_subject,
                                is_celebrity_post, parse_comment_feed, parse_video_feed)
 
@@ -99,6 +100,39 @@ def test_reddit_fetch_retries_rate_limit(monkeypatch):
     assert reddit_source._fetch("https://reddit.test", attempts=2) == b"feed"
     assert len(attempts) == 2
     assert delays == [8.0]
+
+
+def test_reddit_fetch_percent_encodes_unicode_slug(monkeypatch):
+    requested = []
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return None
+
+        def read(self):
+            return b"feed"
+
+    def fake_open(request, **_kwargs):
+        requested.append(request.full_url)
+        return Response()
+
+    monkeypatch.setattr(reddit_source, "urlopen", fake_open)
+    reddit_source._fetch("https://www.reddit.com/r/test/comments/id/𝙄_feel_better/.rss", attempts=1)
+    assert requested == [
+        "https://www.reddit.com/r/test/comments/id/%F0%9D%99%84_feel_better/.rss"
+    ]
+
+
+def test_long_narration_target_is_reduced_with_headroom():
+    assert _next_word_target(135, 135, 60.55, 55.2) == 115
+    assert _next_word_target(90, 90, 56.0, 55.2) == 82
+
+
+def test_bright_source_grade_still_lifts_black_transitions():
+    assert "brightness=0.03" in compositor._grade(90.0)
 
 
 def test_cached_reddit_pool_survives_live_rate_limit(tmp_path, monkeypatch):

@@ -37,7 +37,9 @@ def _grade(luma: float) -> str:
         return "eq=brightness=0.10:contrast=1.08:saturation=1.20:gamma=1.35"
     if luma < 52:
         return "eq=brightness=0.04:contrast=1.08:saturation=1.16:gamma=1.12"
-    return "eq=brightness=0.00:contrast=1.06:saturation=1.12:gamma=1.00"
+    # Keep even an intentionally black transition above the validator's black
+    # threshold; some otherwise bright TikTok clips contain several black frames.
+    return "eq=brightness=0.03:contrast=1.06:saturation=1.12:gamma=1.00"
 
 
 def find_hook_start(source: Path, duration: float, hook_duration: float,

@@ -9,7 +9,7 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 
 from .config_loader import read_json
@@ -114,6 +114,17 @@ def parse_video_feed(payload: bytes, subreddit: str) -> list[RedditVideoPost]:
 
 def _fetch(url: str, attempts: int = 4) -> bytes:
     """Fetch a Reddit feed with bounded backoff for shared GitHub runner rate limits."""
+    # Reddit occasionally puts Unicode display characters in a post slug. urllib's
+    # HTTP request layer requires an ASCII URL, so encode only the URL components
+    # while preserving separators and existing percent escapes.
+    parts = urlsplit(url)
+    url = urlunsplit((
+        parts.scheme,
+        parts.netloc.encode("idna").decode("ascii"),
+        quote(parts.path, safe="/%:@"),
+        quote(parts.query, safe="=&%:+,;@/?"),
+        quote(parts.fragment, safe="%:+,;@/?"),
+    ))
     last_error: Exception | None = None
     retryable_statuses = {429, 500, 502, 503, 504}
     for attempt in range(max(1, attempts)):
