@@ -24,7 +24,7 @@ def render(cards: list[dict[str, Any]], narration: Path, timings: list[dict[str,
     scene_duration = final_duration / len(cards)
     command = [ffmpeg, "-hide_banner", "-loglevel", "warning", "-y"]
     for card in cards:
-        command.extend(["-loop", "1", "-t", f"{scene_duration:.3f}", "-i", card["path"]])
+        command.extend(["-loop", "1", "-framerate", str(fps), "-t", f"{scene_duration:.3f}", "-i", card["path"]])
     command.extend(["-i", str(narration)])
     filters: list[str] = []
     for index in range(len(cards)):
