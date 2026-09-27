@@ -1,0 +1,28 @@
+name: Tests and Integration Validation
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["data/**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions: {contents: read}
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with: {python-version: "3.12", cache: pip}
+      - run: |
+          command -v ffmpeg >/dev/null || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+          python -m pip install -r requirements.txt pytest
+      - run: python -m pytest -q
+      - name: Validate fixture script and playable render
+        run: python -m src.kpop_automation.cli produce --dry-run --slot ci-${GITHUB_RUN_ID} --fixture tests/fixtures/verified_topic.json
+      - run: |
+          test -s output/short.mp4
+          ffprobe -v error -show_entries format=duration -of default=nw=1 output/short.mp4

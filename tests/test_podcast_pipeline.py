@@ -224,30 +224,30 @@ def test_compositor_launches_one_final_encode(tmp_path, monkeypatch):
 
 
 def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
-    workflow = (repo_root / ".github" / "workflows" / "horror-short-generator.yml").read_text()
+    workflow = (repo_root / ".github" / "workflows" / "kpop-production.yml").read_text()
     assert "runs-on: ubuntu-24.04" in workflow
     assert "actions/cache@v4" not in workflow
     assert "command -v ffmpeg" in workflow
-    assert "timeout-minutes: 45" in workflow
+    assert "timeout-minutes: 40" in workflow
     assert "pip install --upgrade yt-dlp" not in workflow
-    assert "Upload finished video to YouTube as public" in workflow
+    assert "Optional trusted-source upload as private first" in workflow
     assert "YOUTUBE_COOKIES_B64" not in workflow
-    assert "python -m src.reddit_pipeline" in workflow
-    assert "name: Lululala Celebrity Shorts" in workflow
-    assert 'run_temp="$RUNNER_TEMP/lululala-celebrity"' in workflow
+    assert "src.kpop_automation.cli" in workflow
+    assert "name: Lululala Korean Celebrity News Production" in workflow
+    assert "AUTO_PUBLISH" in workflow
     assert "gh cache delete --all" not in workflow
-    assert "rm -f output/short.mp4" in workflow
-    assert "python scripts/merge_reddit_state.py" in workflow
-    assert "git pull --rebase" not in workflow
-    assert "git push origin state-update:main" in workflow
+    assert "rm -rf output/short.mp4" in workflow
+    assert "data/kpop_state.json" in workflow
+    assert "--privacy private" in workflow
+    assert "set_youtube_privacy.py" in workflow
 
 
 def test_lululala_workflow_has_exactly_four_daily_schedules(repo_root):
     workflows = list((repo_root / ".github" / "workflows").glob("*.yml"))
-    assert [path.name for path in workflows] == ["horror-short-generator.yml"]
-    workflow = workflows[0].read_text(encoding="utf-8")
+    assert len(workflows) >= 7
+    workflow = (repo_root / ".github" / "workflows" / "kpop-production.yml").read_text(encoding="utf-8")
     assert workflow.count("- cron:") == 4
-    assert {"30 23 * * *", "30 1 * * *", "30 13 * * *", "30 14 * * *"} <= set(
+    assert {"30 0 * * *", "30 5 * * *", "30 8 * * *", "30 12 * * *"} <= set(
         re.findall(r'cron: "([^"]+)"', workflow)
     )
     assert "actions/checkout@v6" in workflow

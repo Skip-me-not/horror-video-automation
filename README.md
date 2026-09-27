@@ -1,47 +1,46 @@
-# Lululala Celebrity Shorts
+# Lululala Korean Celebrity News Shorts
 
-This repository automatically turns Reddit-hosted celebrity videos into vertical YouTube Shorts for the **Lululala** channel. It prioritizes K-pop idols and groups while still covering widely discussed international celebrities.
+A GitHub Actions pipeline for English Korean-celebrity, K-drama, and K-pop news Shorts. It collects publisher RSS, groups similar headlines, scores and verifies stories, synthesizes English narration, renders original 1080×1920 graphics, checks the MP4, and uses the official YouTube Data API.
 
-## What each run does
+## Safety defaults
 
-1. Reads current top-week posts from configured K-pop and pop-culture subreddits.
-2. Accepts only posts with a direct `v.redd.it` video and skips source IDs already used.
-3. Chooses K-pop content about 75% of the time and global celebrity content about 25% of the time.
-4. Downloads the original Reddit-hosted clip and rejects broken, very short, or nearly black video.
-5. Builds an English recap from the post title, body, and up to two Reddit comments. Reddit reactions are attributed and rumors are never presented as verified facts.
-6. Opens with the most interesting source-video moment, then uses fixed-frame reframing, clean narration, white captions, hot-pink emphasis, and a centered `Lululala` watermark.
-7. Validates the 55–60 second vertical MP4, uploads it publicly to YouTube, records the source ID, and removes generated media.
+- Automatic public publishing is configured only when `GEMINI_API_KEY` is present and a source-grounded rewrite passes validation. Without the key, the workflow can preview but will not auto-publish. Set repository variable `AUTO_PUBLISH=false` to disable publication entirely.
+- Upload approval is two-phase: private upload → durable video-ID record → requested visibility.
+- No Reddit/TikTok/YouTube performance clip is downloaded by the active workflows.
+- Public availability is never treated as a reuse license.
+- Rumors, dating speculation, private-life claims, and weakly sourced breaking news are rejected or queued for review.
+- Missing corroboration or insufficient material for a 120-word script means no video is published for that slot. Four scheduled runs do not guarantee four uploads.
+- Public feed access does not authorize reuse of article text, celebrity photos, or television footage. The rewrite rejects long verbatim passages and unsupported numbers, but automated fact checks are imperfect; review previews before enabling unattended public publication.
 
-The source pool is cached in `data/celebrity_source_pool.json`, so temporary Reddit rate limits do not automatically stop a run. The workflow retries a failed build twice before failing.
+## Content formats
+
+The configurable allocation covers eight editorial formats. State tracks article IDs, event topics, entities, hooks, slots, pending items, upload IDs, and analytics snapshots. Latest RSS records and ranked topics are saved in `data/news.json`, `data/unique_news.json`, and `data/verified_topics.json`; confirmed uploads are in `data/upload_history.json`.
 
 ## Schedule
 
-`.github/workflows/horror-short-generator.yml` is the only active production workflow. It runs four times daily at:
+`kpop-production.yml` targets 07:00, 12:00, 15:00, and 19:00 Asia/Yangon (00:30, 05:30, 08:30, and 12:30 UTC). GitHub may delay scheduled jobs. `kpop-catch-up.yml` can dispatch one elapsed missing slot without duplicating a completed slot.
 
-- 06:00 Myanmar time
-- 08:00 Myanmar time
-- 20:00 Myanmar time
-- 21:00 Myanmar time
+## Workflows
 
-GitHub Actions schedules use UTC and may start several minutes late. Manual runs are also available from **Actions → Lululala Celebrity Shorts → Run workflow**.
+- `kpop-production.yml` — four scheduled/manual research, script, render, validation, slot reservation, and verified public upload attempts.
+- `kpop-dry-run.yml` — non-publishing fixture or live-research render.
+- `kpop-approval.yml` — approve/reject and select private, unlisted, or public visibility.
+- `kpop-recovery.yml` — idempotent recovery of a failed slot.
+- `kpop-catch-up.yml` — optional single-slot catch-up.
+- `kpop-analytics.yml` and `kpop-weekly-report.yml` — official API reports; unavailable metrics remain explicitly unavailable.
+- `tests.yml` — unit tests and a playable FFmpeg integration render.
 
-## Required GitHub secrets
-
-- `YOUTUBE_CLIENT_ID`
-- `YOUTUBE_CLIENT_SECRET`
-- `YOUTUBE_REFRESH_TOKEN`
-
-The refresh token determines the destination YouTube channel. It must belong to the Lululala channel before enabling public uploads.
-
-## Source and rights note
-
-Every description links to the original Reddit post. Editing, reframing, narration, and attribution do not automatically make third-party video copyright-free; the channel owner remains responsible for permission, platform rules, and takedown requests.
-
-## Local checks
+## Quick local dry run
 
 ```powershell
+python -m pip install -r requirements.txt pytest
 python -m pytest -q
-python -m src.reddit_pipeline
+python -m src.kpop_automation.cli produce --dry-run --slot local-test --fixture tests/fixtures/verified_topic.json
+ffprobe output/short.mp4
 ```
 
-The second command needs FFmpeg, network access, and the Python packages in `requirements.txt`. Uploading is a separate workflow step and requires the YouTube secrets.
+The fixture is fictional, marked non-publishable, and cannot be used without `--dry-run`.
+
+The renderer writes `output/scripts/`, `output/audio/`, and `output/videos/` alongside its compatibility files. Production media remains ignored by Git and is removed from the Actions runner after the job; preview artifacts expire automatically. Feed failures are logged and other feeds continue.
+
+See [SETUP.md](SETUP.md) and [TROUBLESHOOTING.md](TROUBLESHOOTING.md).

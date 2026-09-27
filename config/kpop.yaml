@@ -1,0 +1,114 @@
+channel:
+  name: Lululala
+  language: en
+  auto_publish: true
+  trusted_sources_only: true
+  uploads_per_day: 4
+  upload_privacy: public
+schedule:
+  timezone: Asia/Yangon
+  slots: ["07:00", "12:00", "15:00", "19:00"]
+content:
+  minimum_seconds: 45
+  maximum_seconds: 60
+  target_words: 135
+  category_weights:
+    idol_storytelling: 0.15
+    transformation: 0.10
+    explained_analysis: 0.10
+    viral_moments: 0.10
+    funny_relatable: 0.10
+    idol_interactions: 0.10
+    trending_news: 0.25
+    fan_debate: 0.10
+  repeat_limits:
+    same_entity_days: 3
+    same_topic_days: 30
+    same_hook_days: 7
+research:
+  timeout_seconds: 20
+  max_age_days: 2
+  require_two_sources_for_news: true
+  sources:
+    - name: Soompi latest
+      url: https://www.soompi.com/feed
+      kind: entertainment_news
+      reliability: 2
+      rights: facts_only
+    - name: Soompi celebrities
+      url: https://www.soompi.com/category/celeb/feed
+      kind: entertainment_news
+      reliability: 2
+      rights: facts_only
+    - name: Soompi drama
+      url: https://www.soompi.com/category/tvfilm/drama/feed
+      kind: entertainment_news
+      reliability: 2
+      rights: facts_only
+    - name: Korea Herald culture
+      url: https://www.koreaherald.com/rss/kh_LifenCulture
+      kind: trade_press
+      reliability: 2
+      rights: facts_only
+    - name: Korea Herald K-pop
+      url: https://www.koreaherald.com/rss/kh_Kpop
+      kind: trade_press
+      reliability: 2
+      rights: facts_only
+    - name: KBS World K-pop
+      url: https://world.kbs.co.kr/rss/rss_enternews.htm?lang=e
+      kind: broadcaster
+      reliability: 2
+      rights: facts_only
+    - name: Korea.net culture
+      url: https://www.korea.net/koreanet/rss/news/7
+      kind: government
+      reliability: 2
+      rights: facts_only
+  entities:
+    - BTS
+    - BLACKPINK
+    - TWICE
+    - aespa
+    - IVE
+    - LE SSERAFIM
+    - Stray Kids
+    - SEVENTEEN
+    - NCT
+    - ENHYPEN
+    - ILLIT
+    - BABYMONSTER
+    - RIIZE
+    - KATSEYE
+    - Jennie
+    - Lisa
+    - Jisoo
+    - Rosé
+    - Jungkook
+    - Jimin
+    - Wonyoung
+    - Karina
+    - NewJeans
+    - IU
+    - EXO
+    - Kim Soo-hyun
+    - Park Bo-gum
+    - Lee Min-ho
+    - Song Hye-kyo
+    - Kim Ji-won
+    - Byeon Woo-seok
+    - Cha Eun-woo
+    - Han So-hee
+    - Lee Jung-jae
+    - Son Ye-jin
+    - Hyun Bin
+    - Ma Dong-seok
+    - Park Seo-joon
+    - Kim Seon-ho
+video:
+  width: 1080
+  height: 1920
+  fps: 30
+  voice: en-US-AvaNeural
+  voice_rate: "+5%"
+  background_music: ""

@@ -1,0 +1,183 @@
+name: Lululala Korean Celebrity News Production
+
+on:
+  schedule:
+    - cron: "30 0 * * *"   # 07:00 Asia/Yangon
+    - cron: "30 5 * * *"   # 12:00 Asia/Yangon
+    - cron: "30 8 * * *"   # 15:00 Asia/Yangon
+    - cron: "30 12 * * *"  # 19:00 Asia/Yangon
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Render and validate without queueing or uploading
+        type: boolean
+        default: false
+      category:
+        description: Optional category override
+        type: choice
+        options: [auto, idol_storytelling, viral_moments, fan_debate, transformation, funny_relatable, trending_news, idol_interactions, explained_analysis]
+        default: auto
+      slot:
+        description: Optional idempotent slot ID
+        type: string
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lululala-kpop-state
+  cancel-in-progress: false
+
+jobs:
+  produce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install FFmpeg and Python dependencies
+        run: |
+          command -v ffmpeg >/dev/null || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+          python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Resolve idempotent Yangon slot
+        id: slot
+        env:
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+          INPUT_SLOT: ${{ inputs.slot }}
+          INPUT_CATEGORY: ${{ inputs.category }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+        shell: bash
+        run: |
+          date_local="$(TZ=Asia/Yangon date +%F)"
+          case "$EVENT_SCHEDULE" in
+            "30 0 * * *") scheduled_time="07:00" ;;
+            "30 5 * * *") scheduled_time="12:00" ;;
+            "30 8 * * *") scheduled_time="15:00" ;;
+            "30 12 * * *") scheduled_time="19:00" ;;
+            *) scheduled_time="manual-$(date -u +%H%M%S)" ;;
+          esac
+          slot="${INPUT_SLOT:-${date_local}T${scheduled_time}}"
+          category="${INPUT_CATEGORY:-auto}"
+          [[ "$category" == "auto" ]] && category=""
+          dry="${INPUT_DRY_RUN:-false}"
+          echo "slot=$slot" >> "$GITHUB_OUTPUT"
+          echo "category=$category" >> "$GITHUB_OUTPUT"
+          echo "dry=$dry" >> "$GITHUB_OUTPUT"
+      - name: Research, script, render, and validate
+        id: produce
+        env:
+          AUTO_PUBLISH: ${{ vars.AUTO_PUBLISH || 'true' }}
+          TRUSTED_SOURCES_ONLY: "true"
+          UPLOAD_PRIVACY: ${{ vars.UPLOAD_PRIVACY || 'public' }}
+          SLOT_ID: ${{ steps.slot.outputs.slot }}
+          CATEGORY: ${{ steps.slot.outputs.category }}
+          DRY_RUN: ${{ steps.slot.outputs.dry }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        shell: bash
+        run: |
+          args=(produce --slot "$SLOT_ID")
+          [[ -n "$CATEGORY" ]] && args+=(--category "$CATEGORY")
+          [[ "$DRY_RUN" == "true" ]] && args+=(--dry-run)
+          python -m src.kpop_automation.cli "${args[@]}"
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          p=json.load(open('output/result.json', encoding='utf-8'))
+          print('action='+str(p.get('action','')))
+          print('content_id='+str(p.get('content_id','')))
+          print('should_publish='+str(bool(p.get('should_publish'))).lower())
+          print('privacy='+str(p.get('privacy','private')))
+          PY
+      - name: Persist lightweight research snapshots
+        if: steps.slot.outputs.dry != 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/news.json data/unique_news.json data/verified_topics.json
+          git diff --cached --quiet && exit 0
+          git commit -m "data: refresh celebrity news snapshots [skip ci]"
+          git push origin HEAD:main
+      - name: Save validated preview
+        if: steps.produce.outputs.action == 'rendered'
+        uses: actions/upload-artifact@v7
+        with:
+          name: kpop-preview-${{ steps.produce.outputs.content_id }}
+          path: |
+            output/short.mp4
+            output/cover.png
+            output/manifest.json
+            output/quality-report.json
+            output/transcript.txt
+          retention-days: 14
+      - name: Reserve slot and article IDs before upload
+        if: steps.slot.outputs.dry != 'true' && steps.produce.outputs.action == 'rendered'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kpop_state.json data/manifests
+          git diff --cached --quiet && exit 0
+          git commit -m "state: reserve celebrity-news slot [skip ci]"
+          git push origin HEAD:main
+      - name: Optional trusted-source upload as private first
+        if: steps.produce.outputs.should_publish == 'true'
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: python scripts/upload_youtube.py --job output/job.json --video output/short.mp4 --privacy private --output output/upload-result.json
+      - name: Record confirmed private upload before publishing
+        if: steps.produce.outputs.should_publish == 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m src.kpop_automation.cli finalize-upload "${{ steps.produce.outputs.content_id }}"
+      - name: Persist confirmed private video ID
+        if: steps.produce.outputs.should_publish == 'true'
+        shell: bash
+        run: |
+          git add data/kpop_state.json data/upload_history.json
+          git commit -m "state: record YouTube video ID [skip ci]"
+          git push origin HEAD:main
+      - name: Apply configured publication status
+        if: steps.produce.outputs.should_publish == 'true'
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: python scripts/set_youtube_privacy.py --upload-result output/upload-result.json --privacy "${{ steps.produce.outputs.privacy }}"
+      - name: Persist final visibility state
+        if: steps.produce.outputs.should_publish == 'true'
+        shell: bash
+        run: |
+          python -m src.kpop_automation.cli finalize-upload "${{ steps.produce.outputs.content_id }}"
+          git add data/kpop_state.json data/upload_history.json
+          git diff --cached --quiet && exit 0
+          git commit -m "state: confirm public visibility [skip ci]"
+          git push origin HEAD:main
+      - name: Notify failure
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python -m src.kpop_automation.cli notify "Lululala production failed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" || true
+      - name: Save failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: failure-diagnostics-${{ github.run_id }}
+          path: |
+            logs/automation.log
+            output/result.json
+            output/quality-report.json
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Clean generated media
+        if: always()
+        run: rm -rf output/short.mp4 output/narration.mp3 output/scenes output/cover.png output/captions.ass

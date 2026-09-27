@@ -1,0 +1,39 @@
+name: Lululala Optional Catch-up
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 13 * * *" # 20:00 Asia/Yangon; catches one missed elapsed slot
+
+permissions: {actions: write, contents: read}
+concurrency: {group: lululala-kpop-catch-up, cancel-in-progress: false}
+
+jobs:
+  find:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with: {python-version: "3.12"}
+      - name: Find one elapsed missing slot without duplicating
+        id: missing
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          now=datetime.now(ZoneInfo('Asia/Yangon'))
+          state=json.load(open('data/kpop_state.json', encoding='utf-8'))
+          missing=''
+          for value in ('07:00','12:00','15:00','19:00'):
+              slot=f'{now:%Y-%m-%d}T{value}'
+              when=datetime.strptime(slot, '%Y-%m-%dT%H:%M').replace(tzinfo=ZoneInfo('Asia/Yangon'))
+              if when <= now and slot not in state.get('slots', {}):
+                  missing=slot; break
+          print('slot='+missing)
+          PY
+      - name: Dispatch exactly one catch-up
+        if: steps.missing.outputs.slot != ''
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: gh workflow run kpop-production.yml --repo "${{ github.repository }}" -f slot="${{ steps.missing.outputs.slot }}" -f category=auto -f dry_run=false
