@@ -37,8 +37,8 @@ def render(cards: list[dict[str, Any]], narration: Path, timings: list[dict[str,
     labels = "".join(f"[v{i}]" for i in range(len(cards)))
     ass_path = str(captions.resolve()).replace("\\", "/").replace(":", r"\:").replace("'", r"\'")
     filters.append(
-        f"{labels}concat=n={len(cards)}:v=1:a=0,subtitles='{ass_path}',"
-        f"trim=duration={final_duration:.3f},format=yuv420p[vout]"
+        f"{labels}concat=n={len(cards)}:v=1:a=0,tpad=stop_mode=clone:stop_duration=1,"
+        f"trim=duration={final_duration:.3f},setpts=PTS-STARTPTS,subtitles='{ass_path}',format=yuv420p[vout]"
     )
     audio_index = len(cards)
     filters.append(
