@@ -1,0 +1,12 @@
+{
+  "job_id": "test",
+  "person": "Test Artist",
+  "title": "Test Artist — Sample Short",
+  "script": "This is a fictional sample video used only to check the editing pipeline. There is no real celebrity announcement here. The first scene should begin immediately, and the captions should follow this narration. Each visual should change as the voice continues. The background graphics are original, and no outside photograph is required. The final result should be a vertical video with clear audio and readable text. This sample is not intended for public upload.",
+  "style": "fast_celeb",
+  "voice": "en-US-AriaNeural",
+  "duration": "automatic",
+  "media": "automatic",
+  "upload": "none",
+  "privacy": "private"
+}

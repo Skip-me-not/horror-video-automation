@@ -10,7 +10,7 @@ python tools/get_refresh_token.py path/to/client_secret.json
 
 Add `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and `YOUTUBE_REFRESH_TOKEN` as GitHub Actions secrets. Tokens are never committed or printed by workflows. Existing upload-only refresh tokens continue to upload; analytics-only metrics may remain unavailable until reauthorization with read scopes.
 
-No Gemini or other text-generation API key is needed. The local script generator uses verified feed claims and rejects scripts outside 65–100 grounded words, unsupported numbers, or eight copied consecutive source words. This shorter script target allows 30–60-second videos. If reporting is too sparse or wording remains too close to a source, that scheduled slot is skipped rather than inventing detail. Review output quality before enabling unattended public upload.
+No Gemini or other text-generation API key is needed. The local script generator uses verified feed claims and rejects scripts outside 65–100 grounded words, unsupported numbers, or eight copied consecutive source words. This shorter script target allows 30–60-second videos. If reporting is too sparse or wording remains too close to a source, the manual news run skips publication rather than inventing detail. The separate Telegram workflow uses your complete supplied script instead.
 
 ## 2. Telegram (optional)
 
@@ -24,9 +24,9 @@ Review `data/media_sources.json` after discovery. To approve an exact asset, add
 
 ## 3. Publishing mode
 
-The supplied workflow defaults to automatic public publication for verified stories. Before its first scheduled run, set repository variable `AUTO_PUBLISH=false` while inspecting dry-run previews and the channel's OAuth connection. Pending IDs are in `data/kpop_state.json` and `data/manifests/`; **Actions → Lululala Review and Publish** handles manual approvals.
+The news-production workflow is manual-only in this PR to avoid creating another four-times-daily schedule on top of the existing main-branch workflow. Set repository variable `AUTO_PUBLISH=false` while inspecting dry-run previews and the channel's OAuth connection. Pending IDs are in `data/kpop_state.json` and `data/manifests/`; **Actions → Lululala Review and Publish** handles manual approvals.
 
-For unattended publishing, set `AUTO_PUBLISH=true` and `UPLOAD_PRIVACY=public` as repository variables. Four cron triggers are upload attempts, not a guarantee of four qualifying stories. Topics that fail evidence, licensing, word-count, or video quality gates cannot upload.
+For a manually dispatched news run to publish without a separate approval step, set `AUTO_PUBLISH=true` and `UPLOAD_PRIVACY=public` as repository variables. Topics that fail evidence, licensing, word-count, or video quality gates cannot upload. Telegram-requested jobs follow their own private-first upload workflow and privacy field.
 
 ## 4. Research sources
 

@@ -2,8 +2,6 @@ name: Lululala Optional Catch-up
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "30 13 * * *" # 20:00 Asia/Yangon; catches one missed elapsed slot
 
 permissions: {actions: write, contents: read}
 concurrency: {group: lululala-kpop-catch-up, cancel-in-progress: false}

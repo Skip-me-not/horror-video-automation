@@ -3,7 +3,7 @@ name: Tests and Integration Validation
 on:
   push:
     branches: [main]
-    paths-ignore: ["data/**"]
+    paths-ignore: ["data/**", "jobs/completed/**", "jobs/locks/**"]
   pull_request:
   workflow_dispatch:
 

@@ -1,0 +1,10 @@
+{
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "crf": 21,
+  "scene_seconds": [1.5, 3.0],
+  "caption_start_seconds": 2.0,
+  "hook_overlay": false,
+  "background_music": "assets/music/lululala-theme.wav"
+}

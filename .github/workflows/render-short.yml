@@ -1,0 +1,138 @@
+name: Telegram Requested Short
+run-name: Telegram Short ${{ github.event.client_payload.job.job_id || inputs.job_id || 'manual' }}
+
+on:
+  repository_dispatch:
+    types: [render_short]
+  workflow_dispatch:
+    inputs:
+      job_json:
+        description: Complete job JSON (kept in the workflow event, not committed)
+        required: false
+        type: string
+      job_id:
+        description: Existing jobs/pending ID, if one was deliberately committed
+        required: false
+        type: string
+      no_upload:
+        description: Render only; never call YouTube
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: telegram-short-render
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install FFmpeg and Myanmar-capable fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-core
+      - name: Install Python dependencies
+        run: python -m pip install -r requirements.txt
+      - uses: actions/cache@v4
+        with:
+          path: cache/media
+          key: telegram-media-${{ runner.os }}-${{ hashFiles('config/telegram_media_approvals.json') }}-v1
+      - name: Validate dispatch and create ephemeral pending job
+        id: job
+        env:
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m pipeline.dispatch_job
+      - name: Render and validate
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          WIKIMEDIA_MEDIA_ENABLED: ${{ vars.WIKIMEDIA_MEDIA_ENABLED || 'false' }}
+        run: python -m pipeline.main --job "jobs/pending/${{ steps.job.outputs.job_id }}.json" --no-upload
+      - name: Reserve content hash before any upload
+        if: steps.job.outputs.upload == 'youtube' && github.event.inputs.no_upload != 'true'
+        run: |
+          python -m pipeline.job_state reserve --job "jobs/pending/${{ steps.job.outputs.job_id }}.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "jobs/locks/${{ steps.job.outputs.dedupe_key }}.json"
+          git commit -m "state: reserve Telegram Short [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Upload validated Short privately
+        if: steps.job.outputs.upload == 'youtube' && github.event.inputs.no_upload != 'true'
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python -m bot.notify --text "📤 Uploading privately. Job ID: ${{ steps.job.outputs.job_id }}"
+          python -m pipeline.youtube_upload --job "jobs/pending/${{ steps.job.outputs.job_id }}.json" \
+            --video "output/${{ steps.job.outputs.job_id }}/final.mp4" --privacy private \
+            --output "output/${{ steps.job.outputs.job_id }}/upload-result.json"
+      - name: Persist confirmed private video ID before publication
+        if: steps.job.outputs.upload == 'youtube' && github.event.inputs.no_upload != 'true'
+        run: |
+          python -m pipeline.job_state complete --job "jobs/pending/${{ steps.job.outputs.job_id }}.json" \
+            --result "output/${{ steps.job.outputs.job_id }}/upload-result.json"
+          git add -A jobs/locks jobs/completed
+          git commit -m "state: record Telegram Short video ID [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Apply requested YouTube visibility
+        if: steps.job.outputs.upload == 'youtube' && github.event.inputs.no_upload != 'true'
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          python scripts/set_youtube_privacy.py \
+            --upload-result "output/${{ steps.job.outputs.job_id }}/upload-result.json" \
+            --privacy "${{ steps.job.outputs.privacy }}"
+          python -m pipeline.job_state visible --job "jobs/pending/${{ steps.job.outputs.job_id }}.json" \
+            --result "output/${{ steps.job.outputs.job_id }}/upload-result.json"
+          git add "jobs/completed/${{ steps.job.outputs.dedupe_key }}.json"
+          if ! git diff --cached --quiet; then
+            git commit -m "state: confirm Telegram Short visibility [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Archive ephemeral job and notify success
+        if: success() && steps.job.outputs.job_id != ''
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          RENDER_ONLY: ${{ steps.job.outputs.upload != 'youtube' || github.event.inputs.no_upload == 'true' }}
+        run: |
+          python -m pipeline.job_state archive --job "jobs/pending/${{ steps.job.outputs.job_id }}.json"
+          if [[ "$RENDER_ONLY" == "true" ]]; then
+            python -m pipeline.report --job-id "${{ steps.job.outputs.job_id }}" --render-only
+          else
+            python -m pipeline.report --job-id "${{ steps.job.outputs.job_id }}"
+          fi
+      - name: Preserve output for review or upload failure
+        if: failure() || github.event.inputs.no_upload == 'true' || steps.job.outputs.upload == 'none'
+        uses: actions/upload-artifact@v7
+        with:
+          name: telegram-short-${{ github.run_id }}
+          path: output/
+          if-no-files-found: warn
+          retention-days: 3
+      - name: Notify failure
+        if: failure() && steps.job.outputs.job_id != ''
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python -m pipeline.report --job-id "${{ steps.job.outputs.job_id }}" --failed || true
+          python -m pipeline.job_state fail --job "jobs/pending/${{ steps.job.outputs.job_id }}.json" || true

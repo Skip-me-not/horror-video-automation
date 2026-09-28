@@ -17,13 +17,21 @@ def render(cards: list[dict[str, Any]], narration: Path, timings: list[dict[str,
         raise FileNotFoundError("FFmpeg is required")
     width, height, fps = int(config["width"]), int(config["height"]), int(config["fps"])
     final_duration = duration + 0.55
+    caption_start = float(config.get("caption_start_seconds", 0))
+    caption_timings = [item for item in timings if float(item.get("offset", 0)) >= caption_start]
+    if not caption_timings:
+        caption_timings = timings[-1:]
+    show_hook = bool(config.get("hook_overlay", True))
     captions = SubtitleWriter().from_timings(
-        timings, output_dir / "captions.ass", [script["hook"], *script.get("tags", [])],
-        hook_text=str(script["hook"]), hook_duration=min(2.8, final_duration / 5),
+        caption_timings, output_dir / "captions.ass", [script["hook"], *script.get("tags", [])],
+        hook_text=str(script["hook"]) if show_hook else "",
+        hook_duration=min(2.8, final_duration / 5) if show_hook else 0,
     )
-    scene_duration = final_duration / len(cards)
+    requested = [max(0.2, float(card.get("duration", final_duration / len(cards)))) for card in cards]
+    requested_total = sum(requested)
+    scene_durations = [final_duration * value / requested_total for value in requested]
     command = [ffmpeg, "-hide_banner", "-loglevel", "warning", "-y"]
-    for card in cards:
+    for card, scene_duration in zip(cards, scene_durations):
         if card.get("type", "image") == "video":
             command.extend(["-t", f"{scene_duration:.3f}", "-i", card["path"]])
         else:
@@ -33,9 +41,10 @@ def render(cards: list[dict[str, Any]], narration: Path, timings: list[dict[str,
     if music:
         if not Path(music).is_file():
             raise FileNotFoundError("licensed music file is missing")
-        command.extend(["-i", music])
+        command.extend(["-stream_loop", "-1", "-i", music])
     filters: list[str] = []
     for index in range(len(cards)):
+        scene_duration = scene_durations[index]
         if cards[index].get("type", "image") == "video":
             focus_x = max(0.1, min(0.9, float(cards[index].get("focus_x", 0.5))))
             filters.append(

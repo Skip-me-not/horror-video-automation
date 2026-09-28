@@ -1,11 +1,6 @@
 name: Lululala Korean Celebrity News Production
 
 on:
-  schedule:
-    - cron: "30 0 * * *"   # 07:00 Asia/Yangon
-    - cron: "30 5 * * *"   # 12:00 Asia/Yangon
-    - cron: "30 8 * * *"   # 15:00 Asia/Yangon
-    - cron: "30 12 * * *"  # 19:00 Asia/Yangon
   workflow_dispatch:
     inputs:
       dry_run:
@@ -47,20 +42,13 @@ jobs:
       - name: Resolve idempotent Yangon slot
         id: slot
         env:
-          EVENT_SCHEDULE: ${{ github.event.schedule }}
           INPUT_SLOT: ${{ inputs.slot }}
           INPUT_CATEGORY: ${{ inputs.category }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
         shell: bash
         run: |
           date_local="$(TZ=Asia/Yangon date +%F)"
-          case "$EVENT_SCHEDULE" in
-            "30 0 * * *") scheduled_time="07:00" ;;
-            "30 5 * * *") scheduled_time="12:00" ;;
-            "30 8 * * *") scheduled_time="15:00" ;;
-            "30 12 * * *") scheduled_time="19:00" ;;
-            *) scheduled_time="manual-$(date -u +%H%M%S)" ;;
-          esac
+          scheduled_time="manual-$(date -u +%H%M%S)"
           slot="${INPUT_SLOT:-${date_local}T${scheduled_time}}"
           category="${INPUT_CATEGORY:-auto}"
           [[ "$category" == "auto" ]] && category=""

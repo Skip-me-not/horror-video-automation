@@ -1,5 +1,7 @@
 # Lululala Korean Celebrity News Shorts
 
+For the separate user-scripted Telegram Bot → GitHub Actions → YouTube workflow, see [TELEGRAM_SETUP.md](TELEGRAM_SETUP.md). It uses the exact script sent by an authorized Telegram user, free Edge TTS/FFmpeg, approved media or original graphics, and a private-first upload. The bot requires an always-on host; the new dispatch workflow starts only after it is merged to the repository default branch.
+
 A GitHub Actions pipeline for English Korean-celebrity, K-drama, and K-pop news Shorts. It collects publisher RSS, groups similar headlines, scores and verifies stories, discovers relevant Reddit media through OAuth, tracks media permissions, synthesizes English narration, renders 1080×1920 edits, checks the MP4, and uses the official YouTube Data API.
 
 ## Safety defaults
@@ -9,7 +11,7 @@ A GitHub Actions pipeline for English Korean-celebrity, K-drama, and K-pop news 
 - TikTok and YouTube performance clips are not downloaded. Reddit media is downloaded only with exact, documented reuse approval.
 - Public availability is never treated as a reuse license.
 - Rumors, dating speculation, private-life claims, and weakly sourced breaking news are rejected or queued for review.
-- Missing corroboration or insufficient material for a 65-word original script means no video is published for that slot. Four scheduled runs do not guarantee four uploads.
+- Missing corroboration or insufficient material for a 65-word original script means the manual news run does not publish.
 - A live feed smoke test on 2026-09-29 found 14 verified topics, but the source-text overlap gate rejected the current deterministic summaries. Lowering the word minimum alone does not make copied phrasing publishable; expect skipped slots until the no-API script generator can produce genuinely original summaries or editorially prepared scripts are available.
 - Public feed access does not authorize reuse of article text, celebrity photos, or television footage. The script gate rejects long verbatim passages and unsupported numbers, but automated checks cannot establish factual accuracy or copyright permission; review previews before enabling unattended public publication.
 - Reddit is a discovery source, not a license. Unknown-source, high-risk, or unapproved assets are recorded but never downloaded for production. Original motion graphics remain the fallback.
@@ -20,11 +22,11 @@ The configurable allocation covers eight editorial formats. State tracks article
 
 ## Schedule
 
-`kpop-production.yml` targets 07:00, 12:00, 15:00, and 19:00 Asia/Yangon (00:30, 05:30, 08:30, and 12:30 UTC). GitHub may delay scheduled jobs. `kpop-catch-up.yml` can dispatch one elapsed missing slot without duplicating a completed slot.
+The unmerged `kpop-production.yml` and `kpop-catch-up.yml` workflows are manual-only so merging this PR will not create a second daily schedule alongside the existing `horror-short-generator.yml` workflow on `main`. The configured slot names remain available for explicit manual runs. Telegram-requested Shorts are on-demand and have no cron schedule.
 
 ## Workflows
 
-- `kpop-production.yml` — four scheduled/manual research, script, render, validation, slot reservation, and verified public upload attempts.
+- `kpop-production.yml` — manual-only research, script, render, validation, slot reservation, and verified public upload attempts.
 - `kpop-dry-run.yml` — non-publishing fixture or live-research render.
 - `kpop-approval.yml` — approve/reject and select private, unlisted, or public visibility.
 - `kpop-recovery.yml` — idempotent recovery of a failed slot.

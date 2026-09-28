@@ -245,11 +245,14 @@ def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
 def test_lululala_workflow_has_exactly_four_daily_schedules(repo_root):
     workflows = list((repo_root / ".github" / "workflows").glob("*.yml"))
     assert len(workflows) >= 7
-    workflow = (repo_root / ".github" / "workflows" / "kpop-production.yml").read_text(encoding="utf-8")
+    workflow = (repo_root / ".github" / "workflows" / "horror-short-generator.yml").read_text(encoding="utf-8")
     assert workflow.count("- cron:") == 4
-    assert {"30 0 * * *", "30 5 * * *", "30 8 * * *", "30 12 * * *"} <= set(
+    assert {"30 23 * * *", "30 1 * * *", "30 13 * * *", "30 14 * * *"} <= set(
         re.findall(r'cron: "([^"]+)"', workflow)
     )
+    manual_news = (repo_root / ".github" / "workflows" / "kpop-production.yml").read_text(encoding="utf-8")
+    assert "- cron:" not in manual_news
+    assert "- cron:" not in (repo_root / ".github" / "workflows" / "render-short.yml").read_text(encoding="utf-8")
     assert "actions/checkout@v6" in workflow
     assert "actions/setup-python@v7" in workflow
     assert "actions/upload-artifact@v7" in workflow
