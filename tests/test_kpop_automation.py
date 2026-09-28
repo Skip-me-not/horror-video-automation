@@ -85,7 +85,7 @@ def _detailed_topic() -> Topic:
 def test_no_api_script_gate_accepts_detail_and_rejects_copy_or_new_numbers():
     topic = _detailed_topic()
     script = generate_script(topic)
-    assert 120 <= script["word_count"] <= 150
+    assert 65 <= script["word_count"] <= 100
     assert publication_script_errors(topic, script) == []
     assert "copies eight consecutive" in " ".join(publication_script_errors(
         topic, {**script, "narration": script["narration"] + " " + topic.sources[0].evidence}

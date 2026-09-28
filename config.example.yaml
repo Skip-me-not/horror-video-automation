@@ -13,9 +13,9 @@ reddit:
   max_risk_score: 35
   request_spacing_seconds: 1.0
 content:
-  minimum_seconds: 45
+  minimum_seconds: 30
   maximum_seconds: 60
-  target_words: 150
+  target_words: 90
   category_weights:
     idol_storytelling: 0.15
     transformation: 0.10

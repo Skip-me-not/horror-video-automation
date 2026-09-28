@@ -17,8 +17,8 @@ def validate(topic: dict[str, Any], script: dict[str, Any], assets: list[dict[st
         errors.append("topic lacks cited sources or claims")
     if topic.get("review_reason"):
         errors.append(f"manual review required: {topic['review_reason']}")
-    if not 120 <= int(script.get("word_count", 0)) <= 150:
-        errors.append("narration must have 120–150 source-grounded words")
+    if not 65 <= int(script.get("word_count", 0)) <= 100:
+        errors.append("narration must have 65–100 source-grounded words")
     source_ids = {item.get("source_id") for item in topic.get("sources", [])}
     if not set(script.get("source_ids", [])).issubset(source_ids):
         errors.append("script cites an unknown source")

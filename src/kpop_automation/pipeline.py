@@ -49,10 +49,10 @@ def _render_topic(root: Path, config: dict[str, Any], topic: Topic, content_id: 
                   require_originality: bool = False, discover_live_media: bool = True) -> dict[str, Any]:
     output = root / "output"
     output.mkdir(exist_ok=True)
-    target_words = int(config["content"].get("target_words", 135))
+    target_words = int(config["content"].get("target_words", 90))
     script = existing_script or generate_script(topic, target_words)
-    if not 120 <= script["word_count"] <= 150:
-        raise ValueError(f"insufficient independently sourced detail for a 120-word Short ({script['word_count']} words)")
+    if not 65 <= script["word_count"] <= 100:
+        raise ValueError(f"insufficient independently sourced detail for a 65-word Short ({script['word_count']} words)")
     narration = output / "narration.mp3"
     timings_path = output / "word-timings.json"
     timings, seconds = audio.synthesize(
@@ -61,7 +61,7 @@ def _render_topic(root: Path, config: dict[str, Any], topic: Topic, content_id: 
     )
     maximum = float(config["content"]["maximum_seconds"]) - 0.55
     if seconds > maximum:
-        reduced = max(120, int(script["word_count"] * maximum / seconds * 0.92))
+        reduced = max(65, int(script["word_count"] * maximum / seconds * 0.92))
         script = generate_script(topic, reduced)
         if require_originality and publication_script_errors(topic, script):
             raise RuntimeError("fitted narration no longer meets publication checks")
@@ -144,13 +144,13 @@ def produce(root: Path, config_path: Path, slot_id: str, category: str = "",
         sufficiently_detailed = [
             item for item in publishable
             if not publication_script_errors(
-                item, generate_script(item, int(config["content"].get("target_words", 135)))
+                item, generate_script(item, int(config["content"].get("target_words", 90)))
             )
         ]
         if not sufficiently_detailed:
             result = {"action": "no_verified_topic", "slot_id": slot_id, "research_errors": research_errors,
                       "review_candidates": len(topics), "verified_candidates": len(publishable),
-                      "reason": "no current verified story supports an original 120–150-word script without an API",
+                      "reason": "no current verified story supports an original 65–100-word script without an API",
                       "should_publish": False}
             _write(root / "output" / "result.json", result)
             return result

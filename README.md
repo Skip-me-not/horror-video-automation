@@ -4,13 +4,13 @@ A GitHub Actions pipeline for English Korean-celebrity, K-drama, and K-pop news 
 
 ## Safety defaults
 
-- No Gemini or other text-generation API key is needed. Scripts use deterministic source summaries. Publication requires 120–150 words, no unsupported numbers, no eight-word source copy, a verified topic, and passing video checks. Sparse feed summaries are skipped rather than padded with invented facts. Set repository variable `AUTO_PUBLISH=false` to disable publication entirely.
+- No Gemini or other text-generation API key is needed. Scripts use deterministic source summaries. Publication requires 65–100 words and a 30–60-second Short, no unsupported numbers, no eight-word source copy, a verified topic, and passing video checks. Sparse feed summaries are skipped rather than padded with invented facts. Set repository variable `AUTO_PUBLISH=false` to disable publication entirely.
 - Upload approval is two-phase: private upload → durable video-ID record → requested visibility.
 - TikTok and YouTube performance clips are not downloaded. Reddit media is downloaded only with exact, documented reuse approval.
 - Public availability is never treated as a reuse license.
 - Rumors, dating speculation, private-life claims, and weakly sourced breaking news are rejected or queued for review.
-- Missing corroboration or insufficient material for a 120-word script means no video is published for that slot. Four scheduled runs do not guarantee four uploads.
-- A live feed smoke test on 2026-09-29 found 14 verified candidate topics but none with enough distinct, original source-backed material for the required 120–150-word no-API narration. Expect skipped slots until richer source data or editorially prepared scripts are available.
+- Missing corroboration or insufficient material for a 65-word original script means no video is published for that slot. Four scheduled runs do not guarantee four uploads.
+- A live feed smoke test on 2026-09-29 found 14 verified topics, but the source-text overlap gate rejected the current deterministic summaries. Lowering the word minimum alone does not make copied phrasing publishable; expect skipped slots until the no-API script generator can produce genuinely original summaries or editorially prepared scripts are available.
 - Public feed access does not authorize reuse of article text, celebrity photos, or television footage. The script gate rejects long verbatim passages and unsupported numbers, but automated checks cannot establish factual accuracy or copyright permission; review previews before enabling unattended public publication.
 - Reddit is a discovery source, not a license. Unknown-source, high-risk, or unapproved assets are recorded but never downloaded for production. Original motion graphics remain the fallback.
 

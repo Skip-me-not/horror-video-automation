@@ -33,7 +33,7 @@ def _sentence(value: str, words: int = 38) -> str:
     return clipped.rstrip(" ,;:.!?") + "."
 
 
-def generate_script(topic: Topic, target_words: int = 135) -> dict[str, Any]:
+def generate_script(topic: Topic, target_words: int = 90) -> dict[str, Any]:
     hook, context, ending = STRUCTURES[topic.category]
     seed = int(hashlib.sha256(topic.topic_id.encode()).hexdigest()[:8], 16)
     claims = list(topic.claims)
@@ -78,8 +78,8 @@ def publication_script_errors(topic: Topic, script: dict[str, Any]) -> list[str]
     """Conservative checks for a no-API script before public upload."""
     errors: list[str] = []
     narration = str(script.get("narration", ""))
-    if not 120 <= len(narration.split()) <= 150:
-        errors.append("narration needs 120–150 verified words")
+    if not 65 <= len(narration.split()) <= 100:
+        errors.append("narration needs 65–100 verified words")
     if topic.entity.casefold() not in narration.casefold():
         errors.append("narration omits the subject")
     spoken = re.findall(r"[a-z0-9]+", narration.casefold())

@@ -10,7 +10,7 @@ python tools/get_refresh_token.py path/to/client_secret.json
 
 Add `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and `YOUTUBE_REFRESH_TOKEN` as GitHub Actions secrets. Tokens are never committed or printed by workflows. Existing upload-only refresh tokens continue to upload; analytics-only metrics may remain unavailable until reauthorization with read scopes.
 
-No Gemini or other text-generation API key is needed. The local script generator uses verified feed claims and rejects scripts with fewer than 120 grounded words, unsupported numbers, or eight copied consecutive source words. If the available reporting is too sparse, that scheduled slot is skipped rather than inventing detail. Review output quality before enabling unattended public upload.
+No Gemini or other text-generation API key is needed. The local script generator uses verified feed claims and rejects scripts outside 65–100 grounded words, unsupported numbers, or eight copied consecutive source words. This shorter script target allows 30–60-second videos. If reporting is too sparse or wording remains too close to a source, that scheduled slot is skipped rather than inventing detail. Review output quality before enabling unattended public upload.
 
 ## 2. Telegram (optional)
 
