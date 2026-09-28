@@ -10,7 +10,7 @@ python tools/get_refresh_token.py path/to/client_secret.json
 
 Add `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and `YOUTUBE_REFRESH_TOKEN` as GitHub Actions secrets. Tokens are never committed or printed by workflows. Existing upload-only refresh tokens continue to upload; analytics-only metrics may remain unavailable until reauthorization with read scopes.
 
-Create a Gemini API key in Google AI Studio and add `GEMINI_API_KEY` as another Actions secret. The pipeline requires a source-grounded rewrite that passes word-count, source-overlap, and number checks before unattended public upload. Without this key it can make deterministic previews, but will not auto-publish. Gemini 2.5 Flash has a free API tier subject to regional availability and quota; use a free-tier project if zero cost is required.
+No Gemini or other text-generation API key is needed. The local script generator uses verified feed claims and rejects scripts with fewer than 120 grounded words, unsupported numbers, or eight copied consecutive source words. If the available reporting is too sparse, that scheduled slot is skipped rather than inventing detail. Review output quality before enabling unattended public upload.
 
 ## 2. Telegram (optional)
 
@@ -59,7 +59,6 @@ Publishing is orchestrated by **Lululala Korean Celebrity News Production** in G
 - `YOUTUBE_CLIENT_ID`
 - `YOUTUBE_CLIENT_SECRET`
 - `YOUTUBE_REFRESH_TOKEN`
-- `GEMINI_API_KEY` (required for unattended public uploads)
 - `REDDIT_CLIENT_ID` and `REDDIT_CLIENT_SECRET` (optional; required for Reddit discovery)
 - `TELEGRAM_BOT_TOKEN` (optional)
 - `TELEGRAM_CHAT_ID` (optional)

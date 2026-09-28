@@ -15,7 +15,7 @@ reddit:
 content:
   minimum_seconds: 45
   maximum_seconds: 60
-  target_words: 135
+  target_words: 150
   category_weights:
     idol_storytelling: 0.15
     transformation: 0.10

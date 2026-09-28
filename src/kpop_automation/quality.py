@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import Any
 
 from src.validator import validate_story_short
+from .models import Topic
+from .scripts import publication_script_errors
 
 
 def validate(topic: dict[str, Any], script: dict[str, Any], assets: list[dict[str, Any]],
@@ -20,6 +22,8 @@ def validate(topic: dict[str, Any], script: dict[str, Any], assets: list[dict[st
     source_ids = {item.get("source_id") for item in topic.get("sources", [])}
     if not set(script.get("source_ids", [])).issubset(source_ids):
         errors.append("script cites an unknown source")
+    if require_originality:
+        errors.extend(publication_script_errors(Topic.from_dict(topic), script))
     for asset in assets:
         if not asset.get("approved") or asset.get("license") in {"", "unknown", "unverified"}:
             errors.append(f"asset is not licensed: {asset.get('id', 'unknown')}")
@@ -34,8 +38,8 @@ def validate(topic: dict[str, Any], script: dict[str, Any], assets: list[dict[st
     media_sources = {asset["id"] for asset in assets if asset.get("reddit_post_url")}
     original_cards = sum(asset.get("license") == "original-generated" for asset in assets)
     originality = {
-        "original_narration": 25 if mode == "gemini_source_rewrite" else 0,
-        "story_structure": 20 if mode == "gemini_source_rewrite" else 10,
+        "original_narration": 25 if mode == "deterministic_source_summary" and not publication_script_errors(Topic.from_dict(topic), script) else 0,
+        "story_structure": 20 if mode == "deterministic_source_summary" else 10,
         "multiple_visual_sources": 15 if len(media_sources) >= 3 else 10 if original_cards >= 5 else 0,
         "custom_captions_graphics": 15 if video.is_file() and original_cards >= 1 else 0,
         "scene_restructuring": 10 if len(assets) >= 15 else 0,

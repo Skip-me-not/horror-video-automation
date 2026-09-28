@@ -77,7 +77,6 @@ jobs:
           SLOT_ID: ${{ steps.slot.outputs.slot }}
           CATEGORY: ${{ steps.slot.outputs.category }}
           DRY_RUN: ${{ steps.slot.outputs.dry }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
           REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT }}

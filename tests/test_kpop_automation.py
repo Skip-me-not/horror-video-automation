@@ -11,7 +11,7 @@ from src.kpop_automation.config import load_config
 from src.kpop_automation.models import SourceRecord, Topic
 from src.kpop_automation.pipeline import produce
 from src.kpop_automation.research import canonical_url, parse_feed
-from src.kpop_automation.scripts import STRUCTURES, generate_script
+from src.kpop_automation.scripts import STRUCTURES, generate_script, publication_script_errors
 from src.kpop_automation.state import finalize_upload, queue_manifest
 from src.kpop_automation.topics import rank_topics
 
@@ -68,6 +68,54 @@ def test_all_eight_formats_generate_only_cited_content():
         assert script["source_ids"] == ["one"]
         assert "Official" in script["narration"]
         assert 30 <= script["word_count"] <= 135
+
+
+def _detailed_topic() -> Topic:
+    labels = ("alpha", "bravo", "charlie", "delta", "echo", "foxtrot", "golf", "hotel",
+              "india", "juliet", "kilo", "lima")
+    claims = tuple(f"IVE published the {label} showcase teaser today" for label in labels)
+    source = SourceRecord(
+        "detailed", "IVE outlines a fictional showcase", "https://official.example/showcase",
+        "Official", "2026-09-22T00:00:00+00:00", "2026-09-23T00:00:00+00:00",
+        ". ".join(claims), ("IVE",), "trending_news", 3, "official", "facts_only", "detailed",
+    )
+    return Topic("detailed-topic", source.title, "trending_news", "IVE", (source,), claims)
+
+
+def test_no_api_script_gate_accepts_detail_and_rejects_copy_or_new_numbers():
+    topic = _detailed_topic()
+    script = generate_script(topic)
+    assert 120 <= script["word_count"] <= 150
+    assert publication_script_errors(topic, script) == []
+    assert "copies eight consecutive" in " ".join(publication_script_errors(
+        topic, {**script, "narration": script["narration"] + " " + topic.sources[0].evidence}
+    ))
+    assert "number absent" in " ".join(publication_script_errors(
+        topic, {**script, "narration": script["narration"] + " 2027"}
+    ))
+
+
+def test_production_can_publish_without_gemini(monkeypatch, tmp_path: Path, repo_root: Path):
+    from src.kpop_automation import pipeline
+
+    topic = _detailed_topic()
+    script = generate_script(topic)
+    state = {"used_articles": [], "covered_topics": [], "entity_history": [], "hook_history": [],
+             "pending": {}, "uploads": {}, "slots": {}, "analytics": []}
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "kpop_state.json").write_text(json.dumps(state), encoding="utf-8")
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    monkeypatch.setattr(pipeline, "collect", lambda config: ([topic.sources[0]], []))
+    monkeypatch.setattr(pipeline, "rank_topics", lambda *args: [topic])
+
+    def fake_render(*args, **kwargs):
+        return {"content_id": args[3], "slot_id": args[4], "created_at": "now",
+                "status": "pending_approval", "topic": topic.to_dict(), "script": script,
+                "quality": {"valid": True, "originality_score": 90}}
+
+    monkeypatch.setattr(pipeline, "_render_topic", fake_render)
+    result = pipeline.produce(tmp_path, repo_root / "config" / "kpop.yaml", "no-api-slot")
+    assert result["should_publish"] is True
 
 
 def test_state_slot_and_upload_are_idempotent():

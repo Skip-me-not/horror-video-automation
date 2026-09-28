@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,7 +15,7 @@ from .media_timeline import build_timeline
 from .music import ensure_original_theme
 from .quality import validate
 from .research import collect
-from .scripts import generate_script, rewrite_with_gemini
+from .scripts import generate_script, publication_script_errors
 from .state import atomic_write, load_state, queue_manifest
 from .topics import rank_topics
 from .video import render
@@ -47,12 +46,11 @@ def _eligible(topic: Topic) -> bool:
 
 def _render_topic(root: Path, config: dict[str, Any], topic: Topic, content_id: str,
                   slot_id: str, existing_script: dict[str, Any] | None = None,
-                  ai_rewrite: bool = False, discover_live_media: bool = True) -> dict[str, Any]:
+                  require_originality: bool = False, discover_live_media: bool = True) -> dict[str, Any]:
     output = root / "output"
     output.mkdir(exist_ok=True)
     target_words = int(config["content"].get("target_words", 135))
-    script = existing_script or (rewrite_with_gemini(topic, os.environ["GEMINI_API_KEY"], target_words)
-                                 if ai_rewrite else generate_script(topic, target_words))
+    script = existing_script or generate_script(topic, target_words)
     if not 120 <= script["word_count"] <= 150:
         raise ValueError(f"insufficient independently sourced detail for a 120-word Short ({script['word_count']} words)")
     narration = output / "narration.mp3"
@@ -64,9 +62,9 @@ def _render_topic(root: Path, config: dict[str, Any], topic: Topic, content_id: 
     maximum = float(config["content"]["maximum_seconds"]) - 0.55
     if seconds > maximum:
         reduced = max(120, int(script["word_count"] * maximum / seconds * 0.92))
-        if ai_rewrite:
-            raise RuntimeError(f"AI narration exceeds {maximum:.1f}s; refusing to alter verified wording")
         script = generate_script(topic, reduced)
+        if require_originality and publication_script_errors(topic, script):
+            raise RuntimeError("fitted narration no longer meets publication checks")
         timings, seconds = audio.synthesize(
             script["narration"], narration, timings_path,
             config["video"]["voice"], config["video"].get("voice_rate", "+5%"),
@@ -91,7 +89,7 @@ def _render_topic(root: Path, config: dict[str, Any], topic: Topic, content_id: 
     quality = validate(
         topic.to_dict(), script, assets, Path(production["path"]),
         float(config["content"]["minimum_seconds"]), float(config["content"]["maximum_seconds"]),
-        require_originality=ai_rewrite,
+        require_originality=require_originality,
     )
     status = "pending_approval" if quality["valid"] else "quality_failed"
     manifest = ProductionManifest(
@@ -143,15 +141,16 @@ def produce(root: Path, config_path: Path, slot_id: str, category: str = "",
         _write(root / "data" / "deferred_topics.json", [item.to_dict() for item in topics if 60 <= item.score < 75])
         _write(root / "data" / "verified_topics.json", [item.to_dict() for item in topics if not item.review_reason])
         publishable = [item for item in topics if not item.review_reason]
-        ai_rewrite = bool(os.getenv("GEMINI_API_KEY"))
-        sufficiently_detailed = publishable if ai_rewrite else [
+        sufficiently_detailed = [
             item for item in publishable
-            if 120 <= generate_script(item, int(config["content"].get("target_words", 135)))["word_count"] <= 150
+            if not publication_script_errors(
+                item, generate_script(item, int(config["content"].get("target_words", 135)))
+            )
         ]
         if not sufficiently_detailed:
             result = {"action": "no_verified_topic", "slot_id": slot_id, "research_errors": research_errors,
                       "review_candidates": len(topics), "verified_candidates": len(publishable),
-                      "reason": "no current verified story has enough independent detail for a 120-word script",
+                      "reason": "no current verified story supports an original 120–150-word script without an API",
                       "should_publish": False}
             _write(root / "output" / "result.json", result)
             return result
@@ -163,7 +162,7 @@ def produce(root: Path, config_path: Path, slot_id: str, category: str = "",
         _write(root / "output" / "result.json", result)
         return result
     manifest = _render_topic(root, config, topic, content_id, slot_id,
-                             ai_rewrite=bool(os.getenv("GEMINI_API_KEY")) and fixture is None,
+                             require_originality=fixture is None,
                              discover_live_media=fixture is None)
     manifest["research_errors"] = research_errors
     _write(root / "output" / "manifest.json", manifest)
@@ -172,7 +171,7 @@ def produce(root: Path, config_path: Path, slot_id: str, category: str = "",
         atomic_write(state_path, state)
         atomic_write(root / "data" / "manifests" / f"{content_id}.json", manifest)
     should_publish = (bool(config["channel"]["auto_publish"]) and _eligible(topic) and not dry_run
-                      and manifest["script"].get("generation_mode") == "gemini_source_rewrite"
+                      and not publication_script_errors(topic, manifest["script"])
                       and manifest["quality"].get("originality_score", 0) >= 80)
     result = {"action": "rendered", "content_id": content_id, "slot_id": slot_id,
               "status": manifest["status"], "should_publish": should_publish,
@@ -192,4 +191,7 @@ def render_pending(root: Path, config_path: Path, content_id: str) -> dict[str, 
     topic = Topic.from_dict(saved["topic"])
     if not _eligible(topic):
         raise ValueError("topic is not eligible for publishing")
-    return _render_topic(root, config, topic, content_id, saved["slot_id"], saved["script"])
+    if publication_script_errors(topic, saved["script"]):
+        raise ValueError("pending script does not meet no-API publication checks")
+    return _render_topic(root, config, topic, content_id, saved["slot_id"], saved["script"],
+                         require_originality=True)
