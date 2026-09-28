@@ -69,9 +69,13 @@ def rank_topics(records: list[SourceRecord], state: dict[str, Any], config: dict
         popularity = max(0, 25 - recent[entity] * 8)
         single_reliable_report = primary.reliability >= 2 and primary.source_kind in {"entertainment_news", "trade_press", "broadcaster", "government"}
         verification = 20 if official or corroborated else 10 if single_reliable_report else 0
-        interest = 15 if primary.category in {"trending_news", "viral_moments"} else 10
+        visual = 10  # Original, rights-safe motion graphics are always available.
+        interest = 5 if primary.category in {"trending_news", "viral_moments"} else 3
         international = 10 if primary.reliability >= 2 else 0
-        score = min(100, freshness + popularity + verification + interest + international)
+        breakdown = {"freshness": freshness, "popularity": popularity, "sources": verification,
+                     "visual_availability": visual, "international_relevance": international,
+                     "story_interest": interest}
+        score = min(100, sum(breakdown.values()))
         key = hashlib.sha256((entity.casefold() + "|" + " ".join(sorted(_tokens(primary.title, entity)))).encode()).hexdigest()[:20]
         if key in covered:
             continue
@@ -79,5 +83,5 @@ def rank_topics(records: list[SourceRecord], state: dict[str, Any], config: dict
         if score < 75:
             reason = reason or f"news score {score} is below the 75-point publishing threshold"
         claims = tuple(dict.fromkeys(item.title for item in items)) + tuple(dict.fromkeys(item.evidence for item in items if item.evidence != item.title))
-        ranked.append(Topic(key, primary.title, primary.category, entity, tuple(items), claims, reason, score))
+        ranked.append(Topic(key, primary.title, primary.category, entity, tuple(items), claims, reason, score, breakdown))
     return sorted(ranked, key=lambda item: (-item.score, item.topic_id))

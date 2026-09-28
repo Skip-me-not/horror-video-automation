@@ -9,4 +9,5 @@ google-api-core==2.30.3
 protobuf==7.36.1
 feedparser==6.0.12
 Pillow==11.3.0
+opencv-python-headless==4.12.0.88
 PyYAML==6.0.3

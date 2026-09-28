@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
@@ -68,8 +69,13 @@ def main() -> int:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
             sources = manifest.get("topic", {}).get("sources", [])
             history.append({"video_id": video_id, "topic": manifest.get("topic", {}).get("title", ""),
+                            "story_id": manifest.get("topic", {}).get("topic_id", ""),
                             "celebrity": manifest.get("topic", {}).get("entity", ""),
                             "source_url": sources[0].get("url", "") if sources else "",
+                            "source_urls": [source.get("url", "") for source in sources],
+                            "reddit_assets": [asset.get("id") for asset in manifest.get("assets", [])
+                                              if asset.get("reddit_post_url")],
+                            "video_path": f"output/videos/{video_id}.mp4",
                             "published_at": sources[0].get("published_at", "") if sources else "",
                             "uploaded_at": item.get("recorded_at", ""),
                             "youtube_video_id": item.get("youtube_video_id", ""),
@@ -97,4 +103,12 @@ if __name__ == "__main__":
         raise SystemExit(main())
     except Exception:
         logging.exception("pipeline failed")
+        failures_path = ROOT / "data" / "failed_jobs.json"
+        try:
+            failures = json.loads(failures_path.read_text(encoding="utf-8")) if failures_path.is_file() else []
+            failures.append({"at": datetime.now(timezone.utc).isoformat(), "command": sys.argv[1:3],
+                             "error": str(sys.exc_info()[1])})
+            atomic_write(failures_path, failures[-200:])
+        except (OSError, ValueError):
+            logging.exception("could not persist failure record")
         raise

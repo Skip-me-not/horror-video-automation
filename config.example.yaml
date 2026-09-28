@@ -8,6 +8,10 @@ channel:
 schedule:
   timezone: Asia/Yangon
   slots: ["07:00", "12:00", "15:00", "19:00"]
+reddit:
+  subreddits: [kpop, KDRAMA, KoreanActors]
+  max_risk_score: 35
+  request_spacing_seconds: 1.0
 content:
   minimum_seconds: 45
   maximum_seconds: 60
@@ -36,4 +40,4 @@ video:
   fps: 30
   voice: en-US-AvaNeural
   voice_rate: "+5%"
-  background_music: ""
+  background_music: assets/music/lululala-theme.wav

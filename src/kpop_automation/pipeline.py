@@ -12,6 +12,8 @@ from . import audio
 from .assets import generate_cards, load_approved_assets
 from .config import load_config
 from .models import ProductionManifest, Topic
+from .media_timeline import build_timeline
+from .music import ensure_original_theme
 from .quality import validate
 from .research import collect
 from .scripts import generate_script, rewrite_with_gemini
@@ -45,7 +47,7 @@ def _eligible(topic: Topic) -> bool:
 
 def _render_topic(root: Path, config: dict[str, Any], topic: Topic, content_id: str,
                   slot_id: str, existing_script: dict[str, Any] | None = None,
-                  ai_rewrite: bool = False) -> dict[str, Any]:
+                  ai_rewrite: bool = False, discover_live_media: bool = True) -> dict[str, Any]:
     output = root / "output"
     output.mkdir(exist_ok=True)
     target_words = int(config["content"].get("target_words", 135))
@@ -72,17 +74,31 @@ def _render_topic(root: Path, config: dict[str, Any], topic: Topic, content_id: 
     if seconds > maximum:
         raise RuntimeError(f"narration remains too long after fitting: {seconds:.2f}s")
     load_approved_assets(root)  # Fail closed if a user-supplied license record is malformed.
-    assets = generate_cards(topic.to_dict(), script, output / "scenes")
-    production = render(assets, narration, timings, script, output, seconds, config["video"])
+    cards = generate_cards(topic.to_dict(), script, output / "scenes")
+    assets, media_errors = build_timeline(root, topic, config, cards, content_id, discover_live_media)
+    video_config = dict(config["video"])
+    music = str(video_config.get("background_music") or "")
+    if music:
+        music_path = (root / music).resolve()
+        if root.resolve() not in music_path.parents:
+            raise ValueError("background music path must stay inside the repository")
+        if music_path.name == "lululala-theme.wav":
+            ensure_original_theme(music_path)
+        elif not music_path.is_file():
+            raise FileNotFoundError("licensed background music is missing")
+        video_config["background_music"] = str(music_path)
+    production = render(assets, narration, timings, script, output, seconds, video_config)
     quality = validate(
         topic.to_dict(), script, assets, Path(production["path"]),
         float(config["content"]["minimum_seconds"]), float(config["content"]["maximum_seconds"]),
+        require_originality=ai_rewrite,
     )
     status = "pending_approval" if quality["valid"] else "quality_failed"
     manifest = ProductionManifest(
         content_id=content_id, slot_id=slot_id, created_at=datetime.now(timezone.utc).isoformat(),
         status=status, topic=topic.to_dict(), script=script, assets=assets, quality=quality,
     ).to_dict()
+    manifest["media_errors"] = media_errors
     _write(output / "manifest.json", manifest)
     _write(output / "quality-report.json", quality)
     _write(output / "job.json", _job(manifest, str(config["channel"]["upload_privacy"])))
@@ -119,11 +135,12 @@ def produce(root: Path, config_path: Path, slot_id: str, category: str = "",
         records, research_errors = collect(config)
         topics = rank_topics(records, state, config, category)
         _write(root / "data" / "news.json", [
-            {"celebrity_name": item.entities[0], "headline": item.title, "source": item.publisher,
+            {"id": item.source_id, "celebrity_name": item.entities[0], "headline": item.title, "source": item.publisher,
              "source_url": item.url, "published_at": item.published_at, "summary": item.evidence,
-             "category": item.category} for item in records
+             "category": item.category, "keywords": list(item.entities) + item.title.split()[:6]} for item in records
         ])
         _write(root / "data" / "unique_news.json", [item.to_dict() for item in topics])
+        _write(root / "data" / "deferred_topics.json", [item.to_dict() for item in topics if 60 <= item.score < 75])
         _write(root / "data" / "verified_topics.json", [item.to_dict() for item in topics if not item.review_reason])
         publishable = [item for item in topics if not item.review_reason]
         ai_rewrite = bool(os.getenv("GEMINI_API_KEY"))
@@ -146,7 +163,8 @@ def produce(root: Path, config_path: Path, slot_id: str, category: str = "",
         _write(root / "output" / "result.json", result)
         return result
     manifest = _render_topic(root, config, topic, content_id, slot_id,
-                             ai_rewrite=bool(os.getenv("GEMINI_API_KEY")) and fixture is None)
+                             ai_rewrite=bool(os.getenv("GEMINI_API_KEY")) and fixture is None,
+                             discover_live_media=fixture is None)
     manifest["research_errors"] = research_errors
     _write(root / "output" / "manifest.json", manifest)
     if not dry_run:
@@ -154,7 +172,8 @@ def produce(root: Path, config_path: Path, slot_id: str, category: str = "",
         atomic_write(state_path, state)
         atomic_write(root / "data" / "manifests" / f"{content_id}.json", manifest)
     should_publish = (bool(config["channel"]["auto_publish"]) and _eligible(topic) and not dry_run
-                      and manifest["script"].get("generation_mode") == "gemini_source_rewrite")
+                      and manifest["script"].get("generation_mode") == "gemini_source_rewrite"
+                      and manifest["quality"].get("originality_score", 0) >= 80)
     result = {"action": "rendered", "content_id": content_id, "slot_id": slot_id,
               "status": manifest["status"], "should_publish": should_publish,
               "privacy": config["channel"]["upload_privacy"], "video": str(root / "output" / "short.mp4")}

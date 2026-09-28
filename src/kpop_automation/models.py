@@ -46,12 +46,17 @@ class Topic:
     claims: tuple[str, ...]
     review_reason: str = ""
     score: int = 0
+    score_breakdown: dict[str, int] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "topic_id": self.topic_id, "title": self.title, "category": self.category,
-            "entity": self.entity, "sources": [item.to_dict() for item in self.sources],
+            "entity": self.entity, "celebrity_name": self.entity, "headline": self.title,
+            "source_urls": [item.url for item in self.sources],
+            "keywords": sorted({word.casefold() for item in self.sources for word in item.title.split() if len(word) > 3})[:12],
+            "sources": [item.to_dict() for item in self.sources],
             "claims": list(self.claims), "review_reason": self.review_reason, "score": self.score,
+            "score_breakdown": self.score_breakdown,
         }
 
     @classmethod
@@ -60,7 +65,7 @@ class Topic:
             topic_id=value["topic_id"], title=value["title"], category=value["category"],
             entity=value["entity"], sources=tuple(SourceRecord.from_dict(x) for x in value["sources"]),
             claims=tuple(value["claims"]), review_reason=value.get("review_reason", ""),
-            score=int(value.get("score", 0)),
+            score=int(value.get("score", 0)), score_breakdown=value.get("score_breakdown", {}),
         )
 
 

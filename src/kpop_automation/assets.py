@@ -40,9 +40,8 @@ def _wrapped(text: str, width: int) -> str:
 
 def generate_cards(topic: dict[str, Any], script: dict[str, Any], destination: Path) -> list[dict[str, Any]]:
     destination.mkdir(parents=True, exist_ok=True)
-    claims = list(topic.get("claims", [])) or [topic["title"]]
-    claim_words = " ".join(claims).split()
-    snippets = [" ".join(claim_words[start:start + 8]) for start in range(0, len(claim_words), 8)]
+    narration_words = str(script["narration"]).split()
+    snippets = [" ".join(narration_words[start:start + 7]) for start in range(0, len(narration_words), 7)]
     texts = [script["hook"], topic["title"], *snippets[:17], "Sources linked below"]
     records: list[dict[str, Any]] = []
     palettes = [(15, 7, 38), (36, 8, 58), (7, 25, 52), (35, 5, 30), (8, 30, 38)]

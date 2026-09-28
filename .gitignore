@@ -19,6 +19,7 @@ stock/*
 temp/*
 !temp/.gitkeep
 assets/voices/
+assets/music/*.wav
 .cache/
 *.log
 client_secret*.json

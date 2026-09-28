@@ -24,16 +24,34 @@ def render(cards: list[dict[str, Any]], narration: Path, timings: list[dict[str,
     scene_duration = final_duration / len(cards)
     command = [ffmpeg, "-hide_banner", "-loglevel", "warning", "-y"]
     for card in cards:
-        command.extend(["-loop", "1", "-framerate", str(fps), "-t", f"{scene_duration:.3f}", "-i", card["path"]])
+        if card.get("type", "image") == "video":
+            command.extend(["-t", f"{scene_duration:.3f}", "-i", card["path"]])
+        else:
+            command.extend(["-loop", "1", "-framerate", str(fps), "-t", f"{scene_duration:.3f}", "-i", card["path"]])
     command.extend(["-i", str(narration)])
+    music = str(config.get("background_music") or "")
+    if music:
+        if not Path(music).is_file():
+            raise FileNotFoundError("licensed music file is missing")
+        command.extend(["-i", music])
     filters: list[str] = []
     for index in range(len(cards)):
-        movement = "0.0007" if index % 2 == 0 else "0.00045"
-        filters.append(
-            f"[{index}:v]scale={width}:{height},zoompan=z='min(zoom+{movement},1.045)':"
-            f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s={width}x{height}:fps={fps},"
-            f"setsar=1[v{index}]"
-        )
+        if cards[index].get("type", "image") == "video":
+            focus_x = max(0.1, min(0.9, float(cards[index].get("focus_x", 0.5))))
+            filters.append(
+                f"[{index}:v]fps={fps},scale={width}:{height}:force_original_aspect_ratio=increase,"
+                f"crop={width}:{height}:x='max(0,min(iw-{width},iw*{focus_x:.3f}-{width / 2:.0f}))',"
+                f"setsar=1,tpad=stop_mode=clone:stop_duration=4,"
+                f"trim=duration={scene_duration:.3f},setpts=PTS-STARTPTS[v{index}]"
+            )
+        else:
+            movement = "0.0007" if index % 2 == 0 else "0.00045"
+            filters.append(
+                f"[{index}:v]scale={width}:{height},zoompan=z='min(zoom+{movement},1.045)':"
+                f"x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s={width}x{height}:fps={fps},"
+                f"setsar=1,tpad=stop_mode=clone:stop_duration=1,"
+                f"trim=duration={scene_duration:.3f},setpts=PTS-STARTPTS[v{index}]"
+            )
     labels = "".join(f"[v{i}]" for i in range(len(cards)))
     ass_path = str(captions.resolve()).replace("\\", "/").replace(":", r"\:").replace("'", r"\'")
     filters.append(
@@ -41,10 +59,20 @@ def render(cards: list[dict[str, Any]], narration: Path, timings: list[dict[str,
         f"trim=duration={final_duration:.3f},setpts=PTS-STARTPTS,subtitles='{ass_path}',format=yuv420p[vout]"
     )
     audio_index = len(cards)
-    filters.append(
-        f"[{audio_index}:a]highpass=f=70,lowpass=f=12000,loudnorm=I=-16:TP=-2:LRA=7,"
-        f"apad,atrim=duration={final_duration:.3f}[aout]"
-    )
+    if music:
+        filters.extend([
+            f"[{audio_index}:a]highpass=f=70,lowpass=f=12000,loudnorm=I=-16:TP=-2:LRA=7,"
+            f"apad,atrim=duration={final_duration:.3f},asplit=2[voice][side]",
+            f"[{audio_index + 1}:a]volume=-28dB,atrim=duration={final_duration:.3f},"
+            f"afade=t=out:st={max(0, final_duration - 1):.3f}:d=1[music]",
+            "[music][side]sidechaincompress=threshold=0.02:ratio=2:attack=20:release=300[ducked]",
+            "[voice][ducked]amix=inputs=2:duration=first:normalize=0[aout]",
+        ])
+    else:
+        filters.append(
+            f"[{audio_index}:a]highpass=f=70,lowpass=f=12000,loudnorm=I=-16:TP=-2:LRA=7,"
+            f"apad,atrim=duration={final_duration:.3f}[aout]"
+        )
     destination = output_dir / "short.mp4"
     command.extend([
         "-filter_complex", ";".join(filters), "-map", "[vout]", "-map", "[aout]",
