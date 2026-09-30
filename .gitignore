@@ -19,7 +19,16 @@ stock/*
 temp/*
 !temp/.gitkeep
 assets/voices/
+assets/music/*.wav
 .cache/
 *.log
 client_secret*.json
 token*.json
+cache/media/*
+!cache/media/.gitkeep
+jobs/pending/*
+!jobs/pending/.gitkeep
+jobs/failed/*
+!jobs/failed/.gitkeep
+jobs/private_completed/*
+!jobs/private_completed/.gitkeep

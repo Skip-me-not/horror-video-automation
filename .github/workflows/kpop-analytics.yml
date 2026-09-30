@@ -1,0 +1,31 @@
+name: Lululala Daily Analytics
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 16 * * *" # 22:45 Asia/Yangon
+
+permissions: {contents: write}
+concurrency: {group: lululala-kpop-state, cancel-in-progress: false}
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v7
+        with: {python-version: "3.12", cache: pip}
+      - run: python -m pip install -r requirements.txt
+      - name: Collect only available official API metrics
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: python -m src.kpop_automation.cli analytics --output reports/daily
+      - uses: actions/upload-artifact@v7
+        with:
+          name: daily-analytics-${{ github.run_id }}
+          path: reports/daily
+          retention-days: 30

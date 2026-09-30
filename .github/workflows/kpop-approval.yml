@@ -1,0 +1,65 @@
+name: Lululala Review and Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      content_id: {description: Pending content ID, required: true, type: string}
+      decision: {description: Decision, required: true, type: choice, options: [approve, reject]}
+      privacy: {description: YouTube privacy after approval, required: true, type: choice, options: [private, unlisted, public], default: private}
+      rejection_reason: {description: Required when rejecting, required: false, type: string}
+
+permissions: {contents: write}
+concurrency: {group: lululala-kpop-state, cancel-in-progress: false}
+
+jobs:
+  review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v7
+        with: {python-version: "3.12", cache: pip}
+      - run: |
+          command -v ffmpeg >/dev/null || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+          python -m pip install -r requirements.txt
+      - name: Reject pending item
+        if: inputs.decision == 'reject'
+        env:
+          CONTENT_ID: ${{ inputs.content_id }}
+          REJECTION_REASON: ${{ inputs.rejection_reason }}
+        run: |
+          test -n "$REJECTION_REASON"
+          python -m src.kpop_automation.cli reject "$CONTENT_ID" --reason "$REJECTION_REASON"
+      - name: Re-render approved item
+        if: inputs.decision == 'approve'
+        run: python -m src.kpop_automation.cli render-pending "${{ inputs.content_id }}"
+      - name: Upload privately and obtain official video ID
+        if: inputs.decision == 'approve'
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: python scripts/upload_youtube.py --job output/job.json --video output/short.mp4 --privacy private --output output/upload-result.json
+      - name: Persist confirmed ID before visibility change
+        if: inputs.decision == 'approve'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python -m src.kpop_automation.cli finalize-upload "${{ inputs.content_id }}"
+      - name: Set requested visibility
+        if: inputs.decision == 'approve'
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: python scripts/set_youtube_privacy.py --upload-result output/upload-result.json --privacy "${{ inputs.privacy }}"
+      - name: Persist review state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kpop_state.json data/manifests
+          git diff --cached --quiet && exit 0
+          git commit -m "state: review K-pop content [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main

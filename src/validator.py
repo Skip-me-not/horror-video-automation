@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .utils import ffprobe as inspect_media
+
 
 @dataclass(frozen=True)
 class ValidationResult:
@@ -23,16 +25,9 @@ def validate_video(path: Path, width: int = 1080, height: int = 1920,
     errors: list[str] = []
     if not path.is_file() or path.stat().st_size < 100_000:
         return ValidationResult(False, ("video is missing or below 100 KB",), {})
-    fallback = Path(__file__).resolve().parents[1] / ".test-tools" / "ffprobe.exe"
-    probe_binary = ffprobe or os.getenv("FFPROBE_BIN") or shutil.which("ffprobe")
-    if not probe_binary and fallback.is_file():
-        probe_binary = str(fallback)
-    command = [probe_binary or "ffprobe", "-v", "error", "-show_streams",
-               "-show_format", "-of", "json", str(path)]
     try:
-        result = subprocess.run(command, check=True, capture_output=True, text=True)
-        probe = json.loads(result.stdout)
-    except (OSError, subprocess.CalledProcessError, json.JSONDecodeError) as exc:
+        probe = inspect_media(path, ffprobe or os.getenv("FFPROBE_BIN"))
+    except (OSError, subprocess.SubprocessError, ValueError, RuntimeError, json.JSONDecodeError) as exc:
         return ValidationResult(False, (f"ffprobe failed: {exc}",), {})
     streams = probe.get("streams", [])
     video = next((stream for stream in streams if stream.get("codec_type") == "video"), {})
@@ -69,7 +64,7 @@ def validate_story_short(path: Path, minimum: float = 60.0, maximum: float = 180
         video_duration = float(video.get("duration") or result.probe.get("format", {}).get("duration") or 0)
         audio_duration = float(audio.get("duration") or result.probe.get("format", {}).get("duration") or 0)
         if abs(video_duration - audio_duration) > 0.35:
-            errors.append("audio/video durations differ by more than 0.35 seconds")
+            errors.append(f"audio/video durations differ by more than 0.35 seconds (video={video_duration:.2f}s, audio={audio_duration:.2f}s)")
     except (TypeError, ValueError):
         errors.append("audio/video duration could not be verified")
     if path.is_file() and path.stat().st_size < 500_000:

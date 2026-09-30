@@ -1,0 +1,30 @@
+{
+  "topic_id": "fixture-documented-release-001",
+  "title": "TEST ARTIST announces a documented release date",
+  "category": "trending_news",
+  "entity": "TEST ARTIST",
+  "sources": [
+    {
+      "source_id": "fixture-official-001",
+      "title": "TEST ARTIST announces a documented release date",
+      "url": "https://example.invalid/official/test-artist-release",
+      "publisher": "Fixture Official Agency",
+      "published_at": "2026-09-23T00:00:00+00:00",
+      "accessed_at": "2026-09-23T00:00:00+00:00",
+      "evidence": "This is a non-publishable automated-test fixture confirming a fictional release on October 1.",
+      "entities": ["TEST ARTIST"],
+      "category": "trending_news",
+      "reliability": 3,
+      "source_kind": "official",
+      "rights": "facts_only",
+      "fingerprint": "fixture001"
+    }
+  ],
+  "claims": [
+    "This fictional automated-test artist announced a fictional release on October 1 through a pretend official agency notice prepared only for software validation. The date is test data, not a real entertainment announcement.",
+    "The imaginary project includes a four-track digital album, a fictional showcase at a made-up venue, and a promotional poster created entirely for this rendering fixture. None of these events exists outside the test.",
+    "The pretend agency says the fictional artist will publish a teaser before the imaginary release and that the showcase will be streamed in this synthetic scenario. These details test caption timing and visual changes.",
+    "This story must never be uploaded because every person, event, location, and announcement in it is fabricated for an isolated dry run. Its purpose is to verify video generation without using copyrighted celebrity assets."
+  ],
+  "review_reason": ""
+}

@@ -11,7 +11,11 @@ def main() -> int:
     parser.add_argument("client_secret", type=Path, help="OAuth desktop client JSON downloaded from Google Cloud")
     args = parser.parse_args()
     client = json.loads(args.client_secret.read_text(encoding="utf-8"))
-    flow = InstalledAppFlow.from_client_config(client, ["https://www.googleapis.com/auth/youtube.upload"])
+    flow = InstalledAppFlow.from_client_config(client, [
+        "https://www.googleapis.com/auth/youtube.upload",
+        "https://www.googleapis.com/auth/youtube.readonly",
+        "https://www.googleapis.com/auth/yt-analytics.readonly",
+    ])
     credentials = flow.run_local_server(port=0, access_type="offline", prompt="consent")
     print("\nAdd these values as GitHub Actions secrets:")
     print(f"YOUTUBE_CLIENT_ID={credentials.client_id}")

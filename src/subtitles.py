@@ -65,6 +65,8 @@ Style: Hook,DejaVu Sans,78,&H00D86BFF,&H00D86BFF,&H00101010,&HA0000000,-1,0,0,0,
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 """
+        if any("\u1000" <= char <= "\u109f" for item in timings for char in str(item.get("text", ""))):
+            header = header.replace("DejaVu Sans", "Noto Sans Myanmar")
         lines = [header]
         if hook_text and hook_duration > 0:
             hook_words = hook_text.upper().split()
