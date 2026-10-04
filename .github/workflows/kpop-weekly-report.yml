@@ -1,0 +1,28 @@
+name: Lululala Weekly Performance Summary
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "45 16 * * 0" # Sunday 23:15 Asia/Yangon
+
+permissions: {contents: read}
+
+jobs:
+  report:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with: {python-version: "3.12", cache: pip}
+      - run: python -m pip install -r requirements.txt
+      - name: Build comparable-age cautious summary
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: python -m src.kpop_automation.cli analytics --output reports/weekly
+      - uses: actions/upload-artifact@v7
+        with:
+          name: weekly-performance-${{ github.run_id }}
+          path: reports/weekly
+          retention-days: 90

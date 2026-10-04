@@ -1,0 +1,20 @@
+name: Lululala Failed Job Recovery
+
+on:
+  workflow_dispatch:
+    inputs:
+      slot: {description: Original failed slot ID, required: true, type: string}
+      category: {description: Optional category override, required: false, type: string}
+
+permissions: {actions: write, contents: read}
+
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Dispatch idempotent production recovery
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SLOT: ${{ inputs.slot }}
+          CATEGORY: ${{ inputs.category || 'auto' }}
+        run: gh workflow run kpop-production.yml --repo "$GITHUB_REPOSITORY" -f slot="$SLOT" -f category="$CATEGORY" -f dry_run=false
