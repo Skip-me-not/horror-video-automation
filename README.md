@@ -8,11 +8,11 @@ This repository automatically turns Reddit-hosted celebrity videos into vertical
 2. Accepts only posts with a direct `v.redd.it` video and skips source IDs already used.
 3. Chooses K-pop content about 75% of the time and global celebrity content about 25% of the time.
 4. Downloads the original Reddit-hosted clip and rejects broken, very short, or nearly black video.
-5. Builds an English recap from the post title, body, and up to two Reddit comments. Reddit reactions are attributed and rumors are never presented as verified facts.
-6. Opens with the most interesting source-video moment, then uses fixed-frame reframing, clean narration, white captions, hot-pink emphasis, and a centered `Lululala` watermark.
-7. Validates the 55–60 second vertical MP4, uploads it publicly to YouTube, records the source ID, and removes generated media.
+5. Builds a short, source-specific English recap from the post title, meaningful body text, and up to two attributed Reddit comments. Generic RSS boilerplate and posts without enough concrete detail are skipped; rumors are never presented as verified facts.
+6. Opens with a source-derived hook, then shows the clip in order before one replay rather than random repeated offsets or horizontal flips. Narration, white captions, hot-pink emphasis, and a centered `Lululala` watermark remain.
+7. Ends when the narration ends (roughly 10–60 seconds), validates the vertical MP4, uploads it publicly to YouTube, records the source ID, and removes generated media.
 
-The source pool is cached in `data/celebrity_source_pool.json`, so temporary Reddit rate limits do not automatically stop a run. The workflow retries a failed build twice before failing.
+The source pool is cached in `data/celebrity_source_pool.json`, so temporary Reddit rate limits do not automatically stop a run. The workflow retries a failed build twice before failing. Four scheduled starts are not a promise of four uploads: if none of the candidates provides enough reliable detail, the run fails instead of publishing a padded generic Short.
 
 ## Schedule
 

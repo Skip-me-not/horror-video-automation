@@ -16,7 +16,11 @@ from .utils import write_json
 from .validator import validate_story_short
 
 
-MAX_NARRATION_SECONDS = 55.2
+MAX_NARRATION_SECONDS = 49.0
+
+
+def planned_duration(narration_seconds: float, hook_duration: float = 1.5) -> float:
+    return round(max(10.0, narration_seconds + hook_duration + 0.35), 3)
 
 
 def _next_word_target(current_target: int, actual_words: int,
@@ -44,6 +48,7 @@ def run() -> dict[str, object]:
     history = HistoryStore(root / "data" / "history.json", limit=300)
     candidates = discover_video_posts(root, history.used_source_ids(), seed)
     config = json.loads((root / "config" / "reddit_sources.json").read_text(encoding="utf-8"))
+    word_target = int(config.get("target_narration_words", 88))
     maximum_video_attempts = min(len(candidates), int(config.get("maximum_video_attempts", 8)))
     post = None
     source = None
@@ -52,6 +57,8 @@ def run() -> dict[str, object]:
     for index, candidate in enumerate(candidates[:maximum_video_attempts], start=1):
         note(f"Checking Reddit video {index}/{maximum_video_attempts} from r/{candidate.subreddit}: {candidate.title}")
         try:
+            candidate = enrich_with_comments(candidate)
+            build_narration(candidate, word_target)
             media = download_reddit_video(candidate.post_url, run_dir / f"source-{index}", 1080,
                                           direct_video_url=candidate.video_url)
             attempted_source = Path(media["video"])
@@ -68,13 +75,11 @@ def run() -> dict[str, object]:
             note(f"Rejected source before narration: {exc}")
     if post is None or source is None:
         raise RuntimeError("no visually usable Reddit video passed quality checks: " + " | ".join(rejections))
-    post = enrich_with_comments(post)
     note(f"Selected Reddit video r/{post.subreddit}: {post.title}")
 
     narration = output / "narration.mp3"
     timing_path = output / "word-timings.json"
     narrator = EdgeTTSNarrator("en-US-AvaMultilingualNeural", "+5%")
-    word_target = int(config.get("target_narration_words", 120))
     script: dict[str, object] = {}
     timings: list[dict[str, object]] = []
     narration_seconds = 0.0
@@ -97,7 +102,7 @@ def run() -> dict[str, object]:
             f"{int(script['word_count'])} to at most {next_target} words"
         )
         word_target = next_target
-    hook_duration = 2.8
+    hook_duration = 1.5
     if narration_seconds + hook_duration > 58.6:
         raise RuntimeError(f"narration is too long for a one-minute Short: {narration_seconds:.2f}s")
     shifted = [{**item, "offset": round(float(item["offset"]) + hook_duration, 3)} for item in timings]
@@ -105,11 +110,11 @@ def run() -> dict[str, object]:
         shifted, output / "captions.ass", list(script["important_terms"]),
         hook_text=str(script["hook"]), hook_duration=hook_duration,
     )
-    final_duration = round(max(55.0, narration_seconds + hook_duration + 0.65), 3)
+    final_duration = planned_duration(narration_seconds, hook_duration)
     hook_start = find_hook_start(source, source_duration, hook_duration)
     edit = compose_reddit_short(source, narration, captions, output / "short.mp4",
                                 final_duration, hook_duration, hook_start)
-    validation = validate_story_short(output / "short.mp4", 54.0, 60.0)
+    validation = validate_story_short(output / "short.mp4", 9.0, 60.0)
     write_json(output / "validation.json", {"valid": validation.valid,
                                                "errors": list(validation.errors), "probe": validation.probe})
     if not validation.valid:
@@ -146,7 +151,7 @@ def run() -> dict[str, object]:
                                                "source_bytes": source.stat().st_size,
                                                "final_bytes": (output / "short.mp4").stat().st_size})
     (output / "optimization_report.md").write_text(
-        "# Lululala celebrity edit\n\nOriginal Reddit-hosted video, cold-open hook, attributed fan-reaction narration, fixed-frame cuts, and pink emphasis captions.\n",
+        "# Lululala celebrity edit\n\nSource-specific Reddit hook, attributed post/reaction narration, script-led length, chronological source footage with one replay, and pink emphasis captions.\n",
         encoding="utf-8",
     )
     report = {"source": source_info, "selected_story": selected, "hook": hook,

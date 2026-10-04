@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import hashlib
-import math
 import re
 from pathlib import Path
 from typing import Any
@@ -56,12 +54,6 @@ def find_hook_start(source: Path, duration: float, hook_duration: float,
     return round(max(0.0, min(duration - hook_duration, duration * 0.36)), 3)
 
 
-def _offset(seed: str, index: int, duration: float) -> float:
-    digest = hashlib.sha256(f"{seed}:{index}".encode()).digest()
-    fraction = int.from_bytes(digest[:8], "big") / ((1 << 64) - 1)
-    return fraction * max(0.1, duration)
-
-
 def compose_reddit_short(source: Path, narration: Path, captions: Path, destination: Path,
                          final_duration: float, hook_duration: float, hook_start: float,
                          width: int = 1080, height: int = 1920, fps: int = 30,
@@ -69,26 +61,32 @@ def compose_reddit_short(source: Path, narration: Path, captions: Path, destinat
                          watermark_text: str = "Lululala") -> dict[str, Any]:
     source_duration, has_source_audio = media_details(source)
     luma = average_luma(source, ffmpeg)
-    segment_length = 5.2
     remaining = max(0.1, final_duration - hook_duration)
-    regular_count = max(1, math.ceil(remaining / segment_length))
     durations = [hook_duration]
-    for index in range(regular_count):
-        durations.append(min(segment_length, remaining - index * segment_length))
+    while remaining > 0.001:
+        segment_length = (2.8, 3.4, 3.0)[(len(durations) - 1) % 3]
+        length = min(segment_length, remaining)
+        durations.append(length)
+        remaining -= length
     command = [ffmpeg, "-hide_banner", "-loglevel", "warning", "-y",
                "-stream_loop", "-1", "-i", str(source), "-i", str(narration),
                "-f", "lavfi", "-i", "anoisesrc=color=pink:amplitude=0.04:sample_rate=48000"]
     split_labels = "".join(f"[raw{index}]" for index in range(len(durations)))
     filters = [f"[0:v]split={len(durations)}{split_labels}"]
-    offsets = [hook_start] + [_offset(source.stem, index, source_duration) for index in range(regular_count)]
+    # Show the source in order first, then replay its notable opening moment near
+    # the end. Random offsets made the same clip feel discontinuous and repetitive.
+    offsets = [hook_start]
+    source_position = 0.0
+    for index, length in enumerate(durations[1:], start=1):
+        offsets.append(hook_start if index == len(durations) - 1 and index > 2 else source_position)
+        source_position = (source_position + length) % source_duration
     for index, (start, length) in enumerate(zip(offsets, durations)):
-        zoom = (1.12, 1.05, 1.09, 1.03)[index % 4]
+        zoom = (1.04, 1.02, 1.06, 1.03)[index % 4]
         zoom_w, zoom_h = int(width * zoom) // 2 * 2, int(height * zoom) // 2 * 2
         x = 0 if index % 3 == 0 else (zoom_w - width if index % 3 == 1 else (zoom_w - width) // 2)
-        flip = "hflip," if index % 2 == 0 else ""
         filters.append(
             f"[raw{index}]trim=start={start:.3f}:duration={length:.3f},setpts=PTS-STARTPTS,"
-            f"{flip}scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},"
+            f"scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},"
             f"scale={zoom_w}:{zoom_h},crop={width}:{height}:{x}:0,fps={fps},setsar=1,"
             f"{_grade(luma)},"
             f"format=yuv420p[seg{index}]"
@@ -120,7 +118,7 @@ def compose_reddit_short(source: Path, narration: Path, captions: Path, destinat
     if has_source_audio:
         filters.append(
             f"[0:a]atrim=start={hook_start:.3f}:duration={hook_duration:.3f},asetpts=PTS-STARTPTS,"
-            "volume=0.72,afade=t=out:st=2.25:d=0.5,apad,"
+            f"volume=0.72,afade=t=out:st={max(0, hook_duration - 0.4):.3f}:d=0.4,apad,"
             f"atrim=duration={final_duration:.3f}[hookaudio]"
         )
         mix.append("[hookaudio]")

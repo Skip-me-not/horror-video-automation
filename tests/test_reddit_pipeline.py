@@ -6,7 +6,7 @@ from urllib.error import HTTPError
 
 import src.reddit_compositor as compositor
 import src.reddit_source as reddit_source
-from src.reddit_pipeline import _next_word_target
+from src.reddit_pipeline import _next_word_target, planned_duration
 from src.reddit_source import (RedditVideoPost, build_narration, featured_subject,
                                is_celebrity_post, parse_comment_feed, parse_video_feed)
 
@@ -28,13 +28,28 @@ def test_comment_context_and_narration_are_attributed():
     post = RedditVideoPost("post1", "BlackPink", "Jennie viral stage moment", "Fans replayed her expression.",
                            "/u/tester", "https://reddit.test/post1", "https://v.redd.it/abc", "", comments)
     result = build_narration(post)
-    assert "r BlackPink" in result["narration"]
-    assert "tester" in result["narration"]
-    assert "Reddit comments" in result["narration"]
+    assert "Jennie viral stage moment" in result["narration"]
+    assert "Fans replayed her expression" in result["narration"]
+    assert "Her timing and expression" in result["narration"]
     assert result["subject"] == "Jennie"
     assert result["is_kpop"] is True
-    assert result["hook"].startswith("JENNIE MOMENT")
+    assert result["hook"].startswith("FANS REPLAYED HER EXPRESSION")
     assert len(result["hook"]) <= 58
+    assert "moment people keep replaying" not in result["narration"]
+
+
+def test_sparse_post_is_rejected_instead_of_padded_with_generic_narration():
+    post = RedditVideoPost("thin", "BlackPink", "Jennie viral stage moment",
+                           "submitted by /u/tester [link] [comments]",
+                           "/u/tester", "https://reddit.test/thin", "https://v.redd.it/thin", "")
+    import pytest
+    with pytest.raises(ValueError, match="lacks enough specific"):
+        build_narration(post)
+
+
+def test_duration_follows_voice_instead_of_forcing_a_minute():
+    assert planned_duration(27.0) == 28.85
+    assert planned_duration(8.0) == 10.0
 
 
 def test_subtitle_hook_is_pink_and_wraps(tmp_path):
@@ -73,6 +88,8 @@ def test_compositor_normalizes_segment_sample_aspect_ratio(tmp_path, monkeypatch
     assert "x=(w-text_w)/2:y=h-text_h-180" in graph
     assert (tmp_path / "watermark.txt").read_text(encoding="utf-8") == "Lululala"
     assert report["watermark_text"] == "Lululala"
+    assert "hflip" not in graph
+    assert all(length <= 3.4 for length in report["segment_durations"][1:])
 
 
 def test_reddit_fetch_retries_rate_limit(monkeypatch):
@@ -198,12 +215,23 @@ def test_discovery_uses_canonical_top_rss_url(tmp_path, monkeypatch):
 
 
 def test_global_celebrity_subject_is_detected_without_kpop_label():
-    post = RedditVideoPost("p2", "popculturechat", "Sadie Sink at the premiere", "A fan-recorded interview.",
+    post = RedditVideoPost("p2", "popculturechat", "Sadie Sink at the premiere", "A fan-recorded interview captured her arriving with the cast.",
                            "/u/fan", "https://reddit.test/p2", "https://v.redd.it/p2", "")
     assert featured_subject(post) == ("Sadie Sink", False)
     result = build_narration(post)
-    assert result["hook"].startswith("WHY EVERYONE IS TALKING ABOUT SADIE SINK")
-    assert "rumors" in result["narration"]
+    assert result["hook"].startswith("SADIE SINK AT THE PREMIERE")
+    assert "fan-recorded interview" in result["narration"]
+    assert "rumors" not in result["narration"]
+
+
+def test_movie_bts_means_behind_the_scenes_not_kpop_group():
+    post = RedditVideoPost("p3", "popculturechat", "Movie cut vs BTS promo for Sadie Sink",
+                           "In the movie version she plays it cold and detached. The promo shows a softer take.",
+                           "/u/fan", "https://reddit.test/p3", "https://v.redd.it/p3", "")
+    assert featured_subject(post) == ("Sadie Sink", False)
+    result = build_narration(post)
+    assert "movie version" in result["narration"]
+    assert "This is the" not in result["narration"]
 
 
 def test_generic_movie_video_is_not_a_celebrity_candidate():

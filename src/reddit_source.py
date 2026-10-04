@@ -180,6 +180,10 @@ def _excerpt(value: str, maximum_words: int) -> str:
 def recognized_subject(post: RedditVideoPost) -> tuple[str, bool]:
     searchable = f"{post.title} {post.body}"
     kpop = _name_match(searchable, KPOP_NAMES)
+    if kpop == "BTS" and re.search(r"\b(?:movie|film|featurette|behind.the.scenes|bts promo|bts clip)\b",
+                                    searchable, re.I) and not re.search(r"\b(?:bangtan|jungkook|jimin|taehyung)\b",
+                                                                          searchable, re.I):
+        kpop = ""
     if (kpop in AMBIGUOUS_KPOP_NAMES and post.subreddit.casefold() not in KPOP_SUBREDDITS
             and not any(term in searchable.casefold() for term in KPOP_CONTEXT_TERMS)):
         kpop = ""
@@ -323,38 +327,59 @@ def select_video_post(root: Path, used_ids: set[str], seed: str = "") -> RedditV
 
 
 def build_narration(post: RedditVideoPost, target_words: int = 135) -> dict[str, Any]:
-    title, body = _excerpt(post.title, 24), _excerpt(post.body, 48)
+    recognized, _ = recognized_subject(post)
+    if not recognized and post.subreddit.casefold() not in KPOP_SUBREDDITS:
+        raise ValueError("celebrity subject is not identifiable from the post")
+    title = _excerpt(post.title, 16)
+    # RSS wrappers frequently put only "submitted by /u/... [link] [comments]"
+    # in the body. That is feed chrome, not story context worth narrating.
+    body_source = re.sub(r"(?i)submitted by\s*/?u/[\w-]+", "", post.body)
+    body_source = re.sub(r"(?i)\[(?:link|comments)\]", "", body_source).strip()
+    body_source = body_source.replace("\u200b", " ").replace("\ufffd", "")
+    body_sentences = [sentence.strip() for sentence in re.split(r"(?<=[.!?])\s+", body_source)
+                      if len(sentence.split()) >= 4]
+    body_sentences = [sentence for sentence in body_sentences
+                      if not sentence.casefold().startswith(("most of us", "i put together", "i think "))]
+    body = _excerpt(body_sentences[0], 26) if body_sentences else ""
     subject, is_kpop = featured_subject(post)
-    author = post.author.removeprefix("/u/")
-    parts = [f"A video featuring {subject} is getting attention on Reddit.",
-             f"It was shared in r {post.subreddit} by {author}, with the title: {title}."]
+    details = [body, *post.comments[:2]]
+    generic = {"viral", "stage", "moment", "fans", "fan", "video", "clip", "idol", "celebrity",
+               "performance", "reaction", "reactions", "replay", "replayed", "trending",
+               "the", "and", "this", "that", "with", "from", "what", "when", "where", "very",
+               "have", "them", "more", "here", "just", "much", "said", "added", "looks",
+               "like", "make", "makes", "ever", "your", "about", "even", "really"}
+    specific_words = {word.casefold() for word in re.findall(r"[A-Za-z]{4,}", " ".join([title, *details]))
+                      if word.casefold() not in generic and word.casefold() not in
+                      {part.casefold() for part in re.findall(r"[A-Za-z]+", subject)}}
+    if len(specific_words) < 3 or not any(len(item.split()) >= 4 for item in details if item):
+        raise ValueError("Reddit post lacks enough specific title/context/reaction for a source-led Short")
+
+    # Every spoken detail is explicitly attributed. Do not fill a time quota with
+    # generic claims, invented visual observations, or a cut-off sentence.
+    parts = [f"The Reddit post describes this {subject} clip as: {title}."]
     if body and body.casefold() not in title.casefold():
-        parts.append(f"The person who posted it added this context: {body}.")
-    parts.append("The opening clip is the moment people keep replaying, so watch the expression and timing closely.")
+        parts.append(f"The poster adds: {body}.")
     if post.comments:
-        parts.extend(["The Reddit comments show why the clip caught on.",
-                      f"One fan's reaction was: {_excerpt(post.comments[0], 23)}."])
-        if len(post.comments) > 1:
-            parts.append(f"Another viewer added: {_excerpt(post.comments[1], 23)}.")
-    else:
-        parts.extend([
-            "Viewers focused on the performance, expression, and tiny details that are easy to miss at full speed.",
-            "The replay makes the timing clearer and shows why a short, unscripted-looking moment can travel quickly between fan communities.",
-            "Rather than changing the clip's meaning, this edit keeps the original sequence visible while explaining the context Reddit supplied.",
-        ])
-    parts.append("This recap describes the Reddit post and fan reactions; it does not independently confirm rumors or private claims.")
-    parts.extend([
-        "Its replay value comes from the timing, reaction, and small details already visible in the original video.",
-        "That is why the moment can be interesting without treating the Reddit caption as confirmed reporting.",
-    ])
-    narration = " ".join(" ".join(parts).split()[:target_words]).rstrip(" ,;:.!?") + "."
-    hook = f"{subject.upper()} MOMENT FANS KEEP REPLAYING" if is_kpop else f"WHY EVERYONE IS TALKING ABOUT {subject.upper()}"
-    if len(hook) > 58:
-        hook = f"THIS {subject.upper()} MOMENT WENT VIRAL"
-    if len(hook) > 58:
-        hook = "THE CELEBRITY MOMENT EVERYONE REPLAYED"
-    subject_terms = [word for word in re.findall(r"[A-Za-z0-9]+", subject) if len(word) > 2]
-    important = subject_terms + ["FANS", "MOMENT", "REPLAYING", "REDDIT", "VIRAL", "REACTION"]
+        parts.append(f"One viewer noticed: {_excerpt(post.comments[0], 18)}.")
+    if len(post.comments) > 1:
+        parts.append(f"Another viewer said: {_excerpt(post.comments[1], 16)}.")
+    narration_parts = []
+    for part in parts:
+        if sum(len(item.split()) for item in narration_parts) + len(part.split()) > target_words:
+            break
+        narration_parts.append(part)
+    narration = " ".join(narration_parts)
+    if len(narration_parts) < 2:
+        raise ValueError("source details cannot fit the narration word budget")
+
+    hook_source = title if len(title.split()) >= 5 else next((item for item in details if item), title)
+    hook_words = hook_source.upper().split()[:10]
+    while len(" ".join(hook_words)) > 55 and len(hook_words) > 3:
+        hook_words.pop()
+    hook = " ".join(hook_words).rstrip(" ,;:.!?")
+    if len(hook_words) < len(hook_source.split()):
+        hook += "..."
+    important = [word for word in re.findall(r"[A-Za-z0-9]+", f"{subject} {hook}") if len(word) > 2]
     return {"narration": narration, "hook": hook, "important_terms": list(dict.fromkeys(important))[:16],
             "word_count": len(narration.split()), "subject": subject, "is_kpop": is_kpop,
-            "title": f"{subject}: The Moment Fans Keep Replaying"}
+            "title": post.title.strip()}
