@@ -45,6 +45,21 @@ def test_sparse_post_is_rejected_instead_of_padded_with_generic_narration():
     import pytest
     with pytest.raises(ValueError, match="lacks enough specific"):
         build_narration(post)
+    with pytest.raises(ValueError, match="lacks enough specific"):
+        build_narration(post, allow_sparse=True)
+
+
+def test_specific_title_can_fill_a_missing_daily_slot_without_generic_filler():
+    post = RedditVideoPost("specific", "popculturechat",
+                           "Sadie Sink compares two backstage interview takes", "[link] [comments]",
+                           "/u/fan", "https://reddit.test/specific", "https://v.redd.it/specific", "")
+    import pytest
+    with pytest.raises(ValueError, match="lacks enough specific"):
+        build_narration(post)
+    result = build_narration(post, allow_sparse=True)
+    assert result["word_count"] < 25
+    assert "backstage interview takes" in result["narration"]
+    assert "keep replaying" not in result["narration"]
 
 
 def test_duration_follows_voice_instead_of_forcing_a_minute():

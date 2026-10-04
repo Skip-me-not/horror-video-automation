@@ -326,7 +326,8 @@ def select_video_post(root: Path, used_ids: set[str], seed: str = "") -> RedditV
     return enrich_with_comments(discover_video_posts(root, used_ids, seed)[0])
 
 
-def build_narration(post: RedditVideoPost, target_words: int = 135) -> dict[str, Any]:
+def build_narration(post: RedditVideoPost, target_words: int = 135,
+                    *, allow_sparse: bool = False) -> dict[str, Any]:
     recognized, _ = recognized_subject(post)
     if not recognized and post.subreddit.casefold() not in KPOP_SUBREDDITS:
         raise ValueError("celebrity subject is not identifiable from the post")
@@ -351,7 +352,8 @@ def build_narration(post: RedditVideoPost, target_words: int = 135) -> dict[str,
     specific_words = {word.casefold() for word in re.findall(r"[A-Za-z]{4,}", " ".join([title, *details]))
                       if word.casefold() not in generic and word.casefold() not in
                       {part.casefold() for part in re.findall(r"[A-Za-z]+", subject)}}
-    if len(specific_words) < 3 or not any(len(item.split()) >= 4 for item in details if item):
+    if len(specific_words) < 3 or (not allow_sparse and
+                                   not any(len(item.split()) >= 4 for item in details if item)):
         raise ValueError("Reddit post lacks enough specific title/context/reaction for a source-led Short")
 
     # Every spoken detail is explicitly attributed. Do not fill a time quota with
@@ -369,7 +371,7 @@ def build_narration(post: RedditVideoPost, target_words: int = 135) -> dict[str,
             break
         narration_parts.append(part)
     narration = " ".join(narration_parts)
-    if len(narration_parts) < 2:
+    if len(narration_parts) < (1 if allow_sparse else 2):
         raise ValueError("source details cannot fit the narration word budget")
 
     hook_source = title if len(title.split()) >= 5 else next((item for item in details if item), title)

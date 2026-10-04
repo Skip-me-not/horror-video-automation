@@ -54,25 +54,35 @@ def run() -> dict[str, object]:
     source = None
     source_duration = 0.0
     rejections: list[str] = []
-    for index, candidate in enumerate(candidates[:maximum_video_attempts], start=1):
-        note(f"Checking Reddit video {index}/{maximum_video_attempts} from r/{candidate.subreddit}: {candidate.title}")
-        try:
-            candidate = enrich_with_comments(candidate)
-            build_narration(candidate, word_target)
-            media = download_reddit_video(candidate.post_url, run_dir / f"source-{index}", 1080,
-                                          direct_video_url=candidate.video_url)
-            attempted_source = Path(media["video"])
-            attempted_duration, _ = media_details(attempted_source)
-            luma = average_luma(attempted_source)
-            if attempted_duration < 3.2:
-                raise RuntimeError("video shorter than 3.2 seconds")
-            if luma < 18.0:
-                raise RuntimeError(f"video is visually too dark (average luma {luma:.1f})")
-            post, source, source_duration = candidate, attempted_source, attempted_duration
+    enriched: dict[str, object] = {}
+    selected_sparse = False
+    for sparse_fallback in (False, True):
+        for index, candidate in enumerate(candidates[:maximum_video_attempts], start=1):
+            note(f"Checking Reddit video {index}/{maximum_video_attempts} "
+                 f"({'concise fallback' if sparse_fallback else 'detailed'}) "
+                 f"from r/{candidate.subreddit}: {candidate.title}")
+            try:
+                if candidate.post_id not in enriched:
+                    enriched[candidate.post_id] = enrich_with_comments(candidate)
+                candidate = enriched[candidate.post_id]
+                build_narration(candidate, word_target, allow_sparse=sparse_fallback)
+                media = download_reddit_video(candidate.post_url, run_dir / f"source-{index}", 1080,
+                                              direct_video_url=candidate.video_url)
+                attempted_source = Path(media["video"])
+                attempted_duration, _ = media_details(attempted_source)
+                luma = average_luma(attempted_source)
+                if attempted_duration < 3.2:
+                    raise RuntimeError("video shorter than 3.2 seconds")
+                if luma < 18.0:
+                    raise RuntimeError(f"video is visually too dark (average luma {luma:.1f})")
+                post, source, source_duration = candidate, attempted_source, attempted_duration
+                selected_sparse = sparse_fallback
+                break
+            except Exception as exc:
+                rejections.append(f"{candidate.post_id}: {exc}")
+                note(f"Rejected source before narration: {exc}")
+        if post is not None:
             break
-        except Exception as exc:
-            rejections.append(f"{candidate.post_id}: {exc}")
-            note(f"Rejected source before narration: {exc}")
     if post is None or source is None:
         raise RuntimeError("no visually usable Reddit video passed quality checks: " + " | ".join(rejections))
     note(f"Selected Reddit video r/{post.subreddit}: {post.title}")
@@ -84,7 +94,7 @@ def run() -> dict[str, object]:
     timings: list[dict[str, object]] = []
     narration_seconds = 0.0
     for fit_attempt in range(1, 4):
-        script = build_narration(post, word_target)
+        script = build_narration(post, word_target, allow_sparse=selected_sparse)
         timings = narrator.synthesize(str(script["narration"]), narration, timing_path)
         narration_seconds = audio_duration(narration)
         if narration_seconds <= MAX_NARRATION_SECONDS:
