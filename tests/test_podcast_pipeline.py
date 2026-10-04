@@ -242,14 +242,16 @@ def test_workflow_has_upload_cleanup_and_pinned_runner(repo_root):
     assert "git push origin state-update:main" in workflow
 
 
-def test_lululala_workflow_has_exactly_four_daily_schedules(repo_root):
+def test_lululala_workflow_has_four_preferred_slots_and_quota_gated_catchups(repo_root):
     workflows = list((repo_root / ".github" / "workflows").glob("*.yml"))
     assert [path.name for path in workflows] == ["horror-short-generator.yml"]
     workflow = workflows[0].read_text(encoding="utf-8")
-    assert workflow.count("- cron:") == 4
-    assert {"30 23 * * *", "30 1 * * *", "30 13 * * *", "30 14 * * *"} <= set(
-        re.findall(r'cron: "([^"]+)"', workflow)
-    )
+    crons = set(re.findall(r'cron: "([^"]+)"', workflow))
+    assert len(crons) == 8
+    assert {"30 23 * * *", "30 1 * * *", "30 13 * * *", "30 14 * * *"} <= crons
+    assert {"30 3 * * *", "30 10 * * *", "45 15 * * *", "30 16 * * *"} <= crons
+    assert "python scripts/check_reddit_daily_quota.py" in workflow
+    assert "if: needs.preflight.outputs.should_run == 'true'" in workflow
     assert "actions/checkout@v6" in workflow
     assert "actions/setup-python@v7" in workflow
     assert "actions/upload-artifact@v7" in workflow
