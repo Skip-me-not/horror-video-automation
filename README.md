@@ -1,47 +1,63 @@
-# Lululala Celebrity Shorts
+# AI-written Reddit idol Shorts
 
-This repository automatically turns Reddit-hosted celebrity videos into vertical YouTube Shorts for the **Lululala** channel. It prioritizes K-pop idols and groups while still covering widely discussed international celebrities.
+This project creates public 55–65 second vertical YouTube Shorts about K-pop idols. Reddit is used to discover source signals and hosted clips; the narration is rewritten into original commentary by GitHub Models when available.
 
-## What each run does
+## Format
 
-1. Reads current top-week posts from configured K-pop and pop-culture subreddits.
-2. Accepts only posts with a direct `v.redd.it` video and skips source IDs already used.
-3. Chooses K-pop content about 75% of the time and global celebrity content about 25% of the time.
-4. Downloads the original Reddit-hosted clip and rejects broken, very short, or nearly black video.
-5. Builds a short, source-specific English recap from the post title, meaningful body text, and up to two attributed Reddit comments. If no detailed source is usable, it falls back to a shorter title-only Short when the title is specific; generic RSS boilerplate and empty "viral moment" posts are still rejected. Rumors are never presented as verified facts.
-6. Opens with a source-derived hook, then shows the clip in order before one replay rather than random repeated offsets or horizontal flips. Narration, white captions, hot-pink emphasis, and a centered `Lululala` watermark remain.
-7. Ends when the narration ends (roughly 10–60 seconds), validates the vertical MP4, uploads it publicly to YouTube, records the source ID, and removes generated media.
+- 1080×1920, 30 fps, H.264/AAC
+- three or four source-backed story beats per Short
+- AI-written hook, fact commentary, and CTA rather than reading Reddit post titles verbatim
+- one-word-at-a-time Poppins captions inspired by the supplied reference: hot pink, black outline, yellow/red emphasis, lower-middle safe area
+- a visual treatment about every 4.6 seconds with blurred vertical fill for non-9:16 clips
+- local Piper narration and low-volume CC0/Public Domain Openverse music
+- direct public YouTube upload four times daily at 05:00, 08:00, 11:00, and 14:00 Myanmar time
 
-The source pool is cached in `data/celebrity_source_pool.json`, so temporary Reddit rate limits do not automatically stop a run. Each build retries twice and searches up to 16 candidate videos, preferring detailed posts before the concise fallback. The workflow targets four confirmed uploads per Myanmar-local day. If Reddit supplies no usable video, YouTube rejects uploads, or GitHub Actions does not run, an absolute four-upload guarantee is impossible; these failures require operator intervention or a pre-approved backup inventory.
+## Source and AI behavior
 
-## Schedule
+`data/idols.json` controls the idol rotation. Public Reddit fetching is credential-free and uses JSON/RSS/Old Reddit/archive fallbacks. Reddit client secrets are not required.
 
-`.github/workflows/horror-short-generator.yml` is the only active production workflow. Its four preferred publication starts are:
+`scripts/ai_script.py` sends only normalized source signals—title, subreddit, score, and comment count—to the configured GitHub Models endpoint. The prompt explicitly forbids inventing facts and requires JSON with a hook, exactly three or four fact beats, and a CTA. The renderer stores `script_engine`, `script_model`, and `script_prompt_version` in `output/metadata.json`.
 
-- 06:00 Myanmar time
-- 08:00 Myanmar time
-- 20:00 Myanmar time
-- 21:00 Myanmar time
+`AI_SCRIPT_MODE=auto` uses GitHub Models when the workflow token is accepted and falls back to source-grounded editorial commentary if the model is unavailable. `required` fails instead of falling back. `fallback` never calls a model and is useful for local smoke tests.
 
-Catch-up checks also start at 10:00, 17:00, 22:15 and 23:00 Myanmar time. Before a scheduled build, `scripts/check_reddit_daily_quota.py` counts confirmed celebrity uploads in `data/history.json` for the current Myanmar-local day. Once four are recorded, later scheduled starts skip; a manual run is allowed to exceed the target. GitHub Actions schedules use UTC and may start late. Manual runs are available from **Actions → Lululala Celebrity Shorts → Run workflow**.
+Reddit popularity is a source signal, not factual verification. Every selected fact and clip permalink is recorded in metadata and the YouTube description. The operator remains responsible for copyright permission, attribution, fact checking, and YouTube policy compliance.
 
-## Required GitHub secrets
+## GitHub Actions
 
+The active workflow is `.github/workflows/create-short.yml`.
+
+Required repository secrets:
+
+- `OPENVERSE_CLIENT_ID`
+- `OPENVERSE_CLIENT_SECRET`
 - `YOUTUBE_CLIENT_ID`
 - `YOUTUBE_CLIENT_SECRET`
 - `YOUTUBE_REFRESH_TOKEN`
 
-The refresh token determines the destination YouTube channel. It must belong to the Lululala channel before enabling public uploads.
+Required repository variable:
 
-## Source and rights note
+- `CHANNEL_NAME`
 
-Every description links to the original Reddit post. Editing, reframing, narration, and attribution do not automatically make third-party video copyright-free; the channel owner remains responsible for permission, platform rules, and takedown requests.
+Optional repository variable:
 
-## Local checks
+- `REDDIT_USER_AGENT`
 
-```powershell
-python -m pytest -q
-python -m src.reddit_pipeline
+The workflow grants `models: read` to the built-in GitHub token and uses `https://models.github.ai/inference/chat/completions` with `openai/gpt-4o-mini`. No Reddit client ID or secret is used.
+
+## Files
+
+- `scripts/ai_script.py` — structured AI rewrite and safe fallback
+- `scripts/reddit_source.py` — credential-free Reddit discovery and filtering
+- `scripts/render_idol_short.py` — narration, reference-style captions, clip recovery, FFmpeg render, and metadata
+- `scripts/merge_reddit_state.py` — conflict-safe source rotation
+- `data/reddit_state.json` — previously used sources and idols
+
+## Validation
+
+```bash
+pip install -r requirements.txt
+pytest -q
+python -m scripts.validate_config --mode reddit-ai
 ```
 
-The second command needs FFmpeg, network access, and the Python packages in `requirements.txt`. Uploading is a separate workflow step and requires the YouTube secrets.
+The tests do not upload to YouTube or call Reddit. The full Actions run performs the network discovery, AI rewrite, render, public upload, and state persistence.

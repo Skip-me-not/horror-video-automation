@@ -1,2 +1,2 @@
-"""Horror video automation scripts."""
+"""Automation helpers for the repository."""
 

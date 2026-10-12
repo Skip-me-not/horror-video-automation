@@ -1,265 +1,147 @@
+#!/usr/bin/env python3
+"""Upload the rendered Short through YouTube Data API v3."""
+
 from __future__ import annotations
 
 import argparse
 import json
 import os
 import random
+import socket
 import time
 from pathlib import Path
+from typing import Any
 
+import httplib2
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
-try:
-    from scripts.common import ValidationError, load_json, resolve_asset
-except ModuleNotFoundError:  # Support direct script execution.
-    from common import ValidationError, load_json, resolve_asset
+
+ROOT = Path(__file__).resolve().parents[1]
+YOUTUBE_UPLOAD_SCOPE = "https://www.googleapis.com/auth/youtube.upload"
+RETRIABLE_STATUS_CODES = {500, 502, 503, 504}
+RETRIABLE_EXCEPTIONS = (
+    httplib2.HttpLib2Error,
+    OSError,
+    IOError,
+    socket.timeout,
+)
+MAX_RETRIES = 10
 
 
-SCOPES = ["https://www.googleapis.com/auth/youtube.upload"]
-TRANSIENT = {429, 500, 502, 503, 504}
-ALLOWED_PRIVACY = {"public"}
+def required_secret(name: str) -> str:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        raise RuntimeError(f"Missing required GitHub secret: {name}")
+    return value
 
 
-def shorts_title(value: str) -> str:
-    suffix = " #shorts"
-    cleaned = " ".join(value.split()).strip('"')
-
-    if cleaned.casefold().endswith("#shorts"):
-        return cleaned[:100]
-
-    limit = 100 - len(suffix)
-
-    if len(cleaned) > limit:
-        shortened = (
-            cleaned[: limit - 1]
-            .rsplit(" ", 1)[0]
-            .rstrip(".,;:!?")
-        )
-        cleaned = (shortened or cleaned[: limit - 1]).rstrip() + "…"
-
-    return cleaned + suffix
-
-
-def shorts_description(value: str) -> str:
-    cleaned = value.strip()
-    hashtags = "#Lululala #celebrity #kpop #popculture #shorts"
-
-    return (
-        cleaned
-        if "#shorts" in cleaned.casefold()
-        else f"{cleaned}\n\n{hashtags}".strip()
-    )
-
-
-def credentials_from_environment() -> Credentials:
-    values = {
-        name: os.getenv(name, "")
-        for name in (
-            "YOUTUBE_CLIENT_ID",
-            "YOUTUBE_CLIENT_SECRET",
-            "YOUTUBE_REFRESH_TOKEN",
-        )
-    }
-
-    missing = [
-        name
-        for name, value in values.items()
-        if not value
-    ]
-
+def load_metadata(path: Path) -> dict[str, Any]:
+    try:
+        metadata = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"Unable to read metadata file {path}: {exc}") from exc
+    required = {"title", "description", "tags", "category_id", "made_for_kids", "privacy_status"}
+    missing = sorted(required - set(metadata))
     if missing:
-        raise ValidationError(
-            f"missing YouTube secrets: {', '.join(missing)}"
-        )
+        raise RuntimeError("Metadata is missing: " + ", ".join(missing))
+    if metadata["privacy_status"] not in {"private", "unlisted", "public"}:
+        raise RuntimeError("Metadata contains an invalid privacy status")
+    if len(metadata["title"]) > 100:
+        raise RuntimeError("YouTube title exceeds 100 characters")
+    return metadata
 
-    return Credentials(
+
+def youtube_client():
+    credentials = Credentials(
         token=None,
-        refresh_token=values["YOUTUBE_REFRESH_TOKEN"],
+        refresh_token=required_secret("YOUTUBE_REFRESH_TOKEN"),
         token_uri="https://oauth2.googleapis.com/token",
-        client_id=values["YOUTUBE_CLIENT_ID"],
-        client_secret=values["YOUTUBE_CLIENT_SECRET"],
-        scopes=SCOPES,
+        client_id=required_secret("YOUTUBE_CLIENT_ID"),
+        client_secret=required_secret("YOUTUBE_CLIENT_SECRET"),
+        scopes=[YOUTUBE_UPLOAD_SCOPE],
     )
+    return build("youtube", "v3", credentials=credentials, cache_discovery=False)
 
 
-def execute_resumable(request, attempts: int = 7):
+def resumable_upload(request) -> dict[str, Any]:
     response = None
     retry = 0
-
     while response is None:
+        error: Exception | None = None
         try:
-            _, response = request.next_chunk()
-
+            status, response = request.next_chunk()
+            if status:
+                print(f"Upload progress: {int(status.progress() * 100)}%")
         except HttpError as exc:
-            status = getattr(exc.resp, "status", 0)
-
-            if status not in TRANSIENT or retry >= attempts:
+            if exc.resp.status in RETRIABLE_STATUS_CODES:
+                error = exc
+            else:
                 raise
-
-            time.sleep(
-                min(
-                    64,
-                    (2 ** retry) + random.random(),
-                )
-            )
-
+        except RETRIABLE_EXCEPTIONS as exc:
+            error = exc
+        if error is not None:
             retry += 1
-
-        except (OSError, TimeoutError):
-            if retry >= attempts:
-                raise
-
-            time.sleep(
-                min(
-                    64,
-                    (2 ** retry) + random.random(),
-                )
+            if retry > MAX_RETRIES:
+                raise RuntimeError("YouTube upload failed after maximum retries") from error
+            sleep_seconds = random.uniform(0, min(2**retry, 64))
+            print(
+                f"Temporary upload error ({type(error).__name__}); "
+                f"retry {retry}/{MAX_RETRIES} in {sleep_seconds:.1f}s"
             )
-
-            retry += 1
-
+            time.sleep(sleep_seconds)
+    if not response or "id" not in response:
+        raise RuntimeError("YouTube returned an unexpected upload response")
     return response
 
 
-def upload(
-    video: Path,
-    job: dict,
-    project: Path,
-    privacy: str,
-) -> dict:
-
-    if privacy not in ALLOWED_PRIVACY:
-        raise ValidationError(
-            "privacy must be public"
-        )
-
-    if not video.is_file():
-        raise FileNotFoundError(
-            f"video is missing: {video}"
-        )
-
-    youtube = build(
-        "youtube",
-        "v3",
-        credentials=credentials_from_environment(),
-        cache_discovery=False,
-    )
-
+def upload(video_path: Path, metadata_path: Path) -> str:
+    if not video_path.is_file() or video_path.stat().st_size < 10_000:
+        raise RuntimeError(f"Rendered video is missing or invalid: {video_path}")
+    metadata = load_metadata(metadata_path)
     body = {
         "snippet": {
-            "title": shorts_title(job["title"]),
-            "description": shorts_description(job["description"]),
-            "tags": job["tags"],
-            "categoryId": "24",
-            "defaultLanguage": "en",
-            "defaultAudioLanguage": "en",
+            "title": metadata["title"],
+            "description": metadata["description"],
+            "tags": metadata["tags"],
+            "categoryId": str(metadata.get("category_id", "22")),
         },
         "status": {
-            "privacyStatus": privacy,
-            "selfDeclaredMadeForKids": False,
+            "privacyStatus": metadata.get("privacy_status", "private"),
+            "selfDeclaredMadeForKids": bool(metadata.get("made_for_kids", False)),
         },
     }
-
-    request = youtube.videos().insert(
+    media = MediaFileUpload(
+        str(video_path),
+        mimetype="video/mp4",
+        chunksize=8 * 1024 * 1024,
+        resumable=True,
+    )
+    request = youtube_client().videos().insert(
         part="snippet,status",
         body=body,
-        media_body=MediaFileUpload(
-            str(video),
-            mimetype="video/mp4",
-            chunksize=8 * 1024 * 1024,
-            resumable=True,
-        ),
+        media_body=media,
+        notifySubscribers=False,
     )
-
-    response = execute_resumable(request)
+    response = resumable_upload(request)
     video_id = response["id"]
-
-    thumbnail = job.get("thumbnail_file", "")
-
-    if thumbnail:
-        thumb_path = resolve_asset(
-            project / "assets/thumbnails",
-            thumbnail,
-        )
-
-        if not thumb_path.is_file():
-            raise FileNotFoundError(
-                f"thumbnail is missing: {thumb_path}"
-            )
-
-        youtube.thumbnails().set(
-            videoId=video_id,
-            media_body=MediaFileUpload(
-                str(thumb_path),
-                resumable=True,
-            ),
-        ).execute()
-
-    return {
-        "status": "success",
-        "job_id": job["job_id"],
-        "youtube_video_id": video_id,
-        "watch_url": f"https://www.youtube.com/watch?v={video_id}",
-        "studio_url": f"https://studio.youtube.com/video/{video_id}/edit",
-        "privacy_status": privacy,
-    }
+    print(f"Upload complete: https://youtu.be/{video_id}")
+    return video_id
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--job",
-        required=True,
-    )
-
-    parser.add_argument(
-        "--video",
-        required=True,
-    )
-
-    parser.add_argument(
-        "--privacy",
-        choices=["public"],
-        default="public",
-    )
-
-    parser.add_argument(
-        "--output",
-        default="output/upload-result.json",
-    )
-
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--video", type=Path, default=ROOT / "output" / "short.mp4")
+    parser.add_argument("--metadata", type=Path, default=ROOT / "output" / "metadata.json")
     args = parser.parse_args()
-
-    project = Path(__file__).resolve().parents[1]
-
-    result = upload(
-        Path(args.video),
-        load_json(args.job),
-        project,
-        args.privacy,
-    )
-
-    output_path = Path(args.output)
-    output_path.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    output_path.write_text(
-        json.dumps(result, indent=2),
-        encoding="utf-8",
-    )
-
-    print(
-        json.dumps(result, indent=2)
-    )
-
-    return 0
+    upload(args.video, args.metadata)
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        main()
+    except Exception as exc:
+        raise SystemExit(f"ERROR: {exc}") from exc
+
