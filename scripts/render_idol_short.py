@@ -37,16 +37,15 @@ from scripts.render_short import (
     MUSIC_MIX_VOLUME,
     TTS_MODEL_DIR,
     TTS_VOICE,
-    download_audio,
     ffmpeg_filter_path,
     locate_font,
-    search_openverse_audio,
     validate_channel_name,
 )
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "output"
+MUSIC_DIR = ROOT / "music"
 STATE_PATH = ROOT / "data" / "reddit_state.json"
 WIDTH = 1080
 HEIGHT = 1920
@@ -98,6 +97,21 @@ def save_state(state: dict[str, Any], path: Path = STATE_PATH) -> None:
     temporary = path.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     temporary.replace(path)
+
+
+
+def select_bundled_music(rng: random.Random | random.SystemRandom) -> tuple[Path, dict[str, Any]]:
+    tracks = sorted(MUSIC_DIR.glob("*.mp3"))
+    if not tracks:
+        raise IdolShortError(f"No bundled music tracks found in {MUSIC_DIR}")
+    music_path = rng.choice(tracks)
+    return music_path, {
+        "title": music_path.name,
+        "creator": "Repository-bundled audio",
+        "source_url": "https://github.com/Skip-me-not/horror-video-automation/tree/main/music",
+        "license": "Bundled asset; verify publication rights",
+        "search_used": "local deterministic selection",
+    }
 
 
 def clean_fact_title(title: str, idol: str) -> str:
@@ -593,7 +607,7 @@ def build_metadata(
         "category_id": "24",
         "made_for_kids": False,
         "privacy_status": privacy,
-        "format": "ai_reddit_idol_short",
+        "format": "reddit_idol_short",
         "script_engine": script_result.engine if script_result else "legacy_editorial",
         "script_model": script_result.model if script_result else "none",
         "script_prompt_version": script_result.prompt_version if script_result else "legacy",
@@ -679,10 +693,7 @@ def main() -> None:
     script_result = generate_script(
         idol,
         facts,
-        token=os.environ.get("GITHUB_TOKEN", "").strip(),
-        endpoint=os.environ.get("AI_SCRIPT_ENDPOINT", "https://models.github.ai/inference/chat/completions"),
-        model=os.environ.get("AI_SCRIPT_MODEL", "openai/gpt-4o-mini"),
-        mode=os.environ.get("AI_SCRIPT_MODE", "auto").strip().casefold(),
+        mode="fallback",
     )
     segments = script_result.segments
     for index, segment in enumerate(segments):
@@ -720,18 +731,12 @@ def main() -> None:
             music_asset = {
                 "title": args.music_file.name,
                 "creator": "Local test asset",
-                "source_url": "https://openverse.org/",
+                "source_url": "https://github.com/Skip-me-not/horror-video-automation/tree/main/music",
                 "license": "Local test file",
                 "search_used": "local override",
             }
         else:
-            music_asset = search_openverse_audio(
-                queries=("upbeat kpop instrumental", "energetic pop instrumental"),
-                minimum_seconds=MAX_SECONDS + 1,
-                rng=rng,
-            )
-            music_path = temporary / "music.mp3"
-            download_audio(music_asset["download_url"], music_path)
+            music_path, music_asset = select_bundled_music(rng)
         render_video(
             local_clips,
             music_path,

@@ -1,4 +1,4 @@
-name: Create AI-written Reddit idol Short
+name: Create Reddit idol Short
 
 on:
   schedule:
@@ -25,22 +25,12 @@ on:
         required: true
         default: "kpop,kpopthoughts,kpop_uncensored"
         type: string
-      ai_script_mode:
-        description: "AI rewrite mode; auto falls back safely if model access is unavailable"
-        required: true
-        default: auto
-        type: choice
-        options:
-          - auto
-          - required
-          - fallback
 
 permissions:
   contents: write
-  models: read
 
 concurrency:
-  group: ai-reddit-short-${{ github.ref }}
+  group: reddit-short-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -48,13 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      GITHUB_TOKEN: ${{ github.token }}
-      AI_SCRIPT_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.ai_script_mode || 'auto' }}
-      AI_SCRIPT_MODEL: openai/gpt-4o-mini
-      AI_SCRIPT_ENDPOINT: https://models.github.ai/inference/chat/completions
       REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT }}
-      OPENVERSE_CLIENT_ID: ${{ secrets.OPENVERSE_CLIENT_ID }}
-      OPENVERSE_CLIENT_SECRET: ${{ secrets.OPENVERSE_CLIENT_SECRET }}
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
@@ -95,10 +79,10 @@ jobs:
           python -m piper.download_voices --data-dir .tts-models en_US-joe-medium
           test "$(stat -c%s .tts-models/en_US-joe-medium.onnx)" -gt 50000000
 
-      - name: Validate AI Reddit Short configuration
-        run: python -m scripts.validate_config --mode reddit-ai --require-youtube
+      - name: Validate Reddit Short configuration
+        run: python -m scripts.validate_config --mode reddit-short --require-youtube
 
-      - name: Render AI-written 55-65 second Short
+      - name: Render deterministic 55-65 second Short
         id: render
         run: python -m scripts.render_idol_short
 
@@ -116,31 +100,23 @@ jobs:
           cp data/reddit_state.json "$snapshot"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           for attempt in 1 2 3; do
             git fetch origin "$GITHUB_REF_NAME"
             git checkout -B reddit-state-update "origin/$GITHUB_REF_NAME"
             python -m scripts.merge_reddit_state data/reddit_state.json "$snapshot" --output data/reddit_state.json
-            if git diff --quiet -- data/reddit_state.json; then
-              echo "No Reddit rotation state change to persist."
-              exit 0
-            fi
+            if git diff --quiet -- data/reddit_state.json; then exit 0; fi
             git add data/reddit_state.json
             git commit -m "Persist Reddit source rotation [skip ci]"
-            if git push origin "HEAD:$GITHUB_REF_NAME"; then
-              echo "Reddit rotation state persisted."
-              exit 0
-            fi
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
             sleep $((attempt * 2))
           done
-          echo "Reddit state could not be persisted after three attempts." >&2
           exit 1
 
       - name: Upload render artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ai-reddit-short-${{ github.run_id }}
+          name: reddit-short-${{ github.run_id }}
           path: |
             output/short.mp4
             output/metadata.json

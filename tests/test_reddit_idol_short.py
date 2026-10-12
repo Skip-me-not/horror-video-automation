@@ -260,7 +260,7 @@ def test_metadata_records_reddit_sources_and_review_status():
         voice=voice,
         channel_name="ORDERLESS",
     )
-    assert metadata["format"] == "ai_reddit_idol_short"
+    assert metadata["format"] == "reddit_idol_short"
     assert metadata["script_engine"] == "legacy_editorial"
     assert metadata["publication_mode"] == "automatic_public"
     assert metadata["fact_count"] == 4
