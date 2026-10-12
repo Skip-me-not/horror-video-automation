@@ -20,7 +20,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from scripts.ai_script import ScriptResult, generate_script
+from scripts.editorial_script import ScriptResult, generate_editorial_script
 from scripts.reddit_source import (
     DEFAULT_SUBREDDITS,
     RedditClient,
@@ -690,11 +690,7 @@ def main() -> None:
             f"Reddit returned only {len(clip_candidates)} safe hosted {idol} clips; "
             f"need {args.fact_count}."
         )
-    script_result = generate_script(
-        idol,
-        facts,
-        mode="fallback",
-    )
+    script_result = generate_editorial_script(idol, facts)
     segments = script_result.segments
     for index, segment in enumerate(segments):
         if segment["kind"] == "fact" and index - 1 < len(facts):
