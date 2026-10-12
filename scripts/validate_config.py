@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate GitHub Shorts configuration before network or rendering work."""
+"""Validate the deterministic Reddit Shorts configuration."""
 
 from __future__ import annotations
 
@@ -34,12 +34,8 @@ def check_output_directory() -> None:
     probe.unlink()
 
 
-def validate_reddit_ai(require_youtube: bool) -> None:
-    required = [
-        "OPENVERSE_CLIENT_ID",
-        "OPENVERSE_CLIENT_SECRET",
-        "CHANNEL_NAME",
-    ]
+def validate_reddit_short(require_youtube: bool) -> None:
+    required = ["CHANNEL_NAME"]
     if require_youtube:
         required.extend(["YOUTUBE_CLIENT_ID", "YOUTUBE_CLIENT_SECRET", "YOUTUBE_REFRESH_TOKEN"])
     missing = require_environment(required)
@@ -47,18 +43,13 @@ def validate_reddit_ai(require_youtube: bool) -> None:
         raise ShortsError("Missing required configuration: " + ", ".join(missing))
     validate_channel_name(os.environ["CHANNEL_NAME"])
     parse_subreddits(os.environ.get("INPUT_SUBREDDITS", "kpop,kpopthoughts,kpop_uncensored"))
-    mode = os.environ.get("AI_SCRIPT_MODE", "auto").casefold()
-    if mode not in {"auto", "required", "fallback"}:
-        raise ShortsError("AI_SCRIPT_MODE must be auto, required, or fallback")
-    if mode == "required" and not os.environ.get("GITHUB_TOKEN", "").strip():
-        raise ShortsError("AI_SCRIPT_MODE=required needs the GitHub Models token")
     idols = load_idols()
     load_state(STATE_PATH)
     check_tools()
     check_output_directory()
     print(
         f"Configuration is valid; {len(idols)} idols are available. "
-        f"Script mode: {mode}; Reddit is credential-free; upload privacy is public."
+        "Reddit and music are credential-free; upload privacy is public."
     )
 
 
@@ -71,19 +62,19 @@ def validate_legacy(require_youtube: bool) -> None:
         raise ShortsError("Missing required configuration: " + ", ".join(missing))
     validate_channel_name(os.environ["CHANNEL_NAME"])
     check_tools()
-    quotes = load_quotes(QUOTES_PATH)
+    load_quotes(QUOTES_PATH)
     load_legacy_state()
     check_output_directory()
-    print(f"Legacy configuration is valid; {len(quotes)} quote(s) remain.")
+    print("Legacy configuration is valid.")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("reddit-ai", "reddit-idol", "legacy"), default="legacy")
+    parser.add_argument("--mode", choices=("reddit-short", "reddit-ai", "reddit-idol", "legacy"), default="legacy")
     parser.add_argument("--require-youtube", action="store_true")
     args = parser.parse_args()
-    if args.mode in {"reddit-ai", "reddit-idol"}:
-        validate_reddit_ai(args.require_youtube)
+    if args.mode in {"reddit-short", "reddit-ai", "reddit-idol"}:
+        validate_reddit_short(args.require_youtube)
     else:
         validate_legacy(args.require_youtube)
 
