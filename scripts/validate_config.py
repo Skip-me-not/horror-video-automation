@@ -8,7 +8,7 @@ import os
 import shutil
 
 from scripts.reddit_source import load_idols, parse_subreddits
-from scripts.render_idol_short import OUTPUT_DIR, STATE_PATH, load_state
+from scripts.render_idol_short import DEFAULT_CHANNEL_NAME, OUTPUT_DIR, STATE_PATH, load_state
 from scripts.render_short import (
     QUOTES_PATH,
     ShortsError,
@@ -35,13 +35,13 @@ def check_output_directory() -> None:
 
 
 def validate_reddit_short(require_youtube: bool) -> None:
-    required = ["CHANNEL_NAME"]
+    required = []
     if require_youtube:
         required.extend(["YOUTUBE_CLIENT_ID", "YOUTUBE_CLIENT_SECRET", "YOUTUBE_REFRESH_TOKEN"])
     missing = require_environment(required)
     if missing:
         raise ShortsError("Missing required configuration: " + ", ".join(missing))
-    validate_channel_name(os.environ["CHANNEL_NAME"])
+    validate_channel_name(os.environ.get("CHANNEL_NAME", "").strip() or DEFAULT_CHANNEL_NAME)
     parse_subreddits(os.environ.get("INPUT_SUBREDDITS", "kpop,kpopthoughts,kpop_uncensored"))
     idols = load_idols()
     load_state(STATE_PATH)

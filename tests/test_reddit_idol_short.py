@@ -1,4 +1,8 @@
+from pathlib import Path
+
 import pytest
+
+from scripts import validate_config
 
 from scripts.reddit_source import (
     RedditClient,
@@ -23,6 +27,22 @@ from scripts.render_idol_short import (
     reddit_manifest_urls,
     word_count,
 )
+
+
+def test_reddit_workflow_uses_lululala_when_channel_variable_is_missing(monkeypatch):
+    monkeypatch.delenv("CHANNEL_NAME", raising=False)
+    monkeypatch.setattr(validate_config, "load_idols", lambda: ["Jennie"])
+    monkeypatch.setattr(validate_config, "load_state", lambda _path: {})
+    monkeypatch.setattr(validate_config, "check_tools", lambda: None)
+    monkeypatch.setattr(validate_config, "check_output_directory", lambda: None)
+    validate_config.validate_reddit_short(require_youtube=False)
+
+
+def test_manual_dry_run_skips_public_upload():
+    workflow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" /
+                "create-short.yml").read_text(encoding="utf-8")
+    assert "CHANNEL_NAME: ${{ vars.CHANNEL_NAME || 'Lululala' }}" in workflow
+    assert "if: ${{ github.event_name == 'schedule' || !inputs.dry_run }}" in workflow
 
 
 def raw_post(

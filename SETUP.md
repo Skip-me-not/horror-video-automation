@@ -9,16 +9,16 @@ Under **Settings → Secrets and variables → Actions**, configure:
 | `YOUTUBE_CLIENT_ID` | Secret |
 | `YOUTUBE_CLIENT_SECRET` | Secret |
 | `YOUTUBE_REFRESH_TOKEN` | Secret |
-| `CHANNEL_NAME` | Variable |
+| `CHANNEL_NAME` | Optional variable; defaults to `Lululala` |
 | `REDDIT_USER_AGENT` | Optional variable |
 
 This version does not use AI, OpenCode, OpenVerse, Reddit client credentials, or an external music API. Music comes from the bundled `music/` directory.
 
 ## Run
 
-Open **Actions → Create Reddit idol Short → Run workflow**. Select an idol, choose `3` or `4` source-backed beats, and leave the subreddit list at its default unless you want a different public community set.
+Open **Actions → Create Reddit idol Short → Run workflow**. Select an idol, choose `3` or `4` source-backed beats, and leave the subreddit list at its default unless you want a different public community set. Set `dry_run` to render and inspect an artifact without uploading.
 
-Scheduled and manual runs upload as public. The workflow renders with local Piper TTS and uses deterministic source-grounded editorial copy. It does not send source data to an AI provider.
+Scheduled runs and manual runs without `dry_run` upload as public. The workflow renders with local Piper TTS and uses deterministic source-grounded editorial copy. It does not send source data to an AI provider.
 
 ## Rights and accuracy
 

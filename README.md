@@ -21,7 +21,7 @@ Secrets:
 - `YOUTUBE_CLIENT_SECRET`
 - `YOUTUBE_REFRESH_TOKEN`
 
-Variable:
+Optional variable (defaults to `Lululala`):
 
 - `CHANNEL_NAME`
 
@@ -33,7 +33,7 @@ No `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, `OPENVERSE_CLIENT_ID`, `OPENVERSE
 
 ## Manual run
 
-Open **Actions → Create Reddit idol Short → Run workflow**. Choose an idol or leave it blank for rotation, choose 3 or 4 facts, and keep the default subreddit list. Every successful run publishes publicly.
+Open **Actions → Create Reddit idol Short → Run workflow**. Choose an idol or leave it blank for rotation, choose 3 or 4 facts, and keep the default subreddit list. Set `dry_run` to render an artifact without uploading. Otherwise, every successful run publishes publicly.
 
 ## Source safety
 
