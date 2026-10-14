@@ -115,16 +115,16 @@ def _fallback_script(idol: str, facts: list[dict[str, Any]]) -> ScriptResult:
     ]
     for index, fact in enumerate(facts, start=1):
         title = clean_text(fact.get("title"))
-        subreddit = clean_text(fact.get("subreddit"))
-        score = int(fact.get("score") or 0)
-        comments = int(fact.get("num_comments") or 0)
+        title_words = title.split()
+        if len(title_words) > 14:
+            title = " ".join(title_words[:14]) + "..."
         segments.append(
             {
                 "kind": "fact",
                 "fact_number": index,
                 "text": (
-                    f"Point {index}: the discussion focused on {title}. It reached {score} upvotes "
-                    f"and {comments} comments in r slash {subreddit}, showing exactly why fans kept debating it."
+                    f"Point {index}: fans discussed the headline, {title} "
+                    "This is a Reddit discussion, so the headline alone does not verify every detail."
                 ),
             }
         )

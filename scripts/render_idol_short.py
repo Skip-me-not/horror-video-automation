@@ -292,8 +292,10 @@ def synthesize_narration(text: str, output: Path, voice_file: Path | None = None
 
     original_seconds = wav_duration(output)
     speed = original_seconds / TARGET_NARRATION_SECONDS
-    if not 0.86 <= speed <= 1.16:
-        speed = min(1.16, max(0.86, speed))
+    # Long Reddit headlines can run past the one-minute limit even after the
+    # original 1.16x cap. Allow a modest additional fit before rejecting audio.
+    if not 0.86 <= speed <= 1.30:
+        speed = min(1.30, max(0.86, speed))
     if abs(speed - 1.0) >= 0.015:
         fitted = output.with_name("narration-fitted.wav")
         result = subprocess.run(

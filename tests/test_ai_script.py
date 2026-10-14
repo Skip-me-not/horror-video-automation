@@ -117,3 +117,14 @@ def test_fallback_mode_never_needs_a_token():
     result = generate_script("Jungkook", sources(), mode="fallback")
     assert result.engine == "editorial_fallback"
     assert 95 <= sum(len(segment["text"].split()) for segment in result.segments) <= 180
+
+
+def test_fallback_caps_long_headlines_without_adding_unverified_claims():
+    long_sources = sources()
+    long_sources[0]["title"] = " ".join(["unusually"] * 35 + ["important", "claim"])
+    result = generate_script("Jungkook", long_sources, mode="fallback")
+    narration = result.narration
+    assert 95 <= len(narration.split()) <= 180
+    assert "important claim" not in narration
+    assert "unusually..." in narration
+    assert "does not verify every detail" in narration
