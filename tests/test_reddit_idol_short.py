@@ -1,4 +1,5 @@
 from pathlib import Path
+import wave
 
 import pytest
 
@@ -25,6 +26,7 @@ from scripts.render_idol_short import (
     narration_text,
     reddit_hls_url,
     reddit_manifest_urls,
+    synthesize_narration,
     word_count,
 )
 
@@ -43,6 +45,18 @@ def test_manual_dry_run_skips_public_upload():
                 "create-short.yml").read_text(encoding="utf-8")
     assert "CHANNEL_NAME: ${{ vars.CHANNEL_NAME || 'Lululala' }}" in workflow
     assert "if: ${{ github.event_name == 'schedule' || !inputs.dry_run }}" in workflow
+
+
+def test_long_narration_is_fitted_inside_video_limit(tmp_path):
+    source = tmp_path / "long-voice.wav"
+    with wave.open(str(source), "wb") as audio:
+        audio.setnchannels(1)
+        audio.setsampwidth(2)
+        audio.setframerate(8000)
+        audio.writeframes(b"\0\0" * 8000 * 76)
+
+    voice = synthesize_narration("test narration", tmp_path / "narration.wav", source)
+    assert 56 <= voice["duration_seconds"] <= 59
 
 
 def raw_post(
