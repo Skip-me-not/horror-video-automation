@@ -44,6 +44,7 @@ from scripts.render_short import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_CHANNEL_NAME = "Lululala"
 OUTPUT_DIR = ROOT / "output"
 MUSIC_DIR = ROOT / "music"
 STATE_PATH = ROOT / "data" / "reddit_state.json"
@@ -662,7 +663,7 @@ def main() -> None:
     args = parse_args()
     if not shutil.which("ffmpeg"):
         raise IdolShortError("ffmpeg is not installed or not on PATH")
-    channel_name = validate_channel_name(os.environ.get("CHANNEL_NAME", ""))
+    channel_name = validate_channel_name(os.environ.get("CHANNEL_NAME", "").strip() or DEFAULT_CHANNEL_NAME)
     rng: random.Random | random.SystemRandom = (
         random.Random(args.seed) if args.seed is not None else random.SystemRandom()
     )

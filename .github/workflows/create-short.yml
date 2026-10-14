@@ -8,6 +8,11 @@ on:
     - cron: "30 7 * * *"  # Myanmar time 14:00
   workflow_dispatch:
     inputs:
+      dry_run:
+        description: "Render and validate without uploading to YouTube"
+        required: true
+        default: false
+        type: boolean
       idol:
         description: "Optional idol; blank rotates data/idols.json"
         required: false
@@ -42,7 +47,7 @@ jobs:
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-      CHANNEL_NAME: ${{ vars.CHANNEL_NAME }}
+      CHANNEL_NAME: ${{ vars.CHANNEL_NAME || 'Lululala' }}
       INPUT_IDOL: ${{ github.event_name == 'workflow_dispatch' && inputs.idol || '' }}
       INPUT_FACT_COUNT: ${{ github.event_name == 'workflow_dispatch' && inputs.fact_count || '4' }}
       INPUT_SUBREDDITS: ${{ github.event_name == 'workflow_dispatch' && inputs.subreddits || 'kpop,kpopthoughts,kpop_uncensored' }}
@@ -88,6 +93,7 @@ jobs:
 
       - name: Upload directly to YouTube as public
         id: youtube
+        if: ${{ github.event_name == 'schedule' || !inputs.dry_run }}
         run: python -m scripts.upload_youtube
 
       - name: Persist Reddit source rotation safely
