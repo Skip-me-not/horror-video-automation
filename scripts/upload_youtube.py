@@ -12,6 +12,8 @@ import time
 from pathlib import Path
 from typing import Any
 
+from scripts.daily_quota import REPORT as DAILY_REPORT, myanmar_date, write_summary
+
 import httplib2
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
@@ -136,7 +138,28 @@ def main() -> None:
     parser.add_argument("--video", type=Path, default=ROOT / "output" / "short.mp4")
     parser.add_argument("--metadata", type=Path, default=ROOT / "output" / "metadata.json")
     args = parser.parse_args()
-    upload(args.video, args.metadata)
+    youtube_id = upload(args.video, args.metadata)
+    state_path = ROOT / "data" / "reddit_state.json"
+    state = json.loads(state_path.read_text(encoding="utf-8"))
+    day = myanmar_date()
+    uploads = state.setdefault("daily_uploads", {})
+    ids = uploads.setdefault(day, [])
+    if youtube_id not in ids:
+        ids.append(youtube_id)
+    temporary_state = state_path.with_suffix(".json.tmp")
+    temporary_state.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n",
+                               encoding="utf-8")
+    temporary_state.replace(state_path)
+    if DAILY_REPORT.is_file():
+        try:
+            report = json.loads(DAILY_REPORT.read_text(encoding="utf-8"))
+            if report.get("date") == day:
+                report["published"] = len(ids)
+                report["published_video_ids"] = ids
+                report["quota_met"] = len(ids) >= report["target"]
+                write_summary(report)
+        except (OSError, ValueError, KeyError) as exc:
+            print(f"WARNING: daily summary could not be updated after upload: {exc}")
 
 
 if __name__ == "__main__":

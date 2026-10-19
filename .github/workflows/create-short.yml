@@ -41,8 +41,9 @@ concurrency:
 jobs:
   create-short:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     env:
+      PYTHONUNBUFFERED: "1"
       REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT }}
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
@@ -52,6 +53,7 @@ jobs:
       INPUT_FACT_COUNT: ${{ github.event_name == 'workflow_dispatch' && inputs.fact_count || '4' }}
       INPUT_SUBREDDITS: ${{ github.event_name == 'workflow_dispatch' && inputs.subreddits || 'kpop,kpopthoughts,kpop_uncensored' }}
       INPUT_PRIVACY_STATUS: public
+      QUALITY_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
 
     steps:
       - name: Check out repository
@@ -87,18 +89,17 @@ jobs:
       - name: Validate Reddit Short configuration
         run: python -m scripts.validate_config --mode reddit-short --require-youtube
 
-      - name: Render deterministic 55-65 second Short
+      - name: Render and quality-gate deterministic Short
         id: render
         run: python -m scripts.render_idol_short
 
       - name: Upload directly to YouTube as public
         id: youtube
-        if: ${{ github.event_name == 'schedule' || !inputs.dry_run }}
+        if: ${{ steps.render.outputs.publish == 'true' && (github.event_name == 'schedule' || !inputs.dry_run) }}
         run: python -m scripts.upload_youtube
 
       - name: Persist Reddit source rotation safely
         if: ${{ always() && steps.render.outcome == 'success' && steps.youtube.outcome == 'success' }}
-        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
@@ -126,6 +127,7 @@ jobs:
           path: |
             output/short.mp4
             output/metadata.json
+            quality_reports/*.json
           if-no-files-found: warn
           retention-days: 2
 
