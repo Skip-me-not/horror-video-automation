@@ -32,6 +32,12 @@ def recent_video_tail(left: list[Any], right: list[Any], limit: int = 30) -> lis
 def merge_states(current: dict[str, Any], rendered: dict[str, Any]) -> dict[str, Any]:
     if current.get("version", 1) != 1 or rendered.get("version", 1) != 1:
         raise RuntimeError("Only version 1 Reddit state can be merged")
+    days = sorted(set(current.get("daily_uploads", {})) | set(rendered.get("daily_uploads", {})))[-14:]
+    daily_uploads = {
+        day: list(dict.fromkeys([*current.get("daily_uploads", {}).get(day, []),
+                                 *rendered.get("daily_uploads", {}).get(day, [])]))
+        for day in days
+    }
     return {
         "version": 1,
         "used_fact_urls": unique_tail(
@@ -46,12 +52,14 @@ def merge_states(current: dict[str, Any], rendered: dict[str, Any]) -> dict[str,
         "recent_videos": recent_video_tail(
             current.get("recent_videos", []), rendered.get("recent_videos", []), 30
         ),
+        "daily_uploads": daily_uploads,
     }
 
 
 def read_state(path: Path) -> dict[str, Any]:
     if not path.exists():
-        return {"version": 1, "used_fact_urls": [], "used_clip_urls": [], "idol_history": [], "recent_videos": []}
+        return {"version": 1, "used_fact_urls": [], "used_clip_urls": [], "idol_history": [],
+                "recent_videos": [], "daily_uploads": {}}
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise RuntimeError(f"State file must contain an object: {path}")

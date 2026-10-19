@@ -41,7 +41,7 @@ concurrency:
 jobs:
   create-short:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     env:
       REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT }}
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}

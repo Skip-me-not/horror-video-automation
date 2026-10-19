@@ -35,6 +35,10 @@ def load_quality_config(path: Path = CONFIG_PATH) -> dict[str, Any]:
         "HOOK_CLIP_MAX", "EARLY_CLIP_MAX", "NORMAL_CLIP_MAX", "ABSOLUTE_CLIP_MAX",
         "MAX_SINGLE_SOURCE_PERCENT", "DUPLICATE_HASH_DISTANCE", "MAX_SILENCE_SECONDS",
         "MAX_BLACK_SECONDS", "MIN_AUDIO_MEAN_DB", "MAX_AUDIO_PEAK_DB", "SOURCE_WEIGHTS",
+        "TIER_A_SCORE", "TIER_B_SCORE", "TARGET_PUBLISHED_VIDEOS_PER_DAY",
+        "INITIAL_CANDIDATES", "MAX_CANDIDATES", "MAX_CANDIDATES_TO_RENDER",
+        "SELECTION_BONUS_DIFFERENT_TOPIC", "SELECTION_PENALTY_SAME_TOPIC",
+        "SELECTION_PENALTY_SHARED_SOURCE",
     }
     if not isinstance(config, dict) or required - config.keys():
         raise QualityError("Content quality configuration has missing fields")
@@ -42,6 +46,12 @@ def load_quality_config(path: Path = CONFIG_PATH) -> dict[str, Any]:
         raise QualityError("Invalid source-count limits")
     if not 0 <= config["MIN_SOURCE_SCORE"] <= 100 or not 0 <= config["MIN_FINAL_SCORE"] <= 100:
         raise QualityError("Quality thresholds must be between 0 and 100")
+    if not 65 <= config["MIN_FINAL_SCORE"] <= config["TIER_B_SCORE"] <= config["TIER_A_SCORE"] <= 100:
+        raise QualityError("Quality tiers must preserve the absolute 65-point floor")
+    if not 1 <= config["TARGET_PUBLISHED_VIDEOS_PER_DAY"] <= config["INITIAL_CANDIDATES"] <= config["MAX_CANDIDATES"] <= 16:
+        raise QualityError("Invalid daily candidate-pool limits")
+    if not 1 <= config["MAX_CANDIDATES_TO_RENDER"] <= config["MAX_CANDIDATES"]:
+        raise QualityError("Invalid render budget")
     if not 0 < config["MAX_SINGLE_SOURCE_PERCENT"] <= 100:
         raise QualityError("Invalid source dominance limit")
     if sum(config["SOURCE_WEIGHTS"].values()) <= 0:
