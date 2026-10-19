@@ -58,6 +58,7 @@ WIDTH = 1080
 HEIGHT = 1920
 FPS = 30
 MIN_SECONDS = 55.0
+BACKFILL_MIN_SECONDS = 45.0
 MAX_SECONDS = 65.0
 TARGET_NARRATION_SECONDS = 57.0
 CUT_SECONDS = 4.6
@@ -753,8 +754,15 @@ def main() -> None:
         attempted_topics += 1
         try:
             posts = client.discover(idol, parse_subreddits(args.subreddits))
-            facts = select_fact_posts(posts, idol, count=args.fact_count,
-                                      excluded_urls=state["used_fact_urls"])
+            try:
+                facts = select_fact_posts(posts, idol, count=args.fact_count,
+                                          excluded_urls=state["used_fact_urls"])
+            except RedditSourceError:
+                if args.fact_count != 4 or args.idol.strip():
+                    raise
+                facts = select_fact_posts(posts, idol, count=3,
+                                          excluded_urls=state["used_fact_urls"])
+                print(f"BACKFILL: {idol} has three distinct source-backed beats; allow shorter video")
             clip_candidates = rank_clip_posts(posts, idol, excluded_urls=state["used_clip_urls"])
             if len(clip_candidates) < config["MIN_SOURCE_COUNT"]:
                 raise QualityError(f"only {len(clip_candidates)} hosted clips; need {config['MIN_SOURCE_COUNT']}")
@@ -794,7 +802,8 @@ def main() -> None:
                 temporary = Path(temp_name)
                 narration = temporary / "narration.wav"
                 voice = synthesize_narration(script, narration, args.voice_file)
-                duration = min(MAX_SECONDS, max(MIN_SECONDS, voice["duration_seconds"] + 1.2))
+                minimum_seconds = BACKFILL_MIN_SECONDS if len(facts) == 3 else MIN_SECONDS
+                duration = min(MAX_SECONDS, max(minimum_seconds, voice["duration_seconds"] + 1.2))
                 captions = temporary / "captions.ass"
                 captions.write_text(build_word_captions(segments, voice["duration_seconds"]),
                                     encoding="utf-8", newline="\n")
@@ -841,7 +850,8 @@ def main() -> None:
                     music_path, music_asset = select_bundled_music(rng)
                 render_video(local_clips, music_path, narration, captions, output_video,
                              duration=duration, shots=shots)
-                _final_media, problems = final_media_issues(output_video, config, minimum_duration=MIN_SECONDS)
+                _final_media, problems = final_media_issues(output_video, config,
+                                                             minimum_duration=minimum_seconds)
                 problems.extend(caption_issues(captions, duration))
                 candidate_id = f"{video_id}-{re.sub('[^a-z0-9]+', '-', idol.casefold())}"
                 report = build_report(candidate_id, records, selected, shots, duration, config,
