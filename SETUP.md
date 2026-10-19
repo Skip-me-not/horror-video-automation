@@ -18,7 +18,7 @@ This version does not use AI, OpenCode, OpenVerse, Reddit client credentials, or
 
 Open **Actions → Create Reddit idol Short → Run workflow**. Select an idol, choose `3` or `4` source-backed beats, and leave the subreddit list at its default unless you want a different public community set. Set `dry_run` to render and inspect an artifact without uploading.
 
-Scheduled runs and manual runs without `dry_run` upload as public. The workflow renders with local Piper TTS and uses deterministic source-grounded editorial copy. It does not send source data to an AI provider.
+Scheduled runs and manual runs without `dry_run` upload as public **only when the source and final quality gates pass**. Rejected runs finish without an upload and leave a JSON quality report in the Actions artifact. The workflow renders with local Piper TTS and uses deterministic source-grounded editorial copy. It does not send source data to an AI provider.
 
 ## Rights and accuracy
 

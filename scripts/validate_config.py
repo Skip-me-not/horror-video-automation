@@ -8,6 +8,7 @@ import os
 import shutil
 
 from scripts.reddit_source import load_idols, parse_subreddits
+from scripts.content_quality import load_quality_config
 from scripts.render_idol_short import DEFAULT_CHANNEL_NAME, OUTPUT_DIR, STATE_PATH, load_state
 from scripts.render_short import (
     QUOTES_PATH,
@@ -44,6 +45,7 @@ def validate_reddit_short(require_youtube: bool) -> None:
     validate_channel_name(os.environ.get("CHANNEL_NAME", "").strip() or DEFAULT_CHANNEL_NAME)
     parse_subreddits(os.environ.get("INPUT_SUBREDDITS", "kpop,kpopthoughts,kpop_uncensored"))
     idols = load_idols()
+    load_quality_config()
     load_state(STATE_PATH)
     check_tools()
     check_output_directory()

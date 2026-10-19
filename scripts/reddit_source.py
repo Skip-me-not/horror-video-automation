@@ -191,6 +191,8 @@ def normalize_post(raw: dict[str, Any]) -> dict[str, Any]:
         "author": str(raw.get("author") or "unknown"),
         "subreddit": str(raw.get("subreddit") or "unknown"),
         "score": max(0, int(raw.get("score") or raw.get("ups") or 0)),
+        "score_available": raw.get("score") is not None or raw.get("ups") is not None,
+        "views": max(0, int(raw["view_count"])) if str(raw.get("view_count") or "").isdigit() else None,
         "num_comments": max(0, int(raw.get("num_comments") or 0)),
         "created_utc": float(raw.get("created_utc") or 0),
         "permalink": str(raw.get("permalink") or ""),

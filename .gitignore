@@ -6,6 +6,7 @@ venv/
 .env
 client_secret.json
 output/
+quality_reports/
 .shorts-tmp/
 .tts-models/
 .idea/
