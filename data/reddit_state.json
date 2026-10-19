@@ -64,7 +64,11 @@
     "https://www.reddit.com/r/kpop/comments/1uyux8s/yeonjun_txt_has_earned_his_first_music_show_win/",
     "https://www.reddit.com/r/kpop/comments/1swx2u4/txt_tomorrow_x_together_yeonjun_announced_as_the/",
     "https://www.reddit.com/r/kpop/comments/1oyvjd2/no_labels_part_01_by_txt_tomorrow_x_together/",
-    "https://www.reddit.com/r/kpop/comments/1obn3cc/txt_tomorrow_x_together_yeonjun_1st_mini_album_no/"
+    "https://www.reddit.com/r/kpop/comments/1obn3cc/txt_tomorrow_x_together_yeonjun_1st_mini_album_no/",
+    "https://www.reddit.com/r/twice/comments/1wwqvsy/261004_jihyo_instagram_update_christianlouboutin/",
+    "https://www.reddit.com/r/twice/comments/1w59wmq/260902_tuide_tiktok_update_sunkiss_with_seoyeon/",
+    "https://www.reddit.com/r/twice/comments/1vwsd7q/260824_jihyo_instagram_update_muglerofficial/",
+    "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -130,12 +134,15 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1rpx8k8/260310_yeonjun_walking_the_runway_for_miu_miu/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1otd58d/251110_yeonjun_daniela_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1q1y7ft/260102_yeonjun_hueningkai_instagram/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1pfpmki/251206_soobin_yeonjun_hueningkai_jjunie_binnie/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1pfpmki/251206_soobin_yeonjun_hueningkai_jjunie_binnie/",
+    "https://www.reddit.com/r/twice/comments/1ww25w8/261003_eyesmag_instagram_update_louboutin_jihyo/",
+    "https://www.reddit.com/r/twice/comments/1vxtc6f/260825_waterbomb_kaohsiung_official_instagram/",
+    "https://www.reddit.com/r/twice/comments/1w3929y/260831_venus_site_update_born_from_the/",
+    "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/"
   ],
   "idol_history": [
     "Jungkook",
     "Ningning",
-    "Jihyo",
     "Jennie",
     "Sana",
     "Bang Chan",
@@ -144,6 +151,68 @@
     "Felix",
     "Chaewon",
     "Karina",
-    "Yeonjun"
-  ]
+    "Yeonjun",
+    "Jihyo"
+  ],
+  "recent_videos": [
+    {
+      "video_id": "39317476584-jihyo",
+      "idol": "Jihyo",
+      "sources": [
+        {
+          "source_id": "1ww25w8",
+          "source_url": "https://www.reddit.com/r/twice/comments/1ww25w8/261003_eyesmag_instagram_update_louboutin_jihyo/",
+          "creator": "Twnty21_29",
+          "sha256": "da11f5422883e04f15e6e1ea8e2c186a47317e57b3662c2e00c247b91d7c2780",
+          "frame_hashes": [
+            "2e56f3ebe9e1f1d7",
+            "2d3e52e5e5e9f5f6",
+            "1c1a100149436363",
+            "13132a9871202e1a"
+          ]
+        },
+        {
+          "source_id": "1vxtc6f",
+          "source_url": "https://www.reddit.com/r/twice/comments/1vxtc6f/260825_waterbomb_kaohsiung_official_instagram/",
+          "creator": "Twnty21_29",
+          "sha256": "f32b4e6aea6b09b5ca940e6645fd967cc8c89e5955f9ad3787c85aa331783430",
+          "frame_hashes": [
+            "8b1b7834e464311b",
+            "8b336968e4e1711b",
+            "8b3369c9c8c4711b",
+            "8b137164e470511b"
+          ]
+        },
+        {
+          "source_id": "1w3929y",
+          "source_url": "https://www.reddit.com/r/twice/comments/1w3929y/260831_venus_site_update_born_from_the/",
+          "creator": "wickeddeus",
+          "sha256": "fc0526879505892700495e566f4d5e0e0f86dc549fec318567f3cf5662c5cd61",
+          "frame_hashes": [
+            "1111113131312124",
+            "18181c1c1c1c1808",
+            "e6ee9eb98e868f91",
+            "0d18195959599898"
+          ]
+        },
+        {
+          "source_id": "1ww392f",
+          "source_url": "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/",
+          "creator": "AdventuresOfKrisTin",
+          "sha256": "297479d59411e9f22f9bff2edd9498dcf7c8b9ed706bac1f73831dcd354a3c77",
+          "frame_hashes": [
+            "b2b6acb0f0e848f8",
+            "d2d2cad8997c444e",
+            "5a524e4eccd624a6",
+            "5a5a4e686164e46f"
+          ]
+        }
+      ]
+    }
+  ],
+  "daily_uploads": {
+    "2026-10-20": [
+      "UXWCRAjDOQ4"
+    ]
+  }
 }
