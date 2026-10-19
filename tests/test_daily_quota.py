@@ -30,6 +30,16 @@ def test_rank_uses_quality_and_daily_diversity():
     assert candidates[0]["selection_score"] < winner["selection_score"]
 
 
+def test_rank_penalizes_repeated_creator():
+    settings = config()
+    recent = [{"idol": "Other", "sources": [{"creator": "same", "source_url": "old"}]}]
+    repeated = candidate("Lisa", 81, "fresh-a")
+    repeated["selected"][0]["creator"] = "same"
+    different = candidate("Jisoo", 80, "fresh-b")
+    different["selected"][0]["creator"] = "new"
+    assert rank_candidates([repeated, different], recent, settings)["idol"] == "Jisoo"
+
+
 def test_summary_counts_only_actual_upload_ids():
     settings = config()
     reports = [{"decision": "publish", "final_quality_score": 83},

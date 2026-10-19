@@ -911,6 +911,7 @@ def main() -> None:
         state["recent_videos"] = (recent + [{
             "video_id": winner["report"]["video_id"], "idol": winner["idol"],
             "sources": [{"source_id": item["source_id"], "source_url": item["source_url"],
+                         "creator": item.get("creator", "unknown"),
                          "sha256": item["sha256"], "frame_hashes": item["frame_hashes"]}
                         for item in winner["selected"]],
         }])[-config["RECENT_HISTORY_SIZE"]:]

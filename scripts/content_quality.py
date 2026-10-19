@@ -39,6 +39,7 @@ def load_quality_config(path: Path = CONFIG_PATH) -> dict[str, Any]:
         "INITIAL_CANDIDATES", "MAX_CANDIDATES", "MAX_CANDIDATES_TO_RENDER",
         "SELECTION_BONUS_DIFFERENT_TOPIC", "SELECTION_PENALTY_SAME_TOPIC",
         "SELECTION_PENALTY_SHARED_SOURCE",
+        "SELECTION_PENALTY_REPEATED_CREATOR",
     }
     if not isinstance(config, dict) or required - config.keys():
         raise QualityError("Content quality configuration has missing fields")
@@ -162,6 +163,7 @@ def inspect_source(
     record: dict[str, Any] = {
         **media,
         "source_id": str(post["id"]), "source_url": source_url,
+        "creator": str(post.get("author") or "unknown"),
         "media_url": str(post["video_url"]),
         "published_utc": _number(post.get("created_utc")) or None,
         "views": post.get("views"), "upvotes": post.get("score") if post.get("score_available", True) else None,

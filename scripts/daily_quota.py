@@ -34,14 +34,21 @@ def rank_candidates(
         raise ValueError("Cannot rank an empty candidate list")
     used_urls = {source.get("source_url") for video in recent[-4:]
                  for source in video.get("sources", [])}
+    recent_creators = {str(source.get("creator", "")).casefold()
+                       for video in recent[-4:] for source in video.get("sources", [])
+                       if str(source.get("creator", "")).casefold() not in {"", "unknown"}}
     recent_topics = {str(video.get("idol", "")).casefold() for video in recent[-4:]}
     for item in candidates:
         overlap = sum(source["source_url"] in used_urls for source in item["selected"])
+        repeated_creators = sum(str(source.get("creator", "")).casefold() in recent_creators
+                                for source in item["selected"])
         same_topic = item["idol"].casefold() in recent_topics
-        item["diversity_score"] = max(0, 100 - 25 * overlap - (30 if same_topic else 0))
+        item["diversity_score"] = max(0, 100 - 25 * overlap - 10 * repeated_creators
+                                       - (30 if same_topic else 0))
         item["selection_score"] = (
             item["report"]["final_quality_score"]
             - overlap * config["SELECTION_PENALTY_SHARED_SOURCE"]
+            - repeated_creators * config["SELECTION_PENALTY_REPEATED_CREATOR"]
             - (config["SELECTION_PENALTY_SAME_TOPIC"] if same_topic else 0)
             + (config["SELECTION_BONUS_DIFFERENT_TOPIC"] if not same_topic else 0)
         )
@@ -68,7 +75,9 @@ def summary(
         "published": len(published_ids),
         "published_video_ids": published_ids,
         "average_quality_score": round(sum(scores) / len(scores), 1) if scores else 0,
+        "average_quality_scope": "passing_candidates_this_run",
         "diversity_score": selected.get("daily_diversity_score", 0) if selected else 0,
+        "diversity_scope": "selected_candidate_vs_recent_four_videos",
         "selected_candidate_id": selected["video_id"] if selected else None,
         "selected_quality_score": selected["final_quality_score"] if selected else None,
         "quota_met": len(published_ids) >= config["TARGET_PUBLISHED_VIDEOS_PER_DAY"],
