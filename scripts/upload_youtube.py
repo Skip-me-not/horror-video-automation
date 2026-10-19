@@ -146,14 +146,20 @@ def main() -> None:
     ids = uploads.setdefault(day, [])
     if youtube_id not in ids:
         ids.append(youtube_id)
-    state_path.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    temporary_state = state_path.with_suffix(".json.tmp")
+    temporary_state.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n",
+                               encoding="utf-8")
+    temporary_state.replace(state_path)
     if DAILY_REPORT.is_file():
-        report = json.loads(DAILY_REPORT.read_text(encoding="utf-8"))
-        if report.get("date") == day:
-            report["published"] = len(ids)
-            report["published_video_ids"] = ids
-            report["quota_met"] = len(ids) >= report["target"]
-            write_summary(report)
+        try:
+            report = json.loads(DAILY_REPORT.read_text(encoding="utf-8"))
+            if report.get("date") == day:
+                report["published"] = len(ids)
+                report["published_video_ids"] = ids
+                report["quota_met"] = len(ids) >= report["target"]
+                write_summary(report)
+        except (OSError, ValueError, KeyError) as exc:
+            print(f"WARNING: daily summary could not be updated after upload: {exc}")
 
 
 if __name__ == "__main__":

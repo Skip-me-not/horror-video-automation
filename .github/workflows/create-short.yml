@@ -43,6 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
+      PYTHONUNBUFFERED: "1"
       REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT }}
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
@@ -99,7 +100,6 @@ jobs:
 
       - name: Persist Reddit source rotation safely
         if: ${{ always() && steps.render.outcome == 'success' && steps.youtube.outcome == 'success' }}
-        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
