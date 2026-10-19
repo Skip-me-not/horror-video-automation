@@ -834,7 +834,19 @@ def main() -> None:
                 selected = select_sources(records, config)
                 if len(selected) < config["MIN_SOURCE_COUNT"]:
                     raise QualityError(f"only {len(selected)} sources passed the source-quality gate")
-                shots = plan_shots(selected, duration, config, seed=video_id + idol)
+                shots = []
+                edit_template = ""
+                template_reasons = []
+                for edit_template in ("strongest_visual", "hook_body_payoff", "comparison", "timeline"):
+                    try:
+                        shots = plan_shots(selected, duration, config, seed=video_id + idol,
+                                           template=edit_template)
+                        break
+                    except QualityError as exc:
+                        template_reasons.append(f"{edit_template}: {exc}")
+                if not shots:
+                    raise QualityError("all deterministic edit templates failed: "
+                                       + "; ".join(template_reasons))
                 local_clips = [Path(item["path"]) for item in selected]
                 clips = [post_by_id[item["source_id"]] for item in selected]
                 if args.music_file:
@@ -857,6 +869,7 @@ def main() -> None:
                 report = build_report(candidate_id, records, selected, shots, duration, config,
                                       final_issues=problems)
                 report["quality_tier"] = tier(report["final_quality_score"], config)
+                report["edit_template"] = edit_template
                 rendered_reports.append(report)
                 if report["decision"] != "publish":
                     write_report(report)

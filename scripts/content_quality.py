@@ -235,9 +235,12 @@ def select_sources(records: list[dict[str, Any]], config: dict[str, Any]) -> lis
 
 def plan_shots(
     sources: list[dict[str, Any]], duration: float, config: dict[str, Any], *, seed: str,
+    template: str = "strongest_visual",
 ) -> list[dict[str, Any]]:
     if len(sources) < config["MIN_SOURCE_COUNT"]:
         raise QualityError("insufficient distinct sources")
+    if template not in {"strongest_visual", "hook_body_payoff", "comparison", "timeline"}:
+        raise QualityError(f"unknown deterministic edit template: {template}")
     rng = random.Random(seed)
     cursors = {item["source_id"]: min(1.2, max(0.0, item["duration"] - 3))
                if item.get("opening_luma", 255) < 16 or item.get("opening_motion", 1) < 0.03 else 0.0
@@ -279,11 +282,21 @@ def plan_shots(
             raise QualityError("not enough unique unlooped footage for the requested duration")
         full_shot = [item for item in eligible if available[item["source_id"]] >= target]
         eligible = full_shot or eligible
-        source = max(eligible, key=lambda item: (
-            item["score"] - used[item["source_id"]] * 2
-            + (item.get("opening_motion", 0) * 30 if not shots else 0),
-            available[item["source_id"]],
-        ))
+        timeline = sorted(sources, key=lambda item: item.get("published_utc") or 0)
+        timeline_target = min(len(timeline) - 1, int(elapsed / max(duration, 1) * len(timeline)))
+        top_two = sorted(sources, key=lambda item: item["score"], reverse=True)[:2]
+        def preference(item: dict[str, Any]) -> tuple[float, float]:
+            bonus = 0.0
+            if template == "hook_body_payoff":
+                bonus = item.get("opening_motion", 0) * (35 if remaining < 8 else 12)
+            elif template == "comparison" and top_two:
+                bonus = 20 if item["source_id"] == top_two[len(shots) % len(top_two)]["source_id"] else 0
+            elif template == "timeline":
+                bonus = 18 if item["source_id"] == timeline[timeline_target]["source_id"] else 0
+            return (item["score"] - used[item["source_id"]] * 2 + bonus
+                    + (item.get("opening_motion", 0) * 30 if not shots else 0),
+                    available[item["source_id"]])
+        source = max(eligible, key=preference)
         source_id = source["source_id"]
         target = min(target, available[source_id])
         if target < 0.1:

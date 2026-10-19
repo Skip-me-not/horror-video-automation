@@ -12,6 +12,12 @@ def config():
     return quality.load_quality_config()
 
 
+def test_unknown_edit_template_rejected():
+    with pytest.raises(quality.QualityError, match="unknown deterministic edit template"):
+        quality.plan_shots([{"source_id": str(i)} for i in range(3)], 45, config(),
+                           seed="test", template="random")
+
+
 def post(post_id="one", *, score=800, created_utc=1_800_000_000):
     return {
         "id": post_id, "permalink": f"/r/kpop/comments/{post_id}/title/",
@@ -92,9 +98,10 @@ def test_pacing_never_exceeds_absolute_clip_max_across_seeds():
          "score": 90 - index, "opening_luma": 100, "opening_motion": 0.4}
         for index in range(4)
     ]
-    for seed in range(100):
-        shots = quality.plan_shots(sources, 58, config(), seed=str(seed))
-        assert max(shot["duration"] for shot in shots) <= config()["ABSOLUTE_CLIP_MAX"]
+    for template in ("strongest_visual", "hook_body_payoff", "comparison", "timeline"):
+        for seed in range(100):
+            shots = quality.plan_shots(sources, 58, config(), seed=str(seed), template=template)
+            assert max(shot["duration"] for shot in shots) <= config()["ABSOLUTE_CLIP_MAX"]
 
 
 def test_insufficient_distinct_sources_rejects_without_publishing():
