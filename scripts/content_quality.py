@@ -243,7 +243,7 @@ def plan_shots(
             if remaining < 8 else config["NORMAL_CLIP_MAX"])
         cap = min(cap, config["ABSOLUTE_CLIP_MAX"])
         target = min(remaining, cap * rng.uniform(0.70, 1.0))
-        if remaining <= cap * 1.25:
+        if remaining <= cap:
             target = remaining
         available = {
             item["source_id"]: min(
@@ -260,7 +260,7 @@ def plan_shots(
         if shots:
             alternate = [item for item in eligible if item["source_id"] != shots[-1]["source_id"]]
             eligible = alternate or eligible
-            if remaining <= cap * 1.25:
+            if remaining <= cap:
                 different_ending = [item for item in eligible if item["source_id"] != shots[0]["source_id"]]
                 if not different_ending:
                     raise QualityError("ending would repeat the hook source")

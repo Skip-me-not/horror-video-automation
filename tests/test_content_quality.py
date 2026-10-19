@@ -86,6 +86,17 @@ def test_pacing_varies_and_never_loops_or_dominates():
                for index in range(1, len(shots)))
 
 
+def test_pacing_never_exceeds_absolute_clip_max_across_seeds():
+    sources = [
+        {"source_id": str(index), "path": f"{index}.mp4", "duration": 60,
+         "score": 90 - index, "opening_luma": 100, "opening_motion": 0.4}
+        for index in range(4)
+    ]
+    for seed in range(100):
+        shots = quality.plan_shots(sources, 58, config(), seed=str(seed))
+        assert max(shot["duration"] for shot in shots) <= config()["ABSOLUTE_CLIP_MAX"]
+
+
 def test_insufficient_distinct_sources_rejects_without_publishing():
     selected = [{"source_id": "one", "score": 90, "opening_luma": 100,
                  "source_url": "https://www.reddit.com/one", "reasons": [], "accepted": True}]
