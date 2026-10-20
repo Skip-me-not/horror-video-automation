@@ -76,7 +76,11 @@
     "https://www.reddit.com/r/seventeen/comments/1vk6x0i/260810_seventeen_mingyu_seungkwan_dino_military/",
     "https://www.reddit.com/r/kpop/comments/1vk6oz3/seventeen_mingyu_to_enlist_on_september_10/",
     "https://www.reddit.com/r/kpop/comments/1p5mgxn/seventeen_joshua_mingyu_seungkwan_vernon_dino/",
-    "https://www.reddit.com/r/seventeen/comments/1txdha8/260605_mensfolio_instagram_update_with_mingyu_and/"
+    "https://www.reddit.com/r/seventeen/comments/1txdha8/260605_mensfolio_instagram_update_with_mingyu_and/",
+    "https://www.reddit.com/r/bts7/comments/1whw2w0/w_korea_ig_post_feat_jungkook_for_calvin_klein/",
+    "https://www.reddit.com/r/bts7/comments/1wwh9m3/jungkook_ig_post_2_031026/",
+    "https://www.reddit.com/r/bts7/comments/1wjz5pg/calvin_klein_on_instagram_5_ft_jungkook_190926/",
+    "https://www.reddit.com/r/bts7/comments/1wiwfg3/calvin_klein_ig_post_feat_jungkook_180926/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -154,10 +158,13 @@
     "https://www.reddit.com/r/seventeen/comments/1w61s61/260903_eyesmag_instagram_update_with_mingyu/",
     "https://www.reddit.com/r/seventeen/comments/1vxznry/260825_seungkwan_weverse_update_with_mingyu_and_dk/",
     "https://www.reddit.com/r/seventeen/comments/1viww21/260808_seventeen_instagram_update_with_picheolin/",
-    "https://www.reddit.com/r/seventeen/comments/1urmcix/260709_mingyu_instagram_update/"
+    "https://www.reddit.com/r/seventeen/comments/1urmcix/260709_mingyu_instagram_update/",
+    "https://www.reddit.com/r/bts7/comments/1whcvox/calvin_klein_on_twitter_ft_jungkook_160926/",
+    "https://www.reddit.com/r/bangtan/comments/1wwgub0/261003_jungkook_cf_compilation/",
+    "https://www.reddit.com/r/bts7/comments/1wvmt9g/jungkook_ig_story_021026/",
+    "https://www.reddit.com/r/bts7/comments/1whwo9j/billboard_ig_post_feat_jungkook_for_calvin_klein/"
   ],
   "idol_history": [
-    "Jungkook",
     "Ningning",
     "Jennie",
     "Sana",
@@ -168,7 +175,8 @@
     "Yeonjun",
     "Jihyo",
     "Chaewon",
-    "Mingyu"
+    "Mingyu",
+    "Jungkook"
   ],
   "recent_videos": [
     {
@@ -332,13 +340,68 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39401348969-jungkook",
+      "idol": "Jungkook",
+      "sources": [
+        {
+          "source_id": "1whcvox",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1whcvox/calvin_klein_on_twitter_ft_jungkook_160926/",
+          "creator": "Eternal_ARMY0613",
+          "sha256": "cb9e89c439d630e2ced7533fd81fa1a789e4dfb28a231b92306d6cb7799ce774",
+          "frame_hashes": [
+            "7070d2ccb030676f",
+            "fc39b2baf9fcd8f8",
+            "7278717864c6cece",
+            "0000004468000000"
+          ]
+        },
+        {
+          "source_id": "1wwgub0",
+          "source_url": "https://www.reddit.com/r/bangtan/comments/1wwgub0/261003_jungkook_cf_compilation/",
+          "creator": "Eternal_ARMY0613",
+          "sha256": "85333aaa1083c680ab8a7d84673d3493d8e4eb3928dbc311c5b96fe24ac2854c",
+          "frame_hashes": [
+            "1c78e09430080000",
+            "05010c1b3a646260",
+            "0e0f1b0b81b1bdbd",
+            "1d7099b9f9191000"
+          ]
+        },
+        {
+          "source_id": "1wvmt9g",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wvmt9g/jungkook_ig_story_021026/",
+          "creator": "alltherach_",
+          "sha256": "742cb4b35e2b0c55f1585916cd51e095c5d3ff3fff9ab0433276590751d2433f",
+          "frame_hashes": [
+            "8243171798d860e0",
+            "8243171798d860e0",
+            "8243171798d860e0",
+            "8243171798d860e0"
+          ]
+        },
+        {
+          "source_id": "1whwo9j",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1whwo9j/billboard_ig_post_feat_jungkook_for_calvin_klein/",
+          "creator": "alltherach_",
+          "sha256": "053531f264dcdab5f692df5306df75d3d65cb0532a6c5e3210f4cc6da630f515",
+          "frame_hashes": [
+            "b0440490d1822c10",
+            "2323130303070f3e",
+            "3040011747470700",
+            "786c93726c6fd1d9"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
     "2026-10-20": [
       "UXWCRAjDOQ4",
       "DgQc5l2s82I",
-      "Y4_j1L8c4Zc"
+      "Y4_j1L8c4Zc",
+      "vOKFXHcaBFY"
     ]
   }
 }
