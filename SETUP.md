@@ -18,7 +18,7 @@ This version does not use AI, OpenCode, OpenVerse, Reddit client credentials, or
 
 Open **Actions → Create Reddit idol Short → Run workflow**. Select an idol, choose `3` or `4` source-backed beats, and leave the subreddit list at its default unless you want a different public community set. Set `dry_run` to render and inspect an artifact without uploading.
 
-Scheduled runs and manual runs without `dry_run` upload as public **only when the source and final quality gates pass**. The four daily slots search a larger candidate pool and pick the strongest compliant video per slot; if the pool is exhausted, a slot is skipped instead of publishing below the 65-point floor. A JSON `quality_reports/daily_summary.json` records discovered/analyzed/rendered/published counts, tiers, and the actual YouTube IDs. The workflow renders with local Piper TTS and uses deterministic source-grounded editorial copy. It does not send source data to an AI provider.
+Scheduled runs and manual runs without `dry_run` upload as public. Four primary daily slots search up to 16 topics and render up to 10 candidates. Each slot has a retry 40 minutes later; the retry reads the persisted daily YouTube IDs and exits when that slot is already filled. If the normal pool is exhausted, quota backfill may reuse older source posts and use the configured 45/55 source/final score thresholds, while technical corruption and within-video duplicates remain blocked. `quality_reports/daily_summary.json` records discovered/analyzed/rendered/published counts, tiers, and actual YouTube IDs. The workflow uses local Piper TTS and does not send source data to an AI provider.
 
 ## Rights and accuracy
 

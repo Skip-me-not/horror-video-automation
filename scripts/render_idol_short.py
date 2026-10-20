@@ -25,7 +25,9 @@ from scripts.content_quality import (
     QualityError, build_report, caption_issues, final_media_issues, inspect_source,
     load_quality_config, plan_shots, select_sources, write_report,
 )
-from scripts.daily_quota import myanmar_date, rank_candidates, summary, tier, write_summary
+from scripts.daily_quota import (
+    myanmar_date, rank_candidates, scheduled_slot_target, summary, tier, write_summary,
+)
 from scripts.reddit_source import (
     DEFAULT_SUBREDDITS,
     RedditClient,
@@ -720,18 +722,21 @@ def main() -> None:
     if not shutil.which("ffmpeg"):
         raise IdolShortError("ffmpeg is not installed or not on PATH")
     config = load_quality_config()
+    quota_mode = os.environ.get("GUARANTEE_DAILY_QUOTA", "true").casefold() != "false"
     channel_name = validate_channel_name(os.environ.get("CHANNEL_NAME", "").strip() or DEFAULT_CHANNEL_NAME)
     rng: random.Random | random.SystemRandom = (
         random.Random(args.seed) if args.seed is not None else random.SystemRandom()
     )
     state = load_state()
     today = myanmar_date()
-    if (len(state["daily_uploads"].get(today, [])) >= config["TARGET_PUBLISHED_VIDEOS_PER_DAY"]
+    slot_target = (scheduled_slot_target() if os.environ.get("GITHUB_EVENT_NAME") == "schedule"
+                   else config["TARGET_PUBLISHED_VIDEOS_PER_DAY"])
+    if (len(state["daily_uploads"].get(today, [])) >= slot_target
             and os.environ.get("QUALITY_DRY_RUN", "").casefold() != "true"):
         write_summary(summary(config, date=today, topics_attempted=0, analyzed=0,
                               reports=[], published_ids=state["daily_uploads"][today], selected=None))
         publish_output(False)
-        print("DAILY QUOTA ALREADY MET: no extra upload")
+        print(f"DAILY SLOT TARGET ALREADY MET: {slot_target} upload(s); no extra upload")
         return
     user_agent = (
         os.environ.get("REDDIT_USER_AGENT", "").strip()
@@ -744,7 +749,7 @@ def main() -> None:
     video_id = str(os.environ.get("GITHUB_RUN_ID") or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S"))
     considered: list[dict[str, Any]] = []
     attempt_reasons: list[str] = []
-    discovered: list[tuple[float, str, list[dict[str, Any]], list[dict[str, Any]]]] = []
+    discovered: list[tuple[float, str, list[dict[str, Any]], list[dict[str, Any]], bool]] = []
     topics = candidate_idols(args.idol, state["idol_history"], rng)[:config["MAX_CANDIDATES"]]
     # Metadata-only pass: expensive TTS, downloads and renders start only after ranking.
     attempted_topics = 0
@@ -754,22 +759,39 @@ def main() -> None:
         attempted_topics += 1
         try:
             posts = client.discover(idol, parse_subreddits(args.subreddits))
+            emergency = False
             try:
                 facts = select_fact_posts(posts, idol, count=args.fact_count,
                                           excluded_urls=state["used_fact_urls"])
             except RedditSourceError:
-                if args.fact_count != 4 or args.idol.strip():
-                    raise
-                facts = select_fact_posts(posts, idol, count=3,
-                                          excluded_urls=state["used_fact_urls"])
-                print(f"BACKFILL: {idol} has three distinct source-backed beats; allow shorter video")
+                try:
+                    if args.fact_count != 4:
+                        raise
+                    facts = select_fact_posts(posts, idol, count=3,
+                                              excluded_urls=state["used_fact_urls"])
+                    print(f"BACKFILL: {idol} has three distinct source-backed beats; allow shorter video")
+                except RedditSourceError:
+                    if not quota_mode:
+                        raise
+                    emergency = True
+                    try:
+                        facts = select_fact_posts(posts, idol, count=args.fact_count, excluded_urls=())
+                    except RedditSourceError:
+                        facts = select_fact_posts(posts, idol, count=3, excluded_urls=())
+                    print(f"QUOTA BACKFILL: {idol} may reuse older fact sources")
             clip_candidates = rank_clip_posts(posts, idol, excluded_urls=state["used_clip_urls"])
+            if len(clip_candidates) < config["MIN_SOURCE_COUNT"]:
+                if not quota_mode:
+                    raise QualityError(f"only {len(clip_candidates)} hosted clips; need {config['MIN_SOURCE_COUNT']}")
+                emergency = True
+                clip_candidates = rank_clip_posts(posts, idol, excluded_urls=())
+                print(f"QUOTA BACKFILL: {idol} may reuse older visual sources")
             if len(clip_candidates) < config["MIN_SOURCE_COUNT"]:
                 raise QualityError(f"only {len(clip_candidates)} hosted clips; need {config['MIN_SOURCE_COUNT']}")
             # Reddit scores are only a cheap ranking signal, never a quality pass.
             metadata_rank = sum(max(0, post["score"]) for post in clip_candidates[:4])
             metadata_rank += sum(max(0, post["score"]) for post in facts)
-            discovered.append((metadata_rank, idol, facts, clip_candidates))
+            discovered.append((metadata_rank, idol, facts, clip_candidates, emergency))
         except (RedditSourceError, QualityError) as exc:
             attempt_reasons.append(f"{idol}: {exc}")
             print(f"QUALITY METADATA REJECTED: {idol}: {exc}")
@@ -780,7 +802,7 @@ def main() -> None:
     rendered_reports: list[dict[str, Any]] = []
     staged_dir = OUTPUT_DIR / "quality-candidates"
     staged_dir.mkdir(parents=True, exist_ok=True)
-    for render_index, (_rank, idol, facts, clip_candidates) in enumerate(
+    for render_index, (_rank, idol, facts, clip_candidates, emergency) in enumerate(
         discovered[:config["MAX_CANDIDATES_TO_RENDER"]]
     ):
         output_video.unlink(missing_ok=True)
@@ -789,6 +811,11 @@ def main() -> None:
         shots: list[dict[str, Any]] = []
         duration = 0.0
         try:
+            candidate_config = dict(config)
+            quota_relaxed = emergency
+            if emergency:
+                candidate_config["MIN_SOURCE_SCORE"] = config["QUOTA_MIN_SOURCE_SCORE"]
+                candidate_config["MIN_FINAL_SCORE"] = config["QUOTA_MIN_FINAL_SCORE"]
             script_result = generate_script(idol, facts, mode="fallback")
             segments = script_result.segments
             for index, segment in enumerate(segments):
@@ -817,9 +844,10 @@ def main() -> None:
                     clip_path = temporary / f"reddit-candidate-{index}.mp4"
                     try:
                         download_reddit_video(post["video_url"], clip_path, user_agent=user_agent)
-                        history = [source for video in state["recent_videos"][-config["RECENT_HISTORY_SIZE"]:]
-                                   for source in video.get("sources", [])]
-                        record = inspect_source(clip_path, post, history, config)
+                        history = ([] if emergency else
+                                   [source for video in state["recent_videos"][-config["RECENT_HISTORY_SIZE"]:]
+                                    for source in video.get("sources", [])])
+                        record = inspect_source(clip_path, post, history, candidate_config)
                     except (IdolShortError, QualityError) as exc:
                         record = {
                             "source_id": str(post["id"]),
@@ -831,7 +859,19 @@ def main() -> None:
                     if sum(item["accepted"] for item in records) >= config["MAX_SOURCE_COUNT"] + 2:
                         break
                 considered.extend(records)
-                selected = select_sources(records, config)
+                selected = select_sources(records, candidate_config)
+                if len(selected) < config["MIN_SOURCE_COUNT"] and quota_mode:
+                    quota_relaxed = True
+                    candidate_config["MIN_SOURCE_SCORE"] = config["QUOTA_MIN_SOURCE_SCORE"]
+                    candidate_config["MIN_FINAL_SCORE"] = config["QUOTA_MIN_FINAL_SCORE"]
+                    for record in records:
+                        has_decodable_identity = bool(record.get("sha256") and len(record.get("frame_hashes", [])) >= 2)
+                        duplicate = any("duplicate" in reason for reason in record.get("reasons", []))
+                        if has_decodable_identity and not duplicate and record.get("score", 0) >= config["QUOTA_MIN_SOURCE_SCORE"]:
+                            record["accepted"] = True
+                            record["reasons"] = [reason for reason in record["reasons"]
+                                                 if not reason.startswith("score below")]
+                    selected = select_sources(records, candidate_config)
                 if len(selected) < config["MIN_SOURCE_COUNT"]:
                     raise QualityError(f"only {len(selected)} sources passed the source-quality gate")
                 shots = []
@@ -839,7 +879,7 @@ def main() -> None:
                 template_reasons = []
                 for edit_template in ("strongest_visual", "hook_body_payoff", "comparison", "timeline"):
                     try:
-                        shots = plan_shots(selected, duration, config, seed=video_id + idol,
+                        shots = plan_shots(selected, duration, candidate_config, seed=video_id + idol,
                                            template=edit_template)
                         break
                     except QualityError as exc:
@@ -862,14 +902,15 @@ def main() -> None:
                     music_path, music_asset = select_bundled_music(rng)
                 render_video(local_clips, music_path, narration, captions, output_video,
                              duration=duration, shots=shots)
-                _final_media, problems = final_media_issues(output_video, config,
+                _final_media, problems = final_media_issues(output_video, candidate_config,
                                                              minimum_duration=minimum_seconds)
                 problems.extend(caption_issues(captions, duration))
                 candidate_id = f"{video_id}-{re.sub('[^a-z0-9]+', '-', idol.casefold())}"
-                report = build_report(candidate_id, records, selected, shots, duration, config,
+                report = build_report(candidate_id, records, selected, shots, duration, candidate_config,
                                       final_issues=problems)
                 report["quality_tier"] = tier(report["final_quality_score"], config)
                 report["edit_template"] = edit_template
+                report["quota_backfill"] = quota_relaxed
                 rendered_reports.append(report)
                 if report["decision"] != "publish":
                     write_report(report)

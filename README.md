@@ -11,7 +11,7 @@ This repository creates public 55–65 second K-pop idol Shorts from public Redd
 - blurred vertical fill and variable, source-aware cuts (fastest in the opening)
 - local Piper narration
 - bundled repository music selected locally
-- four daily quality-gated attempts at 05:00, 08:00, 11:00, and 14:00 Myanmar time; weak videos are skipped
+- four daily public-upload slots at 05:00, 08:00, 11:00, and 14:00 Myanmar time, each with a guarded retry 40 minutes later
 
 ## Required GitHub configuration
 
@@ -33,15 +33,15 @@ No `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, `OPENVERSE_CLIENT_ID`, `OPENVERSE
 
 ## Manual run
 
-Open **Actions → Create Reddit idol Short → Run workflow**. Choose an idol or leave it blank for rotation, choose 3 or 4 facts, and keep the default subreddit list. Set `dry_run` to download, score, render when eligible, and upload a quality report **without** publishing. A manual or scheduled run publishes only when the final quality gate passes. Blank-idol runs inspect up to 16 topics (starting with 10), metadata-filter them, render up to 6, and choose the highest quality/diversity score.
+Open **Actions → Create Reddit idol Short → Run workflow**. Choose an idol or leave it blank for rotation, choose 3 or 4 facts, and keep the default subreddit list. Set `dry_run` to download, score, render when eligible, and upload a quality report **without** publishing. Blank-idol runs inspect all 16 configured topics, metadata-filter them, render up to 10, and choose the highest quality/diversity score.
 
 ## Content Quality Pipeline v2
 
 The existing downloader, Piper narration, captions, FFmpeg compositor, and YouTube uploader remain in place. Before editing, `scripts/content_quality.py` probes each candidate with ffprobe, rejects low-resolution/fps/duration sources, samples four frames for lightweight dHash duplicate checks, and calculates a 0–100 score from configurable source quality, engagement (when present), recency (when present), duration, uniqueness, and format. It ranks the passing clips and requires at least three distinct sources. Downloaded file hashes and frame hashes from the most recent 30 **published** videos are persisted in `data/reddit_state.json` only after a successful upload.
 
-The pacing planner uses a short hook shot, variable early/middle/end shot lengths, forward-only offsets into each source, and a maximum 35% contribution from one source. It can try four deterministic edit orders (strongest visual, hook/body/payoff, comparison, timeline) while retaining the no-loop and source-share rules. If a rotating topic has only three distinct fact posts, a shorter source-backed video is allowed instead of padding footage. If footage is insufficient, it rejects the candidate and tries another idol. A final gate probes the rendered video, checks audio silence/level, black sections, caption timing/safe position, pacing, and technical integrity. Rejection is a successful workflow outcome with no YouTube upload, not a broken infrastructure run. Reports are saved as `quality_reports/<run-id>-<idol>.json` and uploaded as GitHub Actions artifacts, including when no video is published. GitHub Actions runs remain scheduled four times a day, but four uploads are no longer forced.
+The pacing planner uses a short hook shot, variable early/middle/end shot lengths, forward-only offsets into each source, and a maximum 35% contribution from one source. It can try four deterministic edit orders (strongest visual, hook/body/payoff, comparison, timeline) while retaining the no-loop and technical-integrity rules. If a rotating topic has only three distinct fact posts, a shorter source-backed video is allowed instead of padding footage. The daily-quota fallback may reuse an older source and lower source/final scoring thresholds to 45/55 only after the normal pool is exhausted; corrupted media, undecodable footage, invalid audio, bad aspect ratio, long black sections, and within-video duplicates still fail. Reports explicitly mark `quota_backfill`.
 
-All tuning lives in [`config/content_quality.json`](config/content_quality.json). Defaults include 720×720 minimum source, 24fps, 3–180s source duration, minimum source score 60, final tiers A≥80/B≥72/C≥65 with an absolute 65 floor, 3–4 distinct sources, 1.5s hook maximum, 2.5s early maximum, 4s normal maximum, 6s absolute maximum, and a 35% per-source share limit. `quality_reports/daily_summary.json` counts actual YouTube uploads in the Myanmar calendar day. There are four daily scheduled slots, but four uploads cannot be guaranteed when fewer than four compliant videos exist or YouTube rejects an upload; the floor and duplicate checks are never relaxed. No AI/LLM API is called.
+All tuning lives in [`config/content_quality.json`](config/content_quality.json). Normal tiers remain A≥80/B≥72/C≥65. `quality_reports/daily_summary.json` counts actual YouTube uploads in the Myanmar calendar day. Each retry checks its slot target before rendering, so a successful primary run is not duplicated. The system targets exactly four daily uploads; YouTube/API outages, account quota exhaustion, or GitHub failing to start a scheduled job remain external failure cases. No AI/LLM API is called.
 
 ## Source safety
 
