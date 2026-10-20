@@ -68,7 +68,11 @@
     "https://www.reddit.com/r/twice/comments/1wwqvsy/261004_jihyo_instagram_update_christianlouboutin/",
     "https://www.reddit.com/r/twice/comments/1w59wmq/260902_tuide_tiktok_update_sunkiss_with_seoyeon/",
     "https://www.reddit.com/r/twice/comments/1vwsd7q/260824_jihyo_instagram_update_muglerofficial/",
-    "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my/"
+    "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my/",
+    "https://www.reddit.com/r/lesserafim/comments/1wg774k/260915_kim_chaewon_instagram_update_feat_le/",
+    "https://www.reddit.com/r/lesserafim/comments/1wupa3l/261001_kim_chaewon_instagram_update_feat_hong/",
+    "https://www.reddit.com/r/lesserafim/comments/1wio1t5/260917_miyawaki_sakura_instagram_update_feat_kim/",
+    "https://www.reddit.com/r/lesserafim/comments/1wpqvov/260925_kim_chaewon_instagram_update_hate_that_i/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -138,7 +142,11 @@
     "https://www.reddit.com/r/twice/comments/1ww25w8/261003_eyesmag_instagram_update_louboutin_jihyo/",
     "https://www.reddit.com/r/twice/comments/1vxtc6f/260825_waterbomb_kaohsiung_official_instagram/",
     "https://www.reddit.com/r/twice/comments/1w3929y/260831_venus_site_update_born_from_the/",
-    "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/"
+    "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/",
+    "https://www.reddit.com/r/lesserafim/comments/1wnbe1n/260922_le_sserafim_tiktok_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/lesserafim/comments/1wsdlit/260928_le_sserafim_tiktok_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/lesserafim/comments/1wpqvov/260925_kim_chaewon_instagram_update_hate_that_i/",
+    "https://www.reddit.com/r/lesserafim/comments/1wlf5c8/260920_mnet_plus_official_twitter_update_with_kim/"
   ],
   "idol_history": [
     "Jungkook",
@@ -149,10 +157,10 @@
     "Mingyu",
     "Wonyoung",
     "Felix",
-    "Chaewon",
     "Karina",
     "Yeonjun",
-    "Jihyo"
+    "Jihyo",
+    "Chaewon"
   ],
   "recent_videos": [
     {
@@ -208,11 +216,66 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39351972684-chaewon",
+      "idol": "Chaewon",
+      "sources": [
+        {
+          "source_id": "1wnbe1n",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wnbe1n/260922_le_sserafim_tiktok_update_with_kim_chaewon/",
+          "creator": "kpopsns28",
+          "sha256": "eb7db5d0d0b3151e4c39d7631e409cfde418e30e12dc074b2596c7d868f1c399",
+          "frame_hashes": [
+            "edf7e7a6b872c3f2",
+            "eef7e7a74dc6c7d2",
+            "ecefe7a68ebcb19d",
+            "daef4e4c1898d3c2"
+          ]
+        },
+        {
+          "source_id": "1wsdlit",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wsdlit/260928_le_sserafim_tiktok_update_with_kim_chaewon/",
+          "creator": "XuhuiGao",
+          "sha256": "1add79450e2c25f0f4d8541ff10ba33c7335aea610cf5b69cf19c05169bfa4c3",
+          "frame_hashes": [
+            "2860404841727040",
+            "1e7363632b0d0f09",
+            "78f1f0323e0e0e16",
+            "f371a3a31f0f0f59"
+          ]
+        },
+        {
+          "source_id": "1wpqvov",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wpqvov/260925_kim_chaewon_instagram_update_hate_that_i/",
+          "creator": "XuhuiGao",
+          "sha256": "90486917ec181ebef11729bd75e8488d8e2bb96cd32ba5d631942bf39232cd9a",
+          "frame_hashes": [
+            "b0b0bcb93dacacb4",
+            "b0b4b8b931b2b0b0",
+            "b0b0b4b135b4b4b4",
+            "b0b4b8b131b2b0b0"
+          ]
+        },
+        {
+          "source_id": "1wlf5c8",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wlf5c8/260920_mnet_plus_official_twitter_update_with_kim/",
+          "creator": "kpopsns28",
+          "sha256": "74223f23bc1bb4ed23f418a4721fe8def3e6369e0fd5ad47f29ab44545a4d796",
+          "frame_hashes": [
+            "b0a8b8940db8f459",
+            "7071484c5c323333",
+            "303169ccdc342237",
+            "3072d1d9d8292676"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
     "2026-10-20": [
-      "UXWCRAjDOQ4"
+      "UXWCRAjDOQ4",
+      "DgQc5l2s82I"
     ]
   }
 }
