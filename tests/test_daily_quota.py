@@ -1,5 +1,7 @@
 from scripts.content_quality import load_quality_config
-from scripts.daily_quota import rank_candidates, summary, tier
+from datetime import datetime, timezone
+
+from scripts.daily_quota import rank_candidates, scheduled_slot_target, summary, tier
 from scripts.merge_reddit_state import merge_states
 
 
@@ -17,6 +19,14 @@ def test_quality_tiers_preserve_absolute_floor():
     assert [tier(score, settings) for score in (80, 79, 72, 71, 65, 64)] == [
         "A", "B", "B", "C", "C", None,
     ]
+
+
+def test_retry_windows_never_overfill_a_daily_slot():
+    assert scheduled_slot_target(datetime(2026, 10, 19, 22, 30, tzinfo=timezone.utc)) == 1
+    assert scheduled_slot_target(datetime(2026, 10, 19, 23, 10, tzinfo=timezone.utc)) == 1
+    assert scheduled_slot_target(datetime(2026, 10, 20, 1, 30, tzinfo=timezone.utc)) == 2
+    assert scheduled_slot_target(datetime(2026, 10, 20, 4, 30, tzinfo=timezone.utc)) == 3
+    assert scheduled_slot_target(datetime(2026, 10, 20, 7, 30, tzinfo=timezone.utc)) == 4
 
 
 def test_rank_uses_quality_and_daily_diversity():

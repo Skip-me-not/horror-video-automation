@@ -3,17 +3,29 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from zoneinfo import ZoneInfo
 from typing import Any
 
 
 REPORT = Path(__file__).resolve().parents[1] / "quality_reports" / "daily_summary.json"
+MYANMAR_TIME = timezone(timedelta(hours=6, minutes=30))
 
 
 def myanmar_date() -> str:
-    return datetime.now(ZoneInfo("Asia/Yangon")).date().isoformat()
+    return datetime.now(MYANMAR_TIME).date().isoformat()
+
+
+def scheduled_slot_target(now: datetime | None = None) -> int:
+    """Maximum uploads allowed by the current Myanmar publishing window."""
+    local = now.astimezone(MYANMAR_TIME) if now else datetime.now(MYANMAR_TIME)
+    if local.hour < 8:
+        return 1
+    if local.hour < 11:
+        return 2
+    if local.hour < 14:
+        return 3
+    return 4
 
 
 def tier(score: int, config: dict[str, Any]) -> str | None:

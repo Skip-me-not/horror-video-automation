@@ -201,7 +201,7 @@ def test_workflow_yaml_preserves_public_schedule_and_success_only_rotation():
     payload = yaml.safe_load(workflow_path.read_text(encoding="utf-8"))
     assert isinstance(payload, dict)
     text = workflow_path.read_text(encoding="utf-8")
-    assert text.count("- cron:") == 4
+    assert text.count("- cron:") == 8
     assert "python -m scripts.upload_youtube" in text
     assert "steps.youtube.outcome == 'success'" in text
     assert "scripts.merge_reddit_state" in text

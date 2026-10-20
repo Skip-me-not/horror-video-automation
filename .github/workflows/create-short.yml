@@ -3,9 +3,13 @@ name: Create Reddit idol Short
 on:
   schedule:
     - cron: "30 22 * * *" # Myanmar time 05:00
+    - cron: "10 23 * * *" # Retry slot 1 at Myanmar time 05:40
     - cron: "30 1 * * *"  # Myanmar time 08:00
+    - cron: "10 2 * * *"  # Retry slot 2 at Myanmar time 08:40
     - cron: "30 4 * * *"  # Myanmar time 11:00
+    - cron: "10 5 * * *"  # Retry slot 3 at Myanmar time 11:40
     - cron: "30 7 * * *"  # Myanmar time 14:00
+    - cron: "10 8 * * *"  # Retry slot 4 at Myanmar time 14:40
   workflow_dispatch:
     inputs:
       dry_run:
@@ -54,6 +58,7 @@ jobs:
       INPUT_SUBREDDITS: ${{ github.event_name == 'workflow_dispatch' && inputs.subreddits || 'kpop,kpopthoughts,kpop_uncensored' }}
       INPUT_PRIVACY_STATUS: public
       QUALITY_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+      GUARANTEE_DAILY_QUOTA: "true"
 
     steps:
       - name: Check out repository
