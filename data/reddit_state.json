@@ -80,7 +80,11 @@
     "https://www.reddit.com/r/bts7/comments/1whw2w0/w_korea_ig_post_feat_jungkook_for_calvin_klein/",
     "https://www.reddit.com/r/bts7/comments/1wwh9m3/jungkook_ig_post_2_031026/",
     "https://www.reddit.com/r/bts7/comments/1wjz5pg/calvin_klein_on_instagram_5_ft_jungkook_190926/",
-    "https://www.reddit.com/r/bts7/comments/1wiwfg3/calvin_klein_ig_post_feat_jungkook_180926/"
+    "https://www.reddit.com/r/bts7/comments/1wiwfg3/calvin_klein_ig_post_feat_jungkook_180926/",
+    "https://www.reddit.com/r/Aespa/comments/1wxbszs/261004_aespa_twitter_update_with_karina_we_love/",
+    "https://www.reddit.com/r/Aespa/comments/1x2c10i/261010_karina_instagram_update_3/",
+    "https://www.reddit.com/r/Aespa/comments/1wo1sr6/260923_aespa_twitter_update_with_karina_nyc_nights/",
+    "https://www.reddit.com/r/Aespa/comments/1x31b6k/261011_aespa_twitter_update_with_giselle_karina/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -162,7 +166,11 @@
     "https://www.reddit.com/r/bts7/comments/1whcvox/calvin_klein_on_twitter_ft_jungkook_160926/",
     "https://www.reddit.com/r/bangtan/comments/1wwgub0/261003_jungkook_cf_compilation/",
     "https://www.reddit.com/r/bts7/comments/1wvmt9g/jungkook_ig_story_021026/",
-    "https://www.reddit.com/r/bts7/comments/1whwo9j/billboard_ig_post_feat_jungkook_for_calvin_klein/"
+    "https://www.reddit.com/r/bts7/comments/1whwo9j/billboard_ig_post_feat_jungkook_for_calvin_klein/",
+    "https://www.reddit.com/r/Aespa/comments/1wo2ech/260923_aespa_tiktok_update_with_karina_hello_im/",
+    "https://www.reddit.com/r/Aespa/comments/1wqd82v/16bit_karina_solo_finger_gun_moment/",
+    "https://www.reddit.com/r/Aespa/comments/1wky8cu/karina_you_are_exactly_who_you_think_you_are/",
+    "https://www.reddit.com/r/Aespa/comments/1wo3565/260923_karina_for_nordisk_fw26_collection_film/"
   ],
   "idol_history": [
     "Ningning",
@@ -171,12 +179,12 @@
     "Bang Chan",
     "Wonyoung",
     "Felix",
-    "Karina",
     "Yeonjun",
     "Jihyo",
     "Chaewon",
     "Mingyu",
-    "Jungkook"
+    "Jungkook",
+    "Karina"
   ],
   "recent_videos": [
     {
@@ -394,6 +402,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39523538589-karina",
+      "idol": "Karina",
+      "sources": [
+        {
+          "source_id": "1wo2ech",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wo2ech/260923_aespa_tiktok_update_with_karina_hello_im/",
+          "creator": "Klep3",
+          "sha256": "0b98b3ff1291f224cbc69d7e9f657dac2001f584867a44c90fd393b12e806aad",
+          "frame_hashes": [
+            "e6e4f86969683830",
+            "c62c686db4b0b83a",
+            "cd686969686031f5",
+            "ce6c706138b0b339"
+          ]
+        },
+        {
+          "source_id": "1wqd82v",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wqd82v/16bit_karina_solo_finger_gun_moment/",
+          "creator": "Siphon_01",
+          "sha256": "0fd49b06616b83974ff95e44a7bc3c2910a1be714592b55bbbf9230013eabb76",
+          "frame_hashes": [
+            "3080a5c54746c386",
+            "1b32ca8d0d8dc8c4",
+            "0a2f2f271f15160a",
+            "d00c87a1b32347c2"
+          ]
+        },
+        {
+          "source_id": "1wky8cu",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wky8cu/karina_you_are_exactly_who_you_think_you_are/",
+          "creator": "Dk_rkyoem",
+          "sha256": "7f6913c91b9d29f70ae00b93b4556a231876a60977f154da17330ea9fcbc8601",
+          "frame_hashes": [
+            "0000080e1e140000",
+            "00101d080e000000",
+            "0000040404000000",
+            "0000301810000000"
+          ]
+        },
+        {
+          "source_id": "1wo3565",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wo3565/260923_karina_for_nordisk_fw26_collection_film/",
+          "creator": "Klep3",
+          "sha256": "365398ac4f9aeb6d7adf0c4b8b0ccca57781ca47c9f8654f1d6456e54eb1edd9",
+          "frame_hashes": [
+            "b60626363edbc78e",
+            "e3c5c7cfbffbe77e",
+            "f3589e86c7841107",
+            "9432ecc898babc0e"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -402,6 +464,9 @@
       "DgQc5l2s82I",
       "Y4_j1L8c4Zc",
       "vOKFXHcaBFY"
+    ],
+    "2026-10-21": [
+      "MFzi9NCY5j0"
     ]
   }
 }
