@@ -92,7 +92,11 @@
     "https://www.reddit.com/r/kpop/comments/1utbxgg/jihyo_shares_that_twice_will_take_a_break_for_the/",
     "https://www.reddit.com/r/kpop/comments/1vcpar9/twice_jihyo_to_perform_at_waterbomb_kaohsiung_2026/",
     "https://www.reddit.com/r/kpop/comments/1wtzu81/twice_jihyo_harpers_bazaar_korea_x_atiissu/",
-    "https://www.reddit.com/r/kpop/comments/1q6cfl5/twices_nayeon_jihyo_momo_and_tzuyu_have_been/"
+    "https://www.reddit.com/r/kpop/comments/1q6cfl5/twices_nayeon_jihyo_momo_and_tzuyu_have_been/",
+    "https://www.reddit.com/r/straykids/comments/1w2i1s7/260830_hannah_bahng_instagram_story_update_with/",
+    "https://www.reddit.com/r/straykids/comments/1wn4qhr/260922_elle_men_hong_kong_instagram_update_with/",
+    "https://www.reddit.com/r/straykids/comments/1vuay8j/260821_stray_kids_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1w7430g/260904_epik_high_dj_tukutz_instagram_update/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -186,13 +190,16 @@
     "https://www.reddit.com/r/twice/comments/1wt7vyi/260929_harpers_bazaar_korea_instagram_update/",
     "https://www.reddit.com/r/twice/comments/1x0ucnd/261008_tuide_heres_how_we_filmed_the_challenge/",
     "https://www.reddit.com/r/twice/comments/1wzue7x/261007_jihyo_instagram_story_harpersbazaarkorea/",
-    "https://www.reddit.com/r/twice/comments/1wuvpes/261001_harpersbazaarkorea_instagram_reels_update/"
+    "https://www.reddit.com/r/twice/comments/1wuvpes/261001_harpersbazaarkorea_instagram_reels_update/",
+    "https://www.reddit.com/r/straykids/comments/1w7430g/260904_epik_high_dj_tukutz_instagram_update/",
+    "https://www.reddit.com/r/straykids/comments/1vuay8j/260821_stray_kids_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1w1edq7/260829_stray_kids_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1w66cgk/260903_stray_kids_instagram_update_with_bang_chan/"
   ],
   "idol_history": [
     "Ningning",
     "Jennie",
     "Sana",
-    "Bang Chan",
     "Wonyoung",
     "Felix",
     "Chaewon",
@@ -200,7 +207,8 @@
     "Jungkook",
     "Karina",
     "Yeonjun",
-    "Jihyo"
+    "Jihyo",
+    "Bang Chan"
   ],
   "recent_videos": [
     {
@@ -580,6 +588,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39577134043-bang-chan",
+      "idol": "Bang Chan",
+      "sources": [
+        {
+          "source_id": "1w7430g",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1w7430g/260904_epik_high_dj_tukutz_instagram_update/",
+          "creator": "princessgojo",
+          "sha256": "301540f1a79ce6158c351c0c6b81911f695434685ce2675e4a189d1ae1da95e5",
+          "frame_hashes": [
+            "361cbb9494eaeb69",
+            "371619b89c90ebe9",
+            "37161db0ca8aad69",
+            "37161ca898cce2e3"
+          ]
+        },
+        {
+          "source_id": "1vuay8j",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1vuay8j/260821_stray_kids_instagram_update_with_bang_chan/",
+          "creator": "princessgojo",
+          "sha256": "d8daa6779fb5b40f07350e4a095219f2e6f5a7dd8b601420b2067c9e81cdc9fe",
+          "frame_hashes": [
+            "33abe98e0ecccdc9",
+            "27ebe18c8cccc869",
+            "256b600c0e8c8dc8",
+            "3169701c1e8c848e"
+          ]
+        },
+        {
+          "source_id": "1w1edq7",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1w1edq7/260829_stray_kids_instagram_update_with_bang_chan/",
+          "creator": "princessgojo",
+          "sha256": "e4ce8196ae56e7765a02439cc065505958052569caab76bc99f1948ba4c13d4d",
+          "frame_hashes": [
+            "52f2786f2c8ccdd6",
+            "a9797c181e4cccf3",
+            "69618d13f07131e4",
+            "e9e99930383b09c4"
+          ]
+        },
+        {
+          "source_id": "1w66cgk",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1w66cgk/260903_stray_kids_instagram_update_with_bang_chan/",
+          "creator": "princessgojo",
+          "sha256": "f5987f318411c3701e52c23e3b3c750e7fbdf480adfa652a02e3f51e0dfaaaa5",
+          "frame_hashes": [
+            "40607062336462ca",
+            "73f2797c4e75e1f0",
+            "00301869696766c6",
+            "80f0c4e0f173cedc"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -592,7 +654,8 @@
     "2026-10-21": [
       "MFzi9NCY5j0",
       "fJ30_x7VLkc",
-      "oT8c6au9m4U"
+      "oT8c6au9m4U",
+      "KHErcgXiAZU"
     ]
   }
 }
