@@ -88,7 +88,11 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wxf4af/261004_yeonjun_paris_fashion_week_2026_press/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wxswu6/261005_yeonjun_presents_the_beautiful_paris/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvdbh/261002_yeonjuns_sunflower_original_song_post/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
+    "https://www.reddit.com/r/kpop/comments/1utbxgg/jihyo_shares_that_twice_will_take_a_break_for_the/",
+    "https://www.reddit.com/r/kpop/comments/1vcpar9/twice_jihyo_to_perform_at_waterbomb_kaohsiung_2026/",
+    "https://www.reddit.com/r/kpop/comments/1wtzu81/twice_jihyo_harpers_bazaar_korea_x_atiissu/",
+    "https://www.reddit.com/r/kpop/comments/1q6cfl5/twices_nayeon_jihyo_momo_and_tzuyu_have_been/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -178,7 +182,11 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvdbh/261002_yeonjuns_sunflower_original_song_post/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvpp3/261002_yeonjun_miu_mius_vinyl_club_popup_press/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wzv4j1/261007_yeonjun_catch_me_rolling_miumiu_instagram/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wzv4j1/261007_yeonjun_catch_me_rolling_miumiu_instagram/",
+    "https://www.reddit.com/r/twice/comments/1wt7vyi/260929_harpers_bazaar_korea_instagram_update/",
+    "https://www.reddit.com/r/twice/comments/1x0ucnd/261008_tuide_heres_how_we_filmed_the_challenge/",
+    "https://www.reddit.com/r/twice/comments/1wzue7x/261007_jihyo_instagram_story_harpersbazaarkorea/",
+    "https://www.reddit.com/r/twice/comments/1wuvpes/261001_harpersbazaarkorea_instagram_reels_update/"
   ],
   "idol_history": [
     "Ningning",
@@ -187,12 +195,12 @@
     "Bang Chan",
     "Wonyoung",
     "Felix",
-    "Jihyo",
     "Chaewon",
     "Mingyu",
     "Jungkook",
     "Karina",
-    "Yeonjun"
+    "Yeonjun",
+    "Jihyo"
   ],
   "recent_videos": [
     {
@@ -518,6 +526,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39554607582-jihyo",
+      "idol": "Jihyo",
+      "sources": [
+        {
+          "source_id": "1wt7vyi",
+          "source_url": "https://www.reddit.com/r/twice/comments/1wt7vyi/260929_harpers_bazaar_korea_instagram_update/",
+          "creator": "MajorIvan88",
+          "sha256": "aed41b7cd4c96748093ffe315d79bf735b7a49722fee7e3eb21b0565ba80370b",
+          "frame_hashes": [
+            "66cce8a8b9f0f818",
+            "dbf7e38386ccc080",
+            "3979fc9d9ddcecec",
+            "6fc6c70c008180c0"
+          ]
+        },
+        {
+          "source_id": "1x0ucnd",
+          "source_url": "https://www.reddit.com/r/twice/comments/1x0ucnd/261008_tuide_heres_how_we_filmed_the_challenge/",
+          "creator": "XuhuiGao",
+          "sha256": "ffc1adba398a9c353738538be673c6a85d80d971806869d63c562de35de80e70",
+          "frame_hashes": [
+            "052c12d474141577",
+            "0f1f3b33232a6958",
+            "878f89a96d6d6d69",
+            "9e9213113b5a5862"
+          ]
+        },
+        {
+          "source_id": "1wzue7x",
+          "source_url": "https://www.reddit.com/r/twice/comments/1wzue7x/261007_jihyo_instagram_story_harpersbazaarkorea/",
+          "creator": "wickeddeus",
+          "sha256": "3f73befb06e1b8884c044541c03e126af7a19fb15b132259ec6cacce9f9dbbdd",
+          "frame_hashes": [
+            "a21f554da5a517c8",
+            "a21f5545a5a517c8",
+            "a21f5545a5a517c8",
+            "b371eccccec7cdf1"
+          ]
+        },
+        {
+          "source_id": "1wuvpes",
+          "source_url": "https://www.reddit.com/r/twice/comments/1wuvpes/261001_harpersbazaarkorea_instagram_reels_update/",
+          "creator": "SapphireHeaven",
+          "sha256": "e1cdb7cc08db93bc0b943c2a4851d57af5ec764325174f52a6537cf859cd9651",
+          "frame_hashes": [
+            "3e96f2f2b3e373b3",
+            "d2ba3cdad99c9888",
+            "1e33313010123692",
+            "21f1f1e2e1e1e4ec"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -529,7 +591,8 @@
     ],
     "2026-10-21": [
       "MFzi9NCY5j0",
-      "fJ30_x7VLkc"
+      "fJ30_x7VLkc",
+      "oT8c6au9m4U"
     ]
   }
 }
