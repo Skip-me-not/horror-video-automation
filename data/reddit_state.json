@@ -104,7 +104,11 @@
     "https://www.reddit.com/r/Aespa/comments/1wsxujd/260929_ningning_for_harpers_bazaar_china_october/",
     "https://www.reddit.com/r/Aespa/comments/1x3z0y1/261012_ningning_instagram_story_update/",
     "https://www.reddit.com/r/Aespa/comments/1ww8pt9/261003_giselle_instagram_story_update_with/",
-    "https://www.reddit.com/r/Aespa/comments/1x2z2hy/261011_ningning_for_w_korea_x_gucci_november_2026/"
+    "https://www.reddit.com/r/Aespa/comments/1x2z2hy/261011_ningning_for_w_korea_x_gucci_november_2026/",
+    "https://www.reddit.com/r/bts7/comments/1wp2d8v/harpers_bazaar_japan_ig_post_jungkook_at_the/",
+    "https://www.reddit.com/r/bts7/comments/1wp0h99/very_web_japan_on_instagram_ft_jungkook_240926/",
+    "https://www.reddit.com/r/bts7/comments/1wp3p0o/spur_magazine_on_instagram_2_ft_jungkook_240926/",
+    "https://www.reddit.com/r/bangtan/comments/1pmuf8z/251215_elle_korea_jungkook_x_chanel_fragrances/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -210,7 +214,11 @@
     "https://www.reddit.com/r/Aespa/comments/1wtpkch/260929_harpers_bazaar_casting_room_rednote_update/",
     "https://www.reddit.com/r/Aespa/comments/1wsxujd/260929_ningning_for_harpers_bazaar_china_october/",
     "https://www.reddit.com/r/Aespa/comments/1wupc7v/261001_ningning_for_discovery_expedition_fw26/",
-    "https://www.reddit.com/r/Aespa/comments/1wx84vc/261004_ningning_instagram_story_update/"
+    "https://www.reddit.com/r/Aespa/comments/1wx84vc/261004_ningning_instagram_story_update/",
+    "https://www.reddit.com/r/bts7/comments/1wp2d8v/harpers_bazaar_japan_ig_post_jungkook_at_the/",
+    "https://www.reddit.com/r/bts7/comments/1wp4jmd/oggi_magazine_on_instagram_ft_jungkook_240926/",
+    "https://www.reddit.com/r/bts7/comments/1wp0h99/very_web_japan_on_instagram_ft_jungkook_240926/",
+    "https://www.reddit.com/r/bts7/comments/1wp3p0o/spur_magazine_on_instagram_2_ft_jungkook_240926/"
   ],
   "idol_history": [
     "Jennie",
@@ -218,13 +226,13 @@
     "Felix",
     "Chaewon",
     "Mingyu",
-    "Jungkook",
     "Karina",
     "Yeonjun",
     "Jihyo",
     "Bang Chan",
     "Wonyoung",
-    "Ningning"
+    "Ningning",
+    "Jungkook"
   ],
   "recent_videos": [
     {
@@ -766,6 +774,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39740725287-jungkook",
+      "idol": "Jungkook",
+      "sources": [
+        {
+          "source_id": "1wp2d8v",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wp2d8v/harpers_bazaar_japan_ig_post_jungkook_at_the/",
+          "creator": "alltherach_",
+          "sha256": "0e86463f9077debee204b192598a4334843c6c8ca82d4c0c81e1870f0c34b82b",
+          "frame_hashes": [
+            "95874e0f17464f06",
+            "494c0e0e0f7b9202",
+            "2a25ce0b0b0c161e",
+            "aabb133133787172"
+          ]
+        },
+        {
+          "source_id": "1wp4jmd",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wp4jmd/oggi_magazine_on_instagram_ft_jungkook_240926/",
+          "creator": "Eternal_ARMY0613",
+          "sha256": "cb503b3de4fa698c1935ad72b2d365591feb033230648251a4bb1caa60073ed2",
+          "frame_hashes": [
+            "299a9e0b374dc787",
+            "595b33290b17cc96",
+            "595b2a0f23059693",
+            "495b0c0f230c8697"
+          ]
+        },
+        {
+          "source_id": "1wp0h99",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wp0h99/very_web_japan_on_instagram_ft_jungkook_240926/",
+          "creator": "Eternal_ARMY0613",
+          "sha256": "4b28cb0fb359a2005ab30878ce3ef0f4fb6bce72714da16d36c668e86e5806a4",
+          "frame_hashes": [
+            "6f6d094d1e1bcde3",
+            "590b2306071b4c5e",
+            "490b0d0f07190d07",
+            "08d94f8e1d1d3165"
+          ]
+        },
+        {
+          "source_id": "1wp3p0o",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wp3p0o/spur_magazine_on_instagram_2_ft_jungkook_240926/",
+          "creator": "Eternal_ARMY0613",
+          "sha256": "d6c0c33acda38baa1798d46a098b5f0dda763ea8ddac87f0d65f27bc44abfd0e",
+          "frame_hashes": [
+            "cd2f06060707d3c9",
+            "510d4d8c0d0712ac",
+            "4d090c0c4f476678",
+            "990d0c0e0d4fe678"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -783,7 +845,8 @@
     ],
     "2026-10-22": [
       "_YE-Z8G_Pxs",
-      "d5x9mGLqIkM"
+      "d5x9mGLqIkM",
+      "vPKITU0Yr38"
     ]
   }
 }
