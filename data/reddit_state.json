@@ -100,7 +100,11 @@
     "https://www.reddit.com/r/IVE/comments/1x34eou/261011_vogue_singapore_instagram_reels_update/",
     "https://www.reddit.com/r/IVE/comments/1x5f9vm/261014_tommy_hilfiger_official_instagram_update/",
     "https://www.reddit.com/r/IVE/comments/1x1pg0r/261009_wonyoung_harpers_bazaar_korea_x_hapa/",
-    "https://www.reddit.com/r/IVE/comments/1x4kpzx/261012_tommy_hilfiger_official_instagram_update/"
+    "https://www.reddit.com/r/IVE/comments/1x4kpzx/261012_tommy_hilfiger_official_instagram_update/",
+    "https://www.reddit.com/r/Aespa/comments/1wsxujd/260929_ningning_for_harpers_bazaar_china_october/",
+    "https://www.reddit.com/r/Aespa/comments/1x3z0y1/261012_ningning_instagram_story_update/",
+    "https://www.reddit.com/r/Aespa/comments/1ww8pt9/261003_giselle_instagram_story_update_with/",
+    "https://www.reddit.com/r/Aespa/comments/1x2z2hy/261011_ningning_for_w_korea_x_gucci_november_2026/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -202,10 +206,13 @@
     "https://www.reddit.com/r/IVE/comments/1x36tzo/261011_gq_singapore_instagram_update_with_wonyoung/",
     "https://www.reddit.com/r/IVE/comments/1x35yzm/261011_elle_singapore_instagram_update_with/",
     "https://www.reddit.com/r/IVE/comments/1x36bun/261011_grazia_singapore_instagram_update_with/",
-    "https://www.reddit.com/r/IVE/comments/1x5f9vm/261014_tommy_hilfiger_official_instagram_update/"
+    "https://www.reddit.com/r/IVE/comments/1x5f9vm/261014_tommy_hilfiger_official_instagram_update/",
+    "https://www.reddit.com/r/Aespa/comments/1wtpkch/260929_harpers_bazaar_casting_room_rednote_update/",
+    "https://www.reddit.com/r/Aespa/comments/1wsxujd/260929_ningning_for_harpers_bazaar_china_october/",
+    "https://www.reddit.com/r/Aespa/comments/1wupc7v/261001_ningning_for_discovery_expedition_fw26/",
+    "https://www.reddit.com/r/Aespa/comments/1wx84vc/261004_ningning_instagram_story_update/"
   ],
   "idol_history": [
-    "Ningning",
     "Jennie",
     "Sana",
     "Felix",
@@ -216,7 +223,8 @@
     "Yeonjun",
     "Jihyo",
     "Bang Chan",
-    "Wonyoung"
+    "Wonyoung",
+    "Ningning"
   ],
   "recent_videos": [
     {
@@ -704,6 +712,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39733563586-ningning",
+      "idol": "Ningning",
+      "sources": [
+        {
+          "source_id": "1wtpkch",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wtpkch/260929_harpers_bazaar_casting_room_rednote_update/",
+          "creator": "Klep3",
+          "sha256": "27162b2222571f91124fff77702604a828d73c1be0bc59f38bbdda170d3ca722",
+          "frame_hashes": [
+            "7f838c8ccc7169d4",
+            "ccb0b2f1e4ccc1e3",
+            "ff377371333336f8",
+            "dfb767e3676fe0e2"
+          ]
+        },
+        {
+          "source_id": "1wsxujd",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wsxujd/260929_ningning_for_harpers_bazaar_china_october/",
+          "creator": "Klep3",
+          "sha256": "7cfe6c42f39c9d997355ee703149a9a90e3cb24dc18e509d1a42900a4d638d90",
+          "frame_hashes": [
+            "7171f99c8cd86138",
+            "71e14048078f9d08",
+            "386c67d0b0e03624",
+            "193c4ecfcec0c3cb"
+          ]
+        },
+        {
+          "source_id": "1wupc7v",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wupc7v/261001_ningning_for_discovery_expedition_fw26/",
+          "creator": "Klep3",
+          "sha256": "9197af0c3a9109046e8e0a1468c3c0ae7cffc8ced35587bdc298614180003579",
+          "frame_hashes": [
+            "72b96cc4c38aca60",
+            "b339d838f1d272e3",
+            "cea239188883177f",
+            "e652c8c896c5ccf8"
+          ]
+        },
+        {
+          "source_id": "1wx84vc",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wx84vc/261004_ningning_instagram_story_update/",
+          "creator": "Klep3",
+          "sha256": "d04e4db56b10e97e538e5178274a26fc40e7e8e8b08ea8873338eb8a3fcc8613",
+          "frame_hashes": [
+            "6d651b110169cde6",
+            "7143052d2d1d0f6e",
+            "989696796747819c",
+            "407001071f1f0600"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -720,7 +782,8 @@
       "KHErcgXiAZU"
     ],
     "2026-10-22": [
-      "_YE-Z8G_Pxs"
+      "_YE-Z8G_Pxs",
+      "d5x9mGLqIkM"
     ]
   }
 }
