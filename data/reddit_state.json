@@ -96,7 +96,11 @@
     "https://www.reddit.com/r/straykids/comments/1w2i1s7/260830_hannah_bahng_instagram_story_update_with/",
     "https://www.reddit.com/r/straykids/comments/1wn4qhr/260922_elle_men_hong_kong_instagram_update_with/",
     "https://www.reddit.com/r/straykids/comments/1vuay8j/260821_stray_kids_instagram_update_with_bang_chan/",
-    "https://www.reddit.com/r/straykids/comments/1w7430g/260904_epik_high_dj_tukutz_instagram_update/"
+    "https://www.reddit.com/r/straykids/comments/1w7430g/260904_epik_high_dj_tukutz_instagram_update/",
+    "https://www.reddit.com/r/IVE/comments/1x34eou/261011_vogue_singapore_instagram_reels_update/",
+    "https://www.reddit.com/r/IVE/comments/1x5f9vm/261014_tommy_hilfiger_official_instagram_update/",
+    "https://www.reddit.com/r/IVE/comments/1x1pg0r/261009_wonyoung_harpers_bazaar_korea_x_hapa/",
+    "https://www.reddit.com/r/IVE/comments/1x4kpzx/261012_tommy_hilfiger_official_instagram_update/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -194,13 +198,16 @@
     "https://www.reddit.com/r/straykids/comments/1w7430g/260904_epik_high_dj_tukutz_instagram_update/",
     "https://www.reddit.com/r/straykids/comments/1vuay8j/260821_stray_kids_instagram_update_with_bang_chan/",
     "https://www.reddit.com/r/straykids/comments/1w1edq7/260829_stray_kids_instagram_update_with_bang_chan/",
-    "https://www.reddit.com/r/straykids/comments/1w66cgk/260903_stray_kids_instagram_update_with_bang_chan/"
+    "https://www.reddit.com/r/straykids/comments/1w66cgk/260903_stray_kids_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/IVE/comments/1x36tzo/261011_gq_singapore_instagram_update_with_wonyoung/",
+    "https://www.reddit.com/r/IVE/comments/1x35yzm/261011_elle_singapore_instagram_update_with/",
+    "https://www.reddit.com/r/IVE/comments/1x36bun/261011_grazia_singapore_instagram_update_with/",
+    "https://www.reddit.com/r/IVE/comments/1x5f9vm/261014_tommy_hilfiger_official_instagram_update/"
   ],
   "idol_history": [
     "Ningning",
     "Jennie",
     "Sana",
-    "Wonyoung",
     "Felix",
     "Chaewon",
     "Mingyu",
@@ -208,7 +215,8 @@
     "Karina",
     "Yeonjun",
     "Jihyo",
-    "Bang Chan"
+    "Bang Chan",
+    "Wonyoung"
   ],
   "recent_videos": [
     {
@@ -642,6 +650,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39702092618-wonyoung",
+      "idol": "Wonyoung",
+      "sources": [
+        {
+          "source_id": "1x36tzo",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1x36tzo/261011_gq_singapore_instagram_update_with_wonyoung/",
+          "creator": "Pristine_Cod5189",
+          "sha256": "56dd1e61e6d440213b327128378f225f15d300284c7e85ed9aaec740da234bf1",
+          "frame_hashes": [
+            "01b9b4266627076e",
+            "4c081a3238383272",
+            "5363a38f8e663438",
+            "b099a9c99cd9d9d9"
+          ]
+        },
+        {
+          "source_id": "1x35yzm",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1x35yzm/261011_elle_singapore_instagram_update_with/",
+          "creator": "Pristine_Cod5189",
+          "sha256": "b89808f5841f8aed6e498afe4e790ed9345591a1145637cba28b10b86727d135",
+          "frame_hashes": [
+            "5f38773359ddd996",
+            "671ce3913d6d4c96",
+            "3f1c7b09984b4d9b",
+            "82720e0624301118"
+          ]
+        },
+        {
+          "source_id": "1x36bun",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1x36bun/261011_grazia_singapore_instagram_update_with/",
+          "creator": "Pristine_Cod5189",
+          "sha256": "935cb20c9984f05f21a210748623cfc2128f87ce7ed973ea716545a52134b74c",
+          "frame_hashes": [
+            "15151918d8c87939",
+            "922b0f497179e124",
+            "3f349b39f1c95171",
+            "36391e0e4c5c7532"
+          ]
+        },
+        {
+          "source_id": "1x5f9vm",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1x5f9vm/261014_tommy_hilfiger_official_instagram_update/",
+          "creator": "kpopsns28",
+          "sha256": "00a21d0cfe39807c910b15cffa07f5064b7322fb597cd2e5c39be64cc9047e94",
+          "frame_hashes": [
+            "4219cbe2e2c0c0f1",
+            "460e5372569070e0",
+            "460c535256107060",
+            "4605537252101270"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -656,6 +718,9 @@
       "fJ30_x7VLkc",
       "oT8c6au9m4U",
       "KHErcgXiAZU"
+    ],
+    "2026-10-22": [
+      "_YE-Z8G_Pxs"
     ]
   }
 }
