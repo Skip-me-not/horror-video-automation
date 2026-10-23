@@ -120,7 +120,11 @@
     "https://www.reddit.com/r/IVE/comments/1wuup27/261001_ive_official_tiktok_update_with_wonyoung/",
     "https://www.reddit.com/r/IVE/comments/1x4rypm/261013_tommy_hilfiger_official_instagram_update/",
     "https://www.reddit.com/r/IVE/comments/1wwlezg/261002_wonyoung_vogue_korea_x_k\u00e9rastase_fashion/",
-    "https://www.reddit.com/r/IVE/comments/1wzy2zm/261007_wonyoung_harpers_bazaar_korea_x_hapa/"
+    "https://www.reddit.com/r/IVE/comments/1wzy2zm/261007_wonyoung_harpers_bazaar_korea_x_hapa/",
+    "https://www.reddit.com/r/Aespa/comments/1wut6br/261001_aespa_twitter_update_with_karina_the/",
+    "https://www.reddit.com/r/Aespa/comments/1wrgid4/260927_aespa_twitter_update_with_karina_new_york/",
+    "https://www.reddit.com/r/Aespa/comments/1x804ka/261017_aespa_2027_seasons_greetings_concept/",
+    "https://www.reddit.com/r/Aespa/comments/1wm60ez/260921_karina_winter_absolutely_in_seoul_visit/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -238,7 +242,11 @@
     "https://www.reddit.com/r/IVE/comments/1wyawtw/261005_dior_official_twitter_update_with_wonyoung/",
     "https://www.reddit.com/r/IVE/comments/1wuup27/261001_ive_official_tiktok_update_with_wonyoung/",
     "https://www.reddit.com/r/IVE/comments/1wwlip5/261003_dior_official_instagram_update_with/",
-    "https://www.reddit.com/r/IVE/comments/1x1pg0r/261009_wonyoung_harpers_bazaar_korea_x_hapa/"
+    "https://www.reddit.com/r/IVE/comments/1x1pg0r/261009_wonyoung_harpers_bazaar_korea_x_hapa/",
+    "https://www.reddit.com/r/Aespa/comments/1wpkep4/260925_karina_for_mark_lona_aw26_collection/",
+    "https://www.reddit.com/r/Aespa/comments/1wrgy9t/260927_aespa_tiktok_update_with_karina_lost_in_my/",
+    "https://www.reddit.com/r/Aespa/comments/1wmyacd/260922_karina_for_nordisk_fw26_campaign_hammock/",
+    "https://www.reddit.com/r/Aespa/comments/1wrsrer/260927_eva_nyc_nails_instagram_update_with_karina/"
   ],
   "idol_history": [
     "Jennie",
@@ -246,13 +254,13 @@
     "Felix",
     "Chaewon",
     "Mingyu",
-    "Karina",
     "Yeonjun",
     "Ningning",
     "Jungkook",
     "Jihyo",
     "Bang Chan",
-    "Wonyoung"
+    "Wonyoung",
+    "Karina"
   ],
   "recent_videos": [
     {
@@ -1010,6 +1018,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39917234989-karina",
+      "idol": "Karina",
+      "sources": [
+        {
+          "source_id": "1wpkep4",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wpkep4/260925_karina_for_mark_lona_aw26_collection/",
+          "creator": "Klep3",
+          "sha256": "fa570b7f5198f201b419f5fc0f3dca75da0c43797b0313b699fa9dd3fbf17d27",
+          "frame_hashes": [
+            "316d6ce4c60fc4c4",
+            "1868ec8c4ce18397",
+            "c90c0c0900000100",
+            "d0383c2d2c39330f"
+          ]
+        },
+        {
+          "source_id": "1wrgy9t",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wrgy9t/260927_aespa_tiktok_update_with_karina_lost_in_my/",
+          "creator": "Klep3",
+          "sha256": "0b74cbbfa7fac5749ea529988176334d76369aaaa2a24a5528e281702b33e87b",
+          "frame_hashes": [
+            "3df0c98b2bc78f8a",
+            "7531293569262ad6",
+            "91074e396d071f0d",
+            "f9edf7e7e3b7b0cc"
+          ]
+        },
+        {
+          "source_id": "1wmyacd",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wmyacd/260922_karina_for_nordisk_fw26_campaign_hammock/",
+          "creator": "Klep3",
+          "sha256": "4f0b9867e0533980d72d5c82b882c5461ccfeeb444f8e12b12626a8b207d0ebe",
+          "frame_hashes": [
+            "87074e4c0d1d31e3",
+            "07474606063555e5",
+            "1d155d5943ce9c9a",
+            "3c2c2caca4b4e5dd"
+          ]
+        },
+        {
+          "source_id": "1wrsrer",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wrsrer/260927_eva_nyc_nails_instagram_update_with_karina/",
+          "creator": "Klep3",
+          "sha256": "ebe5c7ba703fa82fdf7fe92ee764cfc41f783a6139f96289ced6f5514a493b5d",
+          "frame_hashes": [
+            "c5c41e5646feff7c",
+            "1a08184a168c1870",
+            "c4c4656c26b39bb1",
+            "c00038f8e0e3c30e"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1033,7 +1095,8 @@
     ],
     "2026-10-23": [
       "xTjRMR_Y_Oc",
-      "NVrvHx54R0U"
+      "NVrvHx54R0U",
+      "oDcNtISlMAA"
     ]
   }
 }
