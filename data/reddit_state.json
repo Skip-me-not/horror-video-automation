@@ -112,7 +112,11 @@
     "https://www.reddit.com/r/kpop/comments/1uw4tky/jihyo_is_reportedly_set_to_leave_jyp/",
     "https://www.reddit.com/r/kpop/comments/1w5a1sr/tuide_seoyeon_with_twice_jihyo_sun_kiss_dance/",
     "https://www.reddit.com/r/kpop/comments/1qr8c86/twice_jihyo_has_been_appointed_as_the_new_model/",
-    "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/"
+    "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/",
+    "https://www.reddit.com/r/straykids/comments/1w1edq7/260829_stray_kids_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1x0srys/261008_bang_chan_instagram_update/",
+    "https://www.reddit.com/r/straykids/comments/1vwtdjs/260824_bang_chan_x_fendi_for_w_korea_august_2026/",
+    "https://www.reddit.com/r/straykids/comments/1w66cgk/260903_stray_kids_instagram_update_with_bang_chan/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -222,7 +226,11 @@
     "https://www.reddit.com/r/twice/comments/1ww78lb/261003_jihyo_instagram_update_red_bottoms_on_i/",
     "https://www.reddit.com/r/twice/comments/1ww25w8/261003_eyesmag_instagram_update_louboutin_jihyo/",
     "https://www.reddit.com/r/twice/comments/1wt7vyi/260929_harpers_bazaar_korea_instagram_update/",
-    "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/"
+    "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/",
+    "https://www.reddit.com/r/straykids/comments/1vskzux/260819_stray_kids_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1vv84b4/260822_stray_kids_instagram_update_bang_chan_and/",
+    "https://www.reddit.com/r/straykids/comments/1vxnzzj/260825_w_korea_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1wqm4p1/260926_bang_chan_for_vogue_korea_x_fendi/"
   ],
   "idol_history": [
     "Jennie",
@@ -232,11 +240,11 @@
     "Mingyu",
     "Karina",
     "Yeonjun",
-    "Bang Chan",
     "Wonyoung",
     "Ningning",
     "Jungkook",
-    "Jihyo"
+    "Jihyo",
+    "Bang Chan"
   ],
   "recent_videos": [
     {
@@ -886,6 +894,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39880585963-bang-chan",
+      "idol": "Bang Chan",
+      "sources": [
+        {
+          "source_id": "1vskzux",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1vskzux/260819_stray_kids_instagram_update_with_bang_chan/",
+          "creator": "princessgojo",
+          "sha256": "5750774bf51f4cc722d9fae58e6c978cfb204b9e610302aa92f66271fd3be5d4",
+          "frame_hashes": [
+            "03870f858ed2d3f9",
+            "078707bdccd4b478",
+            "83d7878b6a6cdcbc",
+            "83c78f8fe6919990"
+          ]
+        },
+        {
+          "source_id": "1vv84b4",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1vv84b4/260822_stray_kids_instagram_update_bang_chan_and/",
+          "creator": "princessgojo",
+          "sha256": "f2de15eefc5b45bdb28d439237c8f42d0835ad21bcec8bca64014da9ac54455f",
+          "frame_hashes": [
+            "13175c9c8ba169db",
+            "111f1cdc8fa169db",
+            "121f5c9c8fa169c9",
+            "131d1c6ecb21b1eb"
+          ]
+        },
+        {
+          "source_id": "1vxnzzj",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1vxnzzj/260825_w_korea_instagram_update_with_bang_chan/",
+          "creator": "princessgojo",
+          "sha256": "d8a2c6ff2e9a2ec9ed844dce1a612c9b08ba66ab90936f38935d0e5c47e5ab95",
+          "frame_hashes": [
+            "8f87e7c6c6c7c3e3",
+            "7830f060c1e16103",
+            "89b1b1e39b8c4b61",
+            "b939e0c5d5cf44c0"
+          ]
+        },
+        {
+          "source_id": "1wqm4p1",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wqm4p1/260926_bang_chan_for_vogue_korea_x_fendi/",
+          "creator": "princessgojo",
+          "sha256": "6b448e70cb94815e97c019b6d1c304be1a4ada7f857fa91c73bd43b03760ab71",
+          "frame_hashes": [
+            "b1313367e3d9d818",
+            "99e5e5e5e5f55525",
+            "6169696969696963",
+            "49c193929ecbcdcd"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -906,6 +968,9 @@
       "d5x9mGLqIkM",
       "vPKITU0Yr38",
       "BKBkOeGLZhg"
+    ],
+    "2026-10-23": [
+      "xTjRMR_Y_Oc"
     ]
   }
 }
