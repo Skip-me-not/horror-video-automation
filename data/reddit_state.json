@@ -124,7 +124,11 @@
     "https://www.reddit.com/r/Aespa/comments/1wut6br/261001_aespa_twitter_update_with_karina_the/",
     "https://www.reddit.com/r/Aespa/comments/1wrgid4/260927_aespa_twitter_update_with_karina_new_york/",
     "https://www.reddit.com/r/Aespa/comments/1x804ka/261017_aespa_2027_seasons_greetings_concept/",
-    "https://www.reddit.com/r/Aespa/comments/1wm60ez/260921_karina_winter_absolutely_in_seoul_visit/"
+    "https://www.reddit.com/r/Aespa/comments/1wm60ez/260921_karina_winter_absolutely_in_seoul_visit/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvpp3/261002_yeonjun_miu_mius_vinyl_club_popup_press/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1x25653/261009_yeonjun_w_petra_collins_miu_miu_ss_2027/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1x0hgdx/261008_yeonjun_inside_out_miumiuofficial_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wzv4j1/261007_yeonjun_catch_me_rolling_miumiu_instagram/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -246,7 +250,11 @@
     "https://www.reddit.com/r/Aespa/comments/1wpkep4/260925_karina_for_mark_lona_aw26_collection/",
     "https://www.reddit.com/r/Aespa/comments/1wrgy9t/260927_aespa_tiktok_update_with_karina_lost_in_my/",
     "https://www.reddit.com/r/Aespa/comments/1wmyacd/260922_karina_for_nordisk_fw26_campaign_hammock/",
-    "https://www.reddit.com/r/Aespa/comments/1wrsrer/260927_eva_nyc_nails_instagram_update_with_karina/"
+    "https://www.reddit.com/r/Aespa/comments/1wrsrer/260927_eva_nyc_nails_instagram_update_with_karina/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1x0hgdx/261008_yeonjun_inside_out_miumiuofficial_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wyjnn9/261006_yeonjun_coucou_miumiu_instagram/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wy68m6/261005_yeonjun_\u00e0_l\u00e9cole_miu_miu_vogue_korea/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1x25653/261009_yeonjun_w_petra_collins_miu_miu_ss_2027/"
   ],
   "idol_history": [
     "Jennie",
@@ -254,13 +262,13 @@
     "Felix",
     "Chaewon",
     "Mingyu",
-    "Yeonjun",
     "Ningning",
     "Jungkook",
     "Jihyo",
     "Bang Chan",
     "Wonyoung",
-    "Karina"
+    "Karina",
+    "Yeonjun"
   ],
   "recent_videos": [
     {
@@ -1072,6 +1080,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "39931913570-yeonjun",
+      "idol": "Yeonjun",
+      "sources": [
+        {
+          "source_id": "1x0hgdx",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1x0hgdx/261008_yeonjun_inside_out_miumiuofficial_tiktok/",
+          "creator": "LittleClementime",
+          "sha256": "3a63670c3a95a4595b4b31a2138797000fd41b9c57d84a9057fe1521049324b7",
+          "frame_hashes": [
+            "b1f9693113572b93",
+            "98f568303b31990d",
+            "b1e97331125a19db",
+            "f1db73d8cecdcd71"
+          ]
+        },
+        {
+          "source_id": "1wyjnn9",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wyjnn9/261006_yeonjun_coucou_miumiu_instagram/",
+          "creator": "ExpressionOne",
+          "sha256": "1a2ac3081a1c859dd580484cd0bf85182e8ac04f854b1b1e9b29ec5c35e162b5",
+          "frame_hashes": [
+            "4b0a1a0b1e606061",
+            "4e1e383123830707",
+            "9f9e0706060e864d",
+            "d2f0363ec2c6ecec"
+          ]
+        },
+        {
+          "source_id": "1wy68m6",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wy68m6/261005_yeonjun_\u00e0_l\u00e9cole_miu_miu_vogue_korea/",
+          "creator": "ExpressionOne",
+          "sha256": "991e5c89a213f4f0a0a0e47d8d325e44b2613b36a07fc7ee3cacee43a73c3a34",
+          "frame_hashes": [
+            "1606169a1d097107",
+            "fff9f97cb8f0f17b",
+            "86cedcd090b0e060",
+            "c1d9386d5959590b"
+          ]
+        },
+        {
+          "source_id": "1x25653",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1x25653/261009_yeonjun_w_petra_collins_miu_miu_ss_2027/",
+          "creator": "LittleClementime",
+          "sha256": "a30d10cbf58924eeb79daf3dd9b57d39a246f756d8e9e816b164c66175051c43",
+          "frame_hashes": [
+            "1616d7bdb575b335",
+            "8303034f1b1b335b",
+            "4bc9c1ada5a7ec88",
+            "cbeb4a2a0b419199"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1096,7 +1158,8 @@
     "2026-10-23": [
       "xTjRMR_Y_Oc",
       "NVrvHx54R0U",
-      "oDcNtISlMAA"
+      "oDcNtISlMAA",
+      "3-L9uBhxNyQ"
     ]
   }
 }
