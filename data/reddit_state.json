@@ -132,7 +132,11 @@
     "https://www.reddit.com/r/twice/comments/1xbc54l/261021_jihyo_instagram_update_jihyos_official/",
     "https://www.reddit.com/r/twice/comments/1xc7fwa/261022_emithaus_instagram_update_with_jihyo_a_new/",
     "https://www.reddit.com/r/twice/comments/1x9ldrd/261019_jihyo_instagram_update_diesel_diesel/",
-    "https://www.reddit.com/r/twice/comments/1wsyciq/260929_twice_fans_update_twice_2027_seasons/"
+    "https://www.reddit.com/r/twice/comments/1wsyciq/260929_twice_fans_update_twice_2027_seasons/",
+    "https://www.reddit.com/r/straykids/comments/1wzaf6r/261007_felix_attends_paris_fashion_week_louis/",
+    "https://www.reddit.com/r/straykids/comments/1x382fd/261011_felix_instagram_update_with_charles/",
+    "https://www.reddit.com/r/straykids/comments/1x88p5i/261017_scuderia_ferrari_hp_twitter_update_with/",
+    "https://www.reddit.com/r/straykids/comments/1wzz73i/261007_stephane_feugere_instagram_update_with/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -263,11 +267,14 @@
     "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my/",
     "https://www.reddit.com/r/twice/comments/1vis57e/260808_waterbomb_kaohsiung_instagram_update_onces/",
     "https://www.reddit.com/r/twice/comments/1wnossn/260922_blue_sy834_twitter_update_tuides_seoyeon/",
-    "https://www.reddit.com/r/twice/comments/1w0ugnx/260827_dailyfashion_news_instagram_update_dont/"
+    "https://www.reddit.com/r/twice/comments/1w0ugnx/260827_dailyfashion_news_instagram_update_dont/",
+    "https://www.reddit.com/r/straykids/comments/1wgx6ea/260915_stray_kids_instagram_update_with_felix/",
+    "https://www.reddit.com/r/straykids/comments/1wbd9uy/260909_eyesmag_instagram_update_with_felix/",
+    "https://www.reddit.com/r/straykids/comments/1wak3os/260908_stray_kids_instagram_update_with_lee_know/",
+    "https://www.reddit.com/r/straykids/comments/1wm0rbk/260921_hera_instagram_update_with_felix/"
   ],
   "idol_history": [
     "Sana",
-    "Felix",
     "Chaewon",
     "Mingyu",
     "Ningning",
@@ -277,7 +284,8 @@
     "Karina",
     "Yeonjun",
     "Jennie",
-    "Jihyo"
+    "Jihyo",
+    "Felix"
   ],
   "recent_videos": [
     {
@@ -1251,6 +1259,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40069235479-felix",
+      "idol": "Felix",
+      "sources": [
+        {
+          "source_id": "1wgx6ea",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wgx6ea/260915_stray_kids_instagram_update_with_felix/",
+          "creator": "princessgojo",
+          "sha256": "4a6b7217349bb055f6d2af0b5e5861b678eb55d362104693fc22c60850ed2d97",
+          "frame_hashes": [
+            "72298d8f531e1b31",
+            "7ff9332724e6305c",
+            "7fe109277273330c",
+            "fc20414b48ac8244"
+          ]
+        },
+        {
+          "source_id": "1wbd9uy",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wbd9uy/260909_eyesmag_instagram_update_with_felix/",
+          "creator": "princessgojo",
+          "sha256": "7ec19ba4f01185a321500c10a6bb72aa205a70ddcf00e73c19bc4b67f5da2d03",
+          "frame_hashes": [
+            "6f1c3636580dd9c3",
+            "0a1e06170b4d6c0c",
+            "080f1f070b096c4c",
+            "000c0e04743d7967"
+          ]
+        },
+        {
+          "source_id": "1wak3os",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wak3os/260908_stray_kids_instagram_update_with_lee_know/",
+          "creator": "princessgojo",
+          "sha256": "1f43daa0332b311fcd4cbb3e7e91ea2d6f03f17adca849744a457d3d13b1c09f",
+          "frame_hashes": [
+            "03210c90201c4948",
+            "0087110446549814",
+            "0f0f0723437e787e",
+            "0f0f0723637e383e"
+          ]
+        },
+        {
+          "source_id": "1wm0rbk",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wm0rbk/260921_hera_instagram_update_with_felix/",
+          "creator": "princessgojo",
+          "sha256": "e1a45f02af28d9162a005836789a01f381e5d4bd426054552d1d282a73a8b85d",
+          "frame_hashes": [
+            "66e6cd981c3cb434",
+            "ccdd9e7239b97868",
+            "ccddd23238b83878",
+            "322ac8e2e2e0e0e0"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1280,7 +1342,8 @@
     ],
     "2026-10-24": [
       "CGfWioO6dVo",
-      "LHh7Pe6-WAg"
+      "LHh7Pe6-WAg",
+      "jba6KIU43Vw"
     ]
   }
 }
