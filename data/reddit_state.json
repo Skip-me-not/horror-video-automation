@@ -128,7 +128,11 @@
     "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
     "https://www.reddit.com/r/BlackPink/comments/1ww4ftz/261002_tame_impala_plays_and_praises_jennies/",
     "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/"
+    "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
+    "https://www.reddit.com/r/twice/comments/1xbc54l/261021_jihyo_instagram_update_jihyos_official/",
+    "https://www.reddit.com/r/twice/comments/1xc7fwa/261022_emithaus_instagram_update_with_jihyo_a_new/",
+    "https://www.reddit.com/r/twice/comments/1x9ldrd/261019_jihyo_instagram_update_diesel_diesel/",
+    "https://www.reddit.com/r/twice/comments/1wsyciq/260929_twice_fans_update_twice_2027_seasons/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -255,7 +259,11 @@
     "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
     "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
     "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/"
+    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
+    "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my/",
+    "https://www.reddit.com/r/twice/comments/1vis57e/260808_waterbomb_kaohsiung_instagram_update_onces/",
+    "https://www.reddit.com/r/twice/comments/1wnossn/260922_blue_sy834_twitter_update_tuides_seoyeon/",
+    "https://www.reddit.com/r/twice/comments/1w0ugnx/260827_dailyfashion_news_instagram_update_dont/"
   ],
   "idol_history": [
     "Sana",
@@ -264,12 +272,12 @@
     "Mingyu",
     "Ningning",
     "Jungkook",
-    "Jihyo",
     "Bang Chan",
     "Wonyoung",
     "Karina",
     "Yeonjun",
-    "Jennie"
+    "Jennie",
+    "Jihyo"
   ],
   "recent_videos": [
     {
@@ -1189,6 +1197,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40050349462-jihyo",
+      "idol": "Jihyo",
+      "sources": [
+        {
+          "source_id": "1vi6smf",
+          "source_url": "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my/",
+          "creator": "wickeddeus",
+          "sha256": "eb6c2e1d6b8ab02bb596cf61d3057c4f99f72a876d22c0c7ac6bc90e5c64e3a2",
+          "frame_hashes": [
+            "ccf4e4c6c6e0e498",
+            "8cf2e29cf0e4dad2",
+            "cce8ccccf0dccecc",
+            "f4c69eb6f8fccec6"
+          ]
+        },
+        {
+          "source_id": "1vis57e",
+          "source_url": "https://www.reddit.com/r/twice/comments/1vis57e/260808_waterbomb_kaohsiung_instagram_update_onces/",
+          "creator": "firemakethunder",
+          "sha256": "1f866fed7cc75a336376532856d19711ef640ff61c1d8fea711f9f571a6382fd",
+          "frame_hashes": [
+            "8e2f0f17d7d7e58d",
+            "a56360ca6ff6e4e3",
+            "f0788c1c36bcc4a1",
+            "a3014d4c3efccce1"
+          ]
+        },
+        {
+          "source_id": "1wnossn",
+          "source_url": "https://www.reddit.com/r/twice/comments/1wnossn/260922_blue_sy834_twitter_update_tuides_seoyeon/",
+          "creator": "SapphireHeaven",
+          "sha256": "5bd0c4f750fa8b4a711a89ae8ec3be0e5dca22483a435bd9edea2ecd6ca46488",
+          "frame_hashes": [
+            "10884c969616cc96",
+            "324c488e1a1adc94",
+            "22585848181c6c4c",
+            "1290182c2c181838"
+          ]
+        },
+        {
+          "source_id": "1w0ugnx",
+          "source_url": "https://www.reddit.com/r/twice/comments/1w0ugnx/260827_dailyfashion_news_instagram_update_dont/",
+          "creator": "bluebee29",
+          "sha256": "1ecbeabf5743cd16bf152941f4d20830ee87bd1d2eff84bb6993936e9e48a139",
+          "frame_hashes": [
+            "4f77cc8e1bb3a565",
+            "1f67e7e7cb933f24",
+            "37779e1d19f949c8",
+            "4f47ccce2f9444cd"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1217,7 +1279,8 @@
       "3-L9uBhxNyQ"
     ],
     "2026-10-24": [
-      "CGfWioO6dVo"
+      "CGfWioO6dVo",
+      "LHh7Pe6-WAg"
     ]
   }
 }
