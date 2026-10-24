@@ -136,7 +136,11 @@
     "https://www.reddit.com/r/straykids/comments/1wzaf6r/261007_felix_attends_paris_fashion_week_louis/",
     "https://www.reddit.com/r/straykids/comments/1x382fd/261011_felix_instagram_update_with_charles/",
     "https://www.reddit.com/r/straykids/comments/1x88p5i/261017_scuderia_ferrari_hp_twitter_update_with/",
-    "https://www.reddit.com/r/straykids/comments/1wzz73i/261007_stephane_feugere_instagram_update_with/"
+    "https://www.reddit.com/r/straykids/comments/1wzz73i/261007_stephane_feugere_instagram_update_with/",
+    "https://www.reddit.com/r/IVE/comments/1wz6gj1/261006_wonyoung_eider_thermolock_slim_blend_down/",
+    "https://www.reddit.com/r/IVE/comments/1x4y9bs/261013_tommy_hilfiger_official_instagram_update/",
+    "https://www.reddit.com/r/kpop/comments/1x2gll0/ive_wonyoung_harpers_bazaar_korea_x_hapa_kristin/",
+    "https://www.reddit.com/r/kpop/comments/1tiic7t/ive_wonyoung_esquire_korea_x_bvlgari_june_2026/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -271,7 +275,11 @@
     "https://www.reddit.com/r/straykids/comments/1wgx6ea/260915_stray_kids_instagram_update_with_felix/",
     "https://www.reddit.com/r/straykids/comments/1wbd9uy/260909_eyesmag_instagram_update_with_felix/",
     "https://www.reddit.com/r/straykids/comments/1wak3os/260908_stray_kids_instagram_update_with_lee_know/",
-    "https://www.reddit.com/r/straykids/comments/1wm0rbk/260921_hera_instagram_update_with_felix/"
+    "https://www.reddit.com/r/straykids/comments/1wm0rbk/260921_hera_instagram_update_with_felix/",
+    "https://www.reddit.com/r/IVE/comments/1wzy2zm/261007_wonyoung_harpers_bazaar_korea_x_hapa/",
+    "https://www.reddit.com/r/IVE/comments/1wz6gj1/261006_wonyoung_eider_thermolock_slim_blend_down/",
+    "https://www.reddit.com/r/IVE/comments/1x4kpzx/261012_tommy_hilfiger_official_instagram_update/",
+    "https://www.reddit.com/r/IVE/comments/1wyxjpi/261006_gq_singapore_instagram_update_with_wonyoung/"
   ],
   "idol_history": [
     "Sana",
@@ -280,12 +288,12 @@
     "Ningning",
     "Jungkook",
     "Bang Chan",
-    "Wonyoung",
     "Karina",
     "Yeonjun",
     "Jennie",
     "Jihyo",
-    "Felix"
+    "Felix",
+    "Wonyoung"
   ],
   "recent_videos": [
     {
@@ -1313,6 +1321,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40080102008-wonyoung",
+      "idol": "Wonyoung",
+      "sources": [
+        {
+          "source_id": "1wzy2zm",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1wzy2zm/261007_wonyoung_harpers_bazaar_korea_x_hapa/",
+          "creator": "kpopsns28",
+          "sha256": "6356ca0f7a47e1f46dfcf09313958b22533b5f8e013df630788588220c0cbf68",
+          "frame_hashes": [
+            "0001173333160000",
+            "53317464e464f8f0",
+            "0000808090909890",
+            "ecce86261c04e4e0"
+          ]
+        },
+        {
+          "source_id": "1wz6gj1",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1wz6gj1/261006_wonyoung_eider_thermolock_slim_blend_down/",
+          "creator": "kpopsns28",
+          "sha256": "816c7714c93ded179b7fa29715b45857dcaa658cc1bc5663e3d35b2cf76856be",
+          "frame_hashes": [
+            "933b99393fb58d9b",
+            "b7363435b3e76727",
+            "c00000e1880e1b16",
+            "671a0ee73226cee5"
+          ]
+        },
+        {
+          "source_id": "1x4kpzx",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1x4kpzx/261012_tommy_hilfiger_official_instagram_update/",
+          "creator": "kpopsns28",
+          "sha256": "883972a40ebaad96688d2f148b314c1ce8edd403cd106bd715d399e7401f40fd",
+          "frame_hashes": [
+            "59dba9a1a0216b6a",
+            "bab5b33161046b4b",
+            "cf8e8c9c86977929",
+            "108a7a46c3e16364"
+          ]
+        },
+        {
+          "source_id": "1wyxjpi",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1wyxjpi/261006_gq_singapore_instagram_update_with_wonyoung/",
+          "creator": "kpopsns28",
+          "sha256": "dcd2cb8cf18f7eeee7664e55a8c864ea2697e021848927e7a6526b0464756124",
+          "frame_hashes": [
+            "061099c8cf9f8cc5",
+            "007098cb0f1d9d39",
+            "8b088c4c4f474c8e",
+            "83911c08e0f0dcf4"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1343,7 +1405,8 @@
     "2026-10-24": [
       "CGfWioO6dVo",
       "LHh7Pe6-WAg",
-      "jba6KIU43Vw"
+      "jba6KIU43Vw",
+      "byHgEXZYgPI"
     ]
   }
 }
