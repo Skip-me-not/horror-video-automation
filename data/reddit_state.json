@@ -152,7 +152,11 @@
     "https://www.reddit.com/r/kpop_uncensored/comments/1qkhx9l/although_the_schedule_of_2_groups_twiceaespa_is/",
     "https://www.reddit.com/r/kpop_uncensored/comments/1t49akz/aespa_members_karina_and_ningnings_debut_at_met/",
     "https://www.reddit.com/r/kpop_uncensored/comments/1rkskbv/ningning_says_to_please_leave_her_alone_after/",
-    "https://www.reddit.com/r/kpop/comments/1t403pl/ningning_aespa_makes_her_official_met_gala_debut/"
+    "https://www.reddit.com/r/kpop/comments/1t403pl/ningning_aespa_makes_her_official_met_gala_debut/",
+    "https://www.reddit.com/r/straykids/comments/1x27nqs/261010_harpers_bazaar_singapore_instagram_update/",
+    "https://www.reddit.com/r/straykids/comments/1x389ts/261011_aston_martin_aramco_formula_one_team/",
+    "https://www.reddit.com/r/kpop/comments/1olom1w/stray_kids_skz_it_tape_do_it_teaser_image_2_do/",
+    "https://www.reddit.com/r/straykids/comments/1wp7f8k/260924_dazed_korea_instagram_update_with_bang_chan/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -303,13 +307,16 @@
     "https://www.reddit.com/r/Aespa/comments/1qltg4d/260125_ningning_instagram_story_update/",
     "https://www.reddit.com/r/Aespa/comments/1uftmix/260626_ningning_for_alo/",
     "https://www.reddit.com/r/Aespa/comments/1u5f6z2/260614_ningning_says_she_has_been_writing_songs/",
-    "https://www.reddit.com/r/Aespa/comments/1v8s3xd/260728_aespa_tiktok_update_with_karina_ningning/"
+    "https://www.reddit.com/r/Aespa/comments/1v8s3xd/260728_aespa_tiktok_update_with_karina_ningning/",
+    "https://www.reddit.com/r/straykids/comments/1wnzwfj/260923_bang_chan_instagram_story_update/",
+    "https://www.reddit.com/r/straykids/comments/1wp7f8k/260924_dazed_korea_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1x389ts/261011_aston_martin_aramco_formula_one_team/",
+    "https://www.reddit.com/r/straykids/comments/1x27nqs/261010_harpers_bazaar_singapore_instagram_update/"
   ],
   "idol_history": [
     "Sana",
     "Mingyu",
     "Jungkook",
-    "Bang Chan",
     "Karina",
     "Jennie",
     "Jihyo",
@@ -317,7 +324,8 @@
     "Wonyoung",
     "Yeonjun",
     "Chaewon",
-    "Ningning"
+    "Ningning",
+    "Bang Chan"
   ],
   "recent_videos": [
     {
@@ -1561,6 +1569,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40179856575-bang-chan",
+      "idol": "Bang Chan",
+      "sources": [
+        {
+          "source_id": "1wnzwfj",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wnzwfj/260923_bang_chan_instagram_story_update/",
+          "creator": "princessgojo",
+          "sha256": "f29b2b22a861b8d5704c0e4d03726d2032fa83409105c7a1eb5dd28dccc1eff6",
+          "frame_hashes": [
+            "62002c3f0e0b0340",
+            "487d07874141c106",
+            "c87f07ce8f21e081",
+            "c87f078e870078e4"
+          ]
+        },
+        {
+          "source_id": "1wp7f8k",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wp7f8k/260924_dazed_korea_instagram_update_with_bang_chan/",
+          "creator": "princessgojo",
+          "sha256": "b445b940554f7a38731be78d62920446337490b059239587c6db9e1deb2c9fc8",
+          "frame_hashes": [
+            "0461717808000000",
+            "0033236166723670",
+            "5a975166664660c3",
+            "2e6b21ccc7532e38"
+          ]
+        },
+        {
+          "source_id": "1x389ts",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1x389ts/261011_aston_martin_aramco_formula_one_team/",
+          "creator": "princessgojo",
+          "sha256": "a70b5eb5b1517c484dac4de444e49c126c9b17a0fac71745028f384cd18d3589",
+          "frame_hashes": [
+            "bc5b5309bc7b3118",
+            "cc9e336949e9cbda",
+            "99b32c16d8f1b131",
+            "813ec4e668e0e1d1"
+          ]
+        },
+        {
+          "source_id": "1x27nqs",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1x27nqs/261010_harpers_bazaar_singapore_instagram_update/",
+          "creator": "princessgojo",
+          "sha256": "176a17fc552f829dbb20272e5e8f6157dd032f9c8df62f4e82010f9d3f99c4c1",
+          "frame_hashes": [
+            "a8e2a6333070f3f3",
+            "cb1166d7f230326a",
+            "4d116e737432b2b2",
+            "9951cee36862e6a6"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1597,7 +1659,8 @@
     "2026-10-25": [
       "28hclpN43No",
       "-_rLlSbxK8g",
-      "p1Kp990dfz4"
+      "p1Kp990dfz4",
+      "Uvtkls_8moU"
     ]
   }
 }
