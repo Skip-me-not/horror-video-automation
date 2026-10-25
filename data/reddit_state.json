@@ -148,7 +148,11 @@
     "https://www.reddit.com/r/lesserafim/comments/1winmz2/260917_kim_chaewon_instagram_update_feat_le/",
     "https://www.reddit.com/r/lesserafim/comments/1xacc5u/261020_kim_chaewon_instagram_update_feat_huh/",
     "https://www.reddit.com/r/lesserafim/comments/1wnbe1n/260922_le_sserafim_tiktok_update_with_kim_chaewon/",
-    "https://www.reddit.com/r/lesserafim/comments/1x4svhh/261013_le_sserafim_2026_le_sserafim_tour_pureflow/"
+    "https://www.reddit.com/r/lesserafim/comments/1x4svhh/261013_le_sserafim_2026_le_sserafim_tour_pureflow/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1qkhx9l/although_the_schedule_of_2_groups_twiceaespa_is/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1t49akz/aespa_members_karina_and_ningnings_debut_at_met/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1rkskbv/ningning_says_to_please_leave_her_alone_after/",
+    "https://www.reddit.com/r/kpop/comments/1t403pl/ningning_aespa_makes_her_official_met_gala_debut/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -295,12 +299,15 @@
     "https://www.reddit.com/r/lesserafim/comments/1wp1otm/260924_le_sserafim_tiktok_update_with_kim_chaewon/",
     "https://www.reddit.com/r/lesserafim/comments/1wuyyc9/261001_le_sserafim_tiktok_update_with_kim_chaewon/",
     "https://www.reddit.com/r/lesserafim/comments/1wu39av/260930_le_sserafim_tiktok_update_with_kim_chaewon/",
-    "https://www.reddit.com/r/lesserafim/comments/1wki4ip/260919_le_sserafim_tiktok_update_with_kim_chaewon/"
+    "https://www.reddit.com/r/lesserafim/comments/1wki4ip/260919_le_sserafim_tiktok_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/Aespa/comments/1qltg4d/260125_ningning_instagram_story_update/",
+    "https://www.reddit.com/r/Aespa/comments/1uftmix/260626_ningning_for_alo/",
+    "https://www.reddit.com/r/Aespa/comments/1u5f6z2/260614_ningning_says_she_has_been_writing_songs/",
+    "https://www.reddit.com/r/Aespa/comments/1v8s3xd/260728_aespa_tiktok_update_with_karina_ningning/"
   ],
   "idol_history": [
     "Sana",
     "Mingyu",
-    "Ningning",
     "Jungkook",
     "Bang Chan",
     "Karina",
@@ -309,7 +316,8 @@
     "Felix",
     "Wonyoung",
     "Yeonjun",
-    "Chaewon"
+    "Chaewon",
+    "Ningning"
   ],
   "recent_videos": [
     {
@@ -1499,6 +1507,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40173105475-ningning",
+      "idol": "Ningning",
+      "sources": [
+        {
+          "source_id": "1qltg4d",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1qltg4d/260125_ningning_instagram_story_update/",
+          "creator": "unknown",
+          "sha256": "e6c4bfe6c14fa9ac8ecbe55146635b24941a66bd7688cf4acb7e0cf2c748be95",
+          "frame_hashes": [
+            "49b0f67c3cbc66c1",
+            "49b0f67c3cbc66c1",
+            "00a20d0d1e16c100",
+            "c3500f8bd9495e5c"
+          ]
+        },
+        {
+          "source_id": "1uftmix",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1uftmix/260626_ningning_for_alo/",
+          "creator": "unknown",
+          "sha256": "708184d6949af397146083a0eeff68c420c53ba3f0c8b99a9175b7c843eaf425",
+          "frame_hashes": [
+            "1231e8e0e8e8e0c9",
+            "cc1b39313139240e",
+            "0c71e0d4df793873",
+            "208801049e261f90"
+          ]
+        },
+        {
+          "source_id": "1u5f6z2",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1u5f6z2/260614_ningning_says_she_has_been_writing_songs/",
+          "creator": "unknown",
+          "sha256": "2e8c5960d6612f664a5528dbfd23145405582f2c59188e930aa1dfb3543cd39a",
+          "frame_hashes": [
+            "796d3933992848d4",
+            "783438387cd6f669",
+            "3066c6ce06166000",
+            "34664ec604040400"
+          ]
+        },
+        {
+          "source_id": "1v8s3xd",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1v8s3xd/260728_aespa_tiktok_update_with_karina_ningning/",
+          "creator": "unknown",
+          "sha256": "05153c1f8ae6f74294394cc21588d06648e6d344e782b015ce4da08e01ca0628",
+          "frame_hashes": [
+            "f9f9b0143cec4107",
+            "f8f0e8393cf84107",
+            "f0e8a8125eec4107",
+            "f9f434191cec4107"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1534,7 +1596,8 @@
     ],
     "2026-10-25": [
       "28hclpN43No",
-      "-_rLlSbxK8g"
+      "-_rLlSbxK8g",
+      "p1Kp990dfz4"
     ]
   }
 }
