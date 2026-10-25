@@ -144,7 +144,11 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wexklg/260913_soobins_birthday_message_to_yeonjun_twitter/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wfz7ar/260914_yeonjun_x_miu_miu_for_harpers_bazaar_korea/",
     "https://www.reddit.com/r/kpop/comments/1udjl8f/txt_tomorrow_x_together_yeonjun_2nd_mini_album_no/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wck1hl/260910_yeonjun_added_to_2026_global_citizen/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wck1hl/260910_yeonjun_added_to_2026_global_citizen/",
+    "https://www.reddit.com/r/lesserafim/comments/1winmz2/260917_kim_chaewon_instagram_update_feat_le/",
+    "https://www.reddit.com/r/lesserafim/comments/1xacc5u/261020_kim_chaewon_instagram_update_feat_huh/",
+    "https://www.reddit.com/r/lesserafim/comments/1wnbe1n/260922_le_sserafim_tiktok_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/lesserafim/comments/1x4svhh/261013_le_sserafim_2026_le_sserafim_tour_pureflow/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -287,11 +291,14 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wfql1q/260914_yeonjun_siriusxm_can_we_expect_to_see_a/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wpsp6g/260925_i_love_beomgyu_yeonjun_hueningkai_so_much/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1w59yyu/260902_yeonjun_sorry_for_being_late_tiktok/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wdedv4/260911_yeonjun_hong_eunchae_le_sserafim_made_my/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wdedv4/260911_yeonjun_hong_eunchae_le_sserafim_made_my/",
+    "https://www.reddit.com/r/lesserafim/comments/1wp1otm/260924_le_sserafim_tiktok_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/lesserafim/comments/1wuyyc9/261001_le_sserafim_tiktok_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/lesserafim/comments/1wu39av/260930_le_sserafim_tiktok_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/lesserafim/comments/1wki4ip/260919_le_sserafim_tiktok_update_with_kim_chaewon/"
   ],
   "idol_history": [
     "Sana",
-    "Chaewon",
     "Mingyu",
     "Ningning",
     "Jungkook",
@@ -301,7 +308,8 @@
     "Jihyo",
     "Felix",
     "Wonyoung",
-    "Yeonjun"
+    "Yeonjun",
+    "Chaewon"
   ],
   "recent_videos": [
     {
@@ -1437,6 +1445,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40169406709-chaewon",
+      "idol": "Chaewon",
+      "sources": [
+        {
+          "source_id": "1wp1otm",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wp1otm/260924_le_sserafim_tiktok_update_with_kim_chaewon/",
+          "creator": "kpopsns28",
+          "sha256": "6fc0e370f85b988e6e7b6f2c4df96a810797a5ceb8803252902613ca24ce4f82",
+          "frame_hashes": [
+            "7e9ce0c2c92c5cc4",
+            "04332b3a4a4e4646",
+            "7f502e66660df696",
+            "ff701cccca2ad8cf"
+          ]
+        },
+        {
+          "source_id": "1wuyyc9",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wuyyc9/261001_le_sserafim_tiktok_update_with_kim_chaewon/",
+          "creator": "XuhuiGao",
+          "sha256": "c6e77903be277165f25feb6437e198ef24e7e76145c67627edae90545932aa20",
+          "frame_hashes": [
+            "66667b73869414c1",
+            "66673333b9cb46d2",
+            "666f494e4ec686d1",
+            "666671784e469231"
+          ]
+        },
+        {
+          "source_id": "1wu39av",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wu39av/260930_le_sserafim_tiktok_update_with_kim_chaewon/",
+          "creator": "kpopsns28",
+          "sha256": "8ec08b13b78a9da3c95d3d3bf950a745b03210299a3c202f465f374ef0cec7d2",
+          "frame_hashes": [
+            "edcf9696f696ee36",
+            "6de7869ed696fa5e",
+            "4de68fdad6b6ee7e",
+            "4dce87d6f6b6ded6"
+          ]
+        },
+        {
+          "source_id": "1wki4ip",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wki4ip/260919_le_sserafim_tiktok_update_with_kim_chaewon/",
+          "creator": "kpopsns28",
+          "sha256": "c7324c7a13cb3828cb625b30995615c20e742c502e5952880ca30af0d9bf005f",
+          "frame_hashes": [
+            "00031c1c10105110",
+            "0701192c1490a848",
+            "0003294c34249a5a",
+            "00031c0c3430c4b0"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1471,7 +1533,8 @@
       "byHgEXZYgPI"
     ],
     "2026-10-25": [
-      "28hclpN43No"
+      "28hclpN43No",
+      "-_rLlSbxK8g"
     ]
   }
 }
