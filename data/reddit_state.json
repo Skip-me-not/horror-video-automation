@@ -140,7 +140,11 @@
     "https://www.reddit.com/r/IVE/comments/1wz6gj1/261006_wonyoung_eider_thermolock_slim_blend_down/",
     "https://www.reddit.com/r/IVE/comments/1x4y9bs/261013_tommy_hilfiger_official_instagram_update/",
     "https://www.reddit.com/r/kpop/comments/1x2gll0/ive_wonyoung_harpers_bazaar_korea_x_hapa_kristin/",
-    "https://www.reddit.com/r/kpop/comments/1tiic7t/ive_wonyoung_esquire_korea_x_bvlgari_june_2026/"
+    "https://www.reddit.com/r/kpop/comments/1tiic7t/ive_wonyoung_esquire_korea_x_bvlgari_june_2026/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wexklg/260913_soobins_birthday_message_to_yeonjun_twitter/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wfz7ar/260914_yeonjun_x_miu_miu_for_harpers_bazaar_korea/",
+    "https://www.reddit.com/r/kpop/comments/1udjl8f/txt_tomorrow_x_together_yeonjun_2nd_mini_album_no/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wck1hl/260910_yeonjun_added_to_2026_global_citizen/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -279,7 +283,11 @@
     "https://www.reddit.com/r/IVE/comments/1wzy2zm/261007_wonyoung_harpers_bazaar_korea_x_hapa/",
     "https://www.reddit.com/r/IVE/comments/1wz6gj1/261006_wonyoung_eider_thermolock_slim_blend_down/",
     "https://www.reddit.com/r/IVE/comments/1x4kpzx/261012_tommy_hilfiger_official_instagram_update/",
-    "https://www.reddit.com/r/IVE/comments/1wyxjpi/261006_gq_singapore_instagram_update_with_wonyoung/"
+    "https://www.reddit.com/r/IVE/comments/1wyxjpi/261006_gq_singapore_instagram_update_with_wonyoung/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wfql1q/260914_yeonjun_siriusxm_can_we_expect_to_see_a/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wpsp6g/260925_i_love_beomgyu_yeonjun_hueningkai_so_much/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1w59yyu/260902_yeonjun_sorry_for_being_late_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wdedv4/260911_yeonjun_hong_eunchae_le_sserafim_made_my/"
   ],
   "idol_history": [
     "Sana",
@@ -289,11 +297,11 @@
     "Jungkook",
     "Bang Chan",
     "Karina",
-    "Yeonjun",
     "Jennie",
     "Jihyo",
     "Felix",
-    "Wonyoung"
+    "Wonyoung",
+    "Yeonjun"
   ],
   "recent_videos": [
     {
@@ -1375,6 +1383,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40146843651-yeonjun",
+      "idol": "Yeonjun",
+      "sources": [
+        {
+          "source_id": "1wfql1q",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wfql1q/260914_yeonjun_siriusxm_can_we_expect_to_see_a/",
+          "creator": "LittleClementime",
+          "sha256": "de6153ba94e5a554520f56884dfd9706d371e79e99e69a9229c3a4de842a1295",
+          "frame_hashes": [
+            "4949081313278511",
+            "4959481b13270101",
+            "4959481b13270101",
+            "4959081313270101"
+          ]
+        },
+        {
+          "source_id": "1wpsp6g",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wpsp6g/260925_i_love_beomgyu_yeonjun_hueningkai_so_much/",
+          "creator": "Bunniette",
+          "sha256": "d09a7ff91b0d7895227a735abe118f9c91207559acfdf24032f07411f5136f88",
+          "frame_hashes": [
+            "0f1b49288bc988cc",
+            "1f1f1faacccc0d07",
+            "0b9f1fa9cecc2c03",
+            "1b1f1fabce4c2603"
+          ]
+        },
+        {
+          "source_id": "1w59yyu",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1w59yyu/260902_yeonjun_sorry_for_being_late_tiktok/",
+          "creator": "ExpressionOne",
+          "sha256": "9e4f4eb9e4cb0fbfb2a4f5e0edf563b4dccba7487e01d5163dbbca88fc78fd58",
+          "frame_hashes": [
+            "67a6c6ae861e52c3",
+            "47a6ceecc632323b",
+            "47a6ceecc6b63034",
+            "67a6d60e1ec3fe13"
+          ]
+        },
+        {
+          "source_id": "1wdedv4",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wdedv4/260911_yeonjun_hong_eunchae_le_sserafim_made_my/",
+          "creator": "ExpressionOne",
+          "sha256": "69b15cd054d37b13b220c6a84ff9ae8a2155a7d2efb049b8602aed40e5b2e9a1",
+          "frame_hashes": [
+            "ad1e32687829882e",
+            "3a3d3c95a7cbc68d",
+            "0a3c7ee1e3eeaef3",
+            "3a396531b1ccccdc"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1407,6 +1469,9 @@
       "LHh7Pe6-WAg",
       "jba6KIU43Vw",
       "byHgEXZYgPI"
+    ],
+    "2026-10-25": [
+      "28hclpN43No"
     ]
   }
 }
