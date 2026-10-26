@@ -168,7 +168,11 @@
     "https://www.reddit.com/r/kpop/comments/1ubs8k6/txt_tomorrow_x_together_yeonjun_2nd_mini_album_no/",
     "https://www.reddit.com/r/kpop/comments/1u94g13/yeonjun_tomorrow_x_together_2nd_mini_album_no/",
     "https://www.reddit.com/r/kpop/comments/1u8a74h/tomorrow_x_together_yeonjun_iconic_by_mistake/",
-    "https://www.reddit.com/r/kpop/comments/1wyt0ai/txt_yeonjun_with_twice_momo_ice_cream_dance/"
+    "https://www.reddit.com/r/kpop/comments/1wyt0ai/txt_yeonjun_with_twice_momo_ice_cream_dance/",
+    "https://www.reddit.com/r/kpop/comments/1v7lz2j/ives_jang_wonyoung_throws_the_first_pitch_for_the/",
+    "https://www.reddit.com/r/kpop/comments/1q95p99/ive_jang_wonyoung_has_opened_an_instagram_account/",
+    "https://www.reddit.com/r/kpop/comments/1qcie9p/ive_wonyoung_allure_korea_x_barrie_february_2026/",
+    "https://www.reddit.com/r/kpop/comments/1ojsa5z/ive_wonyoung_elle_korea_x_bvlgari_november_2025/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -327,7 +331,11 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram/",
+    "https://www.reddit.com/r/IVE/comments/1x4y9bs/261013_tommy_hilfiger_official_instagram_update/",
+    "https://www.reddit.com/r/IVE/comments/1wzy63i/261007_dyson_korea_instagram_update_with_wonyoung/",
+    "https://www.reddit.com/r/IVE/comments/1x4rypm/261013_tommy_hilfiger_official_instagram_update/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1okwtaj/wonyoung_solo_song_first_released_at_todays_ive/"
   ],
   "idol_history": [
     "Sana",
@@ -335,13 +343,13 @@
     "Karina",
     "Jihyo",
     "Felix",
-    "Wonyoung",
     "Chaewon",
     "Ningning",
     "Bang Chan",
     "Jungkook",
     "Jennie",
-    "Yeonjun"
+    "Yeonjun",
+    "Wonyoung"
   ],
   "recent_videos": [
     {
@@ -1801,6 +1809,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40311596113-wonyoung",
+      "idol": "Wonyoung",
+      "sources": [
+        {
+          "source_id": "1x4y9bs",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1x4y9bs/261013_tommy_hilfiger_official_instagram_update/",
+          "creator": "kpopsns28",
+          "sha256": "9d7e8b9015246cbb5003daffb8827429b0d13cbb6626dd4f17e8afeec6871f33",
+          "frame_hashes": [
+            "1b1a2f4d8c8cdd1d",
+            "db737899deee2e8d",
+            "1fd9499999b43492",
+            "03478b23d54bb28b"
+          ]
+        },
+        {
+          "source_id": "1wzy63i",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1wzy63i/261007_dyson_korea_instagram_update_with_wonyoung/",
+          "creator": "kpopsns28",
+          "sha256": "b0f57b237fcda866d4c5c4eba2f06f455adbf05badfcfa516fbfb94a3f3726eb",
+          "frame_hashes": [
+            "cb8c807868fffe00",
+            "7b3b73c784b08c1c",
+            "65a6a4a1869c5800",
+            "c3a30f74e0b08103"
+          ]
+        },
+        {
+          "source_id": "1x4rypm",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1x4rypm/261013_tommy_hilfiger_official_instagram_update/",
+          "creator": "kpopsns28",
+          "sha256": "6dd7e8122d539bb86b8be063bdf9fdf7bffc9c5f58cf510ed903e7ebfcfb7de0",
+          "frame_hashes": [
+            "4c9c888c84c89617",
+            "e91c4c6cf2647c37",
+            "4765c506179f1e03",
+            "74848a8e9cf8c596"
+          ]
+        },
+        {
+          "source_id": "1okwtaj",
+          "source_url": "https://www.reddit.com/r/kpop_uncensored/comments/1okwtaj/wonyoung_solo_song_first_released_at_todays_ive/",
+          "creator": "unknown",
+          "sha256": "b0e01e8484e45957d61e99b34dd65d3e9478cc45ea2f24cf3eaa6042f12c5b74",
+          "frame_hashes": [
+            "8080804363b3840c",
+            "3049a9a9b050694d",
+            "4b07363223777311",
+            "030c49416da94b0c"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1843,7 +1905,8 @@
     "2026-10-26": [
       "kttvBySZTig",
       "DV-nMNiJfXs",
-      "uecOpYEtY6U"
+      "uecOpYEtY6U",
+      "f_Zj3qtAi8U"
     ]
   }
 }
