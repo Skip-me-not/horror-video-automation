@@ -156,7 +156,11 @@
     "https://www.reddit.com/r/straykids/comments/1x27nqs/261010_harpers_bazaar_singapore_instagram_update/",
     "https://www.reddit.com/r/straykids/comments/1x389ts/261011_aston_martin_aramco_formula_one_team/",
     "https://www.reddit.com/r/kpop/comments/1olom1w/stray_kids_skz_it_tape_do_it_teaser_image_2_do/",
-    "https://www.reddit.com/r/straykids/comments/1wp7f8k/260924_dazed_korea_instagram_update_with_bang_chan/"
+    "https://www.reddit.com/r/straykids/comments/1wp7f8k/260924_dazed_korea_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/kpop/comments/1uft2oi/bts_jungkook_iconic_by_mistake_orig_le_sserafim_x/",
+    "https://www.reddit.com/r/kpop/comments/1wdzy9i/bts_jungkook_donates_1_billion_to_seoul_childrens/",
+    "https://www.reddit.com/r/kpop/comments/1pmuhlf/jungkook_bts_elle_korea_january_2026_issue_covers/",
+    "https://www.reddit.com/r/kpop/comments/1pqih0n/le_sserafim_kazuha_standing_next_to_you_orig_bts/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -311,12 +315,15 @@
     "https://www.reddit.com/r/straykids/comments/1wnzwfj/260923_bang_chan_instagram_story_update/",
     "https://www.reddit.com/r/straykids/comments/1wp7f8k/260924_dazed_korea_instagram_update_with_bang_chan/",
     "https://www.reddit.com/r/straykids/comments/1x389ts/261011_aston_martin_aramco_formula_one_team/",
-    "https://www.reddit.com/r/straykids/comments/1x27nqs/261010_harpers_bazaar_singapore_instagram_update/"
+    "https://www.reddit.com/r/straykids/comments/1x27nqs/261010_harpers_bazaar_singapore_instagram_update/",
+    "https://www.reddit.com/r/bts7/comments/1wozkfp/daily_fashion_news_japan_on_instagram_ft_jungkook/",
+    "https://www.reddit.com/r/bts7/comments/1wozmww/hypebeast_korea_on_instagram_2_ft_jungkook_240926/",
+    "https://www.reddit.com/r/bts7/comments/1wjsmjr/calvin_klein_on_instagram_ft_jungkook_190926/",
+    "https://www.reddit.com/r/bts7/comments/1wovd7g/elle_japan_ig_post_jungkook_at_the_hublot/"
   ],
   "idol_history": [
     "Sana",
     "Mingyu",
-    "Jungkook",
     "Karina",
     "Jennie",
     "Jihyo",
@@ -325,7 +332,8 @@
     "Yeonjun",
     "Chaewon",
     "Ningning",
-    "Bang Chan"
+    "Bang Chan",
+    "Jungkook"
   ],
   "recent_videos": [
     {
@@ -1623,6 +1631,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40250177430-jungkook",
+      "idol": "Jungkook",
+      "sources": [
+        {
+          "source_id": "1wozkfp",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wozkfp/daily_fashion_news_japan_on_instagram_ft_jungkook/",
+          "creator": "Eternal_ARMY0613",
+          "sha256": "b45b0aed840d385d03b348138f68fccf592b169af7cf37ed9cbf52e9dde4b64e",
+          "frame_hashes": [
+            "c0c0cccacac4f1d9",
+            "ff07008111193129",
+            "7b4e869f610a4e49",
+            "d96d46060fc94202"
+          ]
+        },
+        {
+          "source_id": "1wozmww",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wozmww/hypebeast_korea_on_instagram_2_ft_jungkook_240926/",
+          "creator": "Eternal_ARMY0613",
+          "sha256": "5b6d9db2c35eb8f5c59d3afe5d244a6441c7f1b58a9d7e6fc6b3f0ed1a99ae41",
+          "frame_hashes": [
+            "98139b1f4f317806",
+            "55363b19d9410494",
+            "3b3b1a3b73994745",
+            "0000000e0c000000"
+          ]
+        },
+        {
+          "source_id": "1wjsmjr",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wjsmjr/calvin_klein_on_instagram_ft_jungkook_190926/",
+          "creator": "Eternal_ARMY0613",
+          "sha256": "6cae19c91092577b97259c0feaa9376bf8365c03168a1eccbaba46251a1ea2af",
+          "frame_hashes": [
+            "c481012020080a1e",
+            "7169f4c4ccec30f1",
+            "9ebcf883b3a30f1f",
+            "674f6337664f4d0d"
+          ]
+        },
+        {
+          "source_id": "1wovd7g",
+          "source_url": "https://www.reddit.com/r/bts7/comments/1wovd7g/elle_japan_ig_post_jungkook_at_the_hublot/",
+          "creator": "alltherach_",
+          "sha256": "1df09a2309138f78c901df02e75309cb35c3d1631ecbc967d08a5d5e67f90deb",
+          "frame_hashes": [
+            "2626b3671e186674",
+            "b6b36d746acb7376",
+            "3331e97d616e6d60",
+            "d8cc849cd85a4f71"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1661,6 +1723,9 @@
       "-_rLlSbxK8g",
       "p1Kp990dfz4",
       "Uvtkls_8moU"
+    ],
+    "2026-10-26": [
+      "kttvBySZTig"
     ]
   }
 }
