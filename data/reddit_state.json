@@ -160,7 +160,11 @@
     "https://www.reddit.com/r/kpop/comments/1uft2oi/bts_jungkook_iconic_by_mistake_orig_le_sserafim_x/",
     "https://www.reddit.com/r/kpop/comments/1wdzy9i/bts_jungkook_donates_1_billion_to_seoul_childrens/",
     "https://www.reddit.com/r/kpop/comments/1pmuhlf/jungkook_bts_elle_korea_january_2026_issue_covers/",
-    "https://www.reddit.com/r/kpop/comments/1pqih0n/le_sserafim_kazuha_standing_next_to_you_orig_bts/"
+    "https://www.reddit.com/r/kpop/comments/1pqih0n/le_sserafim_kazuha_standing_next_to_you_orig_bts/",
+    "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
+    "https://www.reddit.com/r/kpop/comments/1q0ra55/jennie_blackpink_v_magazine_v158_spring_preview/",
+    "https://www.reddit.com/r/kpop/comments/1prexu1/jennie_blackpink_seoul_city_zen_like_jennie_the/",
+    "https://www.reddit.com/r/kpop/comments/1wgznv8/dracula_featuring_jennie_longestcharting_song_by/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -284,10 +288,6 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wyjnn9/261006_yeonjun_coucou_miumiu_instagram/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wy68m6/261005_yeonjun_\u00e0_l\u00e9cole_miu_miu_vogue_korea/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1x25653/261009_yeonjun_w_petra_collins_miu_miu_ss_2027/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
     "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my/",
     "https://www.reddit.com/r/twice/comments/1vis57e/260808_waterbomb_kaohsiung_instagram_update_onces/",
     "https://www.reddit.com/r/twice/comments/1wnossn/260922_blue_sy834_twitter_update_tuides_seoyeon/",
@@ -319,13 +319,16 @@
     "https://www.reddit.com/r/bts7/comments/1wozkfp/daily_fashion_news_japan_on_instagram_ft_jungkook/",
     "https://www.reddit.com/r/bts7/comments/1wozmww/hypebeast_korea_on_instagram_2_ft_jungkook_240926/",
     "https://www.reddit.com/r/bts7/comments/1wjsmjr/calvin_klein_on_instagram_ft_jungkook_190926/",
-    "https://www.reddit.com/r/bts7/comments/1wovd7g/elle_japan_ig_post_jungkook_at_the_hublot/"
+    "https://www.reddit.com/r/bts7/comments/1wovd7g/elle_japan_ig_post_jungkook_at_the_hublot/",
+    "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
+    "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
+    "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
+    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/"
   ],
   "idol_history": [
     "Sana",
     "Mingyu",
     "Karina",
-    "Jennie",
     "Jihyo",
     "Felix",
     "Wonyoung",
@@ -333,7 +336,8 @@
     "Chaewon",
     "Ningning",
     "Bang Chan",
-    "Jungkook"
+    "Jungkook",
+    "Jennie"
   ],
   "recent_videos": [
     {
@@ -1685,6 +1689,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40281345868-jennie",
+      "idol": "Jennie",
+      "sources": [
+        {
+          "source_id": "1x0p9iw",
+          "source_url": "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
+          "creator": "Cosmicstranger28",
+          "sha256": "a75dbe6d15f2c9584b6d6ab78dfd43e891092f245a15f586ba05dee43804dba1",
+          "frame_hashes": [
+            "04012d082c2c3c1c",
+            "022e2e2216147440",
+            "00898c0c0c190a8c",
+            "3000f3f078d858d8"
+          ]
+        },
+        {
+          "source_id": "1x0klug",
+          "source_url": "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
+          "creator": "Cosmicstranger28",
+          "sha256": "b9fed853a3645ac19664df95809778bb13066353ea9ae25c8d8e5ed75a94e8cb",
+          "frame_hashes": [
+            "d49ac0241c9a1e36",
+            "d49dd0502426362e",
+            "d49dd0102484363e",
+            "d49cd0000c8e1e26"
+          ]
+        },
+        {
+          "source_id": "1x0pqeu",
+          "source_url": "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
+          "creator": "Cosmicstranger28",
+          "sha256": "2555c193e4cf4a8a3ec0b730c0a5dd5ff78502323825619a766e0f646bd62f33",
+          "frame_hashes": [
+            "f7ff7d73fdfd0c39",
+            "7f3d363666e6e60d",
+            "3ffcfa98cc0f0b00",
+            "47f3f3c306373312"
+          ]
+        },
+        {
+          "source_id": "1x0pl71",
+          "source_url": "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
+          "creator": "HazardCyp",
+          "sha256": "fb015e1c0724e3c5153f73971736b08a69ea1def0817a032b394e3aa4b37b999",
+          "frame_hashes": [
+            "de47dbf961110800",
+            "60181800b4043061",
+            "800000202511010a",
+            "f3e3e3631b191938"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1725,7 +1783,8 @@
       "Uvtkls_8moU"
     ],
     "2026-10-26": [
-      "kttvBySZTig"
+      "kttvBySZTig",
+      "DV-nMNiJfXs"
     ]
   }
 }
