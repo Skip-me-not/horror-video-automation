@@ -164,7 +164,11 @@
     "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
     "https://www.reddit.com/r/kpop/comments/1q0ra55/jennie_blackpink_v_magazine_v158_spring_preview/",
     "https://www.reddit.com/r/kpop/comments/1prexu1/jennie_blackpink_seoul_city_zen_like_jennie_the/",
-    "https://www.reddit.com/r/kpop/comments/1wgznv8/dracula_featuring_jennie_longestcharting_song_by/"
+    "https://www.reddit.com/r/kpop/comments/1wgznv8/dracula_featuring_jennie_longestcharting_song_by/",
+    "https://www.reddit.com/r/kpop/comments/1ubs8k6/txt_tomorrow_x_together_yeonjun_2nd_mini_album_no/",
+    "https://www.reddit.com/r/kpop/comments/1u94g13/yeonjun_tomorrow_x_together_2nd_mini_album_no/",
+    "https://www.reddit.com/r/kpop/comments/1u8a74h/tomorrow_x_together_yeonjun_iconic_by_mistake/",
+    "https://www.reddit.com/r/kpop/comments/1wyt0ai/txt_yeonjun_with_twice_momo_ice_cream_dance/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -179,10 +183,7 @@
     "https://www.reddit.com/r/Aespa/comments/1ww9hj8/261002_karina_giselle_ningning_visited_the_synk/",
     "https://www.reddit.com/r/Aespa/comments/1x3z0y1/261012_ningning_instagram_story_update/",
     "https://www.reddit.com/r/Aespa/comments/1w57crg/260902_aespa_tiktok_update_with_ningning_seven/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wxswu6/261005_yeonjun_presents_the_beautiful_paris/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
     "https://www.reddit.com/r/twice/comments/1w59wmq/260902_tuide_tiktok_update_sunkiss_with_seoyeon/",
     "https://www.reddit.com/r/twice/comments/1vcgr5n/260801_waterbomb_kaohsiung_twitter_update_special/",
     "https://www.reddit.com/r/twice/comments/1wefsoe/260913_waterbomb_official_instagram_update_jihyos/",
@@ -246,7 +247,6 @@
     "https://www.reddit.com/r/Aespa/comments/1wky8cu/karina_you_are_exactly_who_you_think_you_are/",
     "https://www.reddit.com/r/Aespa/comments/1wo3565/260923_karina_for_nordisk_fw26_collection_film/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvdbh/261002_yeonjuns_sunflower_original_song_post/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvpp3/261002_yeonjun_miu_mius_vinyl_club_popup_press/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wzv4j1/261007_yeonjun_catch_me_rolling_miumiu_instagram/",
     "https://www.reddit.com/r/twice/comments/1x0ucnd/261008_tuide_heres_how_we_filmed_the_challenge/",
@@ -323,7 +323,11 @@
     "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
     "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
     "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/"
+    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram/"
   ],
   "idol_history": [
     "Sana",
@@ -332,12 +336,12 @@
     "Jihyo",
     "Felix",
     "Wonyoung",
-    "Yeonjun",
     "Chaewon",
     "Ningning",
     "Bang Chan",
     "Jungkook",
-    "Jennie"
+    "Jennie",
+    "Yeonjun"
   ],
   "recent_videos": [
     {
@@ -1743,6 +1747,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40306550115-yeonjun",
+      "idol": "Yeonjun",
+      "sources": [
+        {
+          "source_id": "1wz0tjw",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
+          "creator": "ExpressionOne",
+          "sha256": "7da96f1d43e9fca971a80035fcd938bef2653afebdcb79008b7cc44901819c28",
+          "frame_hashes": [
+            "a109775bc9d1f1b1",
+            "011935e5c1e5c9e0",
+            "01092773d3d9c9e1",
+            "0149c797c3e6e8f9"
+          ]
+        },
+        {
+          "source_id": "1wyt2te",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
+          "creator": "LittleClementime",
+          "sha256": "d3f41294befbba6e0cae6e79b413397d2189bb31a480c80c027a088bf57e3bd5",
+          "frame_hashes": [
+            "cbe8cccececcf0d0",
+            "bdb5f3d99d96c9d9",
+            "bcf9f3b676391918",
+            "d5d1d3d932ea2b22"
+          ]
+        },
+        {
+          "source_id": "1x1moby",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok/",
+          "creator": "ExpressionOne",
+          "sha256": "b913c3c5ecad102be678e3da75e8e48b4c4519c78d3b8a9c2e788ca97fc83d78",
+          "frame_hashes": [
+            "0c03787873636373",
+            "0c0b607076e64fcb",
+            "0c0b797a7a66664b",
+            "0c0b64747c39290c"
+          ]
+        },
+        {
+          "source_id": "1wysoja",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram/",
+          "creator": "LittleClementime",
+          "sha256": "b085adabeece271957f88a76e788ca45e18591e283b6baaf17d620908200f4cb",
+          "frame_hashes": [
+            "43666367676088cc",
+            "52e6d6f2e8686464",
+            "a9b3b3a3e4a1919a",
+            "62e2f2c2cea9a126"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1784,7 +1842,8 @@
     ],
     "2026-10-26": [
       "kttvBySZTig",
-      "DV-nMNiJfXs"
+      "DV-nMNiJfXs",
+      "uecOpYEtY6U"
     ]
   }
 }
