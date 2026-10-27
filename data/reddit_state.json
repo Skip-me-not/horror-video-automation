@@ -172,7 +172,11 @@
     "https://www.reddit.com/r/kpop/comments/1v7lz2j/ives_jang_wonyoung_throws_the_first_pitch_for_the/",
     "https://www.reddit.com/r/kpop/comments/1q95p99/ive_jang_wonyoung_has_opened_an_instagram_account/",
     "https://www.reddit.com/r/kpop/comments/1qcie9p/ive_wonyoung_allure_korea_x_barrie_february_2026/",
-    "https://www.reddit.com/r/kpop/comments/1ojsa5z/ive_wonyoung_elle_korea_x_bvlgari_november_2025/"
+    "https://www.reddit.com/r/kpop/comments/1ojsa5z/ive_wonyoung_elle_korea_x_bvlgari_november_2025/",
+    "https://www.reddit.com/r/straykids/comments/1x1gm8u/261009_ferrari_apac_instagram_update_with_felix/",
+    "https://www.reddit.com/r/straykids/comments/1xasimg/261020_bape_japan_instagram_update_with_han_felix/",
+    "https://www.reddit.com/r/straykids/comments/1wak3os/260908_stray_kids_instagram_update_with_lee_know/",
+    "https://www.reddit.com/r/straykids/comments/1x9tu77/261019_stray_kids_instagram_update_with_han_and/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -335,21 +339,25 @@
     "https://www.reddit.com/r/IVE/comments/1x4y9bs/261013_tommy_hilfiger_official_instagram_update/",
     "https://www.reddit.com/r/IVE/comments/1wzy63i/261007_dyson_korea_instagram_update_with_wonyoung/",
     "https://www.reddit.com/r/IVE/comments/1x4rypm/261013_tommy_hilfiger_official_instagram_update/",
-    "https://www.reddit.com/r/kpop_uncensored/comments/1okwtaj/wonyoung_solo_song_first_released_at_todays_ive/"
+    "https://www.reddit.com/r/kpop_uncensored/comments/1okwtaj/wonyoung_solo_song_first_released_at_todays_ive/",
+    "https://www.reddit.com/r/straykids/comments/1wupq3e/261001_felix_for_adidas_fw26_campaign_life_in/",
+    "https://www.reddit.com/r/straykids/comments/1wz70xk/261006_w_korea_instagram_update_with_felix/",
+    "https://www.reddit.com/r/straykids/comments/1whkt8m/260916_gong_cha_korea_instagram_update_with_felix/",
+    "https://www.reddit.com/r/straykids/comments/1wgr7eb/260915_pepero_instagram_update_with_felix_2/"
   ],
   "idol_history": [
     "Sana",
     "Mingyu",
     "Karina",
     "Jihyo",
-    "Felix",
     "Chaewon",
     "Ningning",
     "Bang Chan",
     "Jungkook",
     "Jennie",
     "Yeonjun",
-    "Wonyoung"
+    "Wonyoung",
+    "Felix"
   ],
   "recent_videos": [
     {
@@ -1863,6 +1871,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40433455435-felix",
+      "idol": "Felix",
+      "sources": [
+        {
+          "source_id": "1wupq3e",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wupq3e/261001_felix_for_adidas_fw26_campaign_life_in/",
+          "creator": "princessgojo",
+          "sha256": "33b3a65ca9a5ff0f716190dcde6bd47a893cdf741c9b8d339f6ff264a9770f84",
+          "frame_hashes": [
+            "0c0e85860e1f0f0f",
+            "11b2d2d3cf9b6171",
+            "ababf0b8c8682e3a",
+            "71e5cddd93979e9f"
+          ]
+        },
+        {
+          "source_id": "1wz70xk",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wz70xk/261006_w_korea_instagram_update_with_felix/",
+          "creator": "princessgojo",
+          "sha256": "ab0bab49e603d75159a2477a94856024baae255a4788210d05b2bae3b003db91",
+          "frame_hashes": [
+            "e34b4a0e1656ccdc",
+            "0c98199c8e8e9898",
+            "1919181ca6e6ccdc",
+            "1c1918149636b0f8"
+          ]
+        },
+        {
+          "source_id": "1whkt8m",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1whkt8m/260916_gong_cha_korea_instagram_update_with_felix/",
+          "creator": "princessgojo",
+          "sha256": "eeb9af9f08532757e0feefc54ca6ed0f3ed3a8da4749651081b2c48e46cf5cf1",
+          "frame_hashes": [
+            "00d49033386d7fd9",
+            "d4d4160717c3e132",
+            "d8d4e7f3733232b1",
+            "d4dc4b83cbe36632"
+          ]
+        },
+        {
+          "source_id": "1wgr7eb",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wgr7eb/260915_pepero_instagram_update_with_felix_2/",
+          "creator": "princessgojo",
+          "sha256": "81a7fa1dde721a3a8b186e18b5225755237f4bdfeb8e6fdb2c1894a166067f19",
+          "frame_hashes": [
+            "002060ecce96e8e9",
+            "206060e40e17e1e9",
+            "00706064cc8ea669",
+            "250d1d68cc97aecc"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1907,6 +1969,9 @@
       "DV-nMNiJfXs",
       "uecOpYEtY6U",
       "f_Zj3qtAi8U"
+    ],
+    "2026-10-27": [
+      "Y_XaM-BtVC4"
     ]
   }
 }
