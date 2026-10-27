@@ -184,7 +184,11 @@
     "https://www.reddit.com/r/kpop/comments/1vecaa3/blackpink_jennie_cosmopolitan_fall_2026_issue/",
     "https://www.reddit.com/r/kpop/comments/1vwn7vr/blackpink_jennies_physical_edition_of_fallen/",
     "https://www.reddit.com/r/kpop/comments/1vu0rog/jennie_fallen_angel_digital_ep_out_august_28/",
-    "https://www.reddit.com/r/kpop/comments/1uvhq1z/dracula_by_tame_impala_blackpink_jennie_rises_to/"
+    "https://www.reddit.com/r/kpop/comments/1uvhq1z/dracula_by_tame_impala_blackpink_jennie_rises_to/",
+    "https://www.reddit.com/r/seventeen/comments/1x5ftzl/261014_mingyu_for_calvin_klein_fall_2026/",
+    "https://www.reddit.com/r/seventeen/comments/1vzmuhq/260827_dino_instagram_update_with_scoups_jeonghan/",
+    "https://www.reddit.com/r/seventeen/comments/1u3riuf/260612_mingyu_and_the8_to_appear_as_guests_in_lee/",
+    "https://www.reddit.com/r/seventeen/comments/1vxznry/260825_seungkwan_weverse_update_with_mingyu_and_dk/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -355,11 +359,14 @@
     "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
     "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
     "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/"
+    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
+    "https://www.reddit.com/r/seventeen/comments/1vxy367/260825_tuide_instagram_update_with_mingyu_sun/",
+    "https://www.reddit.com/r/seventeen/comments/1uu91zt/260712_mingyu_instagram_update_singasong_dance/",
+    "https://www.reddit.com/r/seventeen/comments/1u1x4kc/260610_samuel_instagram_update_zigizigizigi_dance/",
+    "https://www.reddit.com/r/seventeen/comments/1v76x8r/260727_scoups_x_mingyu_for_n\u00fctrl_new_lemon_vodka/"
   ],
   "idol_history": [
     "Sana",
-    "Mingyu",
     "Jihyo",
     "Chaewon",
     "Ningning",
@@ -369,63 +376,10 @@
     "Wonyoung",
     "Felix",
     "Karina",
-    "Jennie"
+    "Jennie",
+    "Mingyu"
   ],
   "recent_videos": [
-    {
-      "video_id": "39351972684-chaewon",
-      "idol": "Chaewon",
-      "sources": [
-        {
-          "source_id": "1wnbe1n",
-          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wnbe1n/260922_le_sserafim_tiktok_update_with_kim_chaewon/",
-          "creator": "kpopsns28",
-          "sha256": "eb7db5d0d0b3151e4c39d7631e409cfde418e30e12dc074b2596c7d868f1c399",
-          "frame_hashes": [
-            "edf7e7a6b872c3f2",
-            "eef7e7a74dc6c7d2",
-            "ecefe7a68ebcb19d",
-            "daef4e4c1898d3c2"
-          ]
-        },
-        {
-          "source_id": "1wsdlit",
-          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wsdlit/260928_le_sserafim_tiktok_update_with_kim_chaewon/",
-          "creator": "XuhuiGao",
-          "sha256": "1add79450e2c25f0f4d8541ff10ba33c7335aea610cf5b69cf19c05169bfa4c3",
-          "frame_hashes": [
-            "2860404841727040",
-            "1e7363632b0d0f09",
-            "78f1f0323e0e0e16",
-            "f371a3a31f0f0f59"
-          ]
-        },
-        {
-          "source_id": "1wpqvov",
-          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wpqvov/260925_kim_chaewon_instagram_update_hate_that_i/",
-          "creator": "XuhuiGao",
-          "sha256": "90486917ec181ebef11729bd75e8488d8e2bb96cd32ba5d631942bf39232cd9a",
-          "frame_hashes": [
-            "b0b0bcb93dacacb4",
-            "b0b4b8b931b2b0b0",
-            "b0b0b4b135b4b4b4",
-            "b0b4b8b131b2b0b0"
-          ]
-        },
-        {
-          "source_id": "1wlf5c8",
-          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wlf5c8/260920_mnet_plus_official_twitter_update_with_kim/",
-          "creator": "kpopsns28",
-          "sha256": "74223f23bc1bb4ed23f418a4721fe8def3e6369e0fd5ad47f29ab44545a4d796",
-          "frame_hashes": [
-            "b0a8b8940db8f459",
-            "7071484c5c323333",
-            "303169ccdc342237",
-            "3072d1d9d8292676"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39379677214-mingyu",
       "idol": "Mingyu",
@@ -1991,6 +1945,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40468641206-mingyu",
+      "idol": "Mingyu",
+      "sources": [
+        {
+          "source_id": "1vxy367",
+          "source_url": "https://www.reddit.com/r/seventeen/comments/1vxy367/260825_tuide_instagram_update_with_mingyu_sun/",
+          "creator": "princessgojo",
+          "sha256": "612a8faf115b866c65293a0ab28b17a636fd7e888c012ecd0cac197b5a8060ca",
+          "frame_hashes": [
+            "0f2eae16ede95958",
+            "0f2e3d198eb4a014",
+            "07272d594babcd27",
+            "070cad0a0bdac529"
+          ]
+        },
+        {
+          "source_id": "1uu91zt",
+          "source_url": "https://www.reddit.com/r/seventeen/comments/1uu91zt/260712_mingyu_instagram_update_singasong_dance/",
+          "creator": "princessgojo",
+          "sha256": "38e20fe9929778effd2a778cdaab984cbaa83a3500c35ed67dd856781b65347a",
+          "frame_hashes": [
+            "f0396e2d6135d433",
+            "f0396f2da135c433",
+            "c03b6e2dea3dcc33",
+            "783b6e2de335e433"
+          ]
+        },
+        {
+          "source_id": "1u1x4kc",
+          "source_url": "https://www.reddit.com/r/seventeen/comments/1u1x4kc/260610_samuel_instagram_update_zigizigizigi_dance/",
+          "creator": "princessgojo",
+          "sha256": "2ff36068bc4a36019ea87e978593a6110e03365d494c2bb9f4dfeb5bbca9820a",
+          "frame_hashes": [
+            "03071371e4e4dcc8",
+            "0000096868697535",
+            "00014bd898999939",
+            "00010b696133f377"
+          ]
+        },
+        {
+          "source_id": "1v76x8r",
+          "source_url": "https://www.reddit.com/r/seventeen/comments/1v76x8r/260727_scoups_x_mingyu_for_n\u00fctrl_new_lemon_vodka/",
+          "creator": "princessgojo",
+          "sha256": "6fa2b11d7f2fe3af7d987ab5db1cb36a8dfe9c99b25dc9c408463f7b1899bd66",
+          "frame_hashes": [
+            "23f0f87870f1985c",
+            "0e9e3eefa32306f0",
+            "00c090248859dc70",
+            "8887cb9606c580c4"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2039,7 +2047,8 @@
     "2026-10-27": [
       "Y_XaM-BtVC4",
       "pBYW1jMK2zc",
-      "SrZ7MDsqQ-k"
+      "SrZ7MDsqQ-k",
+      "ZSob7X6agKk"
     ]
   }
 }
