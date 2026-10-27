@@ -176,7 +176,11 @@
     "https://www.reddit.com/r/straykids/comments/1x1gm8u/261009_ferrari_apac_instagram_update_with_felix/",
     "https://www.reddit.com/r/straykids/comments/1xasimg/261020_bape_japan_instagram_update_with_han_felix/",
     "https://www.reddit.com/r/straykids/comments/1wak3os/260908_stray_kids_instagram_update_with_lee_know/",
-    "https://www.reddit.com/r/straykids/comments/1x9tu77/261019_stray_kids_instagram_update_with_han_and/"
+    "https://www.reddit.com/r/straykids/comments/1x9tu77/261019_stray_kids_instagram_update_with_han_and/",
+    "https://www.reddit.com/r/Aespa/comments/1wrsrer/260927_eva_nyc_nails_instagram_update_with_karina/",
+    "https://www.reddit.com/r/Aespa/comments/1wrgy9t/260927_aespa_tiktok_update_with_karina_lost_in_my/",
+    "https://www.reddit.com/r/Aespa/comments/1wtwe8m/260930_karina_winter_absolutely_in_seoul_seoul/",
+    "https://www.reddit.com/r/Aespa/comments/1x01rrb/261007_karina_for_nordisk_fw26_collection/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -343,12 +347,15 @@
     "https://www.reddit.com/r/straykids/comments/1wupq3e/261001_felix_for_adidas_fw26_campaign_life_in/",
     "https://www.reddit.com/r/straykids/comments/1wz70xk/261006_w_korea_instagram_update_with_felix/",
     "https://www.reddit.com/r/straykids/comments/1whkt8m/260916_gong_cha_korea_instagram_update_with_felix/",
-    "https://www.reddit.com/r/straykids/comments/1wgr7eb/260915_pepero_instagram_update_with_felix_2/"
+    "https://www.reddit.com/r/straykids/comments/1wgr7eb/260915_pepero_instagram_update_with_felix_2/",
+    "https://www.reddit.com/r/Aespa/comments/1x3teos/261012_visit_seoul_instagram_update_guess_the/",
+    "https://www.reddit.com/r/Aespa/comments/1x01rrb/261007_karina_for_nordisk_fw26_collection/",
+    "https://www.reddit.com/r/Aespa/comments/1wtwe8m/260930_karina_winter_absolutely_in_seoul_seoul/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1tddo4l/my_karina_badge/"
   ],
   "idol_history": [
     "Sana",
     "Mingyu",
-    "Karina",
     "Jihyo",
     "Chaewon",
     "Ningning",
@@ -357,7 +364,8 @@
     "Jennie",
     "Yeonjun",
     "Wonyoung",
-    "Felix"
+    "Felix",
+    "Karina"
   ],
   "recent_videos": [
     {
@@ -1925,6 +1933,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40436116354-karina",
+      "idol": "Karina",
+      "sources": [
+        {
+          "source_id": "1x3teos",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1x3teos/261012_visit_seoul_instagram_update_guess_the/",
+          "creator": "Klep3",
+          "sha256": "66bce091c05b505b12e4dc18439dfebe05b27fa2b06d3255cfe95a4a66c6fb47",
+          "frame_hashes": [
+            "002b2922331d0803",
+            "003a7b213369cb01",
+            "0022060004040001",
+            "003a361f27340001"
+          ]
+        },
+        {
+          "source_id": "1x01rrb",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1x01rrb/261007_karina_for_nordisk_fw26_collection/",
+          "creator": "Klep3",
+          "sha256": "b274e765338b043f80deb7ce42261bf2b04c6c25f3c59efdb5a3fac0d2a0e123",
+          "frame_hashes": [
+            "0000001010000000",
+            "af6dbfb97973c57e",
+            "76f4754951f1f4e4",
+            "fce0c48001033a06"
+          ]
+        },
+        {
+          "source_id": "1wtwe8m",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wtwe8m/260930_karina_winter_absolutely_in_seoul_seoul/",
+          "creator": "Klep3",
+          "sha256": "939dc6ddf66935697c72b13634ea9120308577228cf6d8f6d77fe9053d68693b",
+          "frame_hashes": [
+            "ffaebbf1f0f3d918",
+            "0923232737393117",
+            "203242644505547c",
+            "00485e1e9b1b7717"
+          ]
+        },
+        {
+          "source_id": "1tddo4l",
+          "source_url": "https://www.reddit.com/r/kpop_uncensored/comments/1tddo4l/my_karina_badge/",
+          "creator": "unknown",
+          "sha256": "65e9781e742ccf30496506a205435ff6d0a7240efce312b896f38de7ae7c1d74",
+          "frame_hashes": [
+            "e1d0080eac717500",
+            "41e0981a58156500",
+            "41c0880a88714500",
+            "41c0880c9c712500"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -1971,7 +2033,8 @@
       "f_Zj3qtAi8U"
     ],
     "2026-10-27": [
-      "Y_XaM-BtVC4"
+      "Y_XaM-BtVC4",
+      "pBYW1jMK2zc"
     ]
   }
 }
