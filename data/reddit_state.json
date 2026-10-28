@@ -200,7 +200,11 @@
     "https://www.reddit.com/r/Aespa/comments/1xckz07/261023_aespa_twitter_update_happy_birthday/",
     "https://www.reddit.com/r/Aespa/comments/1ws3aor/260928_ningning_for_harpers_bazaar_china_october/",
     "https://www.reddit.com/r/Aespa/comments/1x805ec/261017_aespa_2027_seasons_greetings_concept/",
-    "https://www.reddit.com/r/Aespa/comments/1xejqd7/261025_giselle_ningning_winter_was_spotted/"
+    "https://www.reddit.com/r/Aespa/comments/1xejqd7/261025_giselle_ningning_winter_was_spotted/",
+    "https://www.reddit.com/r/lesserafim/comments/1wvljqi/261002_kim_chaewon_instagram_update_feat_le/",
+    "https://www.reddit.com/r/lesserafim/comments/1x8eu5v/261018_kim_chaewon_instagram_update_feat_huh/",
+    "https://www.reddit.com/r/lesserafim/comments/1x5ffka/261014_le_sserafim_tiktok_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/lesserafim/comments/1wn2un3/260922_kim_chaewon_instagram_update_feat_hong/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -379,12 +383,15 @@
     "https://www.reddit.com/r/Aespa/comments/1wt0iwa/260929_ningning_for_harpers_bazaar_china_october/",
     "https://www.reddit.com/r/Aespa/comments/1x62zkd/261015_ningning_instagram_story_update/",
     "https://www.reddit.com/r/Aespa/comments/1x2z2hy/261011_ningning_for_w_korea_x_gucci_november_2026/",
-    "https://www.reddit.com/r/Aespa/comments/1wpr11v/260925_aespa_tiktok_update_with_ningning_barbie/"
+    "https://www.reddit.com/r/Aespa/comments/1wpr11v/260925_aespa_tiktok_update_with_ningning_barbie/",
+    "https://www.reddit.com/r/lesserafim/comments/1x15xcf/261009_jooshica_instagram_update_with_kim_chaewon/",
+    "https://www.reddit.com/r/lesserafim/comments/1wmd9cz/260921_daily_fashion_news_instagram_update_with/",
+    "https://www.reddit.com/r/lesserafim/comments/1x5lm9k/261014_kim_chaewon_matin_kim_x_kim_chaewon_2026/",
+    "https://www.reddit.com/r/lesserafim/comments/1wmemjf/260921_entz_magazine_instagram_update_with_kim/"
   ],
   "idol_history": [
     "Sana",
     "Jihyo",
-    "Chaewon",
     "Bang Chan",
     "Jungkook",
     "Felix",
@@ -393,63 +400,10 @@
     "Mingyu",
     "Wonyoung",
     "Yeonjun",
-    "Ningning"
+    "Ningning",
+    "Chaewon"
   ],
   "recent_videos": [
-    {
-      "video_id": "39527936289-yeonjun",
-      "idol": "Yeonjun",
-      "sources": [
-        {
-          "source_id": "1wvvdbh",
-          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvdbh/261002_yeonjuns_sunflower_original_song_post/",
-          "creator": "Bunniette",
-          "sha256": "86f0404b195251429523818dc20734bab59b077718afd27dbea72f04b42dcfd7",
-          "frame_hashes": [
-            "00000f59e0b890c0",
-            "5051c10c20539b18",
-            "000c2e8eccf8f8c0",
-            "001d1e1e3c000000"
-          ]
-        },
-        {
-          "source_id": "1wyt2te",
-          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
-          "creator": "LittleClementime",
-          "sha256": "d3f41294befbba6e0cae6e79b413397d2189bb31a480c80c027a088bf57e3bd5",
-          "frame_hashes": [
-            "cbe8cccececcf0d0",
-            "bdb5f3d99d96c9d9",
-            "bcf9f3b676391918",
-            "d5d1d3d932ea2b22"
-          ]
-        },
-        {
-          "source_id": "1wvvpp3",
-          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvpp3/261002_yeonjun_miu_mius_vinyl_club_popup_press/",
-          "creator": "ExpressionOne",
-          "sha256": "42e7a8a69a0ab3145c5fdb5559eba477fff4170ed59fc058b495490eb6e03f08",
-          "frame_hashes": [
-            "38f6e4b99b89e0f0",
-            "87e169ede80e9e96",
-            "1d7164c468318c9a",
-            "9cb6e6e4b8391982"
-          ]
-        },
-        {
-          "source_id": "1wzv4j1",
-          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wzv4j1/261007_yeonjun_catch_me_rolling_miumiu_instagram/",
-          "creator": "ExpressionOne",
-          "sha256": "f45f40d258da2d0272f4342bdedaf8aa8c3e8fdf64bc8ce70a2b6ecf6ef152dc",
-          "frame_hashes": [
-            "25adc6f2d9cdddfa",
-            "1c13b3f3ce6063e6",
-            "b9094bcf880838f8",
-            "0ab5f373fbfffbd1"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39554607582-jihyo",
       "idol": "Jihyo",
@@ -2015,6 +1969,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40655830478-chaewon",
+      "idol": "Chaewon",
+      "sources": [
+        {
+          "source_id": "1x15xcf",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1x15xcf/261009_jooshica_instagram_update_with_kim_chaewon/",
+          "creator": "kpopsns28",
+          "sha256": "5ae05622df3a51945066435242f6b516424d2126f5ca642d18022459ef553e33",
+          "frame_hashes": [
+            "58620e0e0d34d8e9",
+            "5c62686037969edc",
+            "5c6228688b931dcc",
+            "5c62282ccb561ccc"
+          ]
+        },
+        {
+          "source_id": "1wmd9cz",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wmd9cz/260921_daily_fashion_news_instagram_update_with/",
+          "creator": "kpopsns28",
+          "sha256": "95e09898a46fac5e26e7363dfa0a08651b22fa3d087a54dfdf79df3cf22ea4af",
+          "frame_hashes": [
+            "f0f8cccccc9c32c4",
+            "f8eccec6ee8f8f18",
+            "75306968ece43292",
+            "3371ccece6ce6e66"
+          ]
+        },
+        {
+          "source_id": "1x5lm9k",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1x5lm9k/261014_kim_chaewon_matin_kim_x_kim_chaewon_2026/",
+          "creator": "kpopsns28",
+          "sha256": "13ccccc4e787ae3f543dbe1f6be9655da6d0e747e031c7e6487c235c0aa57488",
+          "frame_hashes": [
+            "0327272606062c0c",
+            "7266277727272627",
+            "4f4fcfcfcfc7e7e5",
+            "808080c0c0a0f8f7"
+          ]
+        },
+        {
+          "source_id": "1wmemjf",
+          "source_url": "https://www.reddit.com/r/lesserafim/comments/1wmemjf/260921_entz_magazine_instagram_update_with_kim/",
+          "creator": "kpopsns28",
+          "sha256": "ac06d7ec92c67f3ea7e840b9143d8557d33918e78729d03ad35fe49d4810ca83",
+          "frame_hashes": [
+            "5e326868ecccd033",
+            "763868e8d8e0e222",
+            "5e726868e8cce0b2",
+            "be62c0e8ecccc0c2"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2069,7 +2077,8 @@
     "2026-10-28": [
       "k15q4vnQIG4",
       "EXsrIUn-hrQ",
-      "mnvAZoHCdm8"
+      "mnvAZoHCdm8",
+      "BYL6mPQ4034"
     ]
   }
 }
