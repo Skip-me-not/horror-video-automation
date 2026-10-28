@@ -196,7 +196,11 @@
     "https://www.reddit.com/r/kpop/comments/1uscyjf/txt_tomorrow_x_together_yeonjun_no_labels_part_02/",
     "https://www.reddit.com/r/kpop/comments/1v5hc60/jy_park_txt_tomorrow_x_together_yeonjun_wet_dance/",
     "https://www.reddit.com/r/kpop/comments/1u6jauv/txt_yeonjun_no_labels_part_02_profile_header/",
-    "https://www.reddit.com/r/kpop/comments/1ujq3xf/tomorrow_x_together_yeonjun_will_be_performing_on/"
+    "https://www.reddit.com/r/kpop/comments/1ujq3xf/tomorrow_x_together_yeonjun_will_be_performing_on/",
+    "https://www.reddit.com/r/Aespa/comments/1xckz07/261023_aespa_twitter_update_happy_birthday/",
+    "https://www.reddit.com/r/Aespa/comments/1ws3aor/260928_ningning_for_harpers_bazaar_china_october/",
+    "https://www.reddit.com/r/Aespa/comments/1x805ec/261017_aespa_2027_seasons_greetings_concept/",
+    "https://www.reddit.com/r/Aespa/comments/1xejqd7/261025_giselle_ningning_winter_was_spotted/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -371,13 +375,16 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram/",
+    "https://www.reddit.com/r/Aespa/comments/1wt0iwa/260929_ningning_for_harpers_bazaar_china_october/",
+    "https://www.reddit.com/r/Aespa/comments/1x62zkd/261015_ningning_instagram_story_update/",
+    "https://www.reddit.com/r/Aespa/comments/1x2z2hy/261011_ningning_for_w_korea_x_gucci_november_2026/",
+    "https://www.reddit.com/r/Aespa/comments/1wpr11v/260925_aespa_tiktok_update_with_ningning_barbie/"
   ],
   "idol_history": [
     "Sana",
     "Jihyo",
     "Chaewon",
-    "Ningning",
     "Bang Chan",
     "Jungkook",
     "Felix",
@@ -385,63 +392,10 @@
     "Jennie",
     "Mingyu",
     "Wonyoung",
-    "Yeonjun"
+    "Yeonjun",
+    "Ningning"
   ],
   "recent_videos": [
-    {
-      "video_id": "39523538589-karina",
-      "idol": "Karina",
-      "sources": [
-        {
-          "source_id": "1wo2ech",
-          "source_url": "https://www.reddit.com/r/Aespa/comments/1wo2ech/260923_aespa_tiktok_update_with_karina_hello_im/",
-          "creator": "Klep3",
-          "sha256": "0b98b3ff1291f224cbc69d7e9f657dac2001f584867a44c90fd393b12e806aad",
-          "frame_hashes": [
-            "e6e4f86969683830",
-            "c62c686db4b0b83a",
-            "cd686969686031f5",
-            "ce6c706138b0b339"
-          ]
-        },
-        {
-          "source_id": "1wqd82v",
-          "source_url": "https://www.reddit.com/r/Aespa/comments/1wqd82v/16bit_karina_solo_finger_gun_moment/",
-          "creator": "Siphon_01",
-          "sha256": "0fd49b06616b83974ff95e44a7bc3c2910a1be714592b55bbbf9230013eabb76",
-          "frame_hashes": [
-            "3080a5c54746c386",
-            "1b32ca8d0d8dc8c4",
-            "0a2f2f271f15160a",
-            "d00c87a1b32347c2"
-          ]
-        },
-        {
-          "source_id": "1wky8cu",
-          "source_url": "https://www.reddit.com/r/Aespa/comments/1wky8cu/karina_you_are_exactly_who_you_think_you_are/",
-          "creator": "Dk_rkyoem",
-          "sha256": "7f6913c91b9d29f70ae00b93b4556a231876a60977f154da17330ea9fcbc8601",
-          "frame_hashes": [
-            "0000080e1e140000",
-            "00101d080e000000",
-            "0000040404000000",
-            "0000301810000000"
-          ]
-        },
-        {
-          "source_id": "1wo3565",
-          "source_url": "https://www.reddit.com/r/Aespa/comments/1wo3565/260923_karina_for_nordisk_fw26_collection_film/",
-          "creator": "Klep3",
-          "sha256": "365398ac4f9aeb6d7adf0c4b8b0ccca57781ca47c9f8654f1d6456e54eb1edd9",
-          "frame_hashes": [
-            "b60626363edbc78e",
-            "e3c5c7cfbffbe77e",
-            "f3589e86c7841107",
-            "9432ecc898babc0e"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39527936289-yeonjun",
       "idol": "Yeonjun",
@@ -2007,6 +1961,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40647913653-ningning",
+      "idol": "Ningning",
+      "sources": [
+        {
+          "source_id": "1wt0iwa",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wt0iwa/260929_ningning_for_harpers_bazaar_china_october/",
+          "creator": "Klep3",
+          "sha256": "ad9ea89f2295cb59104a70c59454cf11b8f95424877bf5c2b4549cbd3e097a31",
+          "frame_hashes": [
+            "72d8e6e6d2d0686e",
+            "3fbf7a6b19b26e88",
+            "21d4e8e46113916d",
+            "719d9e8f82312b72"
+          ]
+        },
+        {
+          "source_id": "1x62zkd",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1x62zkd/261015_ningning_instagram_story_update/",
+          "creator": "Klep3",
+          "sha256": "92f7904af0d5edfd32b5d658e8a3945f4c8bfd2fb83f31b309b4dfeab3559e11",
+          "frame_hashes": [
+            "94ef66b9d9c9418d",
+            "94ef66b9d9c94189",
+            "94ef66b9d9c94189",
+            "94ef66b9d9c94189"
+          ]
+        },
+        {
+          "source_id": "1x2z2hy",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1x2z2hy/261011_ningning_for_w_korea_x_gucci_november_2026/",
+          "creator": "Klep3",
+          "sha256": "da45d111d831e14272f13e25e2d6c7f3937aad01e03c99be9f3a9d53c0fe23b3",
+          "frame_hashes": [
+            "0909204040000000",
+            "f979fcfc3c78f0e0",
+            "9d99001030004000",
+            "f9f17d6527264458"
+          ]
+        },
+        {
+          "source_id": "1wpr11v",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wpr11v/260925_aespa_tiktok_update_with_ningning_barbie/",
+          "creator": "kpopsns28",
+          "sha256": "3f90c77bd15ef49b5426bb14b5e398bace01bff8d5ce0e0f84146d420cc5b8f3",
+          "frame_hashes": [
+            "0f396c6ce6c2c4c4",
+            "0f2c72d9ccd0e8e4",
+            "0f396c6c64c9c4c8",
+            "0f13396cece4e0e9"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2060,7 +2068,8 @@
     ],
     "2026-10-28": [
       "k15q4vnQIG4",
-      "EXsrIUn-hrQ"
+      "EXsrIUn-hrQ",
+      "mnvAZoHCdm8"
     ]
   }
 }
