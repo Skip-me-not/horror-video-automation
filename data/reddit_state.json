@@ -216,7 +216,11 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1vnvy0w/260814_yeonjuns_ceremonial_first_pitch_at_la/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1vjgdhk/260809_yeonjun_nick_kosir_coolin_off_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1vjhw97/260809_yeonjun_wassup_new_york_instagram/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1nf7vpr/yeonjun_i_wish_you_pleasant_coincidences_this/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1nf7vpr/yeonjun_i_wish_you_pleasant_coincidences_this/",
+    "https://www.reddit.com/r/Aespa/comments/1ws41ki/260928_ningning_for_harpers_bazaar_china_october/",
+    "https://www.reddit.com/r/Aespa/comments/1wtpkch/260929_harpers_bazaar_casting_room_rednote_update/",
+    "https://www.reddit.com/r/Aespa/comments/1x4lcen/261013_ningning_for_discovery_expedition_2026/",
+    "https://www.reddit.com/r/Aespa/comments/1wt0iwa/260929_ningning_for_harpers_bazaar_china_october/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -407,7 +411,11 @@
     "https://www.reddit.com/r/TomorrowByTogether/comments/1vjgdhk/260809_yeonjun_nick_kosir_coolin_off_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1v29mcp/260721_yeonjun_coolin_off_w_hong_eunchae_le/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1v36o0q/260722_yeonjun_coolin_off_w_sung_hanbin_zb1_tiktok/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1v1b39v/260720_yeonjun_coolin_offff_tiktok/"
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1v1b39v/260720_yeonjun_coolin_offff_tiktok/",
+    "https://www.reddit.com/r/Aespa/comments/1ws41ki/260928_ningning_for_harpers_bazaar_china_october/",
+    "https://www.reddit.com/r/Aespa/comments/1x4lcen/261013_ningning_for_discovery_expedition_2026/",
+    "https://www.reddit.com/r/Aespa/comments/1wsydw2/260929_ningning_for_harpers_bazaar_china_october/",
+    "https://www.reddit.com/r/Aespa/comments/1wt132x/260929_harpers_bazaar_china_rednote_update_with/"
   ],
   "idol_history": [
     "Jihyo",
@@ -417,67 +425,13 @@
     "Karina",
     "Mingyu",
     "Wonyoung",
-    "Ningning",
     "Chaewon",
     "Sana",
     "Jennie",
-    "Yeonjun"
+    "Yeonjun",
+    "Ningning"
   ],
   "recent_videos": [
-    {
-      "video_id": "39733563586-ningning",
-      "idol": "Ningning",
-      "sources": [
-        {
-          "source_id": "1wtpkch",
-          "source_url": "https://www.reddit.com/r/Aespa/comments/1wtpkch/260929_harpers_bazaar_casting_room_rednote_update/",
-          "creator": "Klep3",
-          "sha256": "27162b2222571f91124fff77702604a828d73c1be0bc59f38bbdda170d3ca722",
-          "frame_hashes": [
-            "7f838c8ccc7169d4",
-            "ccb0b2f1e4ccc1e3",
-            "ff377371333336f8",
-            "dfb767e3676fe0e2"
-          ]
-        },
-        {
-          "source_id": "1wsxujd",
-          "source_url": "https://www.reddit.com/r/Aespa/comments/1wsxujd/260929_ningning_for_harpers_bazaar_china_october/",
-          "creator": "Klep3",
-          "sha256": "7cfe6c42f39c9d997355ee703149a9a90e3cb24dc18e509d1a42900a4d638d90",
-          "frame_hashes": [
-            "7171f99c8cd86138",
-            "71e14048078f9d08",
-            "386c67d0b0e03624",
-            "193c4ecfcec0c3cb"
-          ]
-        },
-        {
-          "source_id": "1wupc7v",
-          "source_url": "https://www.reddit.com/r/Aespa/comments/1wupc7v/261001_ningning_for_discovery_expedition_fw26/",
-          "creator": "Klep3",
-          "sha256": "9197af0c3a9109046e8e0a1468c3c0ae7cffc8ced35587bdc298614180003579",
-          "frame_hashes": [
-            "72b96cc4c38aca60",
-            "b339d838f1d272e3",
-            "cea239188883177f",
-            "e652c8c896c5ccf8"
-          ]
-        },
-        {
-          "source_id": "1wx84vc",
-          "source_url": "https://www.reddit.com/r/Aespa/comments/1wx84vc/261004_ningning_instagram_story_update/",
-          "creator": "Klep3",
-          "sha256": "d04e4db56b10e97e538e5178274a26fc40e7e8e8b08ea8873338eb8a3fcc8613",
-          "frame_hashes": [
-            "6d651b110169cde6",
-            "7143052d2d1d0f6e",
-            "989696796747819c",
-            "407001071f1f0600"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39740725287-jungkook",
       "idol": "Jungkook",
@@ -2043,6 +1997,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40861755673-ningning",
+      "idol": "Ningning",
+      "sources": [
+        {
+          "source_id": "1ws41ki",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1ws41ki/260928_ningning_for_harpers_bazaar_china_october/",
+          "creator": "Klep3",
+          "sha256": "8bb354659563f5bcf147ec1ee73b3daa1452a920e5543b7a290ec129e60306bf",
+          "frame_hashes": [
+            "00000a0000020404",
+            "0206460c0c000000",
+            "0000018163232118",
+            "4141091822160604"
+          ]
+        },
+        {
+          "source_id": "1x4lcen",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1x4lcen/261013_ningning_for_discovery_expedition_2026/",
+          "creator": "Klep3",
+          "sha256": "b99cafa8701be51efd5a73830496c7a65c930fda4d59b9f06f82a1400f063e7b",
+          "frame_hashes": [
+            "36364e4ecece8881",
+            "d2b3b879787c7474",
+            "0d1d3db9f1909086",
+            "c0e0d0d0f0e4a4a4"
+          ]
+        },
+        {
+          "source_id": "1wsydw2",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wsydw2/260929_ningning_for_harpers_bazaar_china_october/",
+          "creator": "Klep3",
+          "sha256": "bc402b2d61e3700a11a00e973f9d245e34850de3a776e200039551ec730b0114",
+          "frame_hashes": [
+            "000c0c6c341c5d13",
+            "2b2b031b53535200",
+            "0c0c0c0c0c060606",
+            "0e0e9e4666672321"
+          ]
+        },
+        {
+          "source_id": "1wt132x",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wt132x/260929_harpers_bazaar_china_rednote_update_with/",
+          "creator": "Klep3",
+          "sha256": "9948e3e388bb36f6282adda5e917f1efb9828847ce5f30970c9434ab669059ea",
+          "frame_hashes": [
+            "57cb0bdae26a68e8",
+            "57cb0bdaea6a69e9",
+            "a66eccea3c374743",
+            "8ece8e8b27365ed6"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2103,7 +2111,8 @@
     "2026-10-29": [
       "vHE0wDV2-bA",
       "gC9CtqbkvJg",
-      "nHt4PXsZsvg"
+      "nHt4PXsZsvg",
+      "Way8R7Cuj7s"
     ]
   }
 }
