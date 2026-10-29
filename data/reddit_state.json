@@ -212,7 +212,11 @@
     "https://www.reddit.com/r/kpop/comments/1v1o5df/blackpink_jennie_digital_single_less_than_a_lover/",
     "https://www.reddit.com/r/kpop/comments/1vaqiiw/jennie_earns_1st_win_for_less_than_a_lover_on_m/",
     "https://www.reddit.com/r/kpop/comments/1vt94hg/account_behind_jennie_clip_suspended_after/",
-    "https://www.reddit.com/r/kpop/comments/1up2sny/dracula_by_tame_impala_blackpink_jennie_rises_to/"
+    "https://www.reddit.com/r/kpop/comments/1up2sny/dracula_by_tame_impala_blackpink_jennie_rises_to/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1vnvy0w/260814_yeonjuns_ceremonial_first_pitch_at_la/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1vjgdhk/260809_yeonjun_nick_kosir_coolin_off_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1vjhw97/260809_yeonjun_wassup_new_york_instagram/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1nf7vpr/yeonjun_i_wish_you_pleasant_coincidences_this/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -399,7 +403,11 @@
     "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
     "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
     "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/"
+    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1vjgdhk/260809_yeonjun_nick_kosir_coolin_off_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1v29mcp/260721_yeonjun_coolin_off_w_hong_eunchae_le/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1v36o0q/260722_yeonjun_coolin_off_w_sung_hanbin_zb1_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1v1b39v/260720_yeonjun_coolin_offff_tiktok/"
   ],
   "idol_history": [
     "Jihyo",
@@ -409,67 +417,13 @@
     "Karina",
     "Mingyu",
     "Wonyoung",
-    "Yeonjun",
     "Ningning",
     "Chaewon",
     "Sana",
-    "Jennie"
+    "Jennie",
+    "Yeonjun"
   ],
   "recent_videos": [
-    {
-      "video_id": "39702092618-wonyoung",
-      "idol": "Wonyoung",
-      "sources": [
-        {
-          "source_id": "1x36tzo",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1x36tzo/261011_gq_singapore_instagram_update_with_wonyoung/",
-          "creator": "Pristine_Cod5189",
-          "sha256": "56dd1e61e6d440213b327128378f225f15d300284c7e85ed9aaec740da234bf1",
-          "frame_hashes": [
-            "01b9b4266627076e",
-            "4c081a3238383272",
-            "5363a38f8e663438",
-            "b099a9c99cd9d9d9"
-          ]
-        },
-        {
-          "source_id": "1x35yzm",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1x35yzm/261011_elle_singapore_instagram_update_with/",
-          "creator": "Pristine_Cod5189",
-          "sha256": "b89808f5841f8aed6e498afe4e790ed9345591a1145637cba28b10b86727d135",
-          "frame_hashes": [
-            "5f38773359ddd996",
-            "671ce3913d6d4c96",
-            "3f1c7b09984b4d9b",
-            "82720e0624301118"
-          ]
-        },
-        {
-          "source_id": "1x36bun",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1x36bun/261011_grazia_singapore_instagram_update_with/",
-          "creator": "Pristine_Cod5189",
-          "sha256": "935cb20c9984f05f21a210748623cfc2128f87ce7ed973ea716545a52134b74c",
-          "frame_hashes": [
-            "15151918d8c87939",
-            "922b0f497179e124",
-            "3f349b39f1c95171",
-            "36391e0e4c5c7532"
-          ]
-        },
-        {
-          "source_id": "1x5f9vm",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1x5f9vm/261014_tommy_hilfiger_official_instagram_update/",
-          "creator": "kpopsns28",
-          "sha256": "00a21d0cfe39807c910b15cffa07f5064b7322fb597cd2e5c39be64cc9047e94",
-          "frame_hashes": [
-            "4219cbe2e2c0c0f1",
-            "460e5372569070e0",
-            "460c535256107060",
-            "4605537252101270"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39733563586-ningning",
       "idol": "Ningning",
@@ -2035,6 +1989,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40841614770-yeonjun",
+      "idol": "Yeonjun",
+      "sources": [
+        {
+          "source_id": "1vjgdhk",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1vjgdhk/260809_yeonjun_nick_kosir_coolin_off_tiktok/",
+          "creator": "LittleClementime",
+          "sha256": "611f53ff95e8ede44d3c4e4d80b9fd9ae01ae888aca5ccd92484d8a0f4f5febd",
+          "frame_hashes": [
+            "7f7f313466b2e0f0",
+            "1f1f5d6c2cf4d43c",
+            "1f1f9d2e3a696958",
+            "1f1e892d2c696dcf"
+          ]
+        },
+        {
+          "source_id": "1v29mcp",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1v29mcp/260721_yeonjun_coolin_off_w_hong_eunchae_le/",
+          "creator": "LittleClementime",
+          "sha256": "2c553796eac91c78f482a479a248fcff3bb6190c0722e2ba5c7651860396633b",
+          "frame_hashes": [
+            "3b1e995d1dd83072",
+            "3d1e5d3935b82833",
+            "3d1e5d4949e866e7",
+            "3d1e5d6b29f473b9"
+          ]
+        },
+        {
+          "source_id": "1v36o0q",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1v36o0q/260722_yeonjun_coolin_off_w_sung_hanbin_zb1_tiktok/",
+          "creator": "LittleClementime",
+          "sha256": "57f336669d2deda39166d80e7afe9af57eb9ff56f8bd47a860b78acd24dbf4be",
+          "frame_hashes": [
+            "528f65051d5ccfcd",
+            "2b872cad0f60d8c1",
+            "a9c7268d0f69e483",
+            "a3472e892b64e6c7"
+          ]
+        },
+        {
+          "source_id": "1v1b39v",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1v1b39v/260720_yeonjun_coolin_offff_tiktok/",
+          "creator": "LittleClementime",
+          "sha256": "4eae01eebc217fd4d6f5a6ec609e66ef5de20b83abae524599bab1b51021d65d",
+          "frame_hashes": [
+            "63e32372f4b4b494",
+            "63e32332f4dca4a4",
+            "63e32732f0f8e4a6",
+            "63e32312f4f49696"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2094,7 +2102,8 @@
     ],
     "2026-10-29": [
       "vHE0wDV2-bA",
-      "gC9CtqbkvJg"
+      "gC9CtqbkvJg",
+      "nHt4PXsZsvg"
     ]
   }
 }
