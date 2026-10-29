@@ -204,7 +204,11 @@
     "https://www.reddit.com/r/lesserafim/comments/1wvljqi/261002_kim_chaewon_instagram_update_feat_le/",
     "https://www.reddit.com/r/lesserafim/comments/1x8eu5v/261018_kim_chaewon_instagram_update_feat_huh/",
     "https://www.reddit.com/r/lesserafim/comments/1x5ffka/261014_le_sserafim_tiktok_update_with_kim_chaewon/",
-    "https://www.reddit.com/r/lesserafim/comments/1wn2un3/260922_kim_chaewon_instagram_update_feat_hong/"
+    "https://www.reddit.com/r/lesserafim/comments/1wn2un3/260922_kim_chaewon_instagram_update_feat_hong/",
+    "https://www.reddit.com/r/twice/comments/1v6wbhk/260726_sana_instagram_story_update_its_actually/",
+    "https://www.reddit.com/r/twice/comments/1vj0q1m/260808_sana_instagram_story_update_aespa_concert/",
+    "https://www.reddit.com/r/twice/comments/1uvuxi5/260714_harpers_bazaar_korea_site_update_sanas/",
+    "https://www.reddit.com/r/twice/comments/1uap5jp/260620_sana_instagram_update_photos_i_hadnt/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -387,10 +391,13 @@
     "https://www.reddit.com/r/lesserafim/comments/1x15xcf/261009_jooshica_instagram_update_with_kim_chaewon/",
     "https://www.reddit.com/r/lesserafim/comments/1wmd9cz/260921_daily_fashion_news_instagram_update_with/",
     "https://www.reddit.com/r/lesserafim/comments/1x5lm9k/261014_kim_chaewon_matin_kim_x_kim_chaewon_2026/",
-    "https://www.reddit.com/r/lesserafim/comments/1wmemjf/260921_entz_magazine_instagram_update_with_kim/"
+    "https://www.reddit.com/r/lesserafim/comments/1wmemjf/260921_entz_magazine_instagram_update_with_kim/",
+    "https://www.reddit.com/r/twice/comments/1tx448j/sana_is_a_bias_wrecker/",
+    "https://www.reddit.com/r/twice/comments/1sfwa0e/mad_sana_is_still_cute_sana/",
+    "https://www.reddit.com/r/twice/comments/1vkoltj/260810_harpersbazaarkorea_instagram_update_on_the/",
+    "https://www.reddit.com/r/twice/comments/1suxa6f/sana_right_hand_girl_in_denver/"
   ],
   "idol_history": [
-    "Sana",
     "Jihyo",
     "Bang Chan",
     "Jungkook",
@@ -401,63 +408,10 @@
     "Wonyoung",
     "Yeonjun",
     "Ningning",
-    "Chaewon"
+    "Chaewon",
+    "Sana"
   ],
   "recent_videos": [
-    {
-      "video_id": "39554607582-jihyo",
-      "idol": "Jihyo",
-      "sources": [
-        {
-          "source_id": "1wt7vyi",
-          "source_url": "https://www.reddit.com/r/twice/comments/1wt7vyi/260929_harpers_bazaar_korea_instagram_update/",
-          "creator": "MajorIvan88",
-          "sha256": "aed41b7cd4c96748093ffe315d79bf735b7a49722fee7e3eb21b0565ba80370b",
-          "frame_hashes": [
-            "66cce8a8b9f0f818",
-            "dbf7e38386ccc080",
-            "3979fc9d9ddcecec",
-            "6fc6c70c008180c0"
-          ]
-        },
-        {
-          "source_id": "1x0ucnd",
-          "source_url": "https://www.reddit.com/r/twice/comments/1x0ucnd/261008_tuide_heres_how_we_filmed_the_challenge/",
-          "creator": "XuhuiGao",
-          "sha256": "ffc1adba398a9c353738538be673c6a85d80d971806869d63c562de35de80e70",
-          "frame_hashes": [
-            "052c12d474141577",
-            "0f1f3b33232a6958",
-            "878f89a96d6d6d69",
-            "9e9213113b5a5862"
-          ]
-        },
-        {
-          "source_id": "1wzue7x",
-          "source_url": "https://www.reddit.com/r/twice/comments/1wzue7x/261007_jihyo_instagram_story_harpersbazaarkorea/",
-          "creator": "wickeddeus",
-          "sha256": "3f73befb06e1b8884c044541c03e126af7a19fb15b132259ec6cacce9f9dbbdd",
-          "frame_hashes": [
-            "a21f554da5a517c8",
-            "a21f5545a5a517c8",
-            "a21f5545a5a517c8",
-            "b371eccccec7cdf1"
-          ]
-        },
-        {
-          "source_id": "1wuvpes",
-          "source_url": "https://www.reddit.com/r/twice/comments/1wuvpes/261001_harpersbazaarkorea_instagram_reels_update/",
-          "creator": "SapphireHeaven",
-          "sha256": "e1cdb7cc08db93bc0b943c2a4851d57af5ec764325174f52a6537cf859cd9651",
-          "frame_hashes": [
-            "3e96f2f2b3e373b3",
-            "d2ba3cdad99c9888",
-            "1e33313010123692",
-            "21f1f1e2e1e1e4ec"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39577134043-bang-chan",
       "idol": "Bang Chan",
@@ -2023,6 +1977,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40803287088-sana",
+      "idol": "Sana",
+      "sources": [
+        {
+          "source_id": "1tx448j",
+          "source_url": "https://www.reddit.com/r/twice/comments/1tx448j/sana_is_a_bias_wrecker/",
+          "creator": "ResponsibilitySea239",
+          "sha256": "b0f079ade2fd955229f6004589d2ddca7123818022b723f18b4e7b9350fd997c",
+          "frame_hashes": [
+            "52801b17cc8c0000",
+            "012413730f0f8c8e",
+            "0fcdcd2007630004",
+            "9c1515b4141d8083"
+          ]
+        },
+        {
+          "source_id": "1sfwa0e",
+          "source_url": "https://www.reddit.com/r/twice/comments/1sfwa0e/mad_sana_is_still_cute_sana/",
+          "creator": "KloppArmy",
+          "sha256": "53c751dd5a8f7236a247b8b249b01e6da8ec11a1474b29e8fde6c0310ed9461c",
+          "frame_hashes": [
+            "03552627471bca36",
+            "779c0e87a6db5a2e",
+            "c042e727f3fb5d70",
+            "0b2546c6e6fa5ba7"
+          ]
+        },
+        {
+          "source_id": "1vkoltj",
+          "source_url": "https://www.reddit.com/r/twice/comments/1vkoltj/260810_harpersbazaarkorea_instagram_update_on_the/",
+          "creator": "wickeddeus",
+          "sha256": "295af838a3350661bdd684ec9779dc3358ed5ef67ad971b8c4d61430c3e9baba",
+          "frame_hashes": [
+            "0f33333b4e4e6d3e",
+            "0f4bc3c34e6e1f27",
+            "1fe3818193438786",
+            "0f73737337fc9c3f"
+          ]
+        },
+        {
+          "source_id": "1suxa6f",
+          "source_url": "https://www.reddit.com/r/twice/comments/1suxa6f/sana_right_hand_girl_in_denver/",
+          "creator": "Xtremeboss16",
+          "sha256": "3940108886632ae224f15e98b64bb970e5391c716f710ab96d15724f7236a7f6",
+          "frame_hashes": [
+            "060018180c141c20",
+            "e363c3cb511128c2",
+            "87cfce4ec38f0707",
+            "fe9ca586c6c6a35f"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2079,6 +2087,9 @@
       "EXsrIUn-hrQ",
       "mnvAZoHCdm8",
       "BYL6mPQ4034"
+    ],
+    "2026-10-29": [
+      "vHE0wDV2-bA"
     ]
   }
 }
