@@ -220,7 +220,11 @@
     "https://www.reddit.com/r/Aespa/comments/1ws41ki/260928_ningning_for_harpers_bazaar_china_october/",
     "https://www.reddit.com/r/Aespa/comments/1wtpkch/260929_harpers_bazaar_casting_room_rednote_update/",
     "https://www.reddit.com/r/Aespa/comments/1x4lcen/261013_ningning_for_discovery_expedition_2026/",
-    "https://www.reddit.com/r/Aespa/comments/1wt0iwa/260929_ningning_for_harpers_bazaar_china_october/"
+    "https://www.reddit.com/r/Aespa/comments/1wt0iwa/260929_ningning_for_harpers_bazaar_china_october/",
+    "https://www.reddit.com/r/kpop/comments/1t3y6vq/karina_aespa_makes_her_official_met_gala_debut_at/",
+    "https://www.reddit.com/r/kpop/comments/1thptw7/aespa_the_2nd_album_lemonade_teaser_image_set_2/",
+    "https://www.reddit.com/r/kpop/comments/1ss7yfd/aespa_karina_has_been_announced_as_part_of_the/",
+    "https://www.reddit.com/r/kpop/comments/1sc7gxt/itzy_ryujin_with_aespa_karina_thats_a_no_no_dance/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -232,7 +236,6 @@
     "https://www.reddit.com/r/bts7/comments/1x15gqo/jungkook_reposted_and_commented_on_a_pups_ig_reel/",
     "https://www.reddit.com/r/bts7/comments/1whw2w0/w_korea_ig_post_feat_jungkook_for_calvin_klein/",
     "https://www.reddit.com/r/Aespa/comments/1ww8pt9/261003_giselle_instagram_story_update_with/",
-    "https://www.reddit.com/r/Aespa/comments/1ww9hj8/261002_karina_giselle_ningning_visited_the_synk/",
     "https://www.reddit.com/r/Aespa/comments/1x3z0y1/261012_ningning_instagram_story_update/",
     "https://www.reddit.com/r/Aespa/comments/1w57crg/260902_aespa_tiktok_update_with_ningning_seven/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wxswu6/261005_yeonjun_presents_the_beautiful_paris/",
@@ -248,10 +251,7 @@
     "https://www.reddit.com/r/straykids/comments/1wo4auy/260923_harpers_bazaar_thailand_instagram_update/",
     "https://www.reddit.com/r/straykids/comments/1wwlpda/261003_bang_chan_instagram_update_3/",
     "https://www.reddit.com/r/straykids/comments/1x5ngzc/261014_bang_chan_instagram_story_update_with/",
-    "https://www.reddit.com/r/Aespa/comments/1wxb7hx/261004_aespa_tiktok_update_with_karina_just_a/",
-    "https://www.reddit.com/r/Aespa/comments/1wyzsgl/261006_aespa_tiktok_update_with_karina_on_the_way/",
     "https://www.reddit.com/r/Aespa/comments/1x3wzxi/261011_aespa_instagram_story_update_with_karina/",
-    "https://www.reddit.com/r/Aespa/comments/1wunjwe/261001_visit_seoul_instagram_update_with_karina/",
     "https://www.reddit.com/r/seventeen/comments/1wcfshj/260910_seungkwan_instagram_story_update_with_jun/",
     "https://www.reddit.com/r/seventeen/comments/1wbkae4/260909_mingyu_instagram_update_2/",
     "https://www.reddit.com/r/seventeen/comments/1x5ft7g/261014_mingyu_for_calvin_klein_fall_2026/",
@@ -415,77 +415,27 @@
     "https://www.reddit.com/r/Aespa/comments/1ws41ki/260928_ningning_for_harpers_bazaar_china_october/",
     "https://www.reddit.com/r/Aespa/comments/1x4lcen/261013_ningning_for_discovery_expedition_2026/",
     "https://www.reddit.com/r/Aespa/comments/1wsydw2/260929_ningning_for_harpers_bazaar_china_october/",
-    "https://www.reddit.com/r/Aespa/comments/1wt132x/260929_harpers_bazaar_china_rednote_update_with/"
+    "https://www.reddit.com/r/Aespa/comments/1wt132x/260929_harpers_bazaar_china_rednote_update_with/",
+    "https://www.reddit.com/r/Aespa/comments/1ww9hj8/261002_karina_giselle_ningning_visited_the_synk/",
+    "https://www.reddit.com/r/Aespa/comments/1wunjwe/261001_visit_seoul_instagram_update_with_karina/",
+    "https://www.reddit.com/r/Aespa/comments/1wxb7hx/261004_aespa_tiktok_update_with_karina_just_a/",
+    "https://www.reddit.com/r/Aespa/comments/1wyzsgl/261006_aespa_tiktok_update_with_karina_on_the_way/"
   ],
   "idol_history": [
     "Jihyo",
     "Bang Chan",
     "Jungkook",
     "Felix",
-    "Karina",
     "Mingyu",
     "Wonyoung",
     "Chaewon",
     "Sana",
     "Jennie",
     "Yeonjun",
-    "Ningning"
+    "Ningning",
+    "Karina"
   ],
   "recent_videos": [
-    {
-      "video_id": "39740725287-jungkook",
-      "idol": "Jungkook",
-      "sources": [
-        {
-          "source_id": "1wp2d8v",
-          "source_url": "https://www.reddit.com/r/bts7/comments/1wp2d8v/harpers_bazaar_japan_ig_post_jungkook_at_the/",
-          "creator": "alltherach_",
-          "sha256": "0e86463f9077debee204b192598a4334843c6c8ca82d4c0c81e1870f0c34b82b",
-          "frame_hashes": [
-            "95874e0f17464f06",
-            "494c0e0e0f7b9202",
-            "2a25ce0b0b0c161e",
-            "aabb133133787172"
-          ]
-        },
-        {
-          "source_id": "1wp4jmd",
-          "source_url": "https://www.reddit.com/r/bts7/comments/1wp4jmd/oggi_magazine_on_instagram_ft_jungkook_240926/",
-          "creator": "Eternal_ARMY0613",
-          "sha256": "cb503b3de4fa698c1935ad72b2d365591feb033230648251a4bb1caa60073ed2",
-          "frame_hashes": [
-            "299a9e0b374dc787",
-            "595b33290b17cc96",
-            "595b2a0f23059693",
-            "495b0c0f230c8697"
-          ]
-        },
-        {
-          "source_id": "1wp0h99",
-          "source_url": "https://www.reddit.com/r/bts7/comments/1wp0h99/very_web_japan_on_instagram_ft_jungkook_240926/",
-          "creator": "Eternal_ARMY0613",
-          "sha256": "4b28cb0fb359a2005ab30878ce3ef0f4fb6bce72714da16d36c668e86e5806a4",
-          "frame_hashes": [
-            "6f6d094d1e1bcde3",
-            "590b2306071b4c5e",
-            "490b0d0f07190d07",
-            "08d94f8e1d1d3165"
-          ]
-        },
-        {
-          "source_id": "1wp3p0o",
-          "source_url": "https://www.reddit.com/r/bts7/comments/1wp3p0o/spur_magazine_on_instagram_2_ft_jungkook_240926/",
-          "creator": "Eternal_ARMY0613",
-          "sha256": "d6c0c33acda38baa1798d46a098b5f0dda763ea8ddac87f0d65f27bc44abfd0e",
-          "frame_hashes": [
-            "cd2f06060707d3c9",
-            "510d4d8c0d0712ac",
-            "4d090c0c4f476678",
-            "990d0c0e0d4fe678"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39755988197-jihyo",
       "idol": "Jihyo",
@@ -2051,6 +2001,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "40989749895-karina",
+      "idol": "Karina",
+      "sources": [
+        {
+          "source_id": "1ww9hj8",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1ww9hj8/261002_karina_giselle_ningning_visited_the_synk/",
+          "creator": "Klep3",
+          "sha256": "0fb7f178b867a581604ccfd45274ea24b68d078a0f309974d4a5283aaa337f86",
+          "frame_hashes": [
+            "ef1fb4d58a6ca6b2",
+            "c7b66a68ea3a7371",
+            "3c76c3d5d66262f3",
+            "989ae121c1c2c1e0"
+          ]
+        },
+        {
+          "source_id": "1wunjwe",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wunjwe/261001_visit_seoul_instagram_update_with_karina/",
+          "creator": "Klep3",
+          "sha256": "d657573ce8403a526cfe888da4d07144bf8462883042091b9e3a9ddb63ad6ed2",
+          "frame_hashes": [
+            "0fad0cc118706c69",
+            "cdccac9c278a6969",
+            "1f6c6464303069c8",
+            "9dcbc71b12bb7d6d"
+          ]
+        },
+        {
+          "source_id": "1wxb7hx",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wxb7hx/261004_aespa_tiktok_update_with_karina_just_a/",
+          "creator": "Klep3",
+          "sha256": "c5fead192185b2770715ad0c0a40211f0397cbeb6948773ede1ad91405ed68d5",
+          "frame_hashes": [
+            "e871390e3c86c6c6",
+            "3d191f19191d373e",
+            "0000000000040c0c",
+            "082309193cbcfd7d"
+          ]
+        },
+        {
+          "source_id": "1wyzsgl",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1wyzsgl/261006_aespa_tiktok_update_with_karina_on_the_way/",
+          "creator": "Klep3",
+          "sha256": "36a62ec7efe014bc2cb2f8d0fcf2856656c6495de92d64a1807988e9e4f7f74c",
+          "frame_hashes": [
+            "2f0e27636aa273f1",
+            "2f2e27436aaaebf3",
+            "0d0e2e42c8e663b5",
+            "2d0e2f4352b263e5"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2113,6 +2117,9 @@
       "gC9CtqbkvJg",
       "nHt4PXsZsvg",
       "Way8R7Cuj7s"
+    ],
+    "2026-10-30": [
+      "8_bRh0Jh7bw"
     ]
   }
 }
