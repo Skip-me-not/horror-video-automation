@@ -228,7 +228,11 @@
     "https://www.reddit.com/r/IVE/comments/1vkrjkl/260810_hapa_kristin_korea_instagram_update_with/",
     "https://www.reddit.com/r/IVE/comments/1v1pyps/260720_dralthea_korea_official_instagram_update/",
     "https://www.reddit.com/r/kpop_uncensored/comments/1okwtaj/wonyoung_solo_song_first_released_at_todays_ive/",
-    "https://www.reddit.com/r/kpop_uncensored/comments/1rkhqqz/wonyoung_reacts_to_a_fan_doing_a_fancall_from_the/"
+    "https://www.reddit.com/r/kpop_uncensored/comments/1rkhqqz/wonyoung_reacts_to_a_fan_doing_a_fancall_from_the/",
+    "https://www.reddit.com/r/seventeen/comments/1sgk98v/260409_mingyu_instagram_update_with_dk_and_scoups/",
+    "https://www.reddit.com/r/seventeen/comments/1ntczeo/250929_scoups_x_mingyu_seventeen_5_4_3_pretty/",
+    "https://www.reddit.com/r/seventeen/comments/1qizpp4/260121_wwd_editor_tianwei_zhang_instagram_update/",
+    "https://www.reddit.com/r/seventeen/comments/1pv8dyz/251225_hoshi_instagram_update_with_mingyu_joshua/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -427,77 +431,27 @@
     "https://www.reddit.com/r/kpop_uncensored/comments/1rkhqqz/wonyoung_reacts_to_a_fan_doing_a_fancall_from_the/",
     "https://www.reddit.com/r/IVE/comments/1v7amxc/260726_sny_mets_twitter_update_with_wonyoung/",
     "https://www.reddit.com/r/IVE/comments/1v1b6k6/260720_wonyoung_arena_homme_x_barrie_august_2026/",
-    "https://www.reddit.com/r/IVE/comments/1uv5hsc/260713_wonyoung_arena_homme_x_barrie_august_2026/"
+    "https://www.reddit.com/r/IVE/comments/1uv5hsc/260713_wonyoung_arena_homme_x_barrie_august_2026/",
+    "https://www.reddit.com/r/seventeen/comments/1qkrbjg/260123_seventeen_instagram_update_with_scoups_x/",
+    "https://www.reddit.com/r/seventeen/comments/1o4yk4u/251012_seventeen_tiktok_update_with_mingyu_and/",
+    "https://www.reddit.com/r/seventeen/comments/1nv9cjf/251001_seventeen_instagram_update_with_mingyu_5_4/",
+    "https://www.reddit.com/r/seventeen/comments/1p90sj9/251128_seventeen_instagram_update_with_mingyu/"
   ],
   "idol_history": [
     "Jihyo",
     "Bang Chan",
     "Jungkook",
     "Felix",
-    "Mingyu",
     "Chaewon",
     "Sana",
     "Jennie",
     "Yeonjun",
     "Ningning",
     "Karina",
-    "Wonyoung"
+    "Wonyoung",
+    "Mingyu"
   ],
   "recent_videos": [
-    {
-      "video_id": "39880585963-bang-chan",
-      "idol": "Bang Chan",
-      "sources": [
-        {
-          "source_id": "1vskzux",
-          "source_url": "https://www.reddit.com/r/straykids/comments/1vskzux/260819_stray_kids_instagram_update_with_bang_chan/",
-          "creator": "princessgojo",
-          "sha256": "5750774bf51f4cc722d9fae58e6c978cfb204b9e610302aa92f66271fd3be5d4",
-          "frame_hashes": [
-            "03870f858ed2d3f9",
-            "078707bdccd4b478",
-            "83d7878b6a6cdcbc",
-            "83c78f8fe6919990"
-          ]
-        },
-        {
-          "source_id": "1vv84b4",
-          "source_url": "https://www.reddit.com/r/straykids/comments/1vv84b4/260822_stray_kids_instagram_update_bang_chan_and/",
-          "creator": "princessgojo",
-          "sha256": "f2de15eefc5b45bdb28d439237c8f42d0835ad21bcec8bca64014da9ac54455f",
-          "frame_hashes": [
-            "13175c9c8ba169db",
-            "111f1cdc8fa169db",
-            "121f5c9c8fa169c9",
-            "131d1c6ecb21b1eb"
-          ]
-        },
-        {
-          "source_id": "1vxnzzj",
-          "source_url": "https://www.reddit.com/r/straykids/comments/1vxnzzj/260825_w_korea_instagram_update_with_bang_chan/",
-          "creator": "princessgojo",
-          "sha256": "d8a2c6ff2e9a2ec9ed844dce1a612c9b08ba66ab90936f38935d0e5c47e5ab95",
-          "frame_hashes": [
-            "8f87e7c6c6c7c3e3",
-            "7830f060c1e16103",
-            "89b1b1e39b8c4b61",
-            "b939e0c5d5cf44c0"
-          ]
-        },
-        {
-          "source_id": "1wqm4p1",
-          "source_url": "https://www.reddit.com/r/straykids/comments/1wqm4p1/260926_bang_chan_for_vogue_korea_x_fendi/",
-          "creator": "princessgojo",
-          "sha256": "6b448e70cb94815e97c019b6d1c304be1a4ada7f857fa91c73bd43b03760ab71",
-          "frame_hashes": [
-            "b1313367e3d9d818",
-            "99e5e5e5e5f55525",
-            "6169696969696963",
-            "49c193929ecbcdcd"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39910497507-wonyoung",
       "idol": "Wonyoung",
@@ -2063,6 +2017,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "41026954559-mingyu",
+      "idol": "Mingyu",
+      "sources": [
+        {
+          "source_id": "1qkrbjg",
+          "source_url": "https://www.reddit.com/r/seventeen/comments/1qkrbjg/260123_seventeen_instagram_update_with_scoups_x/",
+          "creator": "sunshineidol",
+          "sha256": "de6969f40bdfc04e2c1f613743bb76240d60bc32bf318b47b3ab627ac16c7e61",
+          "frame_hashes": [
+            "ef648ecb93878693",
+            "c01c1c06262f2c2e",
+            "f8e6a33169c9a181",
+            "189ec9193938e1e5"
+          ]
+        },
+        {
+          "source_id": "1o4yk4u",
+          "source_url": "https://www.reddit.com/r/seventeen/comments/1o4yk4u/251012_seventeen_tiktok_update_with_mingyu_and/",
+          "creator": "sunshineidol",
+          "sha256": "733cae45c18ed0d6c8203022a281566087005ae5bc99b2ad263583963bbfa384",
+          "frame_hashes": [
+            "061301011088ec80",
+            "220e03002012d201",
+            "1c13032120448202",
+            "cdb21d49e2f3a310"
+          ]
+        },
+        {
+          "source_id": "1nv9cjf",
+          "source_url": "https://www.reddit.com/r/seventeen/comments/1nv9cjf/251001_seventeen_instagram_update_with_mingyu_5_4/",
+          "creator": "sunshineidol",
+          "sha256": "bf0cd4e09ee54ff9c13628d75b03835b86384051d4d20e2610519026715902cb",
+          "frame_hashes": [
+            "33336969c9d89c23",
+            "32332d68a9989c23",
+            "1862b2d139108b1e",
+            "ceb3d94a0a33929b"
+          ]
+        },
+        {
+          "source_id": "1p90sj9",
+          "source_url": "https://www.reddit.com/r/seventeen/comments/1p90sj9/251128_seventeen_instagram_update_with_mingyu/",
+          "creator": "sunshineidol",
+          "sha256": "52ece63321bc965effad1c6a813eb216e5791038f06f20df2507b3aa5c916b9d",
+          "frame_hashes": [
+            "ff8060d3d9e2e0e0",
+            "9f81c0c6c331b0e0",
+            "33e08c1c18d83c6e",
+            "6c1af16dcc8e86d4"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2128,7 +2136,8 @@
     ],
     "2026-10-30": [
       "8_bRh0Jh7bw",
-      "so4Z02FH6L8"
+      "so4Z02FH6L8",
+      "jB53rpaX68o"
     ]
   }
 }
