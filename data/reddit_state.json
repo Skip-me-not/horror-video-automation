@@ -224,7 +224,11 @@
     "https://www.reddit.com/r/kpop/comments/1t3y6vq/karina_aespa_makes_her_official_met_gala_debut_at/",
     "https://www.reddit.com/r/kpop/comments/1thptw7/aespa_the_2nd_album_lemonade_teaser_image_set_2/",
     "https://www.reddit.com/r/kpop/comments/1ss7yfd/aespa_karina_has_been_announced_as_part_of_the/",
-    "https://www.reddit.com/r/kpop/comments/1sc7gxt/itzy_ryujin_with_aespa_karina_thats_a_no_no_dance/"
+    "https://www.reddit.com/r/kpop/comments/1sc7gxt/itzy_ryujin_with_aespa_karina_thats_a_no_no_dance/",
+    "https://www.reddit.com/r/IVE/comments/1vkrjkl/260810_hapa_kristin_korea_instagram_update_with/",
+    "https://www.reddit.com/r/IVE/comments/1v1pyps/260720_dralthea_korea_official_instagram_update/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1okwtaj/wonyoung_solo_song_first_released_at_todays_ive/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1rkhqqz/wonyoung_reacts_to_a_fan_doing_a_fancall_from_the/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -419,7 +423,11 @@
     "https://www.reddit.com/r/Aespa/comments/1ww9hj8/261002_karina_giselle_ningning_visited_the_synk/",
     "https://www.reddit.com/r/Aespa/comments/1wunjwe/261001_visit_seoul_instagram_update_with_karina/",
     "https://www.reddit.com/r/Aespa/comments/1wxb7hx/261004_aespa_tiktok_update_with_karina_just_a/",
-    "https://www.reddit.com/r/Aespa/comments/1wyzsgl/261006_aespa_tiktok_update_with_karina_on_the_way/"
+    "https://www.reddit.com/r/Aespa/comments/1wyzsgl/261006_aespa_tiktok_update_with_karina_on_the_way/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1rkhqqz/wonyoung_reacts_to_a_fan_doing_a_fancall_from_the/",
+    "https://www.reddit.com/r/IVE/comments/1v7amxc/260726_sny_mets_twitter_update_with_wonyoung/",
+    "https://www.reddit.com/r/IVE/comments/1v1b6k6/260720_wonyoung_arena_homme_x_barrie_august_2026/",
+    "https://www.reddit.com/r/IVE/comments/1uv5hsc/260713_wonyoung_arena_homme_x_barrie_august_2026/"
   ],
   "idol_history": [
     "Jihyo",
@@ -427,69 +435,15 @@
     "Jungkook",
     "Felix",
     "Mingyu",
-    "Wonyoung",
     "Chaewon",
     "Sana",
     "Jennie",
     "Yeonjun",
     "Ningning",
-    "Karina"
+    "Karina",
+    "Wonyoung"
   ],
   "recent_videos": [
-    {
-      "video_id": "39755988197-jihyo",
-      "idol": "Jihyo",
-      "sources": [
-        {
-          "source_id": "1ww78lb",
-          "source_url": "https://www.reddit.com/r/twice/comments/1ww78lb/261003_jihyo_instagram_update_red_bottoms_on_i/",
-          "creator": "XuhuiGao",
-          "sha256": "b6de95e8da0e74f7a22933cd8467205f1265cb6c456502cb59b56e59f99772a4",
-          "frame_hashes": [
-            "20304475343026e5",
-            "20304c7430302404",
-            "001884af326253b2",
-            "000886567c383c2c"
-          ]
-        },
-        {
-          "source_id": "1ww25w8",
-          "source_url": "https://www.reddit.com/r/twice/comments/1ww25w8/261003_eyesmag_instagram_update_louboutin_jihyo/",
-          "creator": "Twnty21_29",
-          "sha256": "da11f5422883e04f15e6e1ea8e2c186a47317e57b3662c2e00c247b91d7c2780",
-          "frame_hashes": [
-            "2e56f3ebe9e1f1d7",
-            "2d3e52e5e5e9f5f6",
-            "1c1a100149436363",
-            "13132a9871202e1a"
-          ]
-        },
-        {
-          "source_id": "1wt7vyi",
-          "source_url": "https://www.reddit.com/r/twice/comments/1wt7vyi/260929_harpers_bazaar_korea_instagram_update/",
-          "creator": "MajorIvan88",
-          "sha256": "aed41b7cd4c96748093ffe315d79bf735b7a49722fee7e3eb21b0565ba80370b",
-          "frame_hashes": [
-            "66cce8a8b9f0f818",
-            "dbf7e38386ccc080",
-            "3979fc9d9ddcecec",
-            "6fc6c70c008180c0"
-          ]
-        },
-        {
-          "source_id": "1ww392f",
-          "source_url": "https://www.reddit.com/r/twice/comments/1ww392f/261002_dailyfashion_news_instagram_update/",
-          "creator": "AdventuresOfKrisTin",
-          "sha256": "297479d59411e9f22f9bff2edd9498dcf7c8b9ed706bac1f73831dcd354a3c77",
-          "frame_hashes": [
-            "b2b6acb0f0e848f8",
-            "d2d2cad8997c444e",
-            "5a524e4eccd624a6",
-            "5a5a4e686164e46f"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39880585963-bang-chan",
       "idol": "Bang Chan",
@@ -2055,6 +2009,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "41020591434-wonyoung",
+      "idol": "Wonyoung",
+      "sources": [
+        {
+          "source_id": "1rkhqqz",
+          "source_url": "https://www.reddit.com/r/kpop_uncensored/comments/1rkhqqz/wonyoung_reacts_to_a_fan_doing_a_fancall_from_the/",
+          "creator": "AddressCharming9129",
+          "sha256": "dcd596bcc99f3ee691e39df13551ac6b2e45d689492d7946a1e182078eb6ca34",
+          "frame_hashes": [
+            "0c458f8fbbac6d4b",
+            "048d8f0f4ecc8e0f",
+            "540d8f8f4e6c642f",
+            "4c8d8f0f4ccc8e0e"
+          ]
+        },
+        {
+          "source_id": "1v7amxc",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1v7amxc/260726_sny_mets_twitter_update_with_wonyoung/",
+          "creator": "Pristine_Cod5189",
+          "sha256": "f8023678df41711ab972c8e97939a332f833421a18f9c59514f9449212a85f53",
+          "frame_hashes": [
+            "b2344bec9bbb0507",
+            "6052cad41e014367",
+            "7430d2cdf4cbc327",
+            "ccdc6bcded93370f"
+          ]
+        },
+        {
+          "source_id": "1v1b6k6",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1v1b6k6/260720_wonyoung_arena_homme_x_barrie_august_2026/",
+          "creator": "kpopsns28",
+          "sha256": "d78ef133307adb1cce260c5bda1c9e3a411d7efc936c40aa70b56a72bfef4ca4",
+          "frame_hashes": [
+            "b13c373a0e0c6f4f",
+            "7174beae968e1a78",
+            "1763c8dadab888e2",
+            "0206060409198107"
+          ]
+        },
+        {
+          "source_id": "1uv5hsc",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1uv5hsc/260713_wonyoung_arena_homme_x_barrie_august_2026/",
+          "creator": "kpopsns28",
+          "sha256": "99a6a95953298dd855e6269f1abcd7f00c18de47a60d1565d72ffb277d1918a9",
+          "frame_hashes": [
+            "0c326949c8c41600",
+            "0f32696ccc801088",
+            "3671c88cdc980601",
+            "0c326949c8842600"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2119,7 +2127,8 @@
       "Way8R7Cuj7s"
     ],
     "2026-10-30": [
-      "8_bRh0Jh7bw"
+      "8_bRh0Jh7bw",
+      "so4Z02FH6L8"
     ]
   }
 }
