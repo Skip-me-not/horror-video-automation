@@ -232,7 +232,11 @@
     "https://www.reddit.com/r/seventeen/comments/1sgk98v/260409_mingyu_instagram_update_with_dk_and_scoups/",
     "https://www.reddit.com/r/seventeen/comments/1ntczeo/250929_scoups_x_mingyu_seventeen_5_4_3_pretty/",
     "https://www.reddit.com/r/seventeen/comments/1qizpp4/260121_wwd_editor_tianwei_zhang_instagram_update/",
-    "https://www.reddit.com/r/seventeen/comments/1pv8dyz/251225_hoshi_instagram_update_with_mingyu_joshua/"
+    "https://www.reddit.com/r/seventeen/comments/1pv8dyz/251225_hoshi_instagram_update_with_mingyu_joshua/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wy68m6/261005_yeonjun_\u00e0_l\u00e9cole_miu_miu_vogue_korea/",
+    "https://www.reddit.com/r/kpopthoughts/comments/1wkro5l/my_thoughts_and_interpretations_on_yeonjuns_no/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wyjnn9/261006_yeonjun_coucou_miumiu_instagram/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -305,7 +309,6 @@
     "https://www.reddit.com/r/Aespa/comments/1wqd82v/16bit_karina_solo_finger_gun_moment/",
     "https://www.reddit.com/r/Aespa/comments/1wky8cu/karina_you_are_exactly_who_you_think_you_are/",
     "https://www.reddit.com/r/Aespa/comments/1wo3565/260923_karina_for_nordisk_fw26_collection_film/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvdbh/261002_yeonjuns_sunflower_original_song_post/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvpp3/261002_yeonjun_miu_mius_vinyl_club_popup_press/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wzv4j1/261007_yeonjun_catch_me_rolling_miumiu_instagram/",
     "https://www.reddit.com/r/twice/comments/1x0ucnd/261008_tuide_heres_how_we_filmed_the_challenge/",
@@ -396,9 +399,6 @@
     "https://www.reddit.com/r/IVE/comments/1x36tzo/261011_gq_singapore_instagram_update_with_wonyoung/",
     "https://www.reddit.com/r/IVE/comments/1x35yzm/261011_elle_singapore_instagram_update_with/",
     "https://www.reddit.com/r/IVE/comments/1x36bun/261011_grazia_singapore_instagram_update_with/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
-    "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok/",
     "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram/",
     "https://www.reddit.com/r/Aespa/comments/1wt0iwa/260929_ningning_for_harpers_bazaar_china_october/",
     "https://www.reddit.com/r/Aespa/comments/1x62zkd/261015_ningning_instagram_story_update/",
@@ -435,7 +435,11 @@
     "https://www.reddit.com/r/seventeen/comments/1qkrbjg/260123_seventeen_instagram_update_with_scoups_x/",
     "https://www.reddit.com/r/seventeen/comments/1o4yk4u/251012_seventeen_tiktok_update_with_mingyu_and/",
     "https://www.reddit.com/r/seventeen/comments/1nv9cjf/251001_seventeen_instagram_update_with_mingyu_5_4/",
-    "https://www.reddit.com/r/seventeen/comments/1p90sj9/251128_seventeen_instagram_update_with_mingyu/"
+    "https://www.reddit.com/r/seventeen/comments/1p90sj9/251128_seventeen_instagram_update_with_mingyu/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvdbh/261002_yeonjuns_sunflower_original_song_post/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
+    "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok/"
   ],
   "idol_history": [
     "Jihyo",
@@ -445,67 +449,13 @@
     "Chaewon",
     "Sana",
     "Jennie",
-    "Yeonjun",
     "Ningning",
     "Karina",
     "Wonyoung",
-    "Mingyu"
+    "Mingyu",
+    "Yeonjun"
   ],
   "recent_videos": [
-    {
-      "video_id": "39910497507-wonyoung",
-      "idol": "Wonyoung",
-      "sources": [
-        {
-          "source_id": "1wyawtw",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1wyawtw/261005_dior_official_twitter_update_with_wonyoung/",
-          "creator": "kpopsns28",
-          "sha256": "ef8743828d740e52f0fcefe4684d5b9f5e7f2664c06acefb514b478f7fce0423",
-          "frame_hashes": [
-            "040c0c1a36323634",
-            "32b3337b69693939",
-            "3032725a5a726060",
-            "9595b50d37334b45"
-          ]
-        },
-        {
-          "source_id": "1wuup27",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1wuup27/261001_ive_official_tiktok_update_with_wonyoung/",
-          "creator": "kpopsns28",
-          "sha256": "e103e5fa3491bba4d2931a5643fa821c6911d324e5882d94ff8b55a8bcbcc3bd",
-          "frame_hashes": [
-            "f2e8ccc4cc142d56",
-            "06c41c1e5a4b4888",
-            "0004141c1e261898",
-            "0004149e9a1231b1"
-          ]
-        },
-        {
-          "source_id": "1wwlip5",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1wwlip5/261003_dior_official_instagram_update_with/",
-          "creator": "kpopsns28",
-          "sha256": "1eb17a3f3bd6bbd2f08d2330473b1a9b1201f2332ead0a90d457e758faa0899f",
-          "frame_hashes": [
-            "03060c0d37327377",
-            "726969d8c6c67858",
-            "6262d89999f1d1c0",
-            "33323a4e73f4c6f7"
-          ]
-        },
-        {
-          "source_id": "1x1pg0r",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1x1pg0r/261009_wonyoung_harpers_bazaar_korea_x_hapa/",
-          "creator": "kpopsns28",
-          "sha256": "82fab7030b38b4c1ebe03e6cafee333fd09e8b898f4f4fbaf54b150082701ed3",
-          "frame_hashes": [
-            "ffb3f36171b9f919",
-            "f589111c5a169d9b",
-            "ce3d3e36369f9faf",
-            "2359dae3c6860626"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "39917234989-karina",
       "idol": "Karina",
@@ -2071,6 +2021,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "41044421405-yeonjun",
+      "idol": "Yeonjun",
+      "sources": [
+        {
+          "source_id": "1wz0tjw",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok/",
+          "creator": "ExpressionOne",
+          "sha256": "7da96f1d43e9fca971a80035fcd938bef2653afebdcb79008b7cc44901819c28",
+          "frame_hashes": [
+            "2109775bc9d1f1b1",
+            "211935e5c1edc9e0",
+            "01192773d3d9c9e1",
+            "0149c79743e6e8f9"
+          ]
+        },
+        {
+          "source_id": "1wvvdbh",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvdbh/261002_yeonjuns_sunflower_original_song_post/",
+          "creator": "Bunniette",
+          "sha256": "86f0404b195251429523818dc20734bab59b077718afd27dbea72f04b42dcfd7",
+          "frame_hashes": [
+            "00000f5be09890c0",
+            "5051c10c20539b18",
+            "000c2c8eccf0f8c0",
+            "001d1e1e3c000000"
+          ]
+        },
+        {
+          "source_id": "1wyt2te",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wyt2te/261006_yeonjun_freeze_w_momo_twice_tiktok/",
+          "creator": "LittleClementime",
+          "sha256": "d3f41294befbba6e0cae6e79b413397d2189bb31a480c80c027a088bf57e3bd5",
+          "frame_hashes": [
+            "cbe8cccececcf0d0",
+            "bdb5f3d99d96c9d9",
+            "bcfdf3b676791918",
+            "d5d1d3d932ea2b22"
+          ]
+        },
+        {
+          "source_id": "1x1moby",
+          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok/",
+          "creator": "ExpressionOne",
+          "sha256": "b913c3c5ecad102be678e3da75e8e48b4c4519c78d3b8a9c2e788ca97fc83d78",
+          "frame_hashes": [
+            "0803787873636373",
+            "0c0b607476e647cb",
+            "0c0b717a7a66664b",
+            "0c0964747c39290c"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2137,7 +2141,8 @@
     "2026-10-30": [
       "8_bRh0Jh7bw",
       "so4Z02FH6L8",
-      "jB53rpaX68o"
+      "jB53rpaX68o",
+      "ud4WLtq60IU"
     ]
   }
 }
