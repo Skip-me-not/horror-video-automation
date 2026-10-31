@@ -240,7 +240,11 @@
     "https://www.reddit.com/r/kpop_uncensored/comments/1ohbf5u/jungkook_being_jungkook_and_carrying_a_cha_eunwoo/",
     "https://www.reddit.com/r/kpop_uncensored/comments/1mmor2e/feel_old_yet_its_been_six_year_since_jungkook/",
     "https://www.reddit.com/r/bangtan/comments/1xjqvje/261031_caz\u00e9tv_on_instagram_ft_rm_jhope_jimin_v/",
-    "https://www.reddit.com/r/bts7/comments/1xeksfj/jungkook_ig_post_4_251026/"
+    "https://www.reddit.com/r/bts7/comments/1xeksfj/jungkook_ig_post_4_251026/",
+    "https://www.reddit.com/r/Aespa/comments/1xjd0wc/261030_winter_ningning_karina_attended_giselles/",
+    "https://www.reddit.com/r/Aespa/comments/1xjdxx5/261030_ningning_instagram_story_update_with/",
+    "https://www.reddit.com/r/Aespa/comments/1xj5gtn/261030_jw_healthpedia_youtube_shorts_update_with/",
+    "https://www.reddit.com/r/kpop_uncensored/comments/1xir42j/ningning_the_funniest_idol_oat/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -447,7 +451,11 @@
     "https://www.reddit.com/r/bangtan/comments/1xjqvje/261031_caz\u00e9tv_on_instagram_ft_rm_jhope_jimin_v/",
     "https://www.reddit.com/r/bts7/comments/1xjri2a/army_captures_jungkook_losing_rock_paper_scissors/",
     "https://www.reddit.com/r/bts7/comments/1wiwfg3/calvin_klein_ig_post_feat_jungkook_180926/",
-    "https://www.reddit.com/r/kpop_uncensored/comments/1ohbf5u/jungkook_being_jungkook_and_carrying_a_cha_eunwoo/"
+    "https://www.reddit.com/r/kpop_uncensored/comments/1ohbf5u/jungkook_being_jungkook_and_carrying_a_cha_eunwoo/",
+    "https://www.reddit.com/r/Aespa/comments/1xiq7nn/261030_ningning_instagram_story_update_with/",
+    "https://www.reddit.com/r/Aespa/comments/1xj5gtn/261030_jw_healthpedia_youtube_shorts_update_with/",
+    "https://www.reddit.com/r/Aespa/comments/1xjdxx5/261030_ningning_instagram_story_update_with/",
+    "https://www.reddit.com/r/Aespa/comments/1xjd0wc/261030_winter_ningning_karina_attended_giselles/"
   ],
   "idol_history": [
     "Jihyo",
@@ -456,68 +464,14 @@
     "Chaewon",
     "Sana",
     "Jennie",
-    "Ningning",
     "Karina",
     "Wonyoung",
     "Mingyu",
     "Yeonjun",
-    "Jungkook"
+    "Jungkook",
+    "Ningning"
   ],
   "recent_videos": [
-    {
-      "video_id": "39931913570-yeonjun",
-      "idol": "Yeonjun",
-      "sources": [
-        {
-          "source_id": "1x0hgdx",
-          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1x0hgdx/261008_yeonjun_inside_out_miumiuofficial_tiktok/",
-          "creator": "LittleClementime",
-          "sha256": "3a63670c3a95a4595b4b31a2138797000fd41b9c57d84a9057fe1521049324b7",
-          "frame_hashes": [
-            "b1f9693113572b93",
-            "98f568303b31990d",
-            "b1e97331125a19db",
-            "f1db73d8cecdcd71"
-          ]
-        },
-        {
-          "source_id": "1wyjnn9",
-          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wyjnn9/261006_yeonjun_coucou_miumiu_instagram/",
-          "creator": "ExpressionOne",
-          "sha256": "1a2ac3081a1c859dd580484cd0bf85182e8ac04f854b1b1e9b29ec5c35e162b5",
-          "frame_hashes": [
-            "4b0a1a0b1e606061",
-            "4e1e383123830707",
-            "9f9e0706060e864d",
-            "d2f0363ec2c6ecec"
-          ]
-        },
-        {
-          "source_id": "1wy68m6",
-          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1wy68m6/261005_yeonjun_\u00e0_l\u00e9cole_miu_miu_vogue_korea/",
-          "creator": "ExpressionOne",
-          "sha256": "991e5c89a213f4f0a0a0e47d8d325e44b2613b36a07fc7ee3cacee43a73c3a34",
-          "frame_hashes": [
-            "1606169a1d097107",
-            "fff9f97cb8f0f17b",
-            "86cedcd090b0e060",
-            "c1d9386d5959590b"
-          ]
-        },
-        {
-          "source_id": "1x25653",
-          "source_url": "https://www.reddit.com/r/TomorrowByTogether/comments/1x25653/261009_yeonjun_w_petra_collins_miu_miu_ss_2027/",
-          "creator": "LittleClementime",
-          "sha256": "a30d10cbf58924eeb79daf3dd9b57d39a246f756d8e9e816b164c66175051c43",
-          "frame_hashes": [
-            "1616d7bdb575b335",
-            "8303034f1b1b335b",
-            "4bc9c1ada5a7ec88",
-            "cbeb4a2a0b419199"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "40047614755-jennie",
       "idol": "Jennie",
@@ -2083,6 +2037,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "41180091912-ningning",
+      "idol": "Ningning",
+      "sources": [
+        {
+          "source_id": "1xiq7nn",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1xiq7nn/261030_ningning_instagram_story_update_with/",
+          "creator": "Klep3",
+          "sha256": "6a33d7f53c58960b326141cc44b91a8e4cac0b520546a3f02e4a1e34f85b2f6e",
+          "frame_hashes": [
+            "c387076961310000",
+            "040e27263e2607c8",
+            "0007030f1d3c0c83",
+            "c0c02464e4c0c0c2"
+          ]
+        },
+        {
+          "source_id": "1xj5gtn",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1xj5gtn/261030_jw_healthpedia_youtube_shorts_update_with/",
+          "creator": "Klep3",
+          "sha256": "c7a655bd05b99e4047344884b087632353657f313e38b47075e33125f10af3f9",
+          "frame_hashes": [
+            "9269cc8e8f9dcdc2",
+            "90664ccccacac8c0",
+            "940bccceaa8acbca",
+            "824eccce0e2b8bcb"
+          ]
+        },
+        {
+          "source_id": "1xjdxx5",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1xjdxx5/261030_ningning_instagram_story_update_with/",
+          "creator": "Klep3",
+          "sha256": "7fe3db5a6b240253a85c4d4dbbe62ba3a0bde2e21880a2fc3aa1061d942d6bdb",
+          "frame_hashes": [
+            "f334166f6d0f0f87",
+            "f334166f6d0f0f87",
+            "f334166f6d0f0f87",
+            "f334166f6d0f0f87"
+          ]
+        },
+        {
+          "source_id": "1xjd0wc",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1xjd0wc/261030_winter_ningning_karina_attended_giselles/",
+          "creator": "Klep3",
+          "sha256": "f056e6f547f7518c2f695bf7be036d4f046d43de96e3af74c5968d32a3fb0eab",
+          "frame_hashes": [
+            "ee6e5c9a9248a88e",
+            "cdcd959d0d88c808",
+            "cdad3d3b2b0ac84a",
+            "ccbdbeb11189894d"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2153,7 +2161,8 @@
       "ud4WLtq60IU"
     ],
     "2026-10-31": [
-      "R4ZLALz6XL4"
+      "R4ZLALz6XL4",
+      "2gzq9YDzio8"
     ]
   }
 }
