@@ -248,7 +248,11 @@
     "https://www.reddit.com/r/Aespa/comments/1vbwhbf/260505_karina_was_spotted_filming_for_nike_studio/",
     "https://www.reddit.com/r/Aespa/comments/1vns3fo/260814_karina_for_elle_korea_x_prada_september/",
     "https://www.reddit.com/r/Aespa/comments/1vjljdz/260809_aespa_tiktok_update_with_karina_winter/",
-    "https://www.reddit.com/r/Aespa/comments/1vc2dsz/260731_karina_serving_lemonade_on_set_for_nike/"
+    "https://www.reddit.com/r/Aespa/comments/1vc2dsz/260731_karina_serving_lemonade_on_set_for_nike/",
+    "https://www.reddit.com/r/straykids/comments/1wpw15d/260925_bang_chan_for_vogue_korea_x_fendi/",
+    "https://www.reddit.com/r/straykids/comments/1wwjcge/261003_stray_kids_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1wt06hj/260929_tet_instagram_update_with_bang_chan_lee/",
+    "https://www.reddit.com/r/straykids/comments/1olol9z/251101_stray_kids_do_it_teaser_images_2_bang_chan/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -463,11 +467,14 @@
     "https://www.reddit.com/r/Aespa/comments/1vjljdz/260809_aespa_tiktok_update_with_karina_winter/",
     "https://www.reddit.com/r/Aespa/comments/1vgxyzs/260806_aespa_tiktok_update_with_karina_watch_me/",
     "https://www.reddit.com/r/Aespa/comments/1xjcajg/261030_karina_instagram_story_update_with_giselle/",
-    "https://www.reddit.com/r/Aespa/comments/1vbvfpk/260801_karina_for_nike_studio_fleece_with_alysa/"
+    "https://www.reddit.com/r/Aespa/comments/1vbvfpk/260801_karina_for_nike_studio_fleece_with_alysa/",
+    "https://www.reddit.com/r/straykids/comments/1wwjcge/261003_stray_kids_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1x2a166/261010_mensfolio_instagram_update_with_bang_chan/",
+    "https://www.reddit.com/r/straykids/comments/1wt06hj/260929_tet_instagram_update_with_bang_chan_lee/",
+    "https://www.reddit.com/r/straykids/comments/1p5jkne/251124_bang_chan_instagram_update/"
   ],
   "idol_history": [
     "Jihyo",
-    "Bang Chan",
     "Felix",
     "Chaewon",
     "Sana",
@@ -477,63 +484,10 @@
     "Yeonjun",
     "Jungkook",
     "Ningning",
-    "Karina"
+    "Karina",
+    "Bang Chan"
   ],
   "recent_videos": [
-    {
-      "video_id": "40050349462-jihyo",
-      "idol": "Jihyo",
-      "sources": [
-        {
-          "source_id": "1vi6smf",
-          "source_url": "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my/",
-          "creator": "wickeddeus",
-          "sha256": "eb6c2e1d6b8ab02bb596cf61d3057c4f99f72a876d22c0c7ac6bc90e5c64e3a2",
-          "frame_hashes": [
-            "ccf4e4c6c6e0e498",
-            "8cf2e29cf0e4dad2",
-            "cce8ccccf0dccecc",
-            "f4c69eb6f8fccec6"
-          ]
-        },
-        {
-          "source_id": "1vis57e",
-          "source_url": "https://www.reddit.com/r/twice/comments/1vis57e/260808_waterbomb_kaohsiung_instagram_update_onces/",
-          "creator": "firemakethunder",
-          "sha256": "1f866fed7cc75a336376532856d19711ef640ff61c1d8fea711f9f571a6382fd",
-          "frame_hashes": [
-            "8e2f0f17d7d7e58d",
-            "a56360ca6ff6e4e3",
-            "f0788c1c36bcc4a1",
-            "a3014d4c3efccce1"
-          ]
-        },
-        {
-          "source_id": "1wnossn",
-          "source_url": "https://www.reddit.com/r/twice/comments/1wnossn/260922_blue_sy834_twitter_update_tuides_seoyeon/",
-          "creator": "SapphireHeaven",
-          "sha256": "5bd0c4f750fa8b4a711a89ae8ec3be0e5dca22483a435bd9edea2ecd6ca46488",
-          "frame_hashes": [
-            "10884c969616cc96",
-            "324c488e1a1adc94",
-            "22585848181c6c4c",
-            "1290182c2c181838"
-          ]
-        },
-        {
-          "source_id": "1w0ugnx",
-          "source_url": "https://www.reddit.com/r/twice/comments/1w0ugnx/260827_dailyfashion_news_instagram_update_dont/",
-          "creator": "bluebee29",
-          "sha256": "1ecbeabf5743cd16bf152941f4d20830ee87bd1d2eff84bb6993936e9e48a139",
-          "frame_hashes": [
-            "4f77cc8e1bb3a565",
-            "1f67e7e7cb933f24",
-            "37779e1d19f949c8",
-            "4f47ccce2f9444cd"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "40069235479-felix",
       "idol": "Felix",
@@ -2099,6 +2053,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "41192914887-bang-chan",
+      "idol": "Bang Chan",
+      "sources": [
+        {
+          "source_id": "1wwjcge",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wwjcge/261003_stray_kids_instagram_update_with_bang_chan/",
+          "creator": "princessgojo",
+          "sha256": "a7cf670d0f800f3e1046c2dbab8814234501ec4a5c5f11551ee107c197bd7692",
+          "frame_hashes": [
+            "070d1f0100011f13",
+            "0f0f6767e6191313",
+            "0f1d171333391c17",
+            "0719270637391c17"
+          ]
+        },
+        {
+          "source_id": "1x2a166",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1x2a166/261010_mensfolio_instagram_update_with_bang_chan/",
+          "creator": "princessgojo",
+          "sha256": "4cfa3af1d7488bb1926629a5b9b903112f98eb297f14b7225c05d862c541a813",
+          "frame_hashes": [
+            "8c8e86e262b08000",
+            "00d9dcdcce86240f",
+            "84b1c7b7aed1e8e3",
+            "d8999ae9e4e4e3e3"
+          ]
+        },
+        {
+          "source_id": "1wt06hj",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1wt06hj/260929_tet_instagram_update_with_bang_chan_lee/",
+          "creator": "princessgojo",
+          "sha256": "e73078c5a80746a22d84f19a4e7e17147a9853cb8f5212aacb16c6b89da4fa90",
+          "frame_hashes": [
+            "6902c0e352520700",
+            "bedffff0825134b8",
+            "4a0288a5d5d22200",
+            "4b0088e557722300"
+          ]
+        },
+        {
+          "source_id": "1p5jkne",
+          "source_url": "https://www.reddit.com/r/straykids/comments/1p5jkne/251124_bang_chan_instagram_update/",
+          "creator": "unknown",
+          "sha256": "8f08f19b57d3d181163f9b7f0986fe3baa6fc6d7eeaf69ac65894d6f46f3b2a3",
+          "frame_hashes": [
+            "1b3b03070d123233",
+            "0f330b0905382f17",
+            "1f031b3932163b3e",
+            "18c739e9a993bdf5"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2171,7 +2179,8 @@
     "2026-10-31": [
       "R4ZLALz6XL4",
       "2gzq9YDzio8",
-      "9OqR02DzIxs"
+      "9OqR02DzIxs",
+      "7O7RkPLiL3M"
     ]
   }
 }
