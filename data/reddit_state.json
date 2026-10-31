@@ -244,7 +244,11 @@
     "https://www.reddit.com/r/Aespa/comments/1xjd0wc/261030_winter_ningning_karina_attended_giselles/",
     "https://www.reddit.com/r/Aespa/comments/1xjdxx5/261030_ningning_instagram_story_update_with/",
     "https://www.reddit.com/r/Aespa/comments/1xj5gtn/261030_jw_healthpedia_youtube_shorts_update_with/",
-    "https://www.reddit.com/r/kpop_uncensored/comments/1xir42j/ningning_the_funniest_idol_oat/"
+    "https://www.reddit.com/r/kpop_uncensored/comments/1xir42j/ningning_the_funniest_idol_oat/",
+    "https://www.reddit.com/r/Aespa/comments/1vbwhbf/260505_karina_was_spotted_filming_for_nike_studio/",
+    "https://www.reddit.com/r/Aespa/comments/1vns3fo/260814_karina_for_elle_korea_x_prada_september/",
+    "https://www.reddit.com/r/Aespa/comments/1vjljdz/260809_aespa_tiktok_update_with_karina_winter/",
+    "https://www.reddit.com/r/Aespa/comments/1vc2dsz/260731_karina_serving_lemonade_on_set_for_nike/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -455,7 +459,11 @@
     "https://www.reddit.com/r/Aespa/comments/1xiq7nn/261030_ningning_instagram_story_update_with/",
     "https://www.reddit.com/r/Aespa/comments/1xj5gtn/261030_jw_healthpedia_youtube_shorts_update_with/",
     "https://www.reddit.com/r/Aespa/comments/1xjdxx5/261030_ningning_instagram_story_update_with/",
-    "https://www.reddit.com/r/Aespa/comments/1xjd0wc/261030_winter_ningning_karina_attended_giselles/"
+    "https://www.reddit.com/r/Aespa/comments/1xjd0wc/261030_winter_ningning_karina_attended_giselles/",
+    "https://www.reddit.com/r/Aespa/comments/1vjljdz/260809_aespa_tiktok_update_with_karina_winter/",
+    "https://www.reddit.com/r/Aespa/comments/1vgxyzs/260806_aespa_tiktok_update_with_karina_watch_me/",
+    "https://www.reddit.com/r/Aespa/comments/1xjcajg/261030_karina_instagram_story_update_with_giselle/",
+    "https://www.reddit.com/r/Aespa/comments/1vbvfpk/260801_karina_for_nike_studio_fleece_with_alysa/"
   ],
   "idol_history": [
     "Jihyo",
@@ -464,68 +472,14 @@
     "Chaewon",
     "Sana",
     "Jennie",
-    "Karina",
     "Wonyoung",
     "Mingyu",
     "Yeonjun",
     "Jungkook",
-    "Ningning"
+    "Ningning",
+    "Karina"
   ],
   "recent_videos": [
-    {
-      "video_id": "40047614755-jennie",
-      "idol": "Jennie",
-      "sources": [
-        {
-          "source_id": "1x0p9iw",
-          "source_url": "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
-          "creator": "Cosmicstranger28",
-          "sha256": "a75dbe6d15f2c9584b6d6ab78dfd43e891092f245a15f586ba05dee43804dba1",
-          "frame_hashes": [
-            "04012d082c2c3c1c",
-            "022e2e2216147440",
-            "00898c0c0c190a8c",
-            "3000f3f078d858d8"
-          ]
-        },
-        {
-          "source_id": "1x0klug",
-          "source_url": "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
-          "creator": "Cosmicstranger28",
-          "sha256": "b9fed853a3645ac19664df95809778bb13066353ea9ae25c8d8e5ed75a94e8cb",
-          "frame_hashes": [
-            "d49ac0241c9a1e36",
-            "d49dd0502426362e",
-            "d49dd0102484363e",
-            "d49cd0000c8e1e26"
-          ]
-        },
-        {
-          "source_id": "1x0pqeu",
-          "source_url": "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
-          "creator": "Cosmicstranger28",
-          "sha256": "2555c193e4cf4a8a3ec0b730c0a5dd5ff78502323825619a766e0f646bd62f33",
-          "frame_hashes": [
-            "f7ff7d73fdfd0c39",
-            "7f3d363666e6e60d",
-            "3ffcfa98cc0f0b00",
-            "47f3f3c306373312"
-          ]
-        },
-        {
-          "source_id": "1x0pl71",
-          "source_url": "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
-          "creator": "HazardCyp",
-          "sha256": "fb015e1c0724e3c5153f73971736b08a69ea1def0817a032b394e3aa4b37b999",
-          "frame_hashes": [
-            "de47dbf961110800",
-            "60181800b4043061",
-            "800000202511010a",
-            "f3e3e3631b191938"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "40050349462-jihyo",
       "idol": "Jihyo",
@@ -2091,6 +2045,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "41184211021-karina",
+      "idol": "Karina",
+      "sources": [
+        {
+          "source_id": "1vjljdz",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1vjljdz/260809_aespa_tiktok_update_with_karina_winter/",
+          "creator": "Klep3",
+          "sha256": "afeb97fc300a78cbe8f657e75c7e046740a2acdcae6f36060db55506b48a9570",
+          "frame_hashes": [
+            "258f53b3f0f0c6ce",
+            "e6d41d71e994941a",
+            "c78c1949c9e6e647",
+            "96bd348cee71d296"
+          ]
+        },
+        {
+          "source_id": "1vgxyzs",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1vgxyzs/260806_aespa_tiktok_update_with_karina_watch_me/",
+          "creator": "Klep3",
+          "sha256": "a4aad44ba57dd6bd8dc653d188b62671e557c53cc0051858d46d96af88a5259c",
+          "frame_hashes": [
+            "00084e26352c39db",
+            "00245c4961c298cc",
+            "0916262d29696147",
+            "01034b9d8ccc2c35"
+          ]
+        },
+        {
+          "source_id": "1xjcajg",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1xjcajg/261030_karina_instagram_story_update_with_giselle/",
+          "creator": "Klep3",
+          "sha256": "2804af5d140a3f560e62e508c3206f39d7ed01cc0ba5dbee2e966eee0fd81e14",
+          "frame_hashes": [
+            "00b847a31e0fd308",
+            "001ce3bbaf834308",
+            "6ededec6c54fe3be",
+            "5717e08eb0d3831f"
+          ]
+        },
+        {
+          "source_id": "1vbvfpk",
+          "source_url": "https://www.reddit.com/r/Aespa/comments/1vbvfpk/260801_karina_for_nike_studio_fleece_with_alysa/",
+          "creator": "Klep3",
+          "sha256": "a0224c03120608701bd990f027c90167d6b63725c958f7a7d6041f67926da623",
+          "frame_hashes": [
+            "907291b2b2323333",
+            "a18b999b9b9b8b0b",
+            "4e070f0d0f070f1f",
+            "dbf61f1e4e353073"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2162,7 +2170,8 @@
     ],
     "2026-10-31": [
       "R4ZLALz6XL4",
-      "2gzq9YDzio8"
+      "2gzq9YDzio8",
+      "9OqR02DzIxs"
     ]
   }
 }
