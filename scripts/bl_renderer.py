@@ -137,8 +137,6 @@ def build_ass(package: dict[str, Any], duration: float, channel_name: str) -> st
 
 
 def build_cover_ass(package: dict[str, Any], channel_name: str) -> str:
-    headline_text = (package["story"].get("series") if str(package.get("story_id", "")).startswith("feed-") else "") or package["story"]["headline"]
-    headline = "\n".join(__import__("textwrap").wrap(headline_text, width=22)[:4])
     category = package["story"]["category"].replace("_", " ").upper()
     # ASS colours are BBGGRR; white text remains portable while the FFmpeg card carries the accent.
     return "\n".join([
@@ -149,7 +147,6 @@ def build_cover_ass(package: dict[str, Any], channel_name: str) -> str:
         "Style: Brand,Poppins SemiBold,34,&HAAFFFFFF,&HAAFFFFFF,&H00101010,&H00000000,-1,0,0,0,100,100,1,0,1,1,0,2,60,60,100,1", "",
         "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
         f"Dialogue: 1,0:00:00.00,0:00:01.00,Category,,0,0,0,,{ass_escape(category)}",
-        f"Dialogue: 1,0:00:00.00,0:00:01.00,Headline,,0,0,0,,{ass_escape(headline)}",
         f"Dialogue: 1,0:00:00.00,0:00:01.00,Brand,,0,0,0,,{ass_escape(channel_name)}", "",
     ])
 
@@ -291,7 +288,8 @@ def qa_report(package: dict[str, Any], video: Path, assets: list[Path], narratio
         issues.append("source verification does not allow automatic publication")
     if not package["metadata"].get("source_urls"):
         issues.append("verified source URL is missing")
-    return {"passed": not issues, "publish_eligible": package["verification"]["decision"] == "auto_publish", "issues": issues, "video": {"duration": round(duration, 3), "width": video_stream.get("width"), "height": video_stream.get("height"), "video_codec": video_stream.get("codec_name"), "audio_codec": audio_stream.get("codec_name"), "bytes": video.stat().st_size if video.exists() else 0}}
+    asset_kinds = [media_kind(path) for path in assets]
+    return {"passed": not issues, "publish_eligible": package["verification"]["decision"] == "auto_publish", "issues": issues, "assets": {"resolved": len(assets), "video": asset_kinds.count("video"), "image": asset_kinds.count("image")}, "video": {"duration": round(duration, 3), "width": video_stream.get("width"), "height": video_stream.get("height"), "video_codec": video_stream.get("codec_name"), "audio_codec": audio_stream.get("codec_name"), "bytes": video.stat().st_size if video.exists() else 0}}
 
 
 def render(package_path: Path, *, narration_mode: str = "auto", allow_review: bool = False) -> dict[str, Any]:

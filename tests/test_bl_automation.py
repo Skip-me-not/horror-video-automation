@@ -116,12 +116,12 @@ def test_caption_split_is_at_most_two_lines():
     assert all(len(line) <= 40 for item in captions for line in item.splitlines())
 
 
-def test_cover_definition_contains_headline_category_and_brand(story):
+def test_cover_definition_contains_category_and_brand_without_duplicate_headline(story):
     package = generate_package(story, default_state())
     cover = bl_renderer.build_cover_ass(package, "Lululala")
     assert "CASTING" in cover
-    assert "Arun Lee and Min Park" in cover
     assert "Lululala" in cover
+    assert "Arun Lee and Min Park" not in cover
 
 
 def test_metadata_catalog_rotation(story):
