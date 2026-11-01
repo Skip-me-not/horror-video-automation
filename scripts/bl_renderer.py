@@ -114,6 +114,23 @@ def build_ass(package: dict[str, Any], duration: float, channel_name: str) -> st
     ])
 
 
+def build_cover_ass(package: dict[str, Any], channel_name: str) -> str:
+    headline = "\n".join(__import__("textwrap").wrap(package["story"]["headline"], width=22)[:4])
+    category = package["story"]["category"].replace("_", " ").upper()
+    # ASS colours are BBGGRR; white text remains portable while the FFmpeg card carries the accent.
+    return "\n".join([
+        "[Script Info]", "ScriptType: v4.00+", "PlayResX: 1080", "PlayResY: 1920", "WrapStyle: 2", "",
+        "[V4+ Styles]", "Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding",
+        "Style: Headline,Poppins SemiBold,82,&H00FFFFFF,&H00FFFFFF,&H00101010,&H98000000,-1,0,0,0,100,100,0,0,3,4,0,5,90,90,520,1",
+        "Style: Category,Poppins SemiBold,38,&H00FFFFFF,&H00FFFFFF,&H00101010,&H90000000,-1,0,0,0,100,100,2,0,3,2,0,8,70,70,220,1",
+        "Style: Brand,Poppins SemiBold,34,&HAAFFFFFF,&HAAFFFFFF,&H00101010,&H00000000,-1,0,0,0,100,100,1,0,1,1,0,2,60,60,100,1", "",
+        "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
+        f"Dialogue: 1,0:00:00.00,0:00:01.00,Category,,0,0,0,,{ass_escape(category)}",
+        f"Dialogue: 1,0:00:00.00,0:00:01.00,Headline,,0,0,0,,{ass_escape(headline)}",
+        f"Dialogue: 1,0:00:00.00,0:00:01.00,Brand,,0,0,0,,{ass_escape(channel_name)}", "",
+    ])
+
+
 def filter_path(path: Path) -> str:
     return path.resolve().as_posix().replace(":", r"\:").replace("'", r"\'")
 
@@ -256,7 +273,15 @@ def render(package_path: Path, *, narration_mode: str = "auto", allow_review: bo
         if result.returncode:
             raise BLEngineError("FFmpeg render failed:\n" + "\n".join(result.stderr.splitlines()[-35:]))
         cover = OUTPUT_DIR / "cover.jpg"
-        cover_result = subprocess.run(["ffmpeg", "-hide_banner", "-y", "-ss", "0.5", "-i", str(output), "-frames:v", "1", "-q:v", "2", str(cover)], text=True, capture_output=True)
+        cover_subtitles = temporary / "cover.ass"
+        cover_subtitles.write_text(build_cover_ass(package, channel), encoding="utf-8", newline="\n")
+        accent = package["layout"]["accent"].lstrip("#")
+        cover_filter = (
+            f"drawbox=x=0:y=0:w=iw:h=ih:color=black@0.52:t=fill,"
+            f"drawbox=x=0:y=0:w=iw:h=180:color=0x{accent}@0.92:t=fill,"
+            f"subtitles='{filter_path(cover_subtitles)}':fontsdir='{filter_path(FONT.parent)}'"
+        )
+        cover_result = subprocess.run(["ffmpeg", "-hide_banner", "-y", "-ss", "0.5", "-i", str(output), "-vf", cover_filter, "-frames:v", "1", "-q:v", "2", str(cover)], text=True, capture_output=True)
         if cover_result.returncode or not cover.is_file():
             raise BLEngineError("Cover-frame extraction failed")
         report = qa_report(package, output, assets, narration_mode == "required", allow_review=allow_review)
