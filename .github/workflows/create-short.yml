@@ -1,64 +1,60 @@
-name: Create Reddit idol Short
+name: Create BL entertainment Short
 
 on:
   schedule:
     - cron: "30 22 * * *" # Myanmar time 05:00
-    - cron: "10 23 * * *" # Retry slot 1 at Myanmar time 05:40
+    - cron: "10 23 * * *" # guarded retry at 05:40
     - cron: "30 1 * * *"  # Myanmar time 08:00
-    - cron: "10 2 * * *"  # Retry slot 2 at Myanmar time 08:40
+    - cron: "10 2 * * *"  # guarded retry at 08:40
     - cron: "30 4 * * *"  # Myanmar time 11:00
-    - cron: "10 5 * * *"  # Retry slot 3 at Myanmar time 11:40
+    - cron: "10 5 * * *"  # guarded retry at 11:40
     - cron: "30 7 * * *"  # Myanmar time 14:00
-    - cron: "10 8 * * *"  # Retry slot 4 at Myanmar time 14:40
+    - cron: "10 8 * * *"  # guarded retry at 14:40
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Render and validate without uploading to YouTube"
+        description: "Render, QA, and save artifacts without uploading"
+        required: true
+        default: true
+        type: boolean
+      story_file:
+        description: "Optional repo-relative story JSON; blank selects queue/feed"
+        required: false
+        type: string
+      narration_mode:
+        description: "Use supplied narration_file, require it, or render text/music"
+        required: true
+        default: "auto"
+        type: choice
+        options: ["auto", "required", "text-only"]
+      allow_review:
+        description: "Render manual-review stories in dry-run only"
         required: true
         default: false
         type: boolean
-      idol:
-        description: "Optional idol; blank rotates data/idols.json"
-        required: false
-        type: string
-      fact_count:
-        description: "Number of source-backed story beats"
-        required: true
-        default: "4"
-        type: choice
-        options:
-          - "4"
-          - "3"
-      subreddits:
-        description: "Comma-separated Reddit communities"
-        required: true
-        default: "kpop,kpopthoughts,kpop_uncensored"
-        type: string
 
 permissions:
   contents: write
 
 concurrency:
-  group: reddit-short-${{ github.ref }}
+  group: youtube-publisher-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  create-short:
+  build-and-publish:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
       PYTHONUNBUFFERED: "1"
-      REDDIT_USER_AGENT: ${{ vars.REDDIT_USER_AGENT }}
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
       CHANNEL_NAME: ${{ vars.CHANNEL_NAME || 'Lululala' }}
-      INPUT_IDOL: ${{ github.event_name == 'workflow_dispatch' && inputs.idol || '' }}
-      INPUT_FACT_COUNT: ${{ github.event_name == 'workflow_dispatch' && inputs.fact_count || '4' }}
-      INPUT_SUBREDDITS: ${{ github.event_name == 'workflow_dispatch' && inputs.subreddits || 'kpop,kpopthoughts,kpop_uncensored' }}
-      INPUT_PRIVACY_STATUS: public
-      QUALITY_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
-      GUARANTEE_DAILY_QUOTA: "true"
+      BL_SOURCE_FEEDS_JSON: ${{ vars.BL_SOURCE_FEEDS_JSON }}
+      INPUT_STORY_FILE: ${{ github.event_name == 'workflow_dispatch' && inputs.story_file || '' }}
+      INPUT_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+      INPUT_NARRATION_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.narration_mode || 'auto' }}
+      INPUT_ALLOW_REVIEW: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_review || false }}
 
     steps:
       - name: Check out repository
@@ -80,59 +76,78 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Cache commercial-safe TTS voice
-        uses: actions/cache@v4
-        with:
-          path: .tts-models
-          key: piper-en-US-joe-medium-v1
-
-      - name: Download commercial-safe TTS voice
-        run: |
-          python -m piper.download_voices --data-dir .tts-models en_US-joe-medium
-          test "$(stat -c%s .tts-models/en_US-joe-medium.onnx)" -gt 50000000
-
-      - name: Validate Reddit Short configuration
-        run: python -m scripts.validate_config --mode reddit-short --require-youtube
-
-      - name: Render and quality-gate deterministic Short
-        id: render
-        run: python -m scripts.render_idol_short
-
-      - name: Upload directly to YouTube as public
-        id: youtube
-        if: ${{ steps.render.outputs.publish == 'true' && (github.event_name == 'schedule' || !inputs.dry_run) }}
-        run: python -m scripts.upload_youtube
-
-      - name: Persist Reddit source rotation safely
-        if: ${{ always() && steps.render.outcome == 'success' && steps.youtube.outcome == 'success' }}
+      - name: Validate configuration and catalogs
         shell: bash
         run: |
           set -euo pipefail
-          snapshot="$RUNNER_TEMP/rendered-reddit-state.json"
-          cp data/reddit_state.json "$snapshot"
+          if [[ "$INPUT_DRY_RUN" == "true" ]]; then
+            python -m scripts.validate_config --mode bl-short
+          else
+            python -m scripts.validate_config --mode bl-short --require-youtube
+          fi
+
+      - name: Run deterministic tests before publication
+        run: python -m pytest -q
+
+      - name: Collect, verify, generate, render, and QA
+        id: pipeline
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(--narration-mode "$INPUT_NARRATION_MODE")
+          if [[ -n "$INPUT_STORY_FILE" ]]; then args+=(--input "$INPUT_STORY_FILE"); fi
+          if [[ "$INPUT_DRY_RUN" == "true" ]]; then args+=(--dry-run); fi
+          if [[ "$INPUT_ALLOW_REVIEW" == "true" ]]; then
+            if [[ "$INPUT_DRY_RUN" != "true" ]]; then
+              echo "allow_review is restricted to dry-run mode" >&2
+              exit 2
+            fi
+            args+=(--allow-review)
+          fi
+          python -m scripts.bl_pipeline "${args[@]}"
+
+      - name: Upload directly to YouTube as public
+        id: youtube
+        if: ${{ steps.pipeline.outputs.publish == 'true' }}
+        run: python -m scripts.upload_youtube
+
+      - name: Persist publication and rotation state safely
+        if: ${{ always() && steps.youtube.outcome == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          reddit_snapshot="$RUNNER_TEMP/rendered-reddit-state.json"
+          bl_snapshot="$RUNNER_TEMP/rendered-bl-state.json"
+          cp data/reddit_state.json "$reddit_snapshot"
+          cp data/bl_state.json "$bl_snapshot"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3; do
             git fetch origin "$GITHUB_REF_NAME"
-            git checkout -B reddit-state-update "origin/$GITHUB_REF_NAME"
-            python -m scripts.merge_reddit_state data/reddit_state.json "$snapshot" --output data/reddit_state.json
-            if git diff --quiet -- data/reddit_state.json; then exit 0; fi
-            git add data/reddit_state.json
-            git commit -m "Persist Reddit source rotation [skip ci]"
+            git checkout -B bl-state-update "origin/$GITHUB_REF_NAME"
+            python -m scripts.merge_reddit_state data/reddit_state.json "$reddit_snapshot" --output data/reddit_state.json
+            python -m scripts.merge_bl_state data/bl_state.json "$bl_snapshot" --output data/bl_state.json
+            if git diff --quiet -- data/reddit_state.json data/bl_state.json; then exit 0; fi
+            git add data/reddit_state.json data/bl_state.json
+            git commit -m "Persist BL publication state [skip ci]"
             if git push origin "HEAD:$GITHUB_REF_NAME"; then exit 0; fi
             sleep $((attempt * 2))
           done
           exit 1
 
-      - name: Upload render artifacts
+      - name: Upload dry-run and diagnostic artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: reddit-short-${{ github.run_id }}
+          name: bl-short-${{ github.run_id }}
           path: |
             output/short.mp4
+            output/cover.jpg
+            output/story.json
+            output/package.json
             output/metadata.json
             quality_reports/*.json
+            logs/run.json
           if-no-files-found: warn
           retention-days: 2
 

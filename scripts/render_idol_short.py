@@ -319,7 +319,9 @@ def synthesize_narration(text: str, output: Path, voice_file: Path | None = None
         )
         if result.returncode != 0:
             raise IdolShortError("Unable to fit narration pace inside the one-minute format")
-        fitted.replace(output)
+        output.unlink(missing_ok=True)
+        shutil.copyfile(fitted, output)
+        fitted.unlink(missing_ok=True)
     duration = wav_duration(output)
     if not 46 <= duration <= 63.5:
         raise IdolShortError(

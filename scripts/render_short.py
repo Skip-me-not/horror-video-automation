@@ -1053,7 +1053,9 @@ def synthesize_narration(text: str, output: Path, voice_file: Path | None = None
         )
         if result.returncode != 0:
             raise ShortsError("Unable to fit TTS narration inside 40 seconds")
-        fitted.replace(output)
+        output.unlink(missing_ok=True)
+        shutil.copyfile(fitted, output)
+        fitted.unlink(missing_ok=True)
         duration = audio_duration(output)
     return {
         "name": voice_name,
@@ -1110,7 +1112,9 @@ def synthesize_impact_narration(
         )
         if result.returncode != 0:
             raise ShortsError("Unable to fit impact narration inside 14.5 seconds")
-        fitted.replace(output)
+        output.unlink(missing_ok=True)
+        shutil.copyfile(fitted, output)
+        fitted.unlink(missing_ok=True)
         durations = [duration / speed for duration in durations]
         total = sum(durations)
     asset = {

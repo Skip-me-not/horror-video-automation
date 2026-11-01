@@ -1,0 +1,14 @@
+{
+  "story_id": "sample-series-001", "category": "series_announcement",
+  "headline": "North Star announced as a new workplace BL series",
+  "actor": "Arun Lee", "actor_2": "Min Park", "series": "North Star",
+  "company": "Studio North", "network": "North Play", "country": "Thailand",
+  "event": "the North Star series announcement", "date": "2027-01-17", "release_date": "2027",
+  "venue": "Studio North", "award": "New Series Selection", "achievement": "a regional co-production",
+  "context": "the story follows two designers rebuilding a family business",
+  "detail": "the project is scheduled to enter production this year",
+  "official_statement": "North Star is part of the confirmed 2027 slate",
+  "source_name": "Studio North newsroom", "official_confirmation": true,
+  "sources": [{"type": "official", "name": "Studio North newsroom", "url": "https://example.com/studio-north/north-star"}],
+  "assets": [], "privacy_status": "private"
+}

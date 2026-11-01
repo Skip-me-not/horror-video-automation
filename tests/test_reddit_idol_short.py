@@ -44,8 +44,8 @@ def test_manual_dry_run_skips_public_upload():
     workflow = (Path(__file__).resolve().parents[1] / ".github" / "workflows" /
                 "create-short.yml").read_text(encoding="utf-8")
     assert "CHANNEL_NAME: ${{ vars.CHANNEL_NAME || 'Lululala' }}" in workflow
-    assert "steps.render.outputs.publish == 'true'" in workflow
-    assert "github.event_name == 'schedule' || !inputs.dry_run" in workflow
+    assert "steps.pipeline.outputs.publish == 'true'" in workflow
+    assert 'if [[ "$INPUT_DRY_RUN" == "true" ]]; then args+=(--dry-run); fi' in workflow
 
 
 def test_long_narration_is_fitted_inside_video_limit(tmp_path):

@@ -138,6 +138,7 @@ def main() -> None:
     parser.add_argument("--video", type=Path, default=ROOT / "output" / "short.mp4")
     parser.add_argument("--metadata", type=Path, default=ROOT / "output" / "metadata.json")
     args = parser.parse_args()
+    metadata = load_metadata(args.metadata)
     youtube_id = upload(args.video, args.metadata)
     state_path = ROOT / "data" / "reddit_state.json"
     state = json.loads(state_path.read_text(encoding="utf-8"))
@@ -150,6 +151,25 @@ def main() -> None:
     temporary_state.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n",
                                encoding="utf-8")
     temporary_state.replace(state_path)
+    if metadata.get("format") == "bl_entertainment_short":
+        from scripts.bl_engine import load_state as load_bl_state, read_json, record_success, write_json_atomic
+
+        package_path = ROOT / "output" / "package.json"
+        if not package_path.is_file():
+            raise RuntimeError("BL upload succeeded but output/package.json is missing")
+        bl_state_path = ROOT / "data" / "bl_state.json"
+        bl_state = record_success(read_json(package_path), load_bl_state(bl_state_path), youtube_video_id=youtube_id)
+        write_json_atomic(bl_state_path, bl_state)
+        log_path = ROOT / "logs" / "run.json"
+        if log_path.is_file():
+            run_log = read_json(log_path)
+            run_log["upload_status"] = "uploaded"
+            run_log["youtube_video_id"] = youtube_id
+            write_json_atomic(log_path, run_log)
+    github_output = os.environ.get("GITHUB_OUTPUT", "").strip()
+    if github_output:
+        with Path(github_output).open("a", encoding="utf-8") as handle:
+            handle.write(f"youtube_id={youtube_id}\n")
     if DAILY_REPORT.is_file():
         try:
             report = json.loads(DAILY_REPORT.read_text(encoding="utf-8"))

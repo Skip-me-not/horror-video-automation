@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "channel_name": "Lululala",
+  "target": {"width": 1080, "height": 1920, "fps": 30, "min_seconds": 25, "max_seconds": 65, "reading_wpm": 165},
+  "verification": {
+    "scores": {"official": 100, "reputable_media": 80, "social_verified": 70, "social": 50, "fan": 30, "reddit": 20, "unknown": 10},
+    "second_reputable_bonus": 15,
+    "official_confirmation_bonus": 10,
+    "matching_event_bonus": 10,
+    "auto_publish_minimum": 70,
+    "manual_review_minimum": 40,
+    "sensitive_topics": ["dating", "relationship", "sexuality", "private relationship", "medical", "diagnosis", "crime", "criminal", "assault", "abuse", "allegation", "accusation"]
+  },
+  "rotation": {"template_cooldown": 10, "hook_cooldown": 8, "layout_cooldown": 5, "history_limit": 250},
+  "caption_profiles": {
+    "bold_center": {"alignment": 5, "font_size": 64, "margin_v": 600, "max_chars": 30, "max_lines": 2},
+    "minimal_bottom": {"alignment": 2, "font_size": 48, "margin_v": 270, "max_chars": 34, "max_lines": 2},
+    "news_lower_third": {"alignment": 2, "font_size": 52, "margin_v": 350, "max_chars": 32, "max_lines": 2},
+    "keyword_emphasis": {"alignment": 5, "font_size": 60, "margin_v": 620, "max_chars": 28, "max_lines": 2},
+    "clean_white": {"alignment": 2, "font_size": 50, "margin_v": 320, "max_chars": 34, "max_lines": 2},
+    "large_hook": {"alignment": 5, "font_size": 72, "margin_v": 700, "max_chars": 24, "max_lines": 2}
+  },
+  "layouts": [
+    {"id":"layout_01","name":"headline_portrait_post","headline_y":260,"caption_y":1240,"accent":"#ff416c","motion":"zoom_in"},
+    {"id":"layout_02","name":"split_pairing","headline_y":220,"caption_y":1260,"accent":"#8b5cf6","motion":"pan_left"},
+    {"id":"layout_03","name":"official_post_focus","headline_y":300,"caption_y":1300,"accent":"#00c2ff","motion":"zoom_out"},
+    {"id":"layout_04","name":"fast_slideshow","headline_y":190,"caption_y":1210,"accent":"#ffcc00","motion":"pan_right"},
+    {"id":"layout_05","name":"timeline","headline_y":240,"caption_y":1320,"accent":"#22c55e","motion":"zoom_in"},
+    {"id":"layout_06","name":"breaking_card","headline_y":180,"caption_y":1190,"accent":"#ef4444","motion":"zoom_in"},
+    {"id":"layout_07","name":"two_actor_compare","headline_y":250,"caption_y":1280,"accent":"#ec4899","motion":"pan_left"},
+    {"id":"layout_08","name":"poster_focus","headline_y":210,"caption_y":1270,"accent":"#f97316","motion":"zoom_out"},
+    {"id":"layout_09","name":"event_carousel","headline_y":280,"caption_y":1250,"accent":"#14b8a6","motion":"pan_right"},
+    {"id":"layout_10","name":"quote_card","headline_y":320,"caption_y":1200,"accent":"#a855f7","motion":"zoom_in"},
+    {"id":"layout_11","name":"award_spotlight","headline_y":230,"caption_y":1290,"accent":"#facc15","motion":"zoom_out"},
+    {"id":"layout_12","name":"release_calendar","headline_y":200,"caption_y":1310,"accent":"#38bdf8","motion":"pan_left"},
+    {"id":"layout_13","name":"agency_statement","headline_y":290,"caption_y":1230,"accent":"#94a3b8","motion":"zoom_in"},
+    {"id":"layout_14","name":"ranking_board","headline_y":190,"caption_y":1270,"accent":"#4ade80","motion":"pan_right"},
+    {"id":"layout_15","name":"interview_closeup","headline_y":270,"caption_y":1260,"accent":"#fb7185","motion":"zoom_out"},
+    {"id":"layout_16","name":"milestone_counter","headline_y":220,"caption_y":1300,"accent":"#c084fc","motion":"zoom_in"},
+    {"id":"layout_17","name":"roundup_stack","headline_y":170,"caption_y":1220,"accent":"#2dd4bf","motion":"pan_left"},
+    {"id":"layout_18","name":"clean_editorial","headline_y":300,"caption_y":1290,"accent":"#ffffff","motion":"zoom_out"}
+  ],
+  "cover_layouts": ["cover_breaking", "cover_portrait", "cover_split", "cover_poster", "cover_quote", "cover_clean"],
+  "music_profiles": {"news":{"volume":0.10},"upbeat":{"volume":0.11},"emotional":{"volume":0.09},"elegant":{"volume":0.08},"neutral":{"volume":0.08}},
+  "feeds": [],
+  "qa": {"min_file_bytes": 100000, "max_file_mb": 200, "allowed_width": 1080, "allowed_height": 1920}
+}

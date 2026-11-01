@@ -1,0 +1,2939 @@
+{
+  "version": 2,
+  "template_count": 100,
+  "category_counts": {
+    "breaking_news": 10,
+    "casting": 10,
+    "series_announcement": 8,
+    "trailer_release": 6,
+    "release_date": 5,
+    "actor_update": 8,
+    "agency_update": 5,
+    "fan_meeting": 5,
+    "award": 5,
+    "interview": 5,
+    "viral_moment": 6,
+    "milestone": 5,
+    "comeback": 4,
+    "collaboration": 4,
+    "clarification": 4,
+    "controversy_confirmed": 3,
+    "weekly_roundup": 3,
+    "general_entertainment": 4
+  },
+  "templates": [
+    {
+      "id": "breaking_news_001",
+      "category": "breaking_news",
+      "duration_target": 49,
+      "hook_pattern": "breaking_news_hook_1",
+      "hook": "{actor} fans just got a major official update.",
+      "body": [
+        "{company} announced {event}.",
+        "The confirmed detail is {detail}.",
+        "Here is the context: {context}.",
+        "The source lists {date} as the key date."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_01",
+      "music_profile": "news",
+      "caption_profile": "bold_center",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_002",
+      "category": "breaking_news",
+      "duration_target": 56,
+      "hook_pattern": "breaking_news_hook_2",
+      "hook": "This BL announcement changed today's conversation.",
+      "body": [
+        "The confirmed detail is {detail}.",
+        "Here is the context: {context}.",
+        "The source lists {date} as the key date.",
+        "This matters because {achievement}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_02",
+      "music_profile": "emotional",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_003",
+      "category": "breaking_news",
+      "duration_target": 38,
+      "hook_pattern": "breaking_news_hook_3",
+      "hook": "{company} has confirmed the news fans were waiting for.",
+      "body": [
+        "Here is the context: {context}.",
+        "The source lists {date} as the key date.",
+        "This matters because {achievement}.",
+        "{company} announced {event}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_03",
+      "music_profile": "neutral",
+      "caption_profile": "bold_center",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_004",
+      "category": "breaking_news",
+      "duration_target": 45,
+      "hook_pattern": "breaking_news_hook_4",
+      "hook": "Stop scrolling: this {country} BL update is now official.",
+      "body": [
+        "The source lists {date} as the key date.",
+        "This matters because {achievement}.",
+        "{company} announced {event}.",
+        "The confirmed detail is {detail}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_04",
+      "music_profile": "upbeat",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_005",
+      "category": "breaking_news",
+      "duration_target": 52,
+      "hook_pattern": "breaking_news_hook_5",
+      "hook": "A new official update about {actor} has arrived.",
+      "body": [
+        "This matters because {achievement}.",
+        "{company} announced {event}.",
+        "The confirmed detail is {detail}.",
+        "Here is the context: {context}."
+      ],
+      "cta": "Share your take without spreading rumors.",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_05",
+      "music_profile": "elegant",
+      "caption_profile": "bold_center",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_006",
+      "category": "breaking_news",
+      "duration_target": 59,
+      "hook_pattern": "breaking_news_hook_1",
+      "hook": "{actor} fans just got a major official update.",
+      "body": [
+        "{company} announced {event}.",
+        "The confirmed detail is {detail}.",
+        "Here is the context: {context}.",
+        "The source lists {date} as the key date."
+      ],
+      "cta": "Which confirmed update should we explain next?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_06",
+      "music_profile": "news",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_007",
+      "category": "breaking_news",
+      "duration_target": 41,
+      "hook_pattern": "breaking_news_hook_2",
+      "hook": "This BL announcement changed today's conversation.",
+      "body": [
+        "The confirmed detail is {detail}.",
+        "Here is the context: {context}.",
+        "The source lists {date} as the key date.",
+        "This matters because {achievement}."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_07",
+      "music_profile": "emotional",
+      "caption_profile": "bold_center",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_008",
+      "category": "breaking_news",
+      "duration_target": 48,
+      "hook_pattern": "breaking_news_hook_3",
+      "hook": "{company} has confirmed the news fans were waiting for.",
+      "body": [
+        "Here is the context: {context}.",
+        "The source lists {date} as the key date.",
+        "This matters because {achievement}.",
+        "{company} announced {event}."
+      ],
+      "cta": "What do you think about this confirmed update?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_08",
+      "music_profile": "neutral",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_009",
+      "category": "breaking_news",
+      "duration_target": 55,
+      "hook_pattern": "breaking_news_hook_4",
+      "hook": "Stop scrolling: this {country} BL update is now official.",
+      "body": [
+        "The source lists {date} as the key date.",
+        "This matters because {achievement}.",
+        "{company} announced {event}.",
+        "The confirmed detail is {detail}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_09",
+      "music_profile": "upbeat",
+      "caption_profile": "bold_center",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "breaking_news_010",
+      "category": "breaking_news",
+      "duration_target": 37,
+      "hook_pattern": "breaking_news_hook_5",
+      "hook": "A new official update about {actor} has arrived.",
+      "body": [
+        "This matters because {achievement}.",
+        "{company} announced {event}.",
+        "The confirmed detail is {detail}.",
+        "Here is the context: {context}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_10",
+      "music_profile": "elegant",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_001",
+      "category": "casting",
+      "duration_target": 43,
+      "hook_pattern": "casting_hook_1",
+      "hook": "A new BL cast combination has officially entered the chat.",
+      "body": [
+        "{company} confirmed {actor} and {actor_2} for {series}.",
+        "The project is being produced for {network}.",
+        "The announcement describes {context}.",
+        "The key casting detail is {detail}."
+      ],
+      "cta": "Share your take without spreading rumors.",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_11",
+      "music_profile": "news",
+      "caption_profile": "clean_white",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_002",
+      "category": "casting",
+      "duration_target": 50,
+      "hook_pattern": "casting_hook_2",
+      "hook": "{actor} and {actor_2} are connected to a confirmed new project.",
+      "body": [
+        "The project is being produced for {network}.",
+        "The announcement describes {context}.",
+        "The key casting detail is {detail}.",
+        "Production information points to {date}."
+      ],
+      "cta": "Which confirmed update should we explain next?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_12",
+      "music_profile": "emotional",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_003",
+      "category": "casting",
+      "duration_target": 57,
+      "hook_pattern": "casting_hook_3",
+      "hook": "This casting announcement could shape the next BL season.",
+      "body": [
+        "The announcement describes {context}.",
+        "The key casting detail is {detail}.",
+        "Production information points to {date}.",
+        "{company} confirmed {actor} and {actor_2} for {series}."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_13",
+      "music_profile": "neutral",
+      "caption_profile": "clean_white",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_004",
+      "category": "casting",
+      "duration_target": 39,
+      "hook_pattern": "casting_hook_4",
+      "hook": "Fans asked who would lead {series}; now there is an answer.",
+      "body": [
+        "The key casting detail is {detail}.",
+        "Production information points to {date}.",
+        "{company} confirmed {actor} and {actor_2} for {series}.",
+        "The project is being produced for {network}."
+      ],
+      "cta": "What do you think about this confirmed update?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_14",
+      "music_profile": "upbeat",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_005",
+      "category": "casting",
+      "duration_target": 46,
+      "hook_pattern": "casting_hook_5",
+      "hook": "The cast reveal for {series} is finally here.",
+      "body": [
+        "Production information points to {date}.",
+        "{company} confirmed {actor} and {actor_2} for {series}.",
+        "The project is being produced for {network}.",
+        "The announcement describes {context}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_15",
+      "music_profile": "elegant",
+      "caption_profile": "clean_white",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_006",
+      "category": "casting",
+      "duration_target": 53,
+      "hook_pattern": "casting_hook_1",
+      "hook": "A new BL cast combination has officially entered the chat.",
+      "body": [
+        "{company} confirmed {actor} and {actor_2} for {series}.",
+        "The project is being produced for {network}.",
+        "The announcement describes {context}.",
+        "The key casting detail is {detail}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_16",
+      "music_profile": "news",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_007",
+      "category": "casting",
+      "duration_target": 60,
+      "hook_pattern": "casting_hook_2",
+      "hook": "{actor} and {actor_2} are connected to a confirmed new project.",
+      "body": [
+        "The project is being produced for {network}.",
+        "The announcement describes {context}.",
+        "The key casting detail is {detail}.",
+        "Production information points to {date}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_17",
+      "music_profile": "emotional",
+      "caption_profile": "clean_white",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_008",
+      "category": "casting",
+      "duration_target": 42,
+      "hook_pattern": "casting_hook_3",
+      "hook": "This casting announcement could shape the next BL season.",
+      "body": [
+        "The announcement describes {context}.",
+        "The key casting detail is {detail}.",
+        "Production information points to {date}.",
+        "{company} confirmed {actor} and {actor_2} for {series}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_18",
+      "music_profile": "neutral",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_009",
+      "category": "casting",
+      "duration_target": 49,
+      "hook_pattern": "casting_hook_4",
+      "hook": "Fans asked who would lead {series}; now there is an answer.",
+      "body": [
+        "The key casting detail is {detail}.",
+        "Production information points to {date}.",
+        "{company} confirmed {actor} and {actor_2} for {series}.",
+        "The project is being produced for {network}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_01",
+      "music_profile": "upbeat",
+      "caption_profile": "clean_white",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "casting_010",
+      "category": "casting",
+      "duration_target": 56,
+      "hook_pattern": "casting_hook_5",
+      "hook": "The cast reveal for {series} is finally here.",
+      "body": [
+        "Production information points to {date}.",
+        "{company} confirmed {actor} and {actor_2} for {series}.",
+        "The project is being produced for {network}.",
+        "The announcement describes {context}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_02",
+      "music_profile": "elegant",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "series_announcement_001",
+      "category": "series_announcement",
+      "duration_target": 55,
+      "hook_pattern": "series_announcement_hook_1",
+      "hook": "A brand-new BL series was just made official.",
+      "body": [
+        "{company} announced {series} for {network}.",
+        "The official premise says {context}.",
+        "The first confirmed production detail is {detail}.",
+        "The announcement names {actor} in the project."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_03",
+      "music_profile": "news",
+      "caption_profile": "news_lower_third",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "series_announcement_002",
+      "category": "series_announcement",
+      "duration_target": 37,
+      "hook_pattern": "series_announcement_hook_2",
+      "hook": "{series} may be the next title on your watchlist.",
+      "body": [
+        "The official premise says {context}.",
+        "The first confirmed production detail is {detail}.",
+        "The announcement names {actor} in the project.",
+        "More information is scheduled for {date}."
+      ],
+      "cta": "What do you think about this confirmed update?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_04",
+      "music_profile": "emotional",
+      "caption_profile": "large_hook",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "series_announcement_003",
+      "category": "series_announcement",
+      "duration_target": 44,
+      "hook_pattern": "series_announcement_hook_3",
+      "hook": "This {country} BL project has moved from talk to confirmation.",
+      "body": [
+        "The first confirmed production detail is {detail}.",
+        "The announcement names {actor} in the project.",
+        "More information is scheduled for {date}.",
+        "{company} announced {series} for {network}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_05",
+      "music_profile": "neutral",
+      "caption_profile": "news_lower_third",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "series_announcement_004",
+      "category": "series_announcement",
+      "duration_target": 51,
+      "hook_pattern": "series_announcement_hook_4",
+      "hook": "{company} just unveiled its next BL series.",
+      "body": [
+        "The announcement names {actor} in the project.",
+        "More information is scheduled for {date}.",
+        "{company} announced {series} for {network}.",
+        "The official premise says {context}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_06",
+      "music_profile": "upbeat",
+      "caption_profile": "large_hook",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "series_announcement_005",
+      "category": "series_announcement",
+      "duration_target": 58,
+      "hook_pattern": "series_announcement_hook_5",
+      "hook": "Here is what is confirmed about {series}.",
+      "body": [
+        "More information is scheduled for {date}.",
+        "{company} announced {series} for {network}.",
+        "The official premise says {context}.",
+        "The first confirmed production detail is {detail}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_07",
+      "music_profile": "elegant",
+      "caption_profile": "news_lower_third",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "series_announcement_006",
+      "category": "series_announcement",
+      "duration_target": 40,
+      "hook_pattern": "series_announcement_hook_1",
+      "hook": "A brand-new BL series was just made official.",
+      "body": [
+        "{company} announced {series} for {network}.",
+        "The official premise says {context}.",
+        "The first confirmed production detail is {detail}.",
+        "The announcement names {actor} in the project."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_08",
+      "music_profile": "news",
+      "caption_profile": "large_hook",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "series_announcement_007",
+      "category": "series_announcement",
+      "duration_target": 47,
+      "hook_pattern": "series_announcement_hook_2",
+      "hook": "{series} may be the next title on your watchlist.",
+      "body": [
+        "The official premise says {context}.",
+        "The first confirmed production detail is {detail}.",
+        "The announcement names {actor} in the project.",
+        "More information is scheduled for {date}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_09",
+      "music_profile": "emotional",
+      "caption_profile": "news_lower_third",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "series_announcement_008",
+      "category": "series_announcement",
+      "duration_target": 54,
+      "hook_pattern": "series_announcement_hook_3",
+      "hook": "This {country} BL project has moved from talk to confirmation.",
+      "body": [
+        "The first confirmed production detail is {detail}.",
+        "The announcement names {actor} in the project.",
+        "More information is scheduled for {date}.",
+        "{company} announced {series} for {network}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_10",
+      "music_profile": "neutral",
+      "caption_profile": "large_hook",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "series",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "trailer_release_001",
+      "category": "trailer_release",
+      "duration_target": 51,
+      "hook_pattern": "trailer_release_hook_1",
+      "hook": "The first look at {series} is finally out.",
+      "body": [
+        "{company} released the official trailer through {network}.",
+        "The preview highlights {context}.",
+        "One confirmed detail is {detail}.",
+        "{actor} appears in the newly released footage."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_11",
+      "music_profile": "elegant",
+      "caption_profile": "clean_white",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "series"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "trailer_release_002",
+      "category": "trailer_release",
+      "duration_target": 58,
+      "hook_pattern": "trailer_release_hook_2",
+      "hook": "This trailer just gave BL fans a lot to unpack.",
+      "body": [
+        "The preview highlights {context}.",
+        "One confirmed detail is {detail}.",
+        "{actor} appears in the newly released footage.",
+        "The source was published on {date}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_12",
+      "music_profile": "news",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "series"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "trailer_release_003",
+      "category": "trailer_release",
+      "duration_target": 40,
+      "hook_pattern": "trailer_release_hook_3",
+      "hook": "{series} revealed its tone in one official preview.",
+      "body": [
+        "One confirmed detail is {detail}.",
+        "{actor} appears in the newly released footage.",
+        "The source was published on {date}.",
+        "{company} released the official trailer through {network}."
+      ],
+      "cta": "Share your take without spreading rumors.",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_13",
+      "music_profile": "emotional",
+      "caption_profile": "clean_white",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "series"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "trailer_release_004",
+      "category": "trailer_release",
+      "duration_target": 47,
+      "hook_pattern": "trailer_release_hook_4",
+      "hook": "The teaser for {series} has officially landed.",
+      "body": [
+        "{actor} appears in the newly released footage.",
+        "The source was published on {date}.",
+        "{company} released the official trailer through {network}.",
+        "The preview highlights {context}."
+      ],
+      "cta": "Which confirmed update should we explain next?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_14",
+      "music_profile": "neutral",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "series"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "trailer_release_005",
+      "category": "trailer_release",
+      "duration_target": 54,
+      "hook_pattern": "trailer_release_hook_5",
+      "hook": "Watchlist alert: {series} just released new footage.",
+      "body": [
+        "The source was published on {date}.",
+        "{company} released the official trailer through {network}.",
+        "The preview highlights {context}.",
+        "One confirmed detail is {detail}."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_15",
+      "music_profile": "upbeat",
+      "caption_profile": "clean_white",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "series"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "trailer_release_006",
+      "category": "trailer_release",
+      "duration_target": 36,
+      "hook_pattern": "trailer_release_hook_1",
+      "hook": "The first look at {series} is finally out.",
+      "body": [
+        "{company} released the official trailer through {network}.",
+        "The preview highlights {context}.",
+        "One confirmed detail is {detail}.",
+        "{actor} appears in the newly released footage."
+      ],
+      "cta": "What do you think about this confirmed update?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_16",
+      "music_profile": "elegant",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "series"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "release_date_001",
+      "category": "release_date",
+      "duration_target": 48,
+      "hook_pattern": "release_date_hook_1",
+      "hook": "Set a reminder: {series} now has an official release date.",
+      "body": [
+        "{series} premieres on {release_date}.",
+        "The confirmed platform or network is {network}.",
+        "{company} included this detail: {detail}.",
+        "The schedule context is {context}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_17",
+      "music_profile": "neutral",
+      "caption_profile": "clean_white",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "series",
+        "release_date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "release_date_002",
+      "category": "release_date",
+      "duration_target": 55,
+      "hook_pattern": "release_date_hook_2",
+      "hook": "The wait for {series} has a confirmed end date.",
+      "body": [
+        "The confirmed platform or network is {network}.",
+        "{company} included this detail: {detail}.",
+        "The schedule context is {context}.",
+        "The announcement was posted on {date}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_18",
+      "music_profile": "upbeat",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "series",
+        "release_date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "release_date_003",
+      "category": "release_date",
+      "duration_target": 37,
+      "hook_pattern": "release_date_hook_3",
+      "hook": "BL fans can finally put {series} on the calendar.",
+      "body": [
+        "{company} included this detail: {detail}.",
+        "The schedule context is {context}.",
+        "The announcement was posted on {date}.",
+        "{series} premieres on {release_date}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_01",
+      "music_profile": "elegant",
+      "caption_profile": "clean_white",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "series",
+        "release_date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "release_date_004",
+      "category": "release_date",
+      "duration_target": 44,
+      "hook_pattern": "release_date_hook_4",
+      "hook": "{network} just locked in the premiere for {series}.",
+      "body": [
+        "The schedule context is {context}.",
+        "The announcement was posted on {date}.",
+        "{series} premieres on {release_date}.",
+        "The confirmed platform or network is {network}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_02",
+      "music_profile": "news",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "series",
+        "release_date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "release_date_005",
+      "category": "release_date",
+      "duration_target": 51,
+      "hook_pattern": "release_date_hook_5",
+      "hook": "This release-date update is now official.",
+      "body": [
+        "The announcement was posted on {date}.",
+        "{series} premieres on {release_date}.",
+        "The confirmed platform or network is {network}.",
+        "{company} included this detail: {detail}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_03",
+      "music_profile": "emotional",
+      "caption_profile": "clean_white",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "series",
+        "release_date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "actor_update_001",
+      "category": "actor_update",
+      "duration_target": 48,
+      "hook_pattern": "actor_update_hook_1",
+      "hook": "{actor} just shared an update fans should know.",
+      "body": [
+        "The update concerns {event}.",
+        "The official context is {context}.",
+        "The key detail is {detail}.",
+        "{company} published the information on {date}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_04",
+      "music_profile": "neutral",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "actor_update_002",
+      "category": "actor_update",
+      "duration_target": 55,
+      "hook_pattern": "actor_update_hook_2",
+      "hook": "Here is the confirmed context behind {actor}'s latest update.",
+      "body": [
+        "The official context is {context}.",
+        "The key detail is {detail}.",
+        "{company} published the information on {date}.",
+        "The update marks {achievement}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_05",
+      "music_profile": "upbeat",
+      "caption_profile": "bold_center",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "actor_update_003",
+      "category": "actor_update",
+      "duration_target": 37,
+      "hook_pattern": "actor_update_hook_3",
+      "hook": "A new public update from {actor} is getting attention.",
+      "body": [
+        "The key detail is {detail}.",
+        "{company} published the information on {date}.",
+        "The update marks {achievement}.",
+        "The update concerns {event}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_06",
+      "music_profile": "elegant",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "actor_update_004",
+      "category": "actor_update",
+      "duration_target": 44,
+      "hook_pattern": "actor_update_hook_4",
+      "hook": "{actor}'s newest professional move is official.",
+      "body": [
+        "{company} published the information on {date}.",
+        "The update marks {achievement}.",
+        "The update concerns {event}.",
+        "The official context is {context}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_07",
+      "music_profile": "news",
+      "caption_profile": "bold_center",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "actor_update_005",
+      "category": "actor_update",
+      "duration_target": 51,
+      "hook_pattern": "actor_update_hook_5",
+      "hook": "This is what actually changed for {actor}.",
+      "body": [
+        "The update marks {achievement}.",
+        "The update concerns {event}.",
+        "The official context is {context}.",
+        "The key detail is {detail}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_08",
+      "music_profile": "emotional",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "actor_update_006",
+      "category": "actor_update",
+      "duration_target": 58,
+      "hook_pattern": "actor_update_hook_1",
+      "hook": "{actor} just shared an update fans should know.",
+      "body": [
+        "The update concerns {event}.",
+        "The official context is {context}.",
+        "The key detail is {detail}.",
+        "{company} published the information on {date}."
+      ],
+      "cta": "Share your take without spreading rumors.",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_09",
+      "music_profile": "neutral",
+      "caption_profile": "bold_center",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "actor_update_007",
+      "category": "actor_update",
+      "duration_target": 40,
+      "hook_pattern": "actor_update_hook_2",
+      "hook": "Here is the confirmed context behind {actor}'s latest update.",
+      "body": [
+        "The official context is {context}.",
+        "The key detail is {detail}.",
+        "{company} published the information on {date}.",
+        "The update marks {achievement}."
+      ],
+      "cta": "Which confirmed update should we explain next?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_10",
+      "music_profile": "upbeat",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "actor_update_008",
+      "category": "actor_update",
+      "duration_target": 47,
+      "hook_pattern": "actor_update_hook_3",
+      "hook": "A new public update from {actor} is getting attention.",
+      "body": [
+        "The key detail is {detail}.",
+        "{company} published the information on {date}.",
+        "The update marks {achievement}.",
+        "The update concerns {event}."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_11",
+      "music_profile": "elegant",
+      "caption_profile": "bold_center",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "agency_update_001",
+      "category": "agency_update",
+      "duration_target": 49,
+      "hook_pattern": "agency_update_hook_1",
+      "hook": "{company} released an official statement about {actor}.",
+      "body": [
+        "The statement confirms {event}.",
+        "Its central detail is {detail}.",
+        "The relevant context is {context}.",
+        "The notice was issued on {date}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_12",
+      "music_profile": "emotional",
+      "caption_profile": "large_hook",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "company",
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "agency_update_002",
+      "category": "agency_update",
+      "duration_target": 56,
+      "hook_pattern": "agency_update_hook_2",
+      "hook": "An agency update just clarified what happens next.",
+      "body": [
+        "Its central detail is {detail}.",
+        "The relevant context is {context}.",
+        "The notice was issued on {date}.",
+        "The original statement says: {official_statement}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_13",
+      "music_profile": "neutral",
+      "caption_profile": "news_lower_third",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "company",
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "agency_update_003",
+      "category": "agency_update",
+      "duration_target": 38,
+      "hook_pattern": "agency_update_hook_3",
+      "hook": "This contract or management update is now confirmed.",
+      "body": [
+        "The relevant context is {context}.",
+        "The notice was issued on {date}.",
+        "The original statement says: {official_statement}.",
+        "The statement confirms {event}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_14",
+      "music_profile": "upbeat",
+      "caption_profile": "large_hook",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "company",
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "agency_update_004",
+      "category": "agency_update",
+      "duration_target": 45,
+      "hook_pattern": "agency_update_hook_4",
+      "hook": "Here is what {company} actually announced.",
+      "body": [
+        "The notice was issued on {date}.",
+        "The original statement says: {official_statement}.",
+        "The statement confirms {event}.",
+        "Its central detail is {detail}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_15",
+      "music_profile": "elegant",
+      "caption_profile": "news_lower_third",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "company",
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "agency_update_005",
+      "category": "agency_update",
+      "duration_target": 52,
+      "hook_pattern": "agency_update_hook_5",
+      "hook": "The official statement changed the timeline for {actor}.",
+      "body": [
+        "The original statement says: {official_statement}.",
+        "The statement confirms {event}.",
+        "Its central detail is {detail}.",
+        "The relevant context is {context}."
+      ],
+      "cta": "Share your take without spreading rumors.",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_16",
+      "music_profile": "news",
+      "caption_profile": "large_hook",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "company",
+        "actor"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "fan_meeting_001",
+      "category": "fan_meeting",
+      "duration_target": 47,
+      "hook_pattern": "fan_meeting_hook_1",
+      "hook": "{actor} fans have a new event to plan for.",
+      "body": [
+        "{event} takes place at {venue}.",
+        "The announced date is {date}.",
+        "{company} says {detail}.",
+        "The event context is {context}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_17",
+      "music_profile": "emotional",
+      "caption_profile": "clean_white",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "fan_meeting_002",
+      "category": "fan_meeting",
+      "duration_target": 54,
+      "hook_pattern": "fan_meeting_hook_2",
+      "hook": "A BL fan meeting has officially been announced.",
+      "body": [
+        "The announced date is {date}.",
+        "{company} says {detail}.",
+        "The event context is {context}.",
+        "Official information names {actor}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_18",
+      "music_profile": "neutral",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "event",
+        "date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "fan_meeting_003",
+      "category": "fan_meeting",
+      "duration_target": 36,
+      "hook_pattern": "fan_meeting_hook_3",
+      "hook": "{venue} is hosting a newly confirmed fan event.",
+      "body": [
+        "{company} says {detail}.",
+        "The event context is {context}.",
+        "Official information names {actor}.",
+        "{event} takes place at {venue}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_01",
+      "music_profile": "upbeat",
+      "caption_profile": "clean_white",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "event",
+        "date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "fan_meeting_004",
+      "category": "fan_meeting",
+      "duration_target": 43,
+      "hook_pattern": "fan_meeting_hook_4",
+      "hook": "Here are the confirmed details for {event}.",
+      "body": [
+        "The event context is {context}.",
+        "Official information names {actor}.",
+        "{event} takes place at {venue}.",
+        "The announced date is {date}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_02",
+      "music_profile": "elegant",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "event",
+        "date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "fan_meeting_005",
+      "category": "fan_meeting",
+      "duration_target": 50,
+      "hook_pattern": "fan_meeting_hook_5",
+      "hook": "This fan meeting announcement includes an important date.",
+      "body": [
+        "Official information names {actor}.",
+        "{event} takes place at {venue}.",
+        "The announced date is {date}.",
+        "{company} says {detail}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_03",
+      "music_profile": "news",
+      "caption_profile": "clean_white",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "event",
+        "date"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "award_001",
+      "category": "award",
+      "duration_target": 41,
+      "hook_pattern": "award_hook_1",
+      "hook": "{actor} just reached a major awards milestone.",
+      "body": [
+        "{actor} was recognized for {award}.",
+        "The result is {achievement}.",
+        "The official listing includes {series}.",
+        "The supporting context is {context}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_04",
+      "music_profile": "emotional",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "award",
+        "achievement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "award_002",
+      "category": "award",
+      "duration_target": 48,
+      "hook_pattern": "award_hook_2",
+      "hook": "This BL title is officially in the awards conversation.",
+      "body": [
+        "The result is {achievement}.",
+        "The official listing includes {series}.",
+        "The supporting context is {context}.",
+        "The result was published on {date}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_05",
+      "music_profile": "neutral",
+      "caption_profile": "bold_center",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "award",
+        "achievement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "award_003",
+      "category": "award",
+      "duration_target": 55,
+      "hook_pattern": "award_hook_3",
+      "hook": "{series} received a confirmed nomination or win.",
+      "body": [
+        "The official listing includes {series}.",
+        "The supporting context is {context}.",
+        "The result was published on {date}.",
+        "{actor} was recognized for {award}."
+      ],
+      "cta": "Share your take without spreading rumors.",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_06",
+      "music_profile": "upbeat",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "award",
+        "achievement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "award_004",
+      "category": "award",
+      "duration_target": 37,
+      "hook_pattern": "award_hook_4",
+      "hook": "The latest award result is in.",
+      "body": [
+        "The supporting context is {context}.",
+        "The result was published on {date}.",
+        "{actor} was recognized for {award}.",
+        "The result is {achievement}."
+      ],
+      "cta": "Which confirmed update should we explain next?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_07",
+      "music_profile": "elegant",
+      "caption_profile": "bold_center",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "award",
+        "achievement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "award_005",
+      "category": "award",
+      "duration_target": 44,
+      "hook_pattern": "award_hook_5",
+      "hook": "Here is why this recognition matters for {series}.",
+      "body": [
+        "The result was published on {date}.",
+        "{actor} was recognized for {award}.",
+        "The result is {achievement}.",
+        "The official listing includes {series}."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_08",
+      "music_profile": "news",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "award",
+        "achievement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "interview_001",
+      "category": "interview",
+      "duration_target": 45,
+      "hook_pattern": "interview_hook_1",
+      "hook": "One interview answer from {actor} deserves its full context.",
+      "body": [
+        "Speaking with {source_name}, {actor} discussed {event}.",
+        "The full context is {context}.",
+        "The confirmed detail is {detail}.",
+        "The published quote is: {official_statement}."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_09",
+      "music_profile": "emotional",
+      "caption_profile": "news_lower_third",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "actor",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "interview_002",
+      "category": "interview",
+      "duration_target": 52,
+      "hook_pattern": "interview_hook_2",
+      "hook": "Here is what {actor} actually said in the new interview.",
+      "body": [
+        "The full context is {context}.",
+        "The confirmed detail is {detail}.",
+        "The published quote is: {official_statement}.",
+        "The interview appeared on {date}."
+      ],
+      "cta": "What do you think about this confirmed update?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_10",
+      "music_profile": "neutral",
+      "caption_profile": "large_hook",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "actor",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "interview_003",
+      "category": "interview",
+      "duration_target": 59,
+      "hook_pattern": "interview_hook_3",
+      "hook": "This quote is circulating, but the context matters.",
+      "body": [
+        "The confirmed detail is {detail}.",
+        "The published quote is: {official_statement}.",
+        "The interview appeared on {date}.",
+        "Speaking with {source_name}, {actor} discussed {event}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_11",
+      "music_profile": "upbeat",
+      "caption_profile": "news_lower_third",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "actor",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "interview_004",
+      "category": "interview",
+      "duration_target": 41,
+      "hook_pattern": "interview_hook_4",
+      "hook": "{actor} explained a key part of {series}.",
+      "body": [
+        "The published quote is: {official_statement}.",
+        "The interview appeared on {date}.",
+        "Speaking with {source_name}, {actor} discussed {event}.",
+        "The full context is {context}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_12",
+      "music_profile": "elegant",
+      "caption_profile": "large_hook",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "actor",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "interview_005",
+      "category": "interview",
+      "duration_target": 48,
+      "hook_pattern": "interview_hook_5",
+      "hook": "A new interview revealed a confirmed production detail.",
+      "body": [
+        "The interview appeared on {date}.",
+        "Speaking with {source_name}, {actor} discussed {event}.",
+        "The full context is {context}.",
+        "The confirmed detail is {detail}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_13",
+      "music_profile": "news",
+      "caption_profile": "news_lower_third",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "actor",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "viral_moment_001",
+      "category": "viral_moment",
+      "duration_target": 48,
+      "hook_pattern": "viral_moment_hook_1",
+      "hook": "This public BL moment is everywhere for a reason.",
+      "body": [
+        "The moment happened during {event}.",
+        "The public context is {context}.",
+        "The verifiable detail is {detail}.",
+        "{source_name} documented it on {date}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_14",
+      "music_profile": "emotional",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "viral_moment_002",
+      "category": "viral_moment",
+      "duration_target": 55,
+      "hook_pattern": "viral_moment_hook_2",
+      "hook": "A moment involving {actor} is drawing huge public attention.",
+      "body": [
+        "The public context is {context}.",
+        "The verifiable detail is {detail}.",
+        "{source_name} documented it on {date}.",
+        "The moment involved {actor_2}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_15",
+      "music_profile": "neutral",
+      "caption_profile": "clean_white",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "viral_moment_003",
+      "category": "viral_moment",
+      "duration_target": 37,
+      "hook_pattern": "viral_moment_hook_3",
+      "hook": "Here is the verified context behind today's viral clip.",
+      "body": [
+        "The verifiable detail is {detail}.",
+        "{source_name} documented it on {date}.",
+        "The moment involved {actor_2}.",
+        "The moment happened during {event}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_16",
+      "music_profile": "upbeat",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "viral_moment_004",
+      "category": "viral_moment",
+      "duration_target": 44,
+      "hook_pattern": "viral_moment_hook_4",
+      "hook": "This event moment moved fast across fan timelines.",
+      "body": [
+        "{source_name} documented it on {date}.",
+        "The moment involved {actor_2}.",
+        "The moment happened during {event}.",
+        "The public context is {context}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_17",
+      "music_profile": "elegant",
+      "caption_profile": "clean_white",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "viral_moment_005",
+      "category": "viral_moment",
+      "duration_target": 51,
+      "hook_pattern": "viral_moment_hook_5",
+      "hook": "Before sharing this viral moment, know the source.",
+      "body": [
+        "The moment involved {actor_2}.",
+        "The moment happened during {event}.",
+        "The public context is {context}.",
+        "The verifiable detail is {detail}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_18",
+      "music_profile": "news",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "viral_moment_006",
+      "category": "viral_moment",
+      "duration_target": 58,
+      "hook_pattern": "viral_moment_hook_1",
+      "hook": "This public BL moment is everywhere for a reason.",
+      "body": [
+        "The moment happened during {event}.",
+        "The public context is {context}.",
+        "The verifiable detail is {detail}.",
+        "{source_name} documented it on {date}."
+      ],
+      "cta": "Share your take without spreading rumors.",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_01",
+      "music_profile": "emotional",
+      "caption_profile": "clean_white",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "milestone_001",
+      "category": "milestone",
+      "duration_target": 45,
+      "hook_pattern": "milestone_hook_1",
+      "hook": "{series} just crossed a measurable new milestone.",
+      "body": [
+        "The confirmed achievement is {achievement}.",
+        "The ranking or measurement came from {source_name}.",
+        "The relevant period is {date}.",
+        "The context behind the number is {context}."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_02",
+      "music_profile": "elegant",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "achievement",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "milestone_002",
+      "category": "milestone",
+      "duration_target": 52,
+      "hook_pattern": "milestone_hook_2",
+      "hook": "The numbers behind this BL achievement are now official.",
+      "body": [
+        "The ranking or measurement came from {source_name}.",
+        "The relevant period is {date}.",
+        "The context behind the number is {context}.",
+        "The reported detail is {detail}."
+      ],
+      "cta": "What do you think about this confirmed update?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_03",
+      "music_profile": "news",
+      "caption_profile": "clean_white",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "achievement",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "milestone_003",
+      "category": "milestone",
+      "duration_target": 59,
+      "hook_pattern": "milestone_hook_3",
+      "hook": "{actor} added another confirmed career milestone.",
+      "body": [
+        "The relevant period is {date}.",
+        "The context behind the number is {context}.",
+        "The reported detail is {detail}.",
+        "The confirmed achievement is {achievement}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_04",
+      "music_profile": "emotional",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "achievement",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "milestone_004",
+      "category": "milestone",
+      "duration_target": 41,
+      "hook_pattern": "milestone_hook_4",
+      "hook": "This ranking result is worth putting in context.",
+      "body": [
+        "The context behind the number is {context}.",
+        "The reported detail is {detail}.",
+        "The confirmed achievement is {achievement}.",
+        "The ranking or measurement came from {source_name}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_05",
+      "music_profile": "neutral",
+      "caption_profile": "clean_white",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "achievement",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "milestone_005",
+      "category": "milestone",
+      "duration_target": 48,
+      "hook_pattern": "milestone_hook_5",
+      "hook": "A new public benchmark has been reached.",
+      "body": [
+        "The reported detail is {detail}.",
+        "The confirmed achievement is {achievement}.",
+        "The ranking or measurement came from {source_name}.",
+        "The relevant period is {date}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "headline_first",
+      "scene_layout": "layout_06",
+      "music_profile": "upbeat",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "context_led",
+      "transition_ms": 280,
+      "required_fields": [
+        "achievement",
+        "source_name"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "comeback_001",
+      "category": "comeback",
+      "duration_target": 44,
+      "hook_pattern": "comeback_hook_1",
+      "hook": "A BL reunion fans discussed for months is now official.",
+      "body": [
+        "{company} announced {event}.",
+        "The returning names are {actor} and {actor_2}.",
+        "The comeback context is {context}.",
+        "The confirmed detail is {detail}."
+      ],
+      "cta": "Which confirmed update should we explain next?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_07",
+      "music_profile": "elegant",
+      "caption_profile": "bold_center",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "comeback_002",
+      "category": "comeback",
+      "duration_target": 51,
+      "hook_pattern": "comeback_hook_2",
+      "hook": "{actor} and {actor_2} are working together again.",
+      "body": [
+        "The returning names are {actor} and {actor_2}.",
+        "The comeback context is {context}.",
+        "The confirmed detail is {detail}.",
+        "The announcement date is {date}."
+      ],
+      "cta": "Follow for source-attributed BL news.",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_08",
+      "music_profile": "news",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "comeback_003",
+      "category": "comeback",
+      "duration_target": 58,
+      "hook_pattern": "comeback_hook_3",
+      "hook": "This comeback has moved beyond fan speculation.",
+      "body": [
+        "The comeback context is {context}.",
+        "The confirmed detail is {detail}.",
+        "The announcement date is {date}.",
+        "{company} announced {event}."
+      ],
+      "cta": "What do you think about this confirmed update?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_09",
+      "music_profile": "emotional",
+      "caption_profile": "bold_center",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "comeback_004",
+      "category": "comeback",
+      "duration_target": 40,
+      "hook_pattern": "comeback_hook_4",
+      "hook": "A familiar BL team just confirmed a new chapter.",
+      "body": [
+        "The confirmed detail is {detail}.",
+        "The announcement date is {date}.",
+        "{company} announced {event}.",
+        "The returning names are {actor} and {actor_2}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_10",
+      "music_profile": "neutral",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "actor",
+        "actor_2",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "collaboration_001",
+      "category": "collaboration",
+      "duration_target": 49,
+      "hook_pattern": "collaboration_hook_1",
+      "hook": "An unexpected BL collaboration is now official.",
+      "body": [
+        "The collaboration centers on {event}.",
+        "{company} confirmed the partnership with {network}.",
+        "The project includes {actor} and {actor_2}.",
+        "The key detail is {detail}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_11",
+      "music_profile": "emotional",
+      "caption_profile": "clean_white",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "collaboration_002",
+      "category": "collaboration",
+      "duration_target": 56,
+      "hook_pattern": "collaboration_hook_2",
+      "hook": "{actor} and {actor_2} just announced a joint project.",
+      "body": [
+        "{company} confirmed the partnership with {network}.",
+        "The project includes {actor} and {actor_2}.",
+        "The key detail is {detail}.",
+        "Its context is {context}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_12",
+      "music_profile": "neutral",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "collaboration_003",
+      "category": "collaboration",
+      "duration_target": 38,
+      "hook_pattern": "collaboration_hook_3",
+      "hook": "Two parts of the BL industry are teaming up.",
+      "body": [
+        "The project includes {actor} and {actor_2}.",
+        "The key detail is {detail}.",
+        "Its context is {context}.",
+        "The collaboration centers on {event}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_13",
+      "music_profile": "upbeat",
+      "caption_profile": "clean_white",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "collaboration_004",
+      "category": "collaboration",
+      "duration_target": 45,
+      "hook_pattern": "collaboration_hook_4",
+      "hook": "This collaboration connects {company} and {network}.",
+      "body": [
+        "The key detail is {detail}.",
+        "Its context is {context}.",
+        "The collaboration centers on {event}.",
+        "{company} confirmed the partnership with {network}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_14",
+      "music_profile": "elegant",
+      "caption_profile": "minimal_bottom",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "event",
+        "company"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "clarification_001",
+      "category": "clarification",
+      "duration_target": 49,
+      "hook_pattern": "clarification_hook_1",
+      "hook": "An official correction has changed this BL story.",
+      "body": [
+        "The clarification concerns {event}.",
+        "The corrected detail is {detail}.",
+        "The earlier context was {context}.",
+        "The official statement says: {official_statement}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_15",
+      "music_profile": "upbeat",
+      "caption_profile": "news_lower_third",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "official_statement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "clarification_002",
+      "category": "clarification",
+      "duration_target": 56,
+      "hook_pattern": "clarification_hook_2",
+      "hook": "Here is the confirmed version after today's clarification.",
+      "body": [
+        "The corrected detail is {detail}.",
+        "The earlier context was {context}.",
+        "The official statement says: {official_statement}.",
+        "It was published on {date}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_16",
+      "music_profile": "elegant",
+      "caption_profile": "large_hook",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "event",
+        "official_statement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "clarification_003",
+      "category": "clarification",
+      "duration_target": 38,
+      "hook_pattern": "clarification_hook_3",
+      "hook": "A circulating claim now has an official response.",
+      "body": [
+        "The earlier context was {context}.",
+        "The official statement says: {official_statement}.",
+        "It was published on {date}.",
+        "The clarification concerns {event}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_17",
+      "music_profile": "news",
+      "caption_profile": "news_lower_third",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "event",
+        "official_statement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "clarification_004",
+      "category": "clarification",
+      "duration_target": 45,
+      "hook_pattern": "clarification_hook_4",
+      "hook": "{company} clarified an important detail about {actor}.",
+      "body": [
+        "The official statement says: {official_statement}.",
+        "It was published on {date}.",
+        "The clarification concerns {event}.",
+        "The corrected detail is {detail}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_18",
+      "music_profile": "emotional",
+      "caption_profile": "large_hook",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "event",
+        "official_statement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "controversy_confirmed_001",
+      "category": "controversy_confirmed",
+      "duration_target": 57,
+      "hook_pattern": "controversy_confirmed_hook_1",
+      "hook": "A confirmed entertainment dispute now has an official record.",
+      "body": [
+        "The confirmed event is {event}.",
+        "{company} stated {official_statement}.",
+        "The documented context is {context}.",
+        "The independently reported detail is {detail}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_01",
+      "music_profile": "news",
+      "caption_profile": "bold_center",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "official_statement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "controversy_confirmed_002",
+      "category": "controversy_confirmed",
+      "duration_target": 39,
+      "hook_pattern": "controversy_confirmed_hook_2",
+      "hook": "This sensitive BL news requires facts, not speculation.",
+      "body": [
+        "{company} stated {official_statement}.",
+        "The documented context is {context}.",
+        "The independently reported detail is {detail}.",
+        "The statement date is {date}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_02",
+      "music_profile": "emotional",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "event",
+        "official_statement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "controversy_confirmed_003",
+      "category": "controversy_confirmed",
+      "duration_target": 46,
+      "hook_pattern": "controversy_confirmed_hook_3",
+      "hook": "An official statement addressed the current controversy.",
+      "body": [
+        "The documented context is {context}.",
+        "The independently reported detail is {detail}.",
+        "The statement date is {date}.",
+        "The confirmed event is {event}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_03",
+      "music_profile": "neutral",
+      "caption_profile": "bold_center",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "event",
+        "official_statement"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "weekly_roundup_001",
+      "category": "weekly_roundup",
+      "duration_target": 50,
+      "hook_pattern": "weekly_roundup_hook_1",
+      "hook": "Five BL entertainment updates you may have missed this week.",
+      "body": [
+        "First: {context}.",
+        "Next: {detail}.",
+        "The headline event was {event}.",
+        "A key date to remember is {date}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_04",
+      "music_profile": "elegant",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "context",
+        "detail",
+        "event"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "weekly_roundup_002",
+      "category": "weekly_roundup",
+      "duration_target": 57,
+      "hook_pattern": "weekly_roundup_hook_2",
+      "hook": "This week's BL news moved fast; here is the sourced recap.",
+      "body": [
+        "Next: {detail}.",
+        "The headline event was {event}.",
+        "A key date to remember is {date}.",
+        "The week's milestone was {achievement}."
+      ],
+      "cta": "Did this announcement surprise you?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_05",
+      "music_profile": "news",
+      "caption_profile": "bold_center",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "context",
+        "detail",
+        "event"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "weekly_roundup_003",
+      "category": "weekly_roundup",
+      "duration_target": 39,
+      "hook_pattern": "weekly_roundup_hook_3",
+      "hook": "From casting to release dates, these are the confirmed updates.",
+      "body": [
+        "The headline event was {event}.",
+        "A key date to remember is {date}.",
+        "The week's milestone was {achievement}.",
+        "First: {context}."
+      ],
+      "cta": "Save this so you remember the date.",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_06",
+      "music_profile": "emotional",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "context",
+        "detail",
+        "event"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "general_entertainment_001",
+      "category": "general_entertainment",
+      "duration_target": 57,
+      "hook_pattern": "general_entertainment_hook_1",
+      "hook": "This BL entertainment update is worth a closer look.",
+      "body": [
+        "The central event is {event}.",
+        "The relevant company is {company}.",
+        "The verified context is {context}.",
+        "The important detail is {detail}."
+      ],
+      "cta": "Is this going on your watchlist?",
+      "visual_style": "news_fast",
+      "scene_layout": "layout_07",
+      "music_profile": "upbeat",
+      "caption_profile": "bold_center",
+      "headline_style": "direct",
+      "transition_ms": 120,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "general_entertainment_002",
+      "category": "general_entertainment",
+      "duration_target": 39,
+      "hook_pattern": "general_entertainment_hook_2",
+      "hook": "Here is today's sourced BL industry briefing.",
+      "body": [
+        "The relevant company is {company}.",
+        "The verified context is {context}.",
+        "The important detail is {detail}.",
+        "The source published it on {date}."
+      ],
+      "cta": "Which detail matters most to you?",
+      "visual_style": "editorial_clean",
+      "scene_layout": "layout_08",
+      "music_profile": "elegant",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "question",
+      "transition_ms": 160,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "general_entertainment_003",
+      "category": "general_entertainment",
+      "duration_target": 46,
+      "hook_pattern": "general_entertainment_hook_3",
+      "hook": "A confirmed update is changing the BL calendar.",
+      "body": [
+        "The verified context is {context}.",
+        "The important detail is {detail}.",
+        "The source published it on {date}.",
+        "The central event is {event}."
+      ],
+      "cta": "Will you be watching on release day?",
+      "visual_style": "warm_update",
+      "scene_layout": "layout_09",
+      "music_profile": "news",
+      "caption_profile": "bold_center",
+      "headline_style": "date_led",
+      "transition_ms": 200,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    },
+    {
+      "id": "general_entertainment_004",
+      "category": "general_entertainment",
+      "duration_target": 53,
+      "hook_pattern": "general_entertainment_hook_4",
+      "hook": "This is the context missing from the headline.",
+      "body": [
+        "The important detail is {detail}.",
+        "The source published it on {date}.",
+        "The central event is {event}.",
+        "The relevant company is {company}."
+      ],
+      "cta": "Who else should be included in the next update?",
+      "visual_style": "timeline_focus",
+      "scene_layout": "layout_10",
+      "music_profile": "emotional",
+      "caption_profile": "keyword_emphasis",
+      "headline_style": "source_led",
+      "transition_ms": 240,
+      "required_fields": [
+        "event",
+        "context"
+      ],
+      "allowed_source_types": [
+        "official",
+        "reputable_media",
+        "social_verified"
+      ]
+    }
+  ]
+}

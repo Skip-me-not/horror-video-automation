@@ -1,0 +1,14 @@
+{
+  "story_id": "sample-actor-001", "category": "actor_update",
+  "headline": "Arun Lee joins a public acting workshop",
+  "actor": "Arun Lee", "actor_2": "Min Park", "series": "North Star",
+  "company": "Studio North", "network": "North Play", "country": "Thailand",
+  "event": "a public acting workshop", "date": "2027-01-18", "release_date": "2027",
+  "venue": "North Hall", "award": "Workshop Selection", "achievement": "a new professional training program",
+  "context": "the workshop is a public professional event connected to the studio slate",
+  "detail": "the published schedule includes a moderated audience session",
+  "official_statement": "the workshop is part of the studio's training program",
+  "source_name": "Studio North newsroom", "official_confirmation": true,
+  "sources": [{"type": "official", "name": "Studio North newsroom", "url": "https://example.com/studio-north/arun-workshop"}],
+  "assets": [], "privacy_status": "private"
+}

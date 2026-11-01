@@ -1,0 +1,15 @@
+{
+  "story_id": "sample-casting-001",
+  "category": "casting",
+  "headline": "Arun Lee and Min Park cast in North Star",
+  "actor": "Arun Lee", "actor_2": "Min Park", "series": "North Star",
+  "company": "Studio North", "network": "North Play", "country": "Thailand",
+  "event": "the lead-cast announcement", "date": "2027-01-16", "release_date": "2027",
+  "venue": "Studio North", "award": "Audience Choice", "achievement": "their first project together",
+  "context": "the studio introduced both performers as the confirmed leads",
+  "detail": "production begins after the public cast workshop",
+  "official_statement": "Arun Lee and Min Park will lead North Star",
+  "source_name": "Studio North newsroom", "official_confirmation": true,
+  "sources": [{"type": "official", "name": "Studio North newsroom", "url": "https://example.com/studio-north/north-star-cast"}],
+  "assets": [], "privacy_status": "private"
+}
