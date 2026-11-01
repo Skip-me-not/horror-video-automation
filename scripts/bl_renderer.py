@@ -277,7 +277,7 @@ def render(package_path: Path, *, narration_mode: str = "auto", allow_review: bo
         cover_subtitles.write_text(build_cover_ass(package, channel), encoding="utf-8", newline="\n")
         accent = package["layout"]["accent"].lstrip("#")
         cover_filter = (
-            f"drawbox=x=0:y=0:w=iw:h=ih:color=black@0.52:t=fill,"
+            "drawbox=x=0:y=0:w=iw:h=ih:color=black@1.0:t=fill,"
             f"drawbox=x=0:y=0:w=iw:h=180:color=0x{accent}@0.92:t=fill,"
             f"subtitles='{filter_path(cover_subtitles)}':fontsdir='{filter_path(FONT.parent)}'"
         )
