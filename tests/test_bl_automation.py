@@ -179,6 +179,7 @@ def test_youtube_watch_normalization_keeps_video_identity_only():
 def test_feed_relevance_prefers_news_and_rejects_episode_noise():
     assert feed_relevance("Official Trailer: A New BL Series", "trailer_release") > 0
     assert feed_relevance("[BTS] Episode 4 behind the scenes", "general_entertainment") < 0
+    assert feed_relevance("LIVE! KHEMJIRA WELCOME BACK", "comeback") < 0
 
 
 def test_qa_checks_valid_probe(monkeypatch, tmp_path, story):

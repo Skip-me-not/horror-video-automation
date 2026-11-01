@@ -66,17 +66,29 @@ def download_asset(asset: dict[str, Any], directory: Path, index: int) -> Path:
     host = __import__("urllib.parse", fromlist=["urlparse"]).urlparse(url).netloc.casefold()
     if host in YOUTUBE_HOSTS:
         destination = directory / f"source-{index}.mp4"
-        command = [
-            os.sys.executable, "-m", "yt_dlp", "--no-playlist", "--quiet", "--no-warnings",
-            "--socket-timeout", "20", "--retries", "2", "--download-sections", "*0-32",
-            "--force-keyframes-at-cuts", "--merge-output-format", "mp4",
-            "-f", "bv*[height<=1080]+ba/b[height<=1080]", "-o", str(destination), url,
+        failures = []
+        attempts = [
+            ["--extractor-args", "youtube:player_client=android_vr"],
+            ["--extractor-args", "youtube:player_client=web_safari", "--impersonate", "chrome"],
+            [],
         ]
-        result = subprocess.run(command, text=True, capture_output=True, timeout=180)
-        if result.returncode or not destination.is_file() or destination.stat().st_size == 0:
-            message = (result.stderr or result.stdout or "source download failed")[-500:]
-            raise BLEngineError(f"Unable to download source video: {message}")
-        return destination
+        for extra in attempts:
+            destination.unlink(missing_ok=True)
+            command = [
+                os.sys.executable, "-m", "yt_dlp", "--no-playlist", "--no-cache-dir", "--quiet", "--no-warnings",
+                "--socket-timeout", "20", "--retries", "2", "--download-sections", "*0-32",
+                "--force-keyframes-at-cuts", "--merge-output-format", "mp4",
+                "-f", "bv*[height<=1080]+ba/b[height<=1080]", *extra, "-o", str(destination), url,
+            ]
+            try:
+                result = subprocess.run(command, text=True, capture_output=True, timeout=180)
+            except subprocess.TimeoutExpired:
+                failures.append("download timed out")
+                continue
+            if result.returncode == 0 and destination.is_file() and destination.stat().st_size:
+                return destination
+            failures.append((result.stderr or result.stdout or "source download failed")[-500:])
+        raise BLEngineError("Unable to download source video: " + " | ".join(failures)[-1200:])
     suffix = Path(url.split("?", 1)[0]).suffix.casefold()
     if suffix not in {".jpg", ".jpeg", ".png", ".webp", ".mp4", ".mov", ".m4v"}:
         suffix = ".bin"
@@ -310,9 +322,10 @@ def render(package_path: Path, *, narration_mode: str = "auto", allow_review: bo
             if cache_key not in asset_cache:
                 try:
                     asset_cache[cache_key] = download_asset(asset, temporary, index)
-                except (BLEngineError, subprocess.TimeoutExpired):
+                except (BLEngineError, subprocess.TimeoutExpired) as exc:
                     if not asset.get("optional"):
                         raise
+                    print(f"WARNING: optional media skipped: {exc}", file=os.sys.stderr)
                     asset_cache[cache_key] = None
             if asset_cache[cache_key] is not None:
                 assets.append(ResolvedAsset(asset_cache[cache_key], float(asset.get("clip_start") or 0)))
