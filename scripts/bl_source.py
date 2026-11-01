@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse, urlunparse
 
 import requests
 
@@ -36,9 +36,20 @@ CATEGORY_TERMS = [
     ("milestone", ("milestone", "ranking", "million views", "record")),
 ]
 
+NEWS_TERMS = ("announce", "announcement", "official pilot", "official trailer", "teaser", "cast", "casting", "premiere", "release date", "fanmeeting", "fan meeting", "interview", "award", "event", "lineup", "press conference")
+NOISE_PATTERN = re.compile(r"(?:\[bts\]|behind\s+the\s+scenes|full\s+episode|\bep\.?\s*\d+|\bepisode\s*\d+|\bpart\s*\d+|\bost\b|official\s+mv|music\s+video|dance\s+practice|reaction)", re.I)
+
 
 def strip_markup(value: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", value or ""))).strip()
+
+
+def validated_feed_url(value: str) -> str:
+    """Validate a feed endpoint without discarding functional query parameters."""
+    parsed = urlparse(str(value or "").strip())
+    if parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password:
+        return ""
+    return urlunparse(("https", parsed.netloc.lower(), parsed.path or "/", "", parsed.query, ""))
 
 
 def classify(headline: str) -> str:
@@ -47,6 +58,15 @@ def classify(headline: str) -> str:
         if any(term in lowered for term in terms):
             return category
     return "general_entertainment"
+
+
+def feed_relevance(headline: str, category: str) -> int:
+    lowered = headline.casefold()
+    score = 50 if category != "general_entertainment" else 0
+    score += 20 * sum(term in lowered for term in NEWS_TERMS)
+    if NOISE_PATTERN.search(headline):
+        score -= 200
+    return score
 
 
 def feed_entries(content: bytes, base_url: str) -> list[dict[str, str]]:
@@ -77,6 +97,7 @@ def feed_entries(content: bytes, base_url: str) -> list[dict[str, str]]:
 def story_from_entry(entry: dict[str, str], feed: dict[str, Any]) -> dict[str, Any]:
     headline, summary = entry["headline"], entry["summary"] or entry["headline"]
     category = classify(headline)
+    relevance = feed_relevance(headline, category)
     story = {
         "story_id": "feed-" + __import__("hashlib").sha256(entry["url"].encode()).hexdigest()[:16],
         "category": category, "headline": headline, "event": headline, "context": summary,
@@ -91,7 +112,8 @@ def story_from_entry(entry: dict[str, str], feed: dict[str, Any]) -> dict[str, A
         "achievement": headline, "official_statement": summary,
         "official_confirmation": feed.get("source_type") == "official",
         "sources": [{"type": feed.get("source_type", "unknown"), "name": feed.get("name", "Configured source"), "url": entry["url"], "date": entry["date"]}],
-        "assets": [], "collected_at": datetime.now(timezone.utc).isoformat(),
+        "assets": [], "feed_relevance": relevance,
+        "collected_at": datetime.now(timezone.utc).isoformat(),
     }
     return story
 
@@ -112,12 +134,13 @@ def collect_from_feeds(config: dict[str, Any]) -> list[dict[str, Any]]:
     for feed in feeds:
         if not feed.get("enabled", True):
             continue
-        url = normalized_url(feed.get("url", ""))
+        url = validated_feed_url(feed.get("url", ""))
         if not url or feed.get("source_type") not in config["verification"]["scores"]:
             raise BLEngineError("Every configured feed needs a valid URL and source_type")
         response = session.get(url, timeout=(10, 30))
         response.raise_for_status()
-        stories.extend(story_from_entry(entry, feed) for entry in feed_entries(response.content, url)[:20])
+        feed_stories = [story_from_entry(entry, feed) for entry in feed_entries(response.content, url)[:20]]
+        stories.extend(story for story in feed_stories if story["feed_relevance"] >= 0)
     return stories
 
 
@@ -145,10 +168,10 @@ def collect_one(*, allow_review: bool = False) -> tuple[dict[str, Any], str]:
             continue
         result = verification_result(story, config)
         if result["decision"] == "auto_publish" or allow_review:
-            eligible.append((result["score"], story.get("story_id", ""), story, origin))
+            eligible.append((result["score"], int(story.get("feed_relevance", 0)), story.get("date", ""), story.get("story_id", ""), story, origin))
     if not eligible:
         raise BLEngineError("No unpublished auto-publishable queue or feed story is available")
-    _, _, story, origin = max(eligible, key=lambda item: (item[0], item[1]))
+    _, _, _, _, story, origin = max(eligible, key=lambda item: item[:4])
     return story, origin
 
 
