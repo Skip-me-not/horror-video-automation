@@ -1,7 +1,7 @@
 {
   "version": 2,
   "channel_name": "Lululala",
-  "target": {"width": 1080, "height": 1920, "fps": 30, "min_seconds": 25, "max_seconds": 65, "reading_wpm": 165},
+  "target": {"width": 1080, "height": 1920, "fps": 30, "min_seconds": 18, "max_seconds": 55, "reading_wpm": 175},
   "verification": {
     "scores": {"official": 100, "reputable_media": 80, "social_verified": 70, "social": 50, "fan": 30, "reddit": 20, "unknown": 10},
     "second_reputable_bonus": 15,

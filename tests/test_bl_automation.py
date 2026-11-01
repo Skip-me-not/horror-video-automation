@@ -21,7 +21,7 @@ from scripts.bl_engine import (
     validate_story,
     verification_result,
 )
-from scripts.bl_source import classify, feed_entries, feed_relevance, validated_feed_url
+from scripts.bl_source import classify, feed_entries, feed_relevance, story_from_entry, validated_feed_url
 from scripts.merge_bl_state import merge_history
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -147,6 +147,22 @@ def test_feed_parser_and_category_classifier():
     entries = feed_entries(xml, "https://example.com/feed")
     assert entries[0]["url"] == "https://example.com/trailer"
     assert classify(entries[0]["headline"]) == "trailer_release"
+
+
+def test_youtube_feed_story_uses_related_media_and_clean_script():
+    xml = b'''<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+      <entry><title>New BL Trailer | Official Channel</title><link href="https://www.youtube.com/watch?v=abcDEF_1234"/>
+      <published>2026-10-01T07:00:13+00:00</published><media:group><media:description>Two rivals are forced to work together.</media:description>
+      <media:thumbnail url="https://i.ytimg.com/vi/abcDEF_1234/hqdefault.jpg"/></media:group></entry></feed>'''
+    entry = feed_entries(xml, "https://www.youtube.com/feeds/videos.xml?channel_id=test")[0]
+    story = story_from_entry(entry, {"name": "Official Channel", "company": "Studio", "country": "Thailand", "source_type": "official"})
+    assert story["series"] == "New BL Trailer"
+    assert story["assets"][0]["role"] == "source_video"
+    assert story["assets"][-1]["role"] == "source_thumbnail"
+    package = generate_package(story, default_state())
+    assert "official first look" in package["script"]["hook"]
+    assert len(package["script"]["body"]) >= 2
+    assert len(package["script"]["narration"]) < 500
 
 
 def test_youtube_feed_keeps_required_channel_query():

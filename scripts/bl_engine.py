@@ -273,9 +273,20 @@ def generate_package(story: dict[str, Any], state: dict[str, Any] | None = None)
         raise BLEngineError("Duplicate blocked: " + "; ".join(duplicates))
     template = choose_template(story, state, config, manifest)
     required = set(template["required_fields"])
-    hook = substitute_line(template["hook"], story, required)
-    body = [value for value in (substitute_line(line, story, required) for line in template["body"]) if value]
-    cta = substitute_line(template["cta"], story, required)
+    hook = clean_text(story.get("script_hook")) or substitute_line(template["hook"], story, required)
+    supplied_points = story.get("script_points")
+    body = ([clean_text(value) for value in supplied_points if clean_text(value)]
+            if isinstance(supplied_points, list)
+            else [value for value in (substitute_line(line, story, required) for line in template["body"]) if value])
+    cta = clean_text(story.get("script_cta")) or substitute_line(template["cta"], story, required)
+    unique_body = []
+    seen_lines = {normalized_headline(hook)}
+    for line in body:
+        key = normalized_headline(line)
+        if key and key not in seen_lines:
+            unique_body.append(line)
+            seen_lines.add(key)
+    body = unique_body
     narration = " ".join([hook, *body, cta])
     unresolved = PLACEHOLDER.findall(narration)
     if unresolved:
@@ -289,6 +300,14 @@ def generate_package(story: dict[str, Any], state: dict[str, Any] | None = None)
     description_index, description_pattern = choose_catalog_item(metadata_catalog["description_templates"], story_id, "description")
     description_lead = substitute_line(description_pattern, story, set()) or clean_text(story["headline"])
     hashtag_index, hashtags = choose_catalog_item(metadata_catalog["hashtag_sets"], story_id, "hashtags")
+    if story_id.startswith("feed-"):
+        country_tag = re.sub(r"[^A-Za-z0-9]", "", clean_text(story.get("country"))) + "BL"
+        hashtags = [f"#{country_tag}", "#BLNews", "#BLDrama", "#Shorts"]
+        category_label = clean_text(story.get("category")).replace("_", " ").title()
+        if category_label == "General Entertainment":
+            category_label = ""
+        title = f"{clean_text(story.get('series'))}: Official {category_label + ' ' if category_label else ''}Update"
+        description_lead = f"A quick verified update from {clean_text(story.get('source_name'))}."
     source_lines = [f"- {clean_text(item.get('name')) or item['type']}: {normalized_url(item['url'])}" for item in story["sources"]]
     description = description_lead + "\n\nSources:\n" + "\n".join(source_lines) + f"\n\nStory ID: {story_id}\n" + " ".join(hashtags)
     duration = max(config["target"]["min_seconds"], min(config["target"]["max_seconds"], template["duration_target"]))

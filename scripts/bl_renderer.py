@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,13 @@ LOG_DIR = ROOT / "logs"
 REPORT_DIR = ROOT / "quality_reports"
 FONT = ROOT / "assets" / "fonts" / "Poppins-SemiBold.ttf"
 MUSIC_DIR = ROOT / "music"
+YOUTUBE_HOSTS = {"youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"}
+
+
+@dataclass(frozen=True)
+class ResolvedAsset:
+    path: Path
+    clip_start: float = 0.0
 
 
 def ffprobe(path: Path) -> dict[str, Any]:
@@ -55,6 +63,20 @@ def download_asset(asset: dict[str, Any], directory: Path, index: int) -> Path:
     url = str(asset.get("url") or "").strip()
     if not url.startswith("https://"):
         raise BLEngineError("Remote assets must use HTTPS")
+    host = __import__("urllib.parse", fromlist=["urlparse"]).urlparse(url).netloc.casefold()
+    if host in YOUTUBE_HOSTS:
+        destination = directory / f"source-{index}.mp4"
+        command = [
+            os.sys.executable, "-m", "yt_dlp", "--no-playlist", "--quiet", "--no-warnings",
+            "--socket-timeout", "20", "--retries", "2", "--download-sections", "*0-32",
+            "--force-keyframes-at-cuts", "--merge-output-format", "mp4",
+            "-f", "bv*[height<=1080]+ba/b[height<=1080]", "-o", str(destination), url,
+        ]
+        result = subprocess.run(command, text=True, capture_output=True, timeout=180)
+        if result.returncode or not destination.is_file() or destination.stat().st_size == 0:
+            message = (result.stderr or result.stdout or "source download failed")[-500:]
+            raise BLEngineError(f"Unable to download source video: {message}")
+        return destination
     suffix = Path(url.split("?", 1)[0]).suffix.casefold()
     if suffix not in {".jpg", ".jpeg", ".png", ".webp", ".mp4", ".mov", ".m4v"}:
         suffix = ".bin"
@@ -115,7 +137,8 @@ def build_ass(package: dict[str, Any], duration: float, channel_name: str) -> st
 
 
 def build_cover_ass(package: dict[str, Any], channel_name: str) -> str:
-    headline = "\n".join(__import__("textwrap").wrap(package["story"]["headline"], width=22)[:4])
+    headline_text = (package["story"].get("series") if str(package.get("story_id", "")).startswith("feed-") else "") or package["story"]["headline"]
+    headline = "\n".join(__import__("textwrap").wrap(headline_text, width=22)[:4])
     category = package["story"]["category"].replace("_", " ").upper()
     # ASS colours are BBGGRR; white text remains portable while the FFmpeg card carries the accent.
     return "\n".join([
@@ -143,7 +166,33 @@ def select_music(story_id: str) -> Path | None:
     return files[index]
 
 
-def build_command(package: dict[str, Any], assets: list[Path], captions: Path, output: Path, narration: Path | None, music: Path | None) -> list[str]:
+def generate_auto_narration(package: dict[str, Any], directory: Path) -> Path | None:
+    narration = str(package.get("script", {}).get("narration") or "").strip()
+    if not narration:
+        return None
+    destination = directory / "narration.mp3"
+    command = [
+        os.sys.executable, "-m", "edge_tts", "--voice", "en-US-JennyNeural",
+        "--rate=+8%", "--text", narration, "--write-media", str(destination),
+    ]
+    try:
+        result = subprocess.run(command, text=True, capture_output=True, timeout=90)
+    except subprocess.TimeoutExpired:
+        return None
+    return destination if result.returncode == 0 and destination.is_file() and destination.stat().st_size else None
+
+
+def adaptive_duration(package: dict[str, Any], narration: Path | None) -> float:
+    target = read_json(CONFIG_PATH)["target"]
+    if narration:
+        seconds = float(ffprobe(narration).get("format", {}).get("duration") or 0) + 0.75
+    else:
+        words = len(re.findall(r"\w+", package["script"]["narration"]))
+        seconds = words / float(target.get("reading_wpm", 175)) * 60 + 2.0
+    return round(max(float(target["min_seconds"]), min(float(target["max_seconds"]), seconds)), 3)
+
+
+def build_command(package: dict[str, Any], assets: list[ResolvedAsset], captions: Path, output: Path, narration: Path | None, music: Path | None) -> list[str]:
     config = read_json(CONFIG_PATH)
     target = config["target"]
     width, height, fps = target["width"], target["height"], target["fps"]
@@ -154,10 +203,10 @@ def build_command(package: dict[str, Any], assets: list[Path], captions: Path, o
     if assets:
         assets = assets[:6]
         for asset in assets:
-            if media_kind(asset) == "image":
-                command += ["-loop", "1", "-framerate", str(fps), "-i", str(asset)]
+            if media_kind(asset.path) == "image":
+                command += ["-loop", "1", "-framerate", str(fps), "-i", str(asset.path)]
             else:
-                command += ["-stream_loop", "-1", "-i", str(asset)]
+                command += ["-ss", f"{max(0.0, asset.clip_start):.3f}", "-stream_loop", "-1", "-i", str(asset.path)]
         scene_seconds = duration / len(assets)
         transition = min(0.35, scene_seconds / 5)
         motion = package["layout"]["motion"]
@@ -230,6 +279,8 @@ def qa_report(package: dict[str, Any], video: Path, assets: list[Path], narratio
         issues.append("narration mode requires a narration file")
     if any(path.stat().st_size == 0 for path in assets):
         issues.append("zero-byte media asset")
+    if package["story"].get("assets") and not assets:
+        issues.append("story media unavailable; refusing a blank-background upload")
     serialized = json.dumps({"script": package.get("script"), "metadata": package.get("metadata")}, ensure_ascii=False)
     if re.search(r"\{[a-z][a-z0-9_]*\}", serialized):
         issues.append("unresolved template variable")
@@ -254,16 +305,31 @@ def render(package_path: Path, *, narration_mode: str = "auto", allow_review: bo
     started = datetime.now(timezone.utc)
     with tempfile.TemporaryDirectory(prefix="bl-short-") as name:
         temporary = Path(name)
-        assets = [download_asset(asset, temporary, index) for index, asset in enumerate(package["story"].get("assets", []))]
+        assets: list[ResolvedAsset] = []
+        asset_cache: dict[str, Path | None] = {}
+        for index, asset in enumerate(package["story"].get("assets", [])):
+            cache_key = str(asset.get("path") or asset.get("url") or index)
+            if cache_key not in asset_cache:
+                try:
+                    asset_cache[cache_key] = download_asset(asset, temporary, index)
+                except (BLEngineError, subprocess.TimeoutExpired):
+                    if not asset.get("optional"):
+                        raise
+                    asset_cache[cache_key] = None
+            if asset_cache[cache_key] is not None:
+                assets.append(ResolvedAsset(asset_cache[cache_key], float(asset.get("clip_start") or 0)))
         narration_value = str(package["story"].get("narration_file") or "").strip()
         narration = None
         if narration_value:
             narration = (ROOT / narration_value).resolve() if not Path(narration_value).is_absolute() else Path(narration_value).resolve()
             if ROOT.resolve() not in narration.parents or not narration.is_file():
                 raise BLEngineError("Narration file must exist inside the repository")
+        elif narration_mode == "auto":
+            narration = generate_auto_narration(package, temporary)
         if narration_mode == "required" and narration is None:
             raise BLEngineError("Narration mode is required but no narration_file was supplied")
-        duration = float(package["render"]["duration_target"])
+        duration = adaptive_duration(package, narration)
+        package["render"]["duration_target"] = duration
         captions = temporary / "captions.ass"
         captions.write_text(build_ass(package, duration, channel), encoding="utf-8", newline="\n")
         output = OUTPUT_DIR / "short.mp4"
@@ -277,14 +343,16 @@ def render(package_path: Path, *, narration_mode: str = "auto", allow_review: bo
         cover_subtitles.write_text(build_cover_ass(package, channel), encoding="utf-8", newline="\n")
         accent = package["layout"]["accent"].lstrip("#")
         cover_filter = (
-            "drawbox=x=0:y=0:w=iw:h=ih:color=black@1.0:t=fill,"
-            f"drawbox=x=0:y=0:w=iw:h=180:color=0x{accent}@0.92:t=fill,"
+            "eq=brightness=-0.14:saturation=1.12,"
+            "drawbox=x=0:y=0:w=iw:h=ih:color=black@0.18:t=fill,"
+            f"drawbox=x=0:y=0:w=iw:h=180:color=0x{accent}@0.88:t=fill,"
             f"subtitles='{filter_path(cover_subtitles)}':fontsdir='{filter_path(FONT.parent)}'"
         )
         cover_result = subprocess.run(["ffmpeg", "-hide_banner", "-y", "-ss", "0.5", "-i", str(output), "-vf", cover_filter, "-frames:v", "1", "-q:v", "2", str(cover)], text=True, capture_output=True)
         if cover_result.returncode or not cover.is_file():
             raise BLEngineError("Cover-frame extraction failed")
-        report = qa_report(package, output, assets, narration_mode == "required", allow_review=allow_review)
+        resolved_paths = [asset.path for asset in assets]
+        report = qa_report(package, output, resolved_paths, narration_mode == "required", allow_review=allow_review)
         report.update({"story_id": package["story_id"], "template_id": package["template"]["id"], "layout_id": package["layout"]["id"], "checked_at": datetime.now(timezone.utc).isoformat()})
         write_json_atomic(REPORT_DIR / f"{package['story_id']}.json", report)
         write_json_atomic(OUTPUT_DIR / "metadata.json", package["metadata"])
