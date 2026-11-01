@@ -14,13 +14,14 @@ from scripts.bl_engine import (
     duplicate_reasons,
     generate_package,
     load_catalogs,
+    normalized_url,
     record_success,
     source_score,
     split_captions,
     validate_story,
     verification_result,
 )
-from scripts.bl_source import classify, feed_entries
+from scripts.bl_source import classify, feed_entries, feed_relevance, validated_feed_url
 from scripts.merge_bl_state import merge_history
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -146,6 +147,22 @@ def test_feed_parser_and_category_classifier():
     entries = feed_entries(xml, "https://example.com/feed")
     assert entries[0]["url"] == "https://example.com/trailer"
     assert classify(entries[0]["headline"]) == "trailer_release"
+
+
+def test_youtube_feed_keeps_required_channel_query():
+    url = "https://www.youtube.com/feeds/videos.xml?channel_id=UC8BzJM6_VbZTdiNLD4R1jxQ"
+    assert validated_feed_url(url) == url
+    assert validated_feed_url("http://www.youtube.com/feeds/videos.xml?channel_id=x") == ""
+
+
+def test_youtube_watch_normalization_keeps_video_identity_only():
+    source = "https://www.youtube.com/watch?v=abcDEF_1234&utm_source=feed&feature=youtu.be"
+    assert normalized_url(source) == "https://www.youtube.com/watch?v=abcDEF_1234"
+
+
+def test_feed_relevance_prefers_news_and_rejects_episode_noise():
+    assert feed_relevance("Official Trailer: A New BL Series", "trailer_release") > 0
+    assert feed_relevance("[BTS] Episode 4 behind the scenes", "general_entertainment") < 0
 
 
 def test_qa_checks_valid_probe(monkeypatch, tmp_path, story):

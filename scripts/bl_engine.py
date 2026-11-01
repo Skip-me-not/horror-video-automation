@@ -12,7 +12,7 @@ import textwrap
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
-from urllib.parse import urlparse, urlunparse
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "config" / "bl_automation.json"
@@ -87,7 +87,13 @@ def normalized_url(value: str) -> str:
     parsed = urlparse(clean_text(value))
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
         return ""
-    return urlunparse((parsed.scheme.lower(), parsed.netloc.lower(), parsed.path.rstrip("/"), "", "", ""))
+    host = parsed.netloc.lower()
+    query = ""
+    if host in {"youtube.com", "www.youtube.com", "m.youtube.com"} and parsed.path.rstrip("/") == "/watch":
+        video_id = parse_qs(parsed.query).get("v", [""])[0]
+        if re.fullmatch(r"[A-Za-z0-9_-]{6,20}", video_id):
+            query = urlencode({"v": video_id})
+    return urlunparse((parsed.scheme.lower(), host, parsed.path.rstrip("/"), "", query, ""))
 
 
 def normalized_headline(value: str) -> str:
