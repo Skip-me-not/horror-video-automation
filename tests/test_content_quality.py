@@ -137,7 +137,7 @@ def test_history_merge_retains_recent_hashes():
 
 def test_workflow_only_uploads_after_quality_pass():
     workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/create-short.yml").read_text(encoding="utf-8")
-    assert "steps.render.outputs.publish == 'true'" in workflow
+    assert "steps.pipeline.outputs.publish == 'true'" in workflow
     assert "quality_reports/*.json" in workflow
 
 

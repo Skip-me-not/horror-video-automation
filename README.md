@@ -1,56 +1,157 @@
-# Deterministic Reddit idol Shorts
+# Lululala BL Entertainment Shorts Automation
 
-This repository creates public 55–65 second K-pop idol Shorts from public Reddit source signals and Reddit-hosted clips. It does **not** call an AI model, OpenCode, OpenVerse, or any Reddit credentialed API.
+A deterministic, AI-free YouTube Shorts pipeline for sourced BL entertainment news.  It uses
+Python rules, JSON catalogs, FFmpeg, GitHub Actions, and the YouTube Data API.  It does not call
+OpenAI, Gemini, Claude, an LLM, generative image services, speech-to-text, or an AI voice API.
 
-## Output
+## Architecture
 
-- 1080×1920 H.264/AAC at 30fps
-- three or four source-backed beats
-- deterministic editorial rewriting from the source titles and engagement signals
-- one-word hot-pink captions with black outline and yellow/red emphasis
-- blurred vertical fill and variable, source-aware cuts (fastest in the opening)
-- local Piper narration
-- bundled repository music selected locally
-- four daily public-upload slots at 05:00, 08:00, 11:00, and 14:00 Myanmar time, each with a guarded retry 40 minutes later
+1. `bl_source.py` selects a structured queue story or reads explicitly configured RSS/Atom feeds.
+2. `bl_engine.py` validates the story, scores its sources, blocks sensitive claims, checks
+   duplicates, chooses a template/layout deterministically, and produces script/captions/metadata.
+3. `bl_renderer.py` renders 1080x1920 H.264/AAC video, captions, music, watermark, progress bar,
+   and a cover frame.  It accepts authorized assets or uses a repository-owned graphic card.
+4. QA probes the output and blocks upload on technical, source, metadata, placeholder, or duplicate
+   failure.
+5. `upload_youtube.py` performs a resumable public upload and records the YouTube ID only after
+   success.  GitHub Actions then safely merges and commits state.
 
-## Required GitHub configuration
+The old Reddit/K-pop renderer and its quality tools remain in `scripts/` for rollback and reuse,
+but the production workflow now calls the BL v2 pipeline.
 
-Secrets:
+## Important directories
 
-- `YOUTUBE_CLIENT_ID`
-- `YOUTUBE_CLIENT_SECRET`
-- `YOUTUBE_REFRESH_TOKEN`
+| Path | Purpose |
+|---|---|
+| `templates/manifest.json` | 100 content templates in 18 categories |
+| `templates/metadata.json` | 52 titles, 20 descriptions, 10 CTAs, 10 hashtag sets |
+| `config/bl_automation.json` | verification, rotation, 18 layouts, captions, music, QA |
+| `data/queue/` | manually curated structured stories; `sample-*` files are never auto-selected |
+| `data/bl_state.json` | template, layout, title, fingerprint, and publication history |
+| `scripts/bl_*.py` | source, engine, renderer, pipeline, and state merge modules |
+| `quality_reports/` | machine-readable pre-upload QA results |
+| `logs/run.json` | structured run and upload status |
 
-Optional variable (defaults to `Lululala`):
+## Content templates
 
-- `CHANNEL_NAME`
+The committed catalog contains exactly 100 definitions across breaking news, casting, series
+announcements, trailers, release dates, actor updates, agency updates, fan meetings, awards,
+interviews, viral public moments, milestones, comebacks, collaborations, clarifications, confirmed
+controversy, weekly roundups, and general entertainment.
 
-Optional variable:
+To add template 101, add a definition to `scripts/generate_bl_catalog.py`, increment a category
+count, run `python -m scripts.generate_bl_catalog`, and run the tests.  A template declares required
+fields, source classes, hook/body/CTA, layout, caption/music profiles, pacing, and headline style.
 
-- `REDDIT_USER_AGENT`
+Selection is seeded from `story_id`, so rebuilding the same story is reproducible.  When alternatives
+exist it avoids the last 10 templates, last 8 hook patterns, and last 5 layouts.  Metadata similarly
+avoids the last 10 title-pattern indexes.  Category counts are retained for reporting.
 
-No `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, `OPENVERSE_CLIENT_ID`, `OPENVERSE_CLIENT_SECRET`, AI key, or OpenCode key is required.
+## Story JSON
 
-## Manual run
+See the five `data/queue/sample-*.json` fixtures.  A production story needs:
 
-Open **Actions → Create Reddit idol Short → Run workflow**. Choose an idol or leave it blank for rotation, choose 3 or 4 facts, and keep the default subreddit list. Set `dry_run` to download, score, render when eligible, and upload a quality report **without** publishing. Blank-idol runs inspect all 16 configured topics, metadata-filter them, render up to 10, and choose the highest quality/diversity score.
-
-## Content Quality Pipeline v2
-
-The existing downloader, Piper narration, captions, FFmpeg compositor, and YouTube uploader remain in place. Before editing, `scripts/content_quality.py` probes each candidate with ffprobe, rejects low-resolution/fps/duration sources, samples four frames for lightweight dHash duplicate checks, and calculates a 0–100 score from configurable source quality, engagement (when present), recency (when present), duration, uniqueness, and format. It ranks the passing clips and requires at least three distinct sources. Downloaded file hashes and frame hashes from the most recent 30 **published** videos are persisted in `data/reddit_state.json` only after a successful upload.
-
-The pacing planner uses a short hook shot, variable early/middle/end shot lengths, forward-only offsets into each source, and a maximum 35% contribution from one source. It can try four deterministic edit orders (strongest visual, hook/body/payoff, comparison, timeline) while retaining the no-loop and technical-integrity rules. If a rotating topic has only three distinct fact posts, a shorter source-backed video is allowed instead of padding footage. The daily-quota fallback may reuse an older source and lower source/final scoring thresholds to 45/55 only after the normal pool is exhausted; corrupted media, undecodable footage, invalid audio, bad aspect ratio, long black sections, and within-video duplicates still fail. Reports explicitly mark `quota_backfill`.
-
-All tuning lives in [`config/content_quality.json`](config/content_quality.json). Normal tiers remain A≥80/B≥72/C≥65. `quality_reports/daily_summary.json` counts actual YouTube uploads in the Myanmar calendar day. Each retry checks its slot target before rendering, so a successful primary run is not duplicated. The system targets exactly four daily uploads; YouTube/API outages, account quota exhaustion, or GitHub failing to start a scheduled job remain external failure cases. No AI/LLM API is called.
-
-## Source safety
-
-Reddit is used as a source signal, not independent verification. The generated metadata and YouTube description record the source URLs. Review factual claims and bundled-music rights before publication.
-
-## Local validation
-
-```powershell
-pip install -r requirements.txt
-pytest -q
-python -m scripts.validate_config --mode reddit-short
+```json
+{
+  "story_id": "publisher-2027-series-cast",
+  "category": "casting",
+  "headline": "A factual, supported headline",
+  "actor": "Actor One",
+  "actor_2": "Actor Two",
+  "series": "Series Name",
+  "company": "Official Company",
+  "context": "Supported context",
+  "detail": "Supported detail",
+  "sources": [
+    {"type": "official", "name": "Official newsroom", "url": "https://publisher.example/item"}
+  ],
+  "assets": [
+    {"path": "assets/authorized/photo.jpg", "authorized": true, "credit": "Rights holder"}
+  ]
+}
 ```
+
+Assets are optional.  A story can specify a repository-relative `narration_file` (WAV/MP3) for
+prerecorded human narration or externally supplied system TTS.  Without it, `auto` and `text-only`
+modes produce caption-led video with bundled music.  The pipeline never generates a voice.
+
+## Source verification
+
+Base scores are official 100, reputable media 80, verified social 70, social 50, fan 30, Reddit 20,
+and unknown 10.  A second reputable source adds 15, official confirmation adds 10, and matching
+date/event information adds 10, capped at 100.  Scores at least 70 can be processed automatically;
+40–69 require review; lower scores are rejected.
+
+Dating, sexuality, private relationships, medical claims, crimes, and serious allegations always
+require manual review regardless of score.  `allow_review` can render them only when the workflow is
+also a dry run; it can never grant auto-publication.
+
+Source verification does not grant media rights.  Every downloaded/local asset must separately set
+`authorized: true`.  Otherwise the renderer refuses it and uses no third-party material.
+
+## Local commands
+
+```bash
+pip install -r requirements.txt
+python -m scripts.generate_bl_catalog
+python -m scripts.validate_config --mode bl-short
+python -m pytest -q
+python -m scripts.bl_engine --input data/queue/sample-casting.json --allow-review
+python -m scripts.bl_pipeline --input data/queue/sample-casting.json --dry-run --narration-mode text-only
+```
+
+FFmpeg and FFprobe must both be on `PATH`.  Output is written to `output/`, QA to
+`quality_reports/`, and the structured log to `logs/run.json`.
+
+## GitHub Actions
+
+Open **Actions → Create BL entertainment Short → Run workflow**.  For a safe test:
+
+1. keep `dry_run` enabled;
+2. set `story_file` to `data/queue/sample-casting.json`;
+3. choose `text-only` or `auto`;
+4. leave `allow_review` off;
+5. download the `bl-short-<run id>` artifact.
+
+Scheduled runs retain four primary Myanmar-time slots (05:00, 08:00, 11:00, 14:00) plus a guarded
+retry 40 minutes after each.  A retry reads actual successful YouTube IDs and exits when its slot is
+filled.  Workflow concurrency serializes publishers so two runs cannot publish the same state.
+
+Required secrets are unchanged: `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and
+`YOUTUBE_REFRESH_TOKEN`.  `CHANNEL_NAME` remains an optional variable and defaults to `Lululala`.
+For feed collection, set optional repository variable `BL_SOURCE_FEEDS_JSON` to a JSON array:
+
+```json
+[{"name":"Publisher newsroom","url":"https://publisher.example/feed.xml","source_type":"official","country":"Thailand","company":"Publisher"}]
+```
+
+Only classify a feed as `official` or `reputable_media` when you have verified that classification.
+Queue stories take priority.  The repository intentionally ships no live publisher feed whose trust
+class or media terms it cannot guarantee.
+
+## Rendering and QA
+
+The renderer provides 18 reusable layouts and six caption profiles.  Captions are split on
+punctuation, limited to approximately two mobile-safe lines, and timed at a configurable 165 WPM.
+FFmpeg adds dark editorial cards or authorized media with blurred fill, restrained deterministic
+motion, fades, headline color, watermark, progress bar, bundled music, and optional narration.  It
+also extracts `cover.jpg` from the rendered design.
+
+Before upload QA requires a decodable 1080x1920 video, configured duration, reasonable size, AAC
+audio, resolved variables, non-empty metadata, an auto-publishable source, source URLs, valid assets,
+known template/layout IDs, and a clean duplicate check.  A failure exits before YouTube upload and
+the workflow still uploads diagnostics.
+
+## Troubleshooting
+
+- **No story available:** add a non-`sample-*` queue JSON or configure `BL_SOURCE_FEEDS_JSON`.
+- **Manual review required:** inspect the source and claim; do not bypass it for production.
+- **Asset rejected:** mark only genuinely authorized/configured assets with `authorized: true`.
+- **FFprobe missing:** install the full FFmpeg package, not a standalone `ffmpeg` executable.
+- **Upload credentials missing:** use dry-run or add the three existing YouTube secrets.
+- **Duplicate blocked:** use a new factual story; do not delete history to repost the same item.
+- **Feed has no usable entries:** verify it is RSS/Atom and its URL is reachable from GitHub Actions.
+
+GitHub scheduling and YouTube availability are external systems: no repository can guarantee a run
+starts or an API upload succeeds during an outage or quota limit.  The guarded retries cover normal
+transient delay without counting a render as a publication.

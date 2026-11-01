@@ -182,16 +182,16 @@ def test_manual_quote_override_remains_backward_compatible():
     assert all(beat["visual_search"] == "writer desk night" for beat in beats)
 
 
-def test_reddit_workflow_is_manual_and_deterministic():
+def test_bl_workflow_is_ai_free_and_deterministic():
     workflow = (ROOT / ".github" / "workflows" / "create-short.yml").read_text(
         encoding="utf-8"
     )
-    assert "Optional idol; blank rotates data/idols.json" in workflow
+    assert "Optional repo-relative story JSON" in workflow
     assert "AI_SCRIPT_MODE" not in workflow
     assert "GITHUB_TOKEN" not in workflow
     assert "models.github.ai" not in workflow
     assert "OPENVERSE_CLIENT_ID" not in workflow
-    assert "python -m scripts.render_idol_short" in workflow
+    assert "python -m scripts.bl_pipeline" in workflow
     assert "REDDIT_CLIENT_ID" not in workflow
     assert "REDDIT_CLIENT_SECRET" not in workflow
 
@@ -206,7 +206,8 @@ def test_workflow_yaml_preserves_public_schedule_and_success_only_rotation():
     assert "steps.youtube.outcome == 'success'" in text
     assert "scripts.merge_reddit_state" in text
     assert "git add data/reddit_state.json" in text
-    assert "INPUT_PRIVACY_STATUS: public" in text
+    assert "BL_SOURCE_FEEDS_JSON" in text
+    assert "git add data/reddit_state.json data/bl_state.json" in text
     assert "models" not in payload["permissions"]
 
 
@@ -228,14 +229,14 @@ def test_catalog_is_drawn_from_500_quality_checked_stories():
     }
 
 
-def test_workflow_installs_and_downloads_local_tts_voice():
+def test_workflow_does_not_integrate_ai_voice_generation():
     workflow = (ROOT / ".github" / "workflows" / "create-short.yml").read_text(
         encoding="utf-8"
     )
     requirements = (ROOT / "requirements.txt").read_text(encoding="utf-8")
-    assert "piper-tts" in requirements
-    assert "en_US-joe-medium" in workflow
-    assert "actions/cache@v4" in workflow
+    assert "piper-tts" not in requirements
+    assert "en_US-joe-medium" not in workflow
+    assert "piper.download_voices" not in workflow
 
 
 def test_impact_quotes_are_short_original_and_caption_safe():

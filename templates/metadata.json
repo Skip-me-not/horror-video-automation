@@ -1,0 +1,152 @@
+{
+  "title_patterns": [
+    "{actor} Just Got a Major Official Update",
+    "{actor} & {actor_2} Are Officially Teaming Up",
+    "{series} Finally Has a Release Date",
+    "A New BL Pairing Was Just Announced",
+    "{company} Just Confirmed It",
+    "The Official Update About {actor}",
+    "{series}: What Was Actually Announced",
+    "This {country} BL News Is Now Official",
+    "The Cast of {series} Is Taking Shape",
+    "{actor}'s Next Project Is Confirmed",
+    "The First Look at {series} Is Here",
+    "Save the Date for {series}",
+    "{company}'s New BL Series Explained",
+    "A New Update From {actor}'s Agency",
+    "{actor} Fans Have a New Date to Save",
+    "{series} Just Reached a New Milestone",
+    "The Verified Context Behind This Viral BL Moment",
+    "What {actor} Actually Said",
+    "This Week's Biggest Confirmed BL Updates",
+    "{actor} and {actor_2} Are Working Together Again",
+    "An Official Correction Changed This Story",
+    "The Confirmed Timeline Behind {event}",
+    "{award}: The Result BL Fans Are Discussing",
+    "{series} Just Released Its Official Trailer",
+    "A New BL Collaboration Is Official",
+    "The News Behind {achievement}",
+    "{network} Confirmed the Premiere",
+    "Everything Confirmed About {event}",
+    "A New Chapter for {actor}",
+    "The Official {series} Announcement in 60 Seconds",
+    "This BL Event Has a Confirmed Venue",
+    "The Source Behind Today's BL Headline",
+    "{actor}'s Latest Career Move Explained",
+    "A Confirmed Cast Reunion Is Happening",
+    "{company} Released a New Statement",
+    "The Release Calendar Just Changed",
+    "Why {series} Is Trending Today",
+    "The Numbers Behind {achievement}",
+    "A Major BL Award Update Just Arrived",
+    "This Interview Added Important Context",
+    "The No-Rumor Version of Today's BL News",
+    "The Official Details Fans Should Know",
+    "A New {country} BL Project Is Coming",
+    "The Announcement That Changed This Week",
+    "{actor}'s Public Update, With Full Context",
+    "The Next Confirmed BL Premiere",
+    "A Fan Meeting Has Officially Been Announced",
+    "The BL Roundup You May Have Missed",
+    "The Verified Story Behind the Clip",
+    "One Confirmed BL Update in Under a Minute",
+    "{series} Is Officially Moving Forward",
+    "The Latest From {company}"
+  ],
+  "description_templates": [
+    "A sourced update about {event}. Read the attribution below before joining the discussion.",
+    "Here is the verified context behind {event}, based on {source_name}.",
+    "A quick, source-attributed briefing on {series} and the latest confirmed detail.",
+    "What was announced, what it means, and where the information came from.",
+    "The confirmed facts about {actor}'s latest professional update.",
+    "A concise BL entertainment update with the original source linked below.",
+    "No rumor framing: only the details supported by the cited source.",
+    "The latest official information from {company}, summarized with context.",
+    "A fast explanation of today's confirmed {country} BL entertainment news.",
+    "The release, cast, and timing details currently confirmed for {series}.",
+    "A source-first recap of the announcement BL fans are discussing.",
+    "The public facts and timeline behind this entertainment update.",
+    "A quick breakdown of {achievement} and why it matters.",
+    "The verified context behind a widely shared public moment.",
+    "A clear summary of an agency statement, without private speculation.",
+    "The important date, venue, and official source for this fan event.",
+    "A short recap of this week's confirmed BL announcements.",
+    "The full context behind a quote circulating from a public interview.",
+    "A factual correction and the official statement that supports it.",
+    "BL entertainment news with transparent source attribution and story ID."
+  ],
+  "cta_patterns": [
+    "What do you think about this confirmed update?",
+    "Is this going on your watchlist?",
+    "Which detail matters most to you?",
+    "Will you be watching on release day?",
+    "Who else should be included in the next update?",
+    "Did this announcement surprise you?",
+    "Save this so you remember the date.",
+    "Share your take without spreading rumors.",
+    "Which confirmed update should we explain next?",
+    "Follow for source-attributed BL news."
+  ],
+  "hashtag_sets": [
+    [
+      "#BL",
+      "#BLSeries",
+      "#EntertainmentNews",
+      "#Shorts"
+    ],
+    [
+      "#ThaiBL",
+      "#BLUpdate",
+      "#SeriesNews",
+      "#Shorts"
+    ],
+    [
+      "#KoreanBL",
+      "#KBL",
+      "#BLNews",
+      "#Shorts"
+    ],
+    [
+      "#JapaneseBL",
+      "#JBL",
+      "#Entertainment",
+      "#Shorts"
+    ],
+    [
+      "#TaiwaneseBL",
+      "#BLDrama",
+      "#News",
+      "#Shorts"
+    ],
+    [
+      "#BLActors",
+      "#CastingNews",
+      "#BLFans",
+      "#Shorts"
+    ],
+    [
+      "#BLTrailer",
+      "#NewSeries",
+      "#Watchlist",
+      "#Shorts"
+    ],
+    [
+      "#BLRelease",
+      "#DramaUpdate",
+      "#ReleaseDate",
+      "#Shorts"
+    ],
+    [
+      "#CelebrityNews",
+      "#BLCommunity",
+      "#VerifiedNews",
+      "#Shorts"
+    ],
+    [
+      "#Lululala",
+      "#BLRoundup",
+      "#EntertainmentUpdate",
+      "#Shorts"
+    ]
+  ]
+}

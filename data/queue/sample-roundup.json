@@ -1,0 +1,17 @@
+{
+  "story_id": "sample-roundup-001", "category": "weekly_roundup",
+  "headline": "Five confirmed BL production updates this week",
+  "actor": "Arun Lee", "actor_2": "Min Park", "series": "North Star",
+  "company": "Studio North", "network": "North Play", "country": "Thailand",
+  "event": "five confirmed production announcements", "date": "2027-01-19", "release_date": "2027",
+  "venue": "North Hall", "award": "Weekly Spotlight", "achievement": "five sourced announcements",
+  "context": "a cast reveal and two series announcements led the week",
+  "detail": "release windows and event dates were also confirmed",
+  "official_statement": "all items link to their original publisher",
+  "source_name": "Studio North newsroom", "official_confirmation": true,
+  "sources": [
+    {"type": "official", "name": "Studio North newsroom", "url": "https://example.com/studio-north/weekly-roundup"},
+    {"type": "reputable_media", "name": "Example Entertainment Desk", "url": "https://news.example.com/bl/weekly-roundup"}
+  ],
+  "assets": [], "privacy_status": "private"
+}

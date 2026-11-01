@@ -1,33 +1,38 @@
-# Setup: deterministic Reddit idol Shorts
+# Production setup
 
-## GitHub settings
+## GitHub configuration
 
-Under **Settings → Secrets and variables → Actions**, configure:
+| Name | Kind | Required |
+|---|---|---|
+| `YOUTUBE_CLIENT_ID` | Secret | For non-dry-run uploads |
+| `YOUTUBE_CLIENT_SECRET` | Secret | For non-dry-run uploads |
+| `YOUTUBE_REFRESH_TOKEN` | Secret | For non-dry-run uploads |
+| `CHANNEL_NAME` | Variable | No; defaults to `Lululala` |
+| `BL_SOURCE_FEEDS_JSON` | Variable | For scheduled feed collection when no queue story exists |
 
-| Name | Type |
-|---|---|
-| `YOUTUBE_CLIENT_ID` | Secret |
-| `YOUTUBE_CLIENT_SECRET` | Secret |
-| `YOUTUBE_REFRESH_TOKEN` | Secret |
-| `CHANNEL_NAME` | Optional variable; defaults to `Lululala` |
-| `REDDIT_USER_AGENT` | Optional variable |
+No AI, LLM, image-generation, voice-generation, Reddit, or OpenCode credential is used.
 
-This version does not use AI, OpenCode, OpenVerse, Reddit client credentials, or an external music API. Music comes from the bundled `music/` directory.
+## First safe run
 
-## Run
+Open **Actions → Create BL entertainment Short → Run workflow** and set:
 
-Open **Actions → Create Reddit idol Short → Run workflow**. Select an idol, choose `3` or `4` source-backed beats, and leave the subreddit list at its default unless you want a different public community set. Set `dry_run` to render and inspect an artifact without uploading.
+- `dry_run`: enabled
+- `story_file`: `data/queue/sample-casting.json`
+- `narration_mode`: `text-only`
+- `allow_review`: disabled
 
-Scheduled runs and manual runs without `dry_run` upload as public. Four primary daily slots search up to 16 topics and render up to 10 candidates. Each slot has a retry 40 minutes later; the retry reads the persisted daily YouTube IDs and exits when that slot is already filled. If the normal pool is exhausted, quota backfill may reuse older source posts and use the configured 45/55 source/final score thresholds, while technical corruption and within-video duplicates remain blocked. `quality_reports/daily_summary.json` records discovered/analyzed/rendered/published counts, tiers, and actual YouTube IDs. The workflow uses local Piper TTS and does not send source data to an AI provider.
+The artifact contains the MP4, cover, structured story/package/metadata, QA report, and run log.
+Dry-run never calls the YouTube uploader.
 
-## Rights and accuracy
+## Production stories
 
-Reddit popularity is not fact verification, and Reddit hosting is not a reuse license. Source URLs are retained in `output/metadata.json` and the YouTube description. Review claims, clip permissions, and bundled music rights before publication.
+Add a non-`sample-*` JSON file under `data/queue/`, or configure an official/reputable RSS/Atom
+source through `BL_SOURCE_FEEDS_JSON` as documented in the README.  Queue entries take priority.
+Every source URL is attributed; every media asset also needs an independent `authorized: true`
+declaration.  Source trust is not treated as a media license.
 
-## Local checks
+Scheduled runs use four primary Myanmar-time slots and four guarded retries.  Only successful
+YouTube IDs count toward the daily target.  State is committed after upload, never after render.
 
-```powershell
-pip install -r requirements.txt
-pytest -q
-python -m scripts.validate_config --mode reddit-short
-```
+See `README.md` for schema, verification rules, local commands, template extension, rendering,
+copyright considerations, and troubleshooting.
