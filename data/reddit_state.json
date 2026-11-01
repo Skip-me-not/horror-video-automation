@@ -256,7 +256,11 @@
     "https://www.reddit.com/r/BlackPink/comments/1xk9a9u/261031_jennie_arriving_at_kendall_jenners/",
     "https://www.reddit.com/r/BlackPink/comments/1wndomd/260922_jennie_solo_hits_800_million_streams_on/",
     "https://www.reddit.com/r/BlackPink/comments/1wsvvw6/260929_jennie_announced_as_lotte_department_store/",
-    "https://www.reddit.com/r/BlackPink/comments/1whl2ce/260916_jennie_ruby_has_been_certified_riaa_gold/"
+    "https://www.reddit.com/r/BlackPink/comments/1whl2ce/260916_jennie_ruby_has_been_certified_riaa_gold/",
+    "https://www.reddit.com/r/IVE/comments/1x4unp2/261013_ive_the_5th_ep_looks_can_kill_concept/",
+    "https://www.reddit.com/r/IVE/comments/1wy4vyp/261005_zara_larsson_posted_a_photo_with_wonyoungs/",
+    "https://www.reddit.com/r/IVE/comments/1wz6vyw/261006_wonyoung_harpers_bazaar_korea_x_hapa/",
+    "https://www.reddit.com/r/IVE/comments/1x5tl6c/261014_wonyoung_instagram_update_2_ft_jung_haein/"
   ],
   "used_clip_urls": [
     "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon/",
@@ -475,77 +479,27 @@
     "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to/",
     "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with/",
     "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after/",
-    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/"
+    "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with/",
+    "https://www.reddit.com/r/IVE/comments/1xk9y6v/261031_ive_official_tiktok_update_with_gaeul/",
+    "https://www.reddit.com/r/IVE/comments/1xj5nz8/261030_ive_official_tiktok_update_with_wonyoung/",
+    "https://www.reddit.com/r/IVE/comments/1xk492m/261031_ive_official_tiktok_update_with_wonyoung/",
+    "https://www.reddit.com/r/IVE/comments/1xk600f/261031_wonyoung_eider_gratinum_puffer_cf/"
   ],
   "idol_history": [
     "Jihyo",
     "Felix",
     "Chaewon",
     "Sana",
-    "Wonyoung",
     "Mingyu",
     "Yeonjun",
     "Jungkook",
     "Ningning",
     "Karina",
     "Bang Chan",
-    "Jennie"
+    "Jennie",
+    "Wonyoung"
   ],
   "recent_videos": [
-    {
-      "video_id": "40080102008-wonyoung",
-      "idol": "Wonyoung",
-      "sources": [
-        {
-          "source_id": "1wzy2zm",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1wzy2zm/261007_wonyoung_harpers_bazaar_korea_x_hapa/",
-          "creator": "kpopsns28",
-          "sha256": "6356ca0f7a47e1f46dfcf09313958b22533b5f8e013df630788588220c0cbf68",
-          "frame_hashes": [
-            "0001173333160000",
-            "53317464e464f8f0",
-            "0000808090909890",
-            "ecce86261c04e4e0"
-          ]
-        },
-        {
-          "source_id": "1wz6gj1",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1wz6gj1/261006_wonyoung_eider_thermolock_slim_blend_down/",
-          "creator": "kpopsns28",
-          "sha256": "816c7714c93ded179b7fa29715b45857dcaa658cc1bc5663e3d35b2cf76856be",
-          "frame_hashes": [
-            "933b99393fb58d9b",
-            "b7363435b3e76727",
-            "c00000e1880e1b16",
-            "671a0ee73226cee5"
-          ]
-        },
-        {
-          "source_id": "1x4kpzx",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1x4kpzx/261012_tommy_hilfiger_official_instagram_update/",
-          "creator": "kpopsns28",
-          "sha256": "883972a40ebaad96688d2f148b314c1ce8edd403cd106bd715d399e7401f40fd",
-          "frame_hashes": [
-            "59dba9a1a0216b6a",
-            "bab5b33161046b4b",
-            "cf8e8c9c86977929",
-            "108a7a46c3e16364"
-          ]
-        },
-        {
-          "source_id": "1wyxjpi",
-          "source_url": "https://www.reddit.com/r/IVE/comments/1wyxjpi/261006_gq_singapore_instagram_update_with_wonyoung/",
-          "creator": "kpopsns28",
-          "sha256": "dcd2cb8cf18f7eeee7664e55a8c864ea2697e021848927e7a6526b0464756124",
-          "frame_hashes": [
-            "061099c8cf9f8cc5",
-            "007098cb0f1d9d39",
-            "8b088c4c4f474c8e",
-            "83911c08e0f0dcf4"
-          ]
-        }
-      ]
-    },
     {
       "video_id": "40146843651-yeonjun",
       "idol": "Yeonjun",
@@ -2111,6 +2065,60 @@
           ]
         }
       ]
+    },
+    {
+      "video_id": "41264136302-wonyoung",
+      "idol": "Wonyoung",
+      "sources": [
+        {
+          "source_id": "1xk9y6v",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1xk9y6v/261031_ive_official_tiktok_update_with_gaeul/",
+          "creator": "SapphireHeaven",
+          "sha256": "dc9d8b427abf7d49c517aa900c80b199dc2a0673630ca963a18f5d5f5588eecd",
+          "frame_hashes": [
+            "0589c94b99cec764",
+            "fe0ff0fefee000e0",
+            "0549030101030f07",
+            "83f11e820206060e"
+          ]
+        },
+        {
+          "source_id": "1xj5nz8",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1xj5nz8/261030_ive_official_tiktok_update_with_wonyoung/",
+          "creator": "kpopsns28",
+          "sha256": "05a028af2090b408623c53afd9e36fe8769218404b834b74d959cf49d86ab8db",
+          "frame_hashes": [
+            "47476c32973333b7",
+            "23030c59f37b3377",
+            "63068eb0733133d5",
+            "23070c38d33231f5"
+          ]
+        },
+        {
+          "source_id": "1xk492m",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1xk492m/261031_ive_official_tiktok_update_with_wonyoung/",
+          "creator": "kpopsns28",
+          "sha256": "d936ce2fb298f63d041a98f69f82548bc94697a97d2801760521b85e4adf7be8",
+          "frame_hashes": [
+            "187cf4d8d85869e9",
+            "1818243474ca67e6",
+            "6460616160e2e2ed",
+            "1010382c2c646767"
+          ]
+        },
+        {
+          "source_id": "1xk600f",
+          "source_url": "https://www.reddit.com/r/IVE/comments/1xk600f/261031_wonyoung_eider_gratinum_puffer_cf/",
+          "creator": "kpopsns28",
+          "sha256": "36f1f955e5b7c206d66474eec49ac1a96683906558ceb6fa9696e57c55308390",
+          "frame_hashes": [
+            "b8b9ccccfcfe5c9e",
+            "6567bf3c59f3e43c",
+            "792d2d49d5cd4ffe",
+            "383ee42fafbf3fa7"
+          ]
+        }
+      ]
     }
   ],
   "daily_uploads": {
@@ -2187,7 +2195,8 @@
       "7O7RkPLiL3M"
     ],
     "2026-11-01": [
-      "1nsg_UpfUh8"
+      "1nsg_UpfUh8",
+      "fAlIlNzDFYo"
     ]
   }
 }
