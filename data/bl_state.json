@@ -1,9 +1,32 @@
 {
   "version": 2,
-  "template_history": [],
-  "hook_history": [],
-  "layout_history": [],
-  "title_pattern_history": [],
-  "category_counts": {},
-  "published": []
+  "template_history": [
+    "release_date_003"
+  ],
+  "hook_history": [
+    "release_date_hook_3"
+  ],
+  "layout_history": [
+    "layout_01"
+  ],
+  "title_pattern_history": [
+    34
+  ],
+  "category_counts": {
+    "release_date": 1
+  },
+  "published": [
+    {
+      "story_id": "feed-772cf4d8625eadd9",
+      "source_urls": [
+        "https://www.youtube.com/watch?v=j7p8F9LnbKo"
+      ],
+      "headline_hash": "5e528c4ca32ec03341f11ddbf62c7ed76bc292d97b664a405c940e8e108568c1",
+      "content_fingerprint": "b1577d0841be1b84eeb41f5de602421d9ba3d5d2ae3e99f6b4db87b5f4ba87d8",
+      "template_id": "release_date_003",
+      "layout_id": "layout_01",
+      "published_at": "2026-11-01T19:07:49.890834+00:00",
+      "youtube_video_id": "LNvGej2FDgM"
+    }
+  ]
 }
