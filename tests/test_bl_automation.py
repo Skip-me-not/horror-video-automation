@@ -241,7 +241,7 @@ def test_reddit_ranked_package_needs_no_cookie_secret():
     assert all(item["story"]["assets"][0]["role"] == "reddit_source_video" for item in package["ranked_items"])
 
 
-def test_reddit_ranked_download_does_not_request_browser_cookies(monkeypatch, tmp_path):
+def test_reddit_ranked_download_uses_direct_manifest_without_cookies(monkeypatch, tmp_path):
     item = {
         "rank": 6,
         "source_url": "https://www.reddit.com/r/boyslove/comments/abc/source/",
@@ -255,7 +255,7 @@ def test_reddit_ranked_download_does_not_request_browser_cookies(monkeypatch, tm
 
     def fake_run(command, **kwargs):
         commands.append(command)
-        Path(command[command.index("--output") + 1]).write_bytes(b"video" * 3000)
+        Path(command[-1]).write_bytes(b"video" * 3000)
         return type("Result", (), {"returncode": 0, "stderr": ""})()
 
     monkeypatch.setattr("scripts.bl_ranked_renderer.subprocess.run", fake_run)
@@ -264,4 +264,5 @@ def test_reddit_ranked_download_does_not_request_browser_cookies(monkeypatch, tm
     assert result.is_file()
     flat = " ".join(commands[0])
     assert "cookies" not in flat.casefold()
-    assert item["source_url"] in commands[0]
+    assert commands[0][0] == "ffmpeg"
+    assert "https://v.redd.it/clipabc/HLSPlaylist.m3u8" in commands[0]
