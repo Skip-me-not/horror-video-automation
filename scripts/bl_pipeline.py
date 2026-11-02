@@ -9,8 +9,9 @@ import os
 from pathlib import Path
 
 from scripts.bl_engine import BLEngineError, ROOT, generate_package, load_state, read_json, write_json_atomic
+from scripts.bl_ranked_renderer import ranked_package, render_ranked
 from scripts.bl_renderer import render
-from scripts.bl_source import collect_one
+from scripts.bl_source import collect_reddit_ranked
 from scripts.daily_quota import myanmar_date, scheduled_slot_target, summary, write_summary
 
 OUTPUT = ROOT / "output"
@@ -50,15 +51,20 @@ def main() -> None:
         if ROOT.resolve() not in input_path.parents:
             raise BLEngineError("Story input must stay inside the repository")
         story, origin = read_json(input_path), str(input_path.relative_to(ROOT))
+        package = generate_package(story, load_state())
+        decision = package["verification"]["decision"]
+        if decision != "auto_publish" and not args.allow_review:
+            raise BLEngineError(f"Story cannot auto-publish: {package['verification']}")
+        write_json_atomic(OUTPUT / "story.json", story)
+        write_json_atomic(OUTPUT / "package.json", package)
+        report = render(OUTPUT / "package.json", narration_mode=args.narration_mode, allow_review=args.allow_review)
     else:
-        story, origin = collect_one(allow_review=args.allow_review)
-    package = generate_package(story, load_state())
-    decision = package["verification"]["decision"]
-    if decision != "auto_publish" and not args.allow_review:
-        raise BLEngineError(f"Story cannot auto-publish: {package['verification']}")
-    write_json_atomic(OUTPUT / "story.json", story)
-    write_json_atomic(OUTPUT / "package.json", package)
-    report = render(OUTPUT / "package.json", narration_mode=args.narration_mode, allow_review=args.allow_review)
+        stories, origin = collect_reddit_ranked(6)
+        package = ranked_package(stories, load_state())
+        decision = package["verification"]["decision"]
+        write_json_atomic(OUTPUT / "story.json", {"format": "reference_ranked_countdown", "stories": stories})
+        write_json_atomic(OUTPUT / "package.json", package)
+        report = render_ranked(package)
     publish = report["passed"] and decision == "auto_publish" and not args.dry_run
     github_output("publish", "true" if publish else "false")
     github_output("story_id", package["story_id"])

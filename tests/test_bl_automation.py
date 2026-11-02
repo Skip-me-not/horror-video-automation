@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from scripts import bl_renderer
+from scripts.bl_ranked_renderer import SEGMENT_DURATIONS, build_ranked_ass, download_reddit_source, ranked_package
 from scripts.bl_engine import (
     BLEngineError,
     content_fingerprint,
@@ -21,7 +22,7 @@ from scripts.bl_engine import (
     validate_story,
     verification_result,
 )
-from scripts.bl_source import classify, feed_entries, feed_relevance, validated_feed_url
+from scripts.bl_source import classify, feed_entries, feed_relevance, reddit_story, story_from_entry, validated_feed_url
 from scripts.merge_bl_state import merge_history
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -116,12 +117,12 @@ def test_caption_split_is_at_most_two_lines():
     assert all(len(line) <= 40 for item in captions for line in item.splitlines())
 
 
-def test_cover_definition_contains_headline_category_and_brand(story):
+def test_cover_definition_contains_category_and_brand_without_duplicate_headline(story):
     package = generate_package(story, default_state())
     cover = bl_renderer.build_cover_ass(package, "Lululala")
     assert "CASTING" in cover
-    assert "Arun Lee and Min Park" in cover
     assert "Lululala" in cover
+    assert "Arun Lee and Min Park" not in cover
 
 
 def test_metadata_catalog_rotation(story):
@@ -149,6 +150,22 @@ def test_feed_parser_and_category_classifier():
     assert classify(entries[0]["headline"]) == "trailer_release"
 
 
+def test_youtube_feed_story_uses_related_media_and_clean_script():
+    xml = b'''<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+      <entry><title>New BL Trailer | Official Channel</title><link href="https://www.youtube.com/watch?v=abcDEF_1234"/>
+      <published>2026-10-01T07:00:13+00:00</published><media:group><media:description>Two rivals are forced to work together.</media:description>
+      <media:thumbnail url="https://i.ytimg.com/vi/abcDEF_1234/hqdefault.jpg"/></media:group></entry></feed>'''
+    entry = feed_entries(xml, "https://www.youtube.com/feeds/videos.xml?channel_id=test")[0]
+    story = story_from_entry(entry, {"name": "Official Channel", "company": "Studio", "country": "Thailand", "source_type": "official"})
+    assert story["series"] == "New BL Trailer"
+    assert story["assets"][0]["role"] == "source_video"
+    assert story["assets"][-1]["role"] == "source_thumbnail"
+    package = generate_package(story, default_state())
+    assert "official first look" in package["script"]["hook"]
+    assert len(package["script"]["body"]) >= 2
+    assert len(package["script"]["narration"]) < 500
+
+
 def test_youtube_feed_keeps_required_channel_query():
     url = "https://www.youtube.com/feeds/videos.xml?channel_id=UC8BzJM6_VbZTdiNLD4R1jxQ"
     assert validated_feed_url(url) == url
@@ -163,6 +180,7 @@ def test_youtube_watch_normalization_keeps_video_identity_only():
 def test_feed_relevance_prefers_news_and_rejects_episode_noise():
     assert feed_relevance("Official Trailer: A New BL Series", "trailer_release") > 0
     assert feed_relevance("[BTS] Episode 4 behind the scenes", "general_entertainment") < 0
+    assert feed_relevance("LIVE! KHEMJIRA WELCOME BACK", "comeback") < 0
 
 
 def test_qa_checks_valid_probe(monkeypatch, tmp_path, story):
@@ -185,3 +203,66 @@ def test_qa_rejects_unverified_story(monkeypatch, tmp_path, story):
         {"codec_type": "video", "width": 1080, "height": 1920, "codec_name": "h264"},
         {"codec_type": "audio", "codec_name": "aac"}], "format": {"duration": "48.0"}})
     assert "source verification does not allow automatic publication" in bl_renderer.qa_report(package, video, [], False)["issues"]
+
+
+def test_reference_ranked_package_has_six_reveals_and_sixty_second_pacing(story):
+    stories = []
+    for index in range(6):
+        item = copy.deepcopy(story)
+        item["story_id"] = f"ranked-{index}"
+        item["series"] = f"BL Series {index + 1}"
+        item["sources"][0]["url"] = f"https://example.com/source-{index}"
+        stories.append(item)
+    package = ranked_package(stories, default_state())
+    subtitles = build_ranked_ass(package)
+    assert sum(SEGMENT_DURATIONS) == 60
+    assert [item["rank"] for item in package["ranked_items"]] == [6, 5, 4, 3, 2, 1]
+    assert package["metadata"]["title"] == "Top 6 BL Moments You Need to See"
+    assert "Top 6" in subtitles and "BL Series 6" in subtitles and "BL Series 1" in subtitles
+    assert "Lululala" in subtitles
+
+
+def test_reddit_ranked_package_needs_no_cookie_secret():
+    stories = []
+    for index in range(6):
+        post = {
+            "id": f"reddit-{index}",
+            "title": f"BL moment number {index + 1} from a public scene",
+            "subreddit": "boyslove",
+            "score": 1000 - index,
+            "num_comments": 100,
+            "created_utc": 1_750_000_000,
+            "permalink": f"/r/boyslove/comments/reddit{index}/source/",
+            "video_url": f"https://v.redd.it/clip{index}/DASH_720.mp4?source=fallback",
+        }
+        stories.append(reddit_story(post))
+    package = ranked_package(stories, default_state())
+    assert package["verification"]["decision"] == "auto_publish"
+    assert all(item["story"]["assets"][0]["role"] == "reddit_source_video" for item in package["ranked_items"])
+
+
+def test_reddit_ranked_download_uses_direct_manifest_without_cookies(monkeypatch, tmp_path):
+    item = {
+        "rank": 6,
+        "source_url": "https://www.reddit.com/r/boyslove/comments/abc/source/",
+        "story": {"assets": [{
+            "role": "reddit_source_video",
+            "url": "https://v.redd.it/clipabc/DASH_720.mp4?source=fallback",
+            "source_url": "https://www.reddit.com/r/boyslove/comments/abc/source/",
+        }]},
+    }
+    commands = []
+
+    def fake_run(command, **kwargs):
+        commands.append(command)
+        Path(command[-1]).write_bytes(b"video" * 3000)
+        return type("Result", (), {"returncode": 0, "stderr": ""})()
+
+    monkeypatch.setattr("scripts.bl_ranked_renderer.subprocess.run", fake_run)
+    monkeypatch.setattr("scripts.bl_ranked_renderer.has_audio", lambda _path: True)
+    result = download_reddit_source(item, tmp_path, 0)
+    assert result.is_file()
+    flat = " ".join(commands[0])
+    assert "cookies" not in flat.casefold()
+    assert commands[0][0] == "ffmpeg"
+    assert "https://v.redd.it/clipabc/HLSPlaylist.m3u8" in commands[0]

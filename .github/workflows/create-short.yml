@@ -51,6 +51,7 @@ jobs:
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
       CHANNEL_NAME: ${{ vars.CHANNEL_NAME || 'Lululala' }}
       BL_SOURCE_FEEDS_JSON: ${{ vars.BL_SOURCE_FEEDS_JSON }}
+      BL_REDDIT_SUBREDDITS: ${{ vars.BL_REDDIT_SUBREDDITS || 'boyslove,ThaiBL,GMMTV' }}
       INPUT_STORY_FILE: ${{ github.event_name == 'workflow_dispatch' && inputs.story_file || '' }}
       INPUT_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
       INPUT_NARRATION_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.narration_mode || 'auto' }}
