@@ -182,11 +182,12 @@ def test_manual_quote_override_remains_backward_compatible():
     assert all(beat["visual_search"] == "writer desk night" for beat in beats)
 
 
-def test_bl_workflow_is_ai_free_and_deterministic():
+def test_kpop_workflow_is_ai_free_and_deterministic():
     workflow = (ROOT / ".github" / "workflows" / "create-short.yml").read_text(
         encoding="utf-8"
     )
-    assert "Optional repo-relative story JSON" in workflow
+    assert "Create K-pop entertainment Short" in workflow
+    assert "story_file" not in workflow
     assert "AI_SCRIPT_MODE" not in workflow
     assert "GITHUB_TOKEN" not in workflow
     assert "models.github.ai" not in workflow
@@ -206,7 +207,7 @@ def test_workflow_yaml_preserves_public_schedule_and_success_only_rotation():
     assert "steps.youtube.outcome == 'success'" in text
     assert "scripts.merge_reddit_state" in text
     assert "git add data/reddit_state.json" in text
-    assert "BL_SOURCE_FEEDS_JSON" in text
+    assert "KPOP_REDDIT_SUBREDDITS" in text
     assert "git add data/reddit_state.json data/bl_state.json" in text
     assert "models" not in payload["permissions"]
 

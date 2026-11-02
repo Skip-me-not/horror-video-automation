@@ -151,7 +151,7 @@ def main() -> None:
     temporary_state.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n",
                                encoding="utf-8")
     temporary_state.replace(state_path)
-    if metadata.get("format") == "bl_entertainment_short":
+    if metadata.get("format") in {"bl_entertainment_short", "kpop_entertainment_short"}:
         from scripts.bl_engine import load_state as load_bl_state, read_json, record_success, write_json_atomic
 
         package_path = ROOT / "output" / "package.json"

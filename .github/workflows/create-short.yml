@@ -1,4 +1,4 @@
-name: Create BL entertainment Short
+name: Create K-pop entertainment Short
 
 on:
   schedule:
@@ -17,10 +17,6 @@ on:
         required: true
         default: true
         type: boolean
-      story_file:
-        description: "Optional repo-relative story JSON; blank selects queue/feed"
-        required: false
-        type: string
       narration_mode:
         description: "Use supplied narration_file, require it, or render text/music"
         required: true
@@ -50,9 +46,7 @@ jobs:
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
       CHANNEL_NAME: ${{ vars.CHANNEL_NAME || 'Lululala' }}
-      BL_SOURCE_FEEDS_JSON: ${{ vars.BL_SOURCE_FEEDS_JSON }}
-      BL_REDDIT_SUBREDDITS: ${{ vars.BL_REDDIT_SUBREDDITS || 'boyslove,ThaiBL,GMMTV' }}
-      INPUT_STORY_FILE: ${{ github.event_name == 'workflow_dispatch' && inputs.story_file || '' }}
+      KPOP_REDDIT_SUBREDDITS: ${{ vars.KPOP_REDDIT_SUBREDDITS || 'kpop' }}
       INPUT_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
       INPUT_NARRATION_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.narration_mode || 'auto' }}
       INPUT_ALLOW_REVIEW: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_review || false }}
@@ -96,7 +90,6 @@ jobs:
         run: |
           set -euo pipefail
           args=(--narration-mode "$INPUT_NARRATION_MODE")
-          if [[ -n "$INPUT_STORY_FILE" ]]; then args+=(--input "$INPUT_STORY_FILE"); fi
           if [[ "$INPUT_DRY_RUN" == "true" ]]; then args+=(--dry-run); fi
           if [[ "$INPUT_ALLOW_REVIEW" == "true" ]]; then
             if [[ "$INPUT_DRY_RUN" != "true" ]]; then
@@ -140,7 +133,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bl-short-${{ github.run_id }}
+          name: kpop-short-${{ github.run_id }}
           path: |
             output/short.mp4
             output/cover.jpg

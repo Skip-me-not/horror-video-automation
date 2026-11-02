@@ -104,7 +104,7 @@ def download_asset(asset: dict[str, Any], directory: Path, index: int) -> Path:
     if suffix not in {".jpg", ".jpeg", ".png", ".webp", ".mp4", ".mov", ".m4v"}:
         suffix = ".bin"
     destination = directory / f"asset-{index}{suffix}"
-    with requests.get(url, stream=True, timeout=(10, 45), headers={"User-Agent": "Lululala-BL-News-Automation/2.0"}) as response:
+    with requests.get(url, stream=True, timeout=(10, 45), headers={"User-Agent": "Lululala-Kpop-News-Automation/4.0"}) as response:
         response.raise_for_status()
         content_type = response.headers.get("Content-Type", "").casefold()
         if suffix == ".bin":

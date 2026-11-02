@@ -1,12 +1,12 @@
-# Lululala BL Entertainment Shorts Automation
+# Lululala K-pop Entertainment Shorts Automation
 
-A deterministic, AI-free YouTube Shorts pipeline for sourced BL entertainment news.  It uses
-Python rules, JSON catalogs, FFmpeg, GitHub Actions, and the YouTube Data API.  It does not call
-OpenAI, Gemini, Claude, an LLM, generative image services, speech-to-text, or an AI voice API.
+A deterministic, AI-free YouTube Shorts pipeline for K-pop countdown videos. It uses public
+Reddit-hosted media, FFmpeg, GitHub Actions, and the YouTube Data API. It does not call an LLM,
+generative image service, speech-to-text service, or AI voice API.
 
 ## Architecture
 
-1. `bl_source.py` finds six unused, non-NSFW public `v.redd.it` BL videos without a login,
+1. `bl_source.py` finds six unused, non-NSFW public `v.redd.it` K-pop videos without a login,
    cookie export, Reddit API key, or AI service.
 2. `bl_engine.py` validates the story, scores its sources, blocks sensitive claims, checks
    duplicates, chooses a template/layout deterministically, and produces script/captions/metadata.
@@ -17,8 +17,8 @@ OpenAI, Gemini, Claude, an LLM, generative image services, speech-to-text, or an
 5. `upload_youtube.py` performs a resumable public upload and records the YouTube ID only after
    success.  GitHub Actions then safely merges and commits state.
 
-The old Reddit/K-pop renderer and its quality tools remain in `scripts/` for rollback and reuse,
-but the production workflow now calls the BL ranked pipeline.
+Legacy modules keep their historical filenames, but the production workflow now generates only
+the K-pop ranked format.
 
 ## Important directories
 
@@ -108,13 +108,12 @@ FFmpeg and FFprobe must both be on `PATH`.  Output is written to `output/`, QA t
 
 ## GitHub Actions
 
-Open **Actions → Create BL entertainment Short → Run workflow**.  For a safe test:
+Open **Actions → Create K-pop entertainment Short → Run workflow**. For a safe test:
 
 1. keep `dry_run` enabled;
-2. leave `story_file` blank to exercise the Reddit ranked pipeline;
-3. leave narration mode on `auto` (the countdown preserves original clip audio);
-4. leave `allow_review` off;
-5. download the `bl-short-<run id>` artifact.
+2. leave narration mode on `auto` (the countdown preserves original clip audio);
+3. leave `allow_review` off;
+4. download the `kpop-short-<run id>` artifact.
 
 Scheduled runs retain four primary Myanmar-time slots (05:00, 08:00, 11:00, 14:00) plus a guarded
 retry 40 minutes after each.  A retry reads actual successful YouTube IDs and exits when its slot is
@@ -122,18 +121,8 @@ filled.  Workflow concurrency serializes publishers so two runs cannot publish t
 
 The only required secrets for real uploads are `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and
 `YOUTUBE_REFRESH_TOKEN`. `YOUTUBE_COOKIES_B64` is not used. `CHANNEL_NAME` remains optional and
-defaults to `Lululala`. The optional `BL_REDDIT_SUBREDDITS` variable defaults to
-`boyslove,ThaiBL,GMMTV`.
-
-For explicit single-story rendering, `BL_SOURCE_FEEDS_JSON` can still be set to a JSON array:
-
-```json
-[{"name":"Publisher newsroom","url":"https://publisher.example/feed.xml","source_type":"official","country":"Thailand","company":"Publisher"}]
-```
-
-Only classify a feed as `official` or `reputable_media` when you have verified that classification.
-Queue stories take priority.  The repository intentionally ships no live publisher feed whose trust
-class or media terms it cannot guarantee.
+defaults to `Lululala`. The optional `KPOP_REDDIT_SUBREDDITS` variable defaults to `kpop`;
+idol-specific communities are added automatically for the selected artist.
 
 ## Rendering and QA
 
@@ -150,7 +139,7 @@ the workflow still uploads diagnostics.
 
 ## Troubleshooting
 
-- **Fewer than six clips:** broaden `BL_REDDIT_SUBREDDITS` or wait for the public Reddit endpoints
+- **Fewer than six clips:** broaden `KPOP_REDDIT_SUBREDDITS` or wait for the public Reddit endpoints
   to recover; the workflow refuses thumbnail and black-screen substitutes.
 - **Manual review required:** inspect the source and claim; do not bypass it for production.
 - **Asset rejected:** mark only genuinely authorized/configured assets with `authorized: true`.
