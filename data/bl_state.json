@@ -4,30 +4,34 @@
     "release_date_003",
     "fan_meeting_005",
     "general_entertainment_003",
-    "general_entertainment_001"
+    "general_entertainment_001",
+    "general_entertainment_004"
   ],
   "hook_history": [
     "release_date_hook_3",
     "fan_meeting_hook_5",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_1"
+    "general_entertainment_hook_1",
+    "general_entertainment_hook_4"
   ],
   "layout_history": [
     "layout_01",
     "layout_03",
     "layout_09",
-    "layout_07"
+    "layout_07",
+    "layout_10"
   ],
   "title_pattern_history": [
     34,
     2,
     43,
-    20
+    20,
+    15
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 2
+    "general_entertainment": 3
   },
   "published": [
     {
@@ -87,6 +91,23 @@
       "layout_id": "layout_07",
       "published_at": "2026-11-02T13:36:47.903677+00:00",
       "youtube_video_id": "GIdX3R1FpF0"
+    },
+    {
+      "story_id": "reddit-1xlu2s4",
+      "source_urls": [
+        "https://www.reddit.com/r/boyslove/comments/1riyzzs/i_hope_dont_be_too_emotional_dont_ask_jane_sets",
+        "https://www.reddit.com/r/boyslove/comments/1rtwgxt/sammys_childrens_day_really_said_theyre_gonna",
+        "https://www.reddit.com/r/boyslove/comments/1ruywvl/once_again_this_is_why_chinese_bl_stays",
+        "https://www.reddit.com/r/boyslove/comments/1swjy3o/not_all_bl_kisses_require_an_official_now_kiss",
+        "https://www.reddit.com/r/boyslove/comments/1tjtb2c/bibles_butt_i_mean_4minutes_is_coming_to_hbo_max",
+        "https://www.reddit.com/r/ThaiBL/comments/1xlu2s4/ohming_racers_bl_when"
+      ],
+      "headline_hash": "75f8dcbaa9f95220940c35fee954455cb112f553d26cfb157881fd50ba5cdb1f",
+      "content_fingerprint": "2db6ea959fc02ebec7bbc92fa28639912d19e3efb8655eb176bea6279ca05606",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-02T18:16:09.003704+00:00",
+      "youtube_video_id": "nCIKeLcNvHs"
     }
   ]
 }
