@@ -1,19 +1,24 @@
 {
   "version": 2,
   "template_history": [
-    "release_date_003"
+    "release_date_003",
+    "fan_meeting_005"
   ],
   "hook_history": [
-    "release_date_hook_3"
+    "release_date_hook_3",
+    "fan_meeting_hook_5"
   ],
   "layout_history": [
-    "layout_01"
+    "layout_01",
+    "layout_03"
   ],
   "title_pattern_history": [
-    34
+    34,
+    2
   ],
   "category_counts": {
-    "release_date": 1
+    "release_date": 1,
+    "fan_meeting": 1
   },
   "published": [
     {
@@ -27,6 +32,18 @@
       "layout_id": "layout_01",
       "published_at": "2026-11-01T19:07:49.890834+00:00",
       "youtube_video_id": "LNvGej2FDgM"
+    },
+    {
+      "story_id": "feed-1c6cb625032bae58",
+      "source_urls": [
+        "https://www.youtube.com/watch?v=NJOia2K5Pfo"
+      ],
+      "headline_hash": "a73079cedb18c735d0300aca8decd4263b407eef3fe238d8277026e038d87dc8",
+      "content_fingerprint": "c6526bb0d6e46528d0c6585f2f8a507e1bec7cbc7e263f1dec2e313f61d07ad6",
+      "template_id": "fan_meeting_005",
+      "layout_id": "layout_03",
+      "published_at": "2026-11-02T09:20:29.194212+00:00",
+      "youtube_video_id": "Y4Wc56XEdkQ"
     }
   ]
 }
