@@ -17,6 +17,7 @@ from urllib.parse import urljoin, urlparse, urlunparse
 import requests
 
 from scripts.bl_engine import BLEngineError, CONFIG_PATH, ROOT, load_state, normalized_url, read_json, verification_result, write_json_atomic
+from scripts.reddit_source import RedditClient, RedditSourceError, parse_subreddits, reddit_post_url
 
 QUEUE_DIR = ROOT / "data" / "queue"
 COLLECTED_DIR = ROOT / "data" / "collected"
@@ -39,6 +40,8 @@ CATEGORY_TERMS = [
 NEWS_TERMS = ("announce", "announcement", "official pilot", "official trailer", "teaser", "cast", "casting", "premiere", "release date", "fanmeeting", "fan meeting", "interview", "award", "event", "lineup", "press conference")
 NOISE_PATTERN = re.compile(r"(?:\[bts\]|\[?recap\]?|\blive!?\b|behind\s+the\s+scenes|full\s+episode|\bep\.?\s*\d+|\bepisode\s*\d+|\bpart\s*\d+|\bost\b|official\s+mv|music\s+video|dance\s+practice|reaction)", re.I)
 YOUTUBE_HOSTS = {"youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"}
+DEFAULT_BL_SUBREDDITS = ("boyslove", "ThaiBL", "GMMTV")
+DEFAULT_BL_QUERIES = ("BL",)
 
 
 def strip_markup(value: str) -> str:
@@ -280,6 +283,103 @@ def collect_ranked(count: int = 6, *, allow_review: bool = False) -> tuple[list[
     if len(selected) < count:
         raise BLEngineError(f"Need {count} unused verified BL source videos, found {len(selected)}")
     return selected, "configured_feeds_ranked"
+
+
+def reddit_story(post: dict[str, Any]) -> dict[str, Any]:
+    """Convert one safe, Reddit-hosted BL clip into the ranked-renderer schema."""
+    title = strip_markup(str(post.get("title") or ""))
+    source_url = reddit_post_url(str(post.get("permalink") or ""))
+    created = float(post.get("created_utc") or 0)
+    published = datetime.fromtimestamp(created, timezone.utc).date().isoformat() if created else datetime.now(timezone.utc).date().isoformat()
+    return {
+        "story_id": "reddit-" + str(post.get("id") or __import__("hashlib").sha256(source_url.encode()).hexdigest()[:16]),
+        "category": "general_entertainment",
+        "headline": title,
+        "event": title,
+        "context": f"A public BL community video post in r/{post.get('subreddit') or 'boyslove'}.",
+        "detail": title,
+        "date": published,
+        "source_name": f"r/{post.get('subreddit') or 'boyslove'}",
+        "company": "Reddit community",
+        "series": title,
+        "actor": "the featured cast",
+        "actor_2": "the co-star",
+        "network": "the featured series",
+        "country": "Asian",
+        "release_date": published,
+        "venue": "the featured scene",
+        "award": title,
+        "achievement": title,
+        "official_statement": title,
+        "official_confirmation": False,
+        "sources": [{
+            "type": "reddit",
+            "name": f"Reddit r/{post.get('subreddit') or 'boyslove'}",
+            "url": source_url,
+            "date": published,
+        }],
+        "assets": [{
+            "url": str(post["video_url"]),
+            "role": "reddit_source_video",
+            "source_url": source_url,
+        }],
+        "reddit_score": int(post.get("score") or 0),
+        "reddit_comments": int(post.get("num_comments") or 0),
+        "script_hook": "Top BL moments fans could not stop replaying.",
+        "script_points": [title],
+        "script_cta": "Which moment is your number one?",
+        "collected_at": datetime.now(timezone.utc).isoformat(),
+    }
+
+
+def collect_reddit_ranked(count: int = 6) -> tuple[list[dict[str, Any]], str]:
+    """Collect distinct public Reddit-hosted BL videos without cookies or API keys."""
+    state = load_state()
+    used_urls = {
+        normalized_url(url)
+        for item in state.get("published", [])
+        for url in item.get("source_urls", [])
+    }
+    subreddits = parse_subreddits(os.environ.get("BL_REDDIT_SUBREDDITS", ",".join(DEFAULT_BL_SUBREDDITS)))
+    queries = [value.strip() for value in os.environ.get("BL_REDDIT_QUERIES", "|".join(DEFAULT_BL_QUERIES)).split("|") if value.strip()]
+    client = RedditClient(user_agent=os.environ.get("REDDIT_USER_AGENT", "github:Lululala-BL-Shorts:v3.0 (public media collector)"))
+    candidates: dict[str, dict[str, Any]] = {}
+    errors: list[str] = []
+    for subreddit in subreddits:
+        for query in queries:
+            try:
+                posts = client.search(subreddit, query, limit=100, require_video=True)
+            except RedditSourceError as exc:
+                errors.append(str(exc))
+                continue
+            for post in posts:
+                source_url = reddit_post_url(str(post.get("permalink") or "")) if post.get("permalink") else ""
+                title = strip_markup(str(post.get("title") or ""))
+                if not (
+                    post.get("id")
+                    and source_url
+                    and normalized_url(source_url) not in used_urls
+                    and str(post.get("video_url") or "").startswith("https://v.redd.it/")
+                    and not post.get("over_18")
+                    and not post.get("stickied")
+                    and not post.get("removed")
+                    and 3 <= len(title.split()) <= 32
+                ):
+                    continue
+                candidates[str(post["id"])] = post
+    ranked = sorted(
+        candidates.values(),
+        key=lambda post: (
+            int(post.get("score") or 0) + 3 * int(post.get("num_comments") or 0),
+            float(post.get("created_utc") or 0),
+            str(post.get("id") or ""),
+        ),
+        reverse=True,
+    )
+    if len(ranked) < count:
+        detail = f" Last fetch error: {errors[-1]}" if errors else ""
+        raise BLEngineError(f"Need {count} unused public Reddit-hosted BL videos, found {len(ranked)}.{detail}")
+    return [reddit_story(post) for post in ranked[:count]], "public_reddit_bl_videos"
 
 
 def main() -> None:

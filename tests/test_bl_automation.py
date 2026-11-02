@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from scripts import bl_renderer
-from scripts.bl_ranked_renderer import SEGMENT_DURATIONS, build_ranked_ass, ranked_package
+from scripts.bl_ranked_renderer import SEGMENT_DURATIONS, build_ranked_ass, download_reddit_source, ranked_package
 from scripts.bl_engine import (
     BLEngineError,
     content_fingerprint,
@@ -22,7 +22,7 @@ from scripts.bl_engine import (
     validate_story,
     verification_result,
 )
-from scripts.bl_source import classify, feed_entries, feed_relevance, story_from_entry, validated_feed_url
+from scripts.bl_source import classify, feed_entries, feed_relevance, reddit_story, story_from_entry, validated_feed_url
 from scripts.merge_bl_state import merge_history
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -220,3 +220,48 @@ def test_reference_ranked_package_has_six_reveals_and_sixty_second_pacing(story)
     assert package["metadata"]["title"] == "Top 6 BL Moments You Need to See"
     assert "Top 6" in subtitles and "BL Series 6" in subtitles and "BL Series 1" in subtitles
     assert "Lululala" in subtitles
+
+
+def test_reddit_ranked_package_needs_no_cookie_secret():
+    stories = []
+    for index in range(6):
+        post = {
+            "id": f"reddit-{index}",
+            "title": f"BL moment number {index + 1} from a public scene",
+            "subreddit": "boyslove",
+            "score": 1000 - index,
+            "num_comments": 100,
+            "created_utc": 1_750_000_000,
+            "permalink": f"/r/boyslove/comments/reddit{index}/source/",
+            "video_url": f"https://v.redd.it/clip{index}/DASH_720.mp4?source=fallback",
+        }
+        stories.append(reddit_story(post))
+    package = ranked_package(stories, default_state())
+    assert package["verification"]["decision"] == "auto_publish"
+    assert all(item["story"]["assets"][0]["role"] == "reddit_source_video" for item in package["ranked_items"])
+
+
+def test_reddit_ranked_download_does_not_request_browser_cookies(monkeypatch, tmp_path):
+    item = {
+        "rank": 6,
+        "source_url": "https://www.reddit.com/r/boyslove/comments/abc/source/",
+        "story": {"assets": [{
+            "role": "reddit_source_video",
+            "url": "https://v.redd.it/clipabc/DASH_720.mp4?source=fallback",
+            "source_url": "https://www.reddit.com/r/boyslove/comments/abc/source/",
+        }]},
+    }
+    commands = []
+
+    def fake_run(command, **kwargs):
+        commands.append(command)
+        Path(command[command.index("--output") + 1]).write_bytes(b"video" * 3000)
+        return type("Result", (), {"returncode": 0, "stderr": ""})()
+
+    monkeypatch.setattr("scripts.bl_ranked_renderer.subprocess.run", fake_run)
+    monkeypatch.setattr("scripts.bl_ranked_renderer.has_audio", lambda _path: True)
+    result = download_reddit_source(item, tmp_path, 0)
+    assert result.is_file()
+    flat = " ".join(commands[0])
+    assert "cookies" not in flat.casefold()
+    assert item["source_url"] in commands[0]
