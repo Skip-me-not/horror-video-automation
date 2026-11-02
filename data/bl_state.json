@@ -3,27 +3,31 @@
   "template_history": [
     "release_date_003",
     "fan_meeting_005",
-    "general_entertainment_003"
+    "general_entertainment_003",
+    "general_entertainment_001"
   ],
   "hook_history": [
     "release_date_hook_3",
     "fan_meeting_hook_5",
-    "general_entertainment_hook_3"
+    "general_entertainment_hook_3",
+    "general_entertainment_hook_1"
   ],
   "layout_history": [
     "layout_01",
     "layout_03",
-    "layout_09"
+    "layout_09",
+    "layout_07"
   ],
   "title_pattern_history": [
     34,
     2,
-    43
+    43,
+    20
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 1
+    "general_entertainment": 2
   },
   "published": [
     {
@@ -66,6 +70,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-02T12:44:21.386015+00:00",
       "youtube_video_id": "toAdBxWUtCs"
+    },
+    {
+      "story_id": "reddit-1vcug8l",
+      "source_urls": [
+        "https://www.reddit.com/r/boyslove/comments/1u1d68g/if_there_is_one_thing_japanese_bl_is_gonna_do_it",
+        "https://www.reddit.com/r/boyslove/comments/1uaphd3/the_way_chinese_bl_kisses_bts_just_be_dudes_being",
+        "https://www.reddit.com/r/boyslove/comments/1ukk1s0/the_prosecutors_proposal_ep_34_preview",
+        "https://www.reddit.com/r/boyslove/comments/1utncoy/studio_oak_is_leading_the_korean_bl_chokekissing",
+        "https://www.reddit.com/r/boyslove/comments/1uxji40/iirc_someone_asked_for_crybaby_top_bl_recs_look",
+        "https://www.reddit.com/r/boyslove/comments/1vcug8l/so_is_deep_in_the_first_chinese_bl_to_keep"
+      ],
+      "headline_hash": "cbecb350a72ef53b322098139d30647c5d9bfbaa0d2c601abf874d8971cc4328",
+      "content_fingerprint": "074521ad746fb62ddd55c22ff34b5e1aea5ab2018cfb9aedc57a6d8ad78972c0",
+      "template_id": "general_entertainment_001",
+      "layout_id": "layout_07",
+      "published_at": "2026-11-02T13:36:47.903677+00:00",
+      "youtube_video_id": "GIdX3R1FpF0"
     }
   ]
 }
