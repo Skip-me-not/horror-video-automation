@@ -22,7 +22,7 @@ from scripts.bl_engine import (
     validate_story,
     verification_result,
 )
-from scripts.bl_source import classify, feed_entries, feed_relevance, reddit_story, story_from_entry, validated_feed_url
+from scripts.bl_source import classify, feed_entries, feed_relevance, kpop_reddit_story, story_from_entry, validated_feed_url
 from scripts.merge_bl_state import merge_history
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -210,45 +210,48 @@ def test_reference_ranked_package_has_six_reveals_and_sixty_second_pacing(story)
     for index in range(6):
         item = copy.deepcopy(story)
         item["story_id"] = f"ranked-{index}"
-        item["series"] = f"BL Series {index + 1}"
+        item["series"] = f"K-pop Artist {index + 1}"
         item["sources"][0]["url"] = f"https://example.com/source-{index}"
         stories.append(item)
     package = ranked_package(stories, default_state())
     subtitles = build_ranked_ass(package)
     assert sum(SEGMENT_DURATIONS) == 60
     assert [item["rank"] for item in package["ranked_items"]] == [6, 5, 4, 3, 2, 1]
-    assert package["metadata"]["title"] == "Top 6 BL Moments You Need to See"
-    assert "Top 6" in subtitles and "BL Series 6" in subtitles and "BL Series 1" in subtitles
+    assert package["metadata"]["title"] == "Top 6 K-pop Moments You Need to See"
+    assert "Top 6" in subtitles and "K-pop" in subtitles
+    assert "K-pop Artist 6" in subtitles and "K-pop Artist 1" in subtitles
     assert "Lululala" in subtitles
 
 
-def test_reddit_ranked_package_needs_no_cookie_secret():
+def test_kpop_ranked_package_needs_no_cookie_secret():
     stories = []
     for index in range(6):
         post = {
             "id": f"reddit-{index}",
-            "title": f"BL moment number {index + 1} from a public scene",
-            "subreddit": "boyslove",
+            "title": f"K-pop moment number {index + 1} from a live stage",
+            "subreddit": "kpop",
             "score": 1000 - index,
             "num_comments": 100,
             "created_utc": 1_750_000_000,
-            "permalink": f"/r/boyslove/comments/reddit{index}/source/",
+            "permalink": f"/r/kpop/comments/reddit{index}/source/",
             "video_url": f"https://v.redd.it/clip{index}/DASH_720.mp4?source=fallback",
         }
-        stories.append(reddit_story(post))
+        stories.append(kpop_reddit_story(post, "Sana"))
     package = ranked_package(stories, default_state())
     assert package["verification"]["decision"] == "auto_publish"
+    assert package["metadata"]["title"] == "Top 6 Sana Moments You Need to See"
+    assert "#Sana" in package["metadata"]["description"]
     assert all(item["story"]["assets"][0]["role"] == "reddit_source_video" for item in package["ranked_items"])
 
 
 def test_reddit_ranked_download_uses_direct_manifest_without_cookies(monkeypatch, tmp_path):
     item = {
         "rank": 6,
-        "source_url": "https://www.reddit.com/r/boyslove/comments/abc/source/",
+        "source_url": "https://www.reddit.com/r/kpop/comments/abc/source/",
         "story": {"assets": [{
             "role": "reddit_source_video",
             "url": "https://v.redd.it/clipabc/DASH_720.mp4?source=fallback",
-            "source_url": "https://www.reddit.com/r/boyslove/comments/abc/source/",
+            "source_url": "https://www.reddit.com/r/kpop/comments/abc/source/",
         }]},
     }
     commands = []

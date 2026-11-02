@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the reference-matched 60-second BL countdown format."""
+"""Render the reference-matched 60-second K-pop countdown format."""
 
 from __future__ import annotations
 
@@ -30,15 +30,13 @@ RANK_COLOURS = {1: "&H0018D8FF", 2: "&H00F5F5F5", 3: "&H008EA8F2"}
 
 def compact_label(story: dict[str, Any]) -> str:
     series = clean_text(story.get("series") or story.get("headline"))
-    category = clean_text(story.get("category")).replace("_", " ").title()
-    if category == "General Entertainment":
-        category = "Official Clip"
-    return textwrap.shorten(f"{series} - {category}", width=39, placeholder="…")
+    series = re.sub(r"^\s*\d{6,8}\s*[-_:]?\s*", "", series).strip()
+    return textwrap.shorten(series, width=39, placeholder="…")
 
 
 def ranked_package(stories: list[dict[str, Any]], state: dict[str, Any]) -> dict[str, Any]:
     if len(stories) != 6:
-        raise BLEngineError("The reference format requires exactly six BL stories")
+        raise BLEngineError("The reference format requires exactly six K-pop stories")
     # Reddit media is handled by the dedicated ranked downloader.  Do not falsely
     # label a public user upload as rights-authorized for the generic asset path.
     package_story = copy.deepcopy(stories[0])
@@ -60,9 +58,10 @@ def ranked_package(stories: list[dict[str, Any]], state: dict[str, Any]) -> dict
         source = item["story"]["sources"][0]
         source_lines.append(f"- #{item['rank']} {clean_text(source.get('name'))}: {item['source_url']}")
     package["ranked_items"] = display_items
+    topic = clean_text(stories[0].get("ranked_topic") or "K-pop")
     package["countdown"] = {
         "title_line_1": "Top 6",
-        "title_line_2_white": "BL",
+        "title_line_2_white": topic,
         "title_line_2_accent": "Moments",
         "segment_durations": SEGMENT_DURATIONS,
         "total_duration": sum(SEGMENT_DURATIONS),
@@ -77,14 +76,14 @@ def ranked_package(stories: list[dict[str, Any]], state: dict[str, Any]) -> dict
         package["verification"] = {
             "decision": "auto_publish",
             "score": 70,
-            "reasons": ["six distinct public Reddit-hosted videos passed the BL countdown gate"],
+            "reasons": ["six distinct public Reddit-hosted videos passed the K-pop countdown gate"],
             "sensitive_topics": [],
         }
     package["metadata"].update({
-        "title": "Top 6 BL Moments You Need to See",
-        "description": "Six public BL community clips in one countdown.\n\nOriginal posts:\n" + "\n".join(source_lines) + "\n\n#BL #BLSeries #BLDrama #Shorts",
-        "tags": ["BL", "BLSeries", "BLDrama", "Shorts"],
-        "format": "bl_entertainment_short",
+        "title": f"Top 6 {topic} Moments You Need to See",
+        "description": f"Six public {topic} K-pop community clips in one countdown.\n\nOriginal posts:\n" + "\n".join(source_lines) + f"\n\n#Kpop #{re.sub(r'[^A-Za-z0-9]', '', topic)} #KpopShorts #Shorts",
+        "tags": ["Kpop", topic, "KpopShorts", "Shorts"],
+        "format": "kpop_entertainment_short",
         "source_urls": [item["source_url"] for item in display_items],
     })
     return package
@@ -100,7 +99,8 @@ def make_panels(path: Path) -> None:
 
 def build_ranked_ass(package: dict[str, Any]) -> str:
     duration = float(package["countdown"]["total_duration"])
-    title = r"Top 6\N{c&H00FFFFFF&}BL {c&H0018D8FF&}Moments"
+    topic = ass_escape(clean_text(package["countdown"].get("title_line_2_white") or "K-POP"))
+    title = rf"Top 6\N{{\c&H00FFFFFF&}}{topic} {{\c&H0018D8FF&}}Moments"
     events = [f"Dialogue: 3,{ass_time(0)},{ass_time(duration)},Title,,0,0,0,,{{\\an8\\pos(360,184)}}{title}"]
     for rank in range(6, 0, -1):
         colour = RANK_COLOURS.get(rank, "&H00FFFFFF")
@@ -149,7 +149,7 @@ def download_reddit_source(item: dict[str, Any], directory: Path, index: int) ->
         manifest_url = f"https://v.redd.it/{media_id}/{manifest_name}"
         command = [
             "ffmpeg", "-hide_banner", "-y",
-            "-headers", "User-Agent: github:Lululala-BL-Shorts:v3.0\r\nReferer: https://www.reddit.com/\r\n",
+            "-headers", "User-Agent: github:Lululala-Kpop-Shorts:v4.0\r\nReferer: https://www.reddit.com/\r\n",
             "-i", manifest_url,
             "-t", "180", "-map", "0:v:0", "-map", "0:a:0",
             "-c:v", "copy", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart",

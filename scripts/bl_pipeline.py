@@ -11,7 +11,7 @@ from pathlib import Path
 from scripts.bl_engine import BLEngineError, ROOT, generate_package, load_state, read_json, write_json_atomic
 from scripts.bl_ranked_renderer import ranked_package, render_ranked
 from scripts.bl_renderer import render
-from scripts.bl_source import collect_reddit_ranked
+from scripts.bl_source import collect_kpop_ranked
 from scripts.daily_quota import myanmar_date, scheduled_slot_target, summary, write_summary
 
 OUTPUT = ROOT / "output"
@@ -59,7 +59,7 @@ def main() -> None:
         write_json_atomic(OUTPUT / "package.json", package)
         report = render(OUTPUT / "package.json", narration_mode=args.narration_mode, allow_review=args.allow_review)
     else:
-        stories, origin = collect_reddit_ranked(6)
+        stories, origin = collect_kpop_ranked(6)
         package = ranked_package(stories, load_state())
         decision = package["verification"]["decision"]
         write_json_atomic(OUTPUT / "story.json", {"format": "reference_ranked_countdown", "stories": stories})
