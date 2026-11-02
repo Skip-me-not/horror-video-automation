@@ -261,6 +261,27 @@ def collect_one(*, allow_review: bool = False) -> tuple[dict[str, Any], str]:
     return story, origin
 
 
+def collect_ranked(count: int = 6, *, allow_review: bool = False) -> tuple[list[dict[str, Any]], str]:
+    """Return the strongest unused feed stories, ranked #1 first."""
+    config = read_json(CONFIG_PATH)
+    state = load_state()
+    used_ids = {item.get("story_id") for item in state.get("published", [])}
+    used_urls = {url for item in state.get("published", []) for url in item.get("source_urls", [])}
+    candidates = [story for story in collect_from_feeds(config)
+                  if story.get("story_id") not in used_ids
+                  and not ({normalized_url(item.get("url", "")) for item in story.get("sources", [])} & used_urls)]
+    eligible = []
+    for story in candidates:
+        result = verification_result(story, config)
+        if result["decision"] == "auto_publish" or allow_review:
+            eligible.append((story.get("date", ""), int(story.get("feed_relevance", 0)), story.get("story_id", ""), story))
+    eligible.sort(key=lambda item: item[:3], reverse=True)
+    selected = [item[3] for item in eligible[:count]]
+    if len(selected) < count:
+        raise BLEngineError(f"Need {count} unused verified BL source videos, found {len(selected)}")
+    return selected, "configured_feeds_ranked"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=ROOT / "output" / "story.json")

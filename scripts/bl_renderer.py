@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 import math
 import os
@@ -66,6 +67,16 @@ def download_asset(asset: dict[str, Any], directory: Path, index: int) -> Path:
     host = __import__("urllib.parse", fromlist=["urlparse"]).urlparse(url).netloc.casefold()
     if host in YOUTUBE_HOSTS:
         destination = directory / f"source-{index}.mp4"
+        cookie_args: list[str] = []
+        encoded_cookies = os.environ.get("YOUTUBE_COOKIES_B64", "").strip()
+        if encoded_cookies:
+            try:
+                cookie_path = directory / "youtube-cookies.txt"
+                if not cookie_path.exists():
+                    cookie_path.write_bytes(base64.b64decode(encoded_cookies, validate=True))
+                cookie_args = ["--cookies", str(cookie_path)]
+            except (ValueError, OSError) as exc:
+                raise BLEngineError(f"YOUTUBE_COOKIES_B64 is invalid: {exc}") from exc
         failures = []
         attempts = [
             ["--extractor-args", "youtube:player_client=android_vr"],
@@ -78,7 +89,7 @@ def download_asset(asset: dict[str, Any], directory: Path, index: int) -> Path:
                 os.sys.executable, "-m", "yt_dlp", "--no-playlist", "--no-cache-dir", "--quiet", "--no-warnings",
                 "--socket-timeout", "20", "--retries", "2", "--download-sections", "*0-32",
                 "--force-keyframes-at-cuts", "--merge-output-format", "mp4",
-                "-f", "bv*[height<=1080]+ba/b[height<=1080]", *extra, "-o", str(destination), url,
+                "-f", "bv*[height<=1080]+ba/b[height<=1080]", *cookie_args, *extra, "-o", str(destination), url,
             ]
             try:
                 result = subprocess.run(command, text=True, capture_output=True, timeout=180)

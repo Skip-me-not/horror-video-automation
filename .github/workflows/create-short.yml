@@ -49,6 +49,7 @@ jobs:
       YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
       YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
       YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      YOUTUBE_COOKIES_B64: ${{ secrets.YOUTUBE_COOKIES_B64 }}
       CHANNEL_NAME: ${{ vars.CHANNEL_NAME || 'Lululala' }}
       BL_SOURCE_FEEDS_JSON: ${{ vars.BL_SOURCE_FEEDS_JSON }}
       INPUT_STORY_FILE: ${{ github.event_name == 'workflow_dispatch' && inputs.story_file || '' }}

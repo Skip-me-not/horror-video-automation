@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from scripts import bl_renderer
+from scripts.bl_ranked_renderer import SEGMENT_DURATIONS, build_ranked_ass, ranked_package
 from scripts.bl_engine import (
     BLEngineError,
     content_fingerprint,
@@ -202,3 +203,20 @@ def test_qa_rejects_unverified_story(monkeypatch, tmp_path, story):
         {"codec_type": "video", "width": 1080, "height": 1920, "codec_name": "h264"},
         {"codec_type": "audio", "codec_name": "aac"}], "format": {"duration": "48.0"}})
     assert "source verification does not allow automatic publication" in bl_renderer.qa_report(package, video, [], False)["issues"]
+
+
+def test_reference_ranked_package_has_six_reveals_and_sixty_second_pacing(story):
+    stories = []
+    for index in range(6):
+        item = copy.deepcopy(story)
+        item["story_id"] = f"ranked-{index}"
+        item["series"] = f"BL Series {index + 1}"
+        item["sources"][0]["url"] = f"https://example.com/source-{index}"
+        stories.append(item)
+    package = ranked_package(stories, default_state())
+    subtitles = build_ranked_ass(package)
+    assert sum(SEGMENT_DURATIONS) == 60
+    assert [item["rank"] for item in package["ranked_items"]] == [6, 5, 4, 3, 2, 1]
+    assert package["metadata"]["title"] == "Top 6 BL Moments You Need to See"
+    assert "Top 6" in subtitles and "BL Series 6" in subtitles and "BL Series 1" in subtitles
+    assert "Lululala" in subtitles
