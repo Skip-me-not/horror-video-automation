@@ -2,23 +2,28 @@
   "version": 2,
   "template_history": [
     "release_date_003",
-    "fan_meeting_005"
+    "fan_meeting_005",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
-    "fan_meeting_hook_5"
+    "fan_meeting_hook_5",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
-    "layout_03"
+    "layout_03",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
-    2
+    2,
+    43
   ],
   "category_counts": {
     "release_date": 1,
-    "fan_meeting": 1
+    "fan_meeting": 1,
+    "general_entertainment": 1
   },
   "published": [
     {
@@ -44,6 +49,23 @@
       "layout_id": "layout_03",
       "published_at": "2026-11-02T09:20:29.194212+00:00",
       "youtube_video_id": "Y4Wc56XEdkQ"
+    },
+    {
+      "story_id": "reddit-1xin3bi",
+      "source_urls": [
+        "https://www.reddit.com/r/boyslove/comments/1vejmjy/upcoming_chinese_bl_the_missing_piece_lucian_rao",
+        "https://www.reddit.com/r/boyslove/comments/1vqbwpn/bl_gawds_really_said_take_ur_top_awf_this_week",
+        "https://www.reddit.com/r/boyslove/comments/1w98lnm/park_siwoo_of_the_prosecutors_proposal_is_proud",
+        "https://www.reddit.com/r/boyslove/comments/1wh8myq/the_main_cp_from_cbl_the_missing_piece_were",
+        "https://www.reddit.com/r/boyslove/comments/1x3gxpa/i_dont_know_if_its_actually_pressure_because",
+        "https://www.reddit.com/r/boyslove/comments/1xin3bi/every_bl_fan_right_now"
+      ],
+      "headline_hash": "52d9043845ac0dbbcb993866f56c1a1d32bb9f69f8a3339a8ab2ab93cb42181c",
+      "content_fingerprint": "3a9d198db7bede0ecbef5986b5f7e4a4127a5918a9014616cf0b901eee961182",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-02T12:44:21.386015+00:00",
+      "youtube_video_id": "toAdBxWUtCs"
     }
   ]
 }
