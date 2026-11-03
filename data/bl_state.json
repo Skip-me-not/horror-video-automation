@@ -7,7 +7,8 @@
     "general_entertainment_001",
     "general_entertainment_004",
     "general_entertainment_002",
-    "general_entertainment_001"
+    "general_entertainment_001",
+    "general_entertainment_004"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -16,7 +17,8 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
     "general_entertainment_hook_2",
-    "general_entertainment_hook_1"
+    "general_entertainment_hook_1",
+    "general_entertainment_hook_4"
   ],
   "layout_history": [
     "layout_01",
@@ -25,7 +27,8 @@
     "layout_07",
     "layout_10",
     "layout_08",
-    "layout_07"
+    "layout_07",
+    "layout_10"
   ],
   "title_pattern_history": [
     34,
@@ -34,12 +37,13 @@
     20,
     15,
     28,
-    21
+    21,
+    9
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 5
+    "general_entertainment": 6
   },
   "published": [
     {
@@ -150,6 +154,23 @@
       "layout_id": "layout_07",
       "published_at": "2026-11-03T08:22:05.522366+00:00",
       "youtube_video_id": "aodlWw2aXbg"
+    },
+    {
+      "story_id": "reddit-1wysoja",
+      "source_urls": [
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1wvvdbh/261002_yeonjuns_sunflower_original_song_post",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1wz0tjw/261006_yeonjun_vibeeee_miumiuss27_tiktok",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1wxswu6/261005_yeonjun_presents_the_beautiful_paris",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1xk7ge4/261031_yeonjun_hueningkai_tiktok",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1x1moby/261009_soobin_yeonjun_comeback_tiktok",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1wysoja/261006_yeonjun_w_momo_twice_set_me_free_instagram"
+      ],
+      "headline_hash": "e2dafe87574dfa46b1c4e93bf5eca8d3fc2c1ca37408bf04f85fbe87cb1b1f8f",
+      "content_fingerprint": "c56355e48d2c84f79c7d7dca3d57c03c22cc9800062074482471507f58ff6c1f",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-03T12:10:24.673681+00:00",
+      "youtube_video_id": "pIp0A4FGyNo"
     }
   ]
 }
