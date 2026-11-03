@@ -5,33 +5,37 @@
     "fan_meeting_005",
     "general_entertainment_003",
     "general_entertainment_001",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_002"
   ],
   "hook_history": [
     "release_date_hook_3",
     "fan_meeting_hook_5",
     "general_entertainment_hook_3",
     "general_entertainment_hook_1",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_2"
   ],
   "layout_history": [
     "layout_01",
     "layout_03",
     "layout_09",
     "layout_07",
-    "layout_10"
+    "layout_10",
+    "layout_08"
   ],
   "title_pattern_history": [
     34,
     2,
     43,
     20,
-    15
+    15,
+    28
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 3
+    "general_entertainment": 4
   },
   "published": [
     {
@@ -108,6 +112,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-02T18:16:09.003704+00:00",
       "youtube_video_id": "nCIKeLcNvHs"
+    },
+    {
+      "story_id": "reddit-1x4tvjg",
+      "source_urls": [
+        "https://www.reddit.com/r/twice/comments/1s3vy26/260326_twitter_update_boom_shakalaka_sana",
+        "https://www.reddit.com/r/twice/comments/1stfvc0/260423_elle_japan_instagram_update_twices_momo",
+        "https://www.reddit.com/r/twice/comments/1xkzv84/261101_gq_korea_youtube_update_cover_story_sana_x",
+        "https://www.reddit.com/r/twice/comments/1x3u0i1/261012_sana_instagram_story_covernat_instagram",
+        "https://www.reddit.com/r/twice/comments/1xk0qhc/261031_gq_korea_instagram_update_𝙂𝙌_𝘽𝙀𝙃𝙄𝙉𝘿_𝙒𝙄𝙏𝙃",
+        "https://www.reddit.com/r/twice/comments/1x4tvjg/261013_nmixx_twitter_update_making_a_long_wish"
+      ],
+      "headline_hash": "9e93e53aad9045bb8229a5f3f8eb5ae6d2839f41a55405adc37260fe619bc2aa",
+      "content_fingerprint": "207734dc6ed1297d2d025a7508fc1652843b0f66686c86977f4660e72f97e43a",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-03T03:57:39.488142+00:00",
+      "youtube_video_id": "W6p2FTMtWi4"
     }
   ]
 }
