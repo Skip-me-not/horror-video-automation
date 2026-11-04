@@ -9,7 +9,8 @@
     "general_entertainment_002",
     "general_entertainment_001",
     "general_entertainment_004",
-    "general_entertainment_003"
+    "general_entertainment_003",
+    "general_entertainment_004"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -20,7 +21,8 @@
     "general_entertainment_hook_2",
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
-    "general_entertainment_hook_3"
+    "general_entertainment_hook_3",
+    "general_entertainment_hook_4"
   ],
   "layout_history": [
     "layout_01",
@@ -31,7 +33,8 @@
     "layout_08",
     "layout_07",
     "layout_10",
-    "layout_09"
+    "layout_09",
+    "layout_10"
   ],
   "title_pattern_history": [
     34,
@@ -42,12 +45,13 @@
     28,
     21,
     9,
-    25
+    25,
+    24
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 7
+    "general_entertainment": 8
   },
   "published": [
     {
@@ -192,6 +196,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-04T02:40:21.888764+00:00",
       "youtube_video_id": "h2jPUtHfh_k"
+    },
+    {
+      "story_id": "reddit-1x40dr5",
+      "source_urls": [
+        "https://www.reddit.com/r/straykids/comments/1wupq3e/261001_felix_for_adidas_fw26_campaign_life_in",
+        "https://www.reddit.com/r/straykids/comments/1wz70xk/261006_w_korea_instagram_update_with_felix",
+        "https://www.reddit.com/r/straykids/comments/1x1cakq/261009_ferrari_apac_instagram_story_update_with",
+        "https://www.reddit.com/r/straykids/comments/1wz9kll/261007_allure_korea_instagram_update_with_felix",
+        "https://www.reddit.com/r/straykids/comments/1wz9xi7/261007_grazia_singapore_instagram_update_with",
+        "https://www.reddit.com/r/straykids/comments/1x40dr5/261012_formula_1_twitter_update_with_felix"
+      ],
+      "headline_hash": "72e5f36e51f3f50487cb0b3bec322c0cd0c9fb2bd86cdb665c851b7501dd3254",
+      "content_fingerprint": "78b80fdfd4896c66b5c90a6baa113b65ef9c20fa87a08c195892196816da0dd1",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-04T03:03:31.710154+00:00",
+      "youtube_video_id": "2ZJ4xj_3YNU"
     }
   ]
 }
