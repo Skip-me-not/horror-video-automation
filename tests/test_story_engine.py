@@ -209,6 +209,9 @@ def test_workflow_yaml_preserves_public_schedule_and_success_only_rotation():
     assert "git add data/reddit_state.json" in text
     assert "KPOP_REDDIT_SUBREDDITS" in text
     assert "git add data/reddit_state.json data/bl_state.json" in text
+    assert "Require a video from manual upload runs" in text
+    # PyYAML 1.1 treats the unquoted GitHub Actions key `on` as boolean true.
+    assert payload[True]["workflow_dispatch"]["inputs"]["dry_run"]["default"] is False
     assert "models" not in payload["permissions"]
 
 

@@ -15,7 +15,7 @@ on:
       dry_run:
         description: "Render, QA, and save artifacts without uploading"
         required: true
-        default: true
+        default: false
         type: boolean
       narration_mode:
         description: "Use supplied narration_file, require it, or render text/music"
@@ -99,6 +99,12 @@ jobs:
             args+=(--allow-review)
           fi
           python -m scripts.bl_pipeline "${args[@]}"
+
+      - name: Require a video from manual upload runs
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == false && steps.pipeline.outputs.publish != 'true' }}
+        run: |
+          echo "Manual upload requested, but the pipeline did not produce a publishable video." >&2
+          exit 1
 
       - name: Upload directly to YouTube as public
         id: youtube

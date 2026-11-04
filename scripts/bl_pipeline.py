@@ -32,6 +32,17 @@ def daily_ids() -> list[str]:
     return list(payload.get("daily_uploads", {}).get(myanmar_date(), []))
 
 
+def should_skip_for_daily_quota(*, event_name: str, dry_run: bool,
+                                current_count: int, slot_target: int | None) -> bool:
+    """Apply quota guards to scheduled retries, never to manual dispatches."""
+    return (
+        not dry_run
+        and event_name == "schedule"
+        and slot_target is not None
+        and current_count >= slot_target
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, help="Structured story JSON; omit to use queue/configured feeds")
@@ -41,8 +52,17 @@ def main() -> None:
     args = parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
     current_ids = daily_ids()
-    slot_target = scheduled_slot_target() if os.environ.get("GITHUB_EVENT_NAME") == "schedule" else 4
-    if not args.dry_run and len(current_ids) >= slot_target:
+    event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+    slot_target = scheduled_slot_target() if event_name == "schedule" else None
+    # Retry schedules must never overfill the four daily slots. A deliberate
+    # workflow_dispatch is different: it is an operator-requested extra upload
+    # and must not silently succeed without rendering anything.
+    if should_skip_for_daily_quota(
+        event_name=event_name,
+        dry_run=args.dry_run,
+        current_count=len(current_ids),
+        slot_target=slot_target,
+    ):
         github_output("publish", "false")
         print(f"DAILY SLOT TARGET ALREADY MET: {slot_target} upload(s)")
         return

@@ -33,9 +33,19 @@ from scripts.bl_engine import (
     verification_result,
 )
 from scripts.bl_source import classify, feed_entries, feed_relevance, kpop_reddit_story, story_from_entry, validated_feed_url
+from scripts.bl_pipeline import should_skip_for_daily_quota
 from scripts.merge_bl_state import merge_history
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_manual_dispatch_bypasses_daily_schedule_quota():
+    assert should_skip_for_daily_quota(
+        event_name="schedule", dry_run=False, current_count=4, slot_target=4
+    )
+    assert not should_skip_for_daily_quota(
+        event_name="workflow_dispatch", dry_run=False, current_count=4, slot_target=None
+    )
 
 
 @pytest.fixture()
