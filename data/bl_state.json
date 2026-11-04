@@ -12,7 +12,8 @@
     "general_entertainment_003",
     "general_entertainment_004",
     "general_entertainment_003",
-    "general_entertainment_002"
+    "general_entertainment_002",
+    "general_entertainment_001"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -26,7 +27,8 @@
     "general_entertainment_hook_3",
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_2"
+    "general_entertainment_hook_2",
+    "general_entertainment_hook_1"
   ],
   "layout_history": [
     "layout_01",
@@ -40,7 +42,8 @@
     "layout_09",
     "layout_10",
     "layout_09",
-    "layout_08"
+    "layout_08",
+    "layout_07"
   ],
   "title_pattern_history": [
     34,
@@ -54,12 +57,13 @@
     25,
     24,
     37,
-    17
+    17,
+    4
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 10
+    "general_entertainment": 11
   },
   "published": [
     {
@@ -255,6 +259,23 @@
       "layout_id": "layout_08",
       "published_at": "2026-11-04T09:03:07.824146+00:00",
       "youtube_video_id": "QXzx2Gl9eAA"
+    },
+    {
+      "story_id": "reddit-1ts164f",
+      "source_urls": [
+        "https://www.reddit.com/r/bts7/comments/1uvdx4a/jungkook_tiktok_post_130726",
+        "https://www.reddit.com/r/bts7/comments/1xjri2a/army_captures_jungkook_losing_rock_paper_scissors",
+        "https://www.reddit.com/r/bts7/comments/1vij48f/jungkook_on_instagram_story_3_080826",
+        "https://www.reddit.com/r/bts7/comments/1s2vm39/jungkook_tiktok_250326",
+        "https://www.reddit.com/r/bts7/comments/1wcfowa/w_korea_ig_post_feat_jungkook_at_spotify_house",
+        "https://www.reddit.com/r/bts7/comments/1ts164f/taehyung_ig_story_with_jungkook_jin_300526"
+      ],
+      "headline_hash": "46cf66c5ee2ec3643b49ae319c1d810bf8041c8ff6d0cb48385d92ea6a1d941b",
+      "content_fingerprint": "94b396b984771965a2dfb0926280d7f22611825bac903daceab57dbaba6df888",
+      "template_id": "general_entertainment_001",
+      "layout_id": "layout_07",
+      "published_at": "2026-11-04T18:34:08.479267+00:00",
+      "youtube_video_id": "3z1J2LTWQ1s"
     }
   ]
 }
