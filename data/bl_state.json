@@ -11,7 +11,8 @@
     "general_entertainment_004",
     "general_entertainment_003",
     "general_entertainment_004",
-    "general_entertainment_003"
+    "general_entertainment_003",
+    "general_entertainment_002"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -24,7 +25,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
     "general_entertainment_hook_4",
-    "general_entertainment_hook_3"
+    "general_entertainment_hook_3",
+    "general_entertainment_hook_2"
   ],
   "layout_history": [
     "layout_01",
@@ -37,7 +39,8 @@
     "layout_10",
     "layout_09",
     "layout_10",
-    "layout_09"
+    "layout_09",
+    "layout_08"
   ],
   "title_pattern_history": [
     34,
@@ -50,12 +53,13 @@
     9,
     25,
     24,
-    37
+    37,
+    17
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 9
+    "general_entertainment": 10
   },
   "published": [
     {
@@ -234,6 +238,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-04T07:52:27.048604+00:00",
       "youtube_video_id": "b4dZaXJqqJA"
+    },
+    {
+      "story_id": "reddit-1xjri2a",
+      "source_urls": [
+        "https://www.reddit.com/r/bts7/comments/1xkm8g7/cazétv_on_instagram_ft_namjoon_hobi_jimin",
+        "https://www.reddit.com/r/bts7/comments/1xkrvxm/cazétv_ig_post2_ft_namjoon_hobi_jimin_taehyung",
+        "https://www.reddit.com/r/bts7/comments/1x15gqo/jungkook_reposted_and_commented_on_a_pups_ig_reel",
+        "https://www.reddit.com/r/bts7/comments/1xmye6n/jungkook_ig_post_041126",
+        "https://www.reddit.com/r/bts7/comments/1xksfs2/army_captures_jungkooks_highly_anticipated",
+        "https://www.reddit.com/r/bts7/comments/1xjri2a/army_captures_jungkook_losing_rock_paper_scissors"
+      ],
+      "headline_hash": "196303080dc834a069f77ccb6dfec9ed027bfda48984f031b4b08febc344058c",
+      "content_fingerprint": "acd7c878dc6c86c2ee085960da76c306a61c28263c953adeb66146e7639bbb21",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-04T09:03:07.824146+00:00",
+      "youtube_video_id": "QXzx2Gl9eAA"
     }
   ]
 }
