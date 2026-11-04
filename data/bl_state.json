@@ -10,7 +10,8 @@
     "general_entertainment_001",
     "general_entertainment_004",
     "general_entertainment_003",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -22,7 +23,8 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -34,7 +36,8 @@
     "layout_07",
     "layout_10",
     "layout_09",
-    "layout_10"
+    "layout_10",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -46,12 +49,13 @@
     21,
     9,
     25,
-    24
+    24,
+    37
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 8
+    "general_entertainment": 9
   },
   "published": [
     {
@@ -213,6 +217,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-04T03:03:31.710154+00:00",
       "youtube_video_id": "2ZJ4xj_3YNU"
+    },
+    {
+      "story_id": "reddit-1x0ucnd",
+      "source_urls": [
+        "https://www.reddit.com/r/twice/comments/1rootez/260309_twitter_update_thats_a_no_no_momo_and_jihyo",
+        "https://www.reddit.com/r/twice/comments/1re4hf0/260225_twicetagram_update_body_gooo_twice_트와이스",
+        "https://www.reddit.com/r/twice/comments/1ww78lb/261003_jihyo_instagram_update_red_bottoms_on_i",
+        "https://www.reddit.com/r/twice/comments/1qhcftz/jihyo_took_my_flower",
+        "https://www.reddit.com/r/twice/comments/1wzue7x/261007_jihyo_instagram_story_harpersbazaarkorea",
+        "https://www.reddit.com/r/twice/comments/1x0ucnd/261008_tuide_heres_how_we_filmed_the_challenge"
+      ],
+      "headline_hash": "67024d43db2bc7d9a33f55500bb8faf1e3e05514fe8ae2ceb9a016dd7818d1ff",
+      "content_fingerprint": "c7e2649209e135e2d40f499a6c4c2a4ffa226b9b26d058f919db704f353d52b5",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-04T07:52:27.048604+00:00",
+      "youtube_video_id": "b4dZaXJqqJA"
     }
   ]
 }
