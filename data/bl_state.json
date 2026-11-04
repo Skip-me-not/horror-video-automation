@@ -8,7 +8,8 @@
     "general_entertainment_004",
     "general_entertainment_002",
     "general_entertainment_001",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -18,7 +19,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_2",
     "general_entertainment_hook_1",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -28,7 +30,8 @@
     "layout_10",
     "layout_08",
     "layout_07",
-    "layout_10"
+    "layout_10",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -38,12 +41,13 @@
     15,
     28,
     21,
-    9
+    9,
+    25
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 6
+    "general_entertainment": 7
   },
   "published": [
     {
@@ -171,6 +175,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-03T12:10:24.673681+00:00",
       "youtube_video_id": "pIp0A4FGyNo"
+    },
+    {
+      "story_id": "reddit-1s9inp1",
+      "source_urls": [
+        "https://www.reddit.com/r/lesserafim/comments/1pfmrcn/251206_kim_chaewon_has_won_the_best_choice_award",
+        "https://www.reddit.com/r/lesserafim/comments/1sgl0ri/260409_daily_fashion_news_instagram_update_with",
+        "https://www.reddit.com/r/lesserafim/comments/1p6ckba/251125_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1rrrqsr/260312_choi_yena_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1x1hokm/261009_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1s9inp1/260401_itzy_tiktok_update_with_kim_chaewon_eat"
+      ],
+      "headline_hash": "7a5a0d73dd6f48d5e69b9bd7e98c711e2786e86df565ba691dd0f96b339145a9",
+      "content_fingerprint": "06d98685a32119d0de33e627ddd848b344145d5b378f475251e8c85eae30272f",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-04T02:40:21.888764+00:00",
+      "youtube_video_id": "h2jPUtHfh_k"
     }
   ]
 }
