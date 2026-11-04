@@ -10,8 +10,8 @@ generative image service, speech-to-text service, or AI voice API.
    cookie export, Reddit API key, or AI service.
 2. `bl_engine.py` validates the story, scores its sources, blocks sensitive claims, checks
    duplicates, chooses a template/layout deterministically, and produces script/captions/metadata.
-3. `bl_ranked_renderer.py` merges each Reddit clip's original audio and renders the reference-style
-   60-second 720x1280 Top 6 countdown with hard cuts, progressive reveals, and watermark.
+3. `bl_ranked_renderer.py` merges each Reddit clip's original audio and renders a retention-first
+   35-second 720x1280 countdown with a #1 teaser, scene-aware starts, compact labels, and watermark.
 4. QA probes the output and blocks upload on technical, source, metadata, placeholder, or duplicate
    failure.
 5. `upload_youtube.py` performs a resumable public upload and records the YouTube ID only after

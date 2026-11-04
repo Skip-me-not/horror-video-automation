@@ -62,7 +62,7 @@ def main() -> None:
         stories, origin = collect_kpop_ranked(6)
         package = ranked_package(stories, load_state())
         decision = package["verification"]["decision"]
-        write_json_atomic(OUTPUT / "story.json", {"format": "reference_ranked_countdown", "stories": stories})
+        write_json_atomic(OUTPUT / "story.json", {"format": "retention_ranked_countdown_v2", "stories": stories})
         write_json_atomic(OUTPUT / "package.json", package)
         report = render_ranked(package)
     publish = report["passed"] and decision == "auto_publish" and not args.dry_run

@@ -7,7 +7,17 @@ from pathlib import Path
 import pytest
 
 from scripts import bl_renderer
-from scripts.bl_ranked_renderer import SEGMENT_DURATIONS, build_ranked_ass, download_reddit_source, ranked_package
+from scripts.bl_ranked_renderer import (
+    HOOK_DURATION,
+    SEGMENT_DURATIONS,
+    TOTAL_DURATION,
+    black_durations,
+    build_ranked_ass,
+    compact_label,
+    download_reddit_source,
+    highlight_start,
+    ranked_package,
+)
 from scripts.bl_engine import (
     BLEngineError,
     content_fingerprint,
@@ -205,7 +215,7 @@ def test_qa_rejects_unverified_story(monkeypatch, tmp_path, story):
     assert "source verification does not allow automatic publication" in bl_renderer.qa_report(package, video, [], False)["issues"]
 
 
-def test_reference_ranked_package_has_six_reveals_and_sixty_second_pacing(story):
+def test_retention_ranked_package_has_hook_and_thirty_five_second_pacing(story):
     stories = []
     for index in range(6):
         item = copy.deepcopy(story)
@@ -215,11 +225,12 @@ def test_reference_ranked_package_has_six_reveals_and_sixty_second_pacing(story)
         stories.append(item)
     package = ranked_package(stories, default_state())
     subtitles = build_ranked_ass(package)
-    assert sum(SEGMENT_DURATIONS) == 60
+    assert TOTAL_DURATION == 35
+    assert HOOK_DURATION + sum(SEGMENT_DURATIONS) == TOTAL_DURATION
     assert [item["rank"] for item in package["ranked_items"]] == [6, 5, 4, 3, 2, 1]
-    assert package["metadata"]["title"] == "Top 6 K-pop Moments You Need to See"
-    assert "Top 6" in subtitles and "K-pop" in subtitles
-    assert "K-pop Artist 6" in subtitles and "K-pop Artist 1" in subtitles
+    assert package["metadata"]["title"] == "6 K-pop Moments Fans Ranked Highest"
+    assert "WAIT FOR #1" in subtitles and "TOP 6" in subtitles and "K-POP" in subtitles
+    assert "ARTIST 6" in subtitles and "ARTIST 1" in subtitles
     assert "Lululala" in subtitles
 
 
@@ -239,9 +250,33 @@ def test_kpop_ranked_package_needs_no_cookie_secret():
         stories.append(kpop_reddit_story(post, "Sana"))
     package = ranked_package(stories, default_state())
     assert package["verification"]["decision"] == "auto_publish"
-    assert package["metadata"]["title"] == "Top 6 Sana Moments You Need to See"
+    assert package["metadata"]["title"] == "6 Sana Moments Fans Ranked Highest"
     assert "#Sana" in package["metadata"]["description"]
+    assert "RANKED BY" in build_ranked_ass(package)
     assert all(item["story"]["assets"][0]["role"] == "reddit_source_video" for item in package["ranked_items"])
+
+
+def test_compact_labels_replace_raw_reddit_titles_with_short_angles():
+    assert compact_label({"series": "261001 Sana Instagram Update - Vogue fashion shoot"}, "Sana") == "THE ICONIC LOOK"
+    assert compact_label({"series": "Sana absolutely owned this dance challenge"}, "Sana") == "THE DANCE MOMENT"
+
+
+def test_highlight_start_uses_first_safe_scene_change(monkeypatch, tmp_path):
+    clip = tmp_path / "clip.mp4"
+    monkeypatch.setattr("scripts.bl_ranked_renderer.ffprobe", lambda _path: {"format": {"duration": "12.0"}})
+    monkeypatch.setattr(
+        "scripts.bl_ranked_renderer.subprocess.run",
+        lambda *args, **kwargs: type("Result", (), {"stderr": "pts_time:0.10 pts_time:2.40 pts_time:9.00"})(),
+    )
+    assert highlight_start(clip, 5.0) == 2.4
+
+
+def test_black_screen_detector_parses_long_dark_spans(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        "scripts.bl_ranked_renderer.subprocess.run",
+        lambda *args, **kwargs: type("Result", (), {"stderr": "black_duration:0.40 black_duration:1.25"})(),
+    )
+    assert black_durations(tmp_path / "short.mp4") == [0.4, 1.25]
 
 
 def test_reddit_ranked_download_uses_direct_manifest_without_cookies(monkeypatch, tmp_path):
