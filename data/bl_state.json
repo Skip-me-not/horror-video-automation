@@ -13,7 +13,8 @@
     "general_entertainment_004",
     "general_entertainment_003",
     "general_entertainment_002",
-    "general_entertainment_001"
+    "general_entertainment_001",
+    "general_entertainment_004"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -28,7 +29,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
     "general_entertainment_hook_2",
-    "general_entertainment_hook_1"
+    "general_entertainment_hook_1",
+    "general_entertainment_hook_4"
   ],
   "layout_history": [
     "layout_01",
@@ -43,7 +45,8 @@
     "layout_10",
     "layout_09",
     "layout_08",
-    "layout_07"
+    "layout_07",
+    "layout_10"
   ],
   "title_pattern_history": [
     34,
@@ -58,12 +61,13 @@
     24,
     37,
     17,
-    4
+    4,
+    13
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 11
+    "general_entertainment": 12
   },
   "published": [
     {
@@ -276,6 +280,23 @@
       "layout_id": "layout_07",
       "published_at": "2026-11-04T18:34:08.479267+00:00",
       "youtube_video_id": "3z1J2LTWQ1s"
+    },
+    {
+      "story_id": "reddit-1x0p9iw",
+      "source_urls": [
+        "https://www.reddit.com/r/BlackPink/comments/1xktczc/261101_jennie_tiktok_update",
+        "https://www.reddit.com/r/BlackPink/comments/1x0klug/261008_jennie_rehearsing_one_of_the_girls_with",
+        "https://www.reddit.com/r/BlackPink/comments/1xkx5sz/261101_carter_gregory_tiktok_update_w_jennie",
+        "https://www.reddit.com/r/BlackPink/comments/1x0pqeu/261008_jennie_with_the_weeknd_on_stage_at_after",
+        "https://www.reddit.com/r/BlackPink/comments/1x0pl71/261008_jennie_performing_one_of_the_girls_with",
+        "https://www.reddit.com/r/BlackPink/comments/1x0p9iw/261008_jennie_made_a_special_appearance_to"
+      ],
+      "headline_hash": "135a26ef23450c150db3e16d2e4521d83aba35cd0b86eecf87da8bad2d3c1777",
+      "content_fingerprint": "31f08d7baffcd68143a1ca6bc91ee06cf26ded5dec6b2f73971adb9c338cab63",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-05T02:45:15.391115+00:00",
+      "youtube_video_id": "p7Jjxoj8SoE"
     }
   ]
 }
