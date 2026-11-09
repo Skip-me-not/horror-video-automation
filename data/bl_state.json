@@ -18,7 +18,8 @@
     "general_entertainment_002",
     "general_entertainment_003",
     "general_entertainment_002",
-    "general_entertainment_003"
+    "general_entertainment_003",
+    "general_entertainment_001"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -38,7 +39,8 @@
     "general_entertainment_hook_2",
     "general_entertainment_hook_3",
     "general_entertainment_hook_2",
-    "general_entertainment_hook_3"
+    "general_entertainment_hook_3",
+    "general_entertainment_hook_1"
   ],
   "layout_history": [
     "layout_01",
@@ -58,7 +60,8 @@
     "layout_08",
     "layout_09",
     "layout_08",
-    "layout_09"
+    "layout_09",
+    "layout_07"
   ],
   "title_pattern_history": [
     34,
@@ -78,12 +81,13 @@
     0,
     47,
     50,
-    34
+    34,
+    12
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 16
+    "general_entertainment": 17
   },
   "published": [
     {
@@ -381,6 +385,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-09T01:55:49.146184+00:00",
       "youtube_video_id": "tc9YSA61Gjg"
+    },
+    {
+      "story_id": "reddit-1qltg4d",
+      "source_urls": [
+        "https://www.reddit.com/r/Aespa/comments/1v8s3xd/260728_aespa_tiktok_update_with_karina_ningning",
+        "https://www.reddit.com/r/Aespa/comments/1xnx2va/throwback_to_that_time_queen_ningning_in_the",
+        "https://www.reddit.com/r/Aespa/comments/1xiq9l7/261030_ningning_instagram_story_update",
+        "https://www.reddit.com/r/Aespa/comments/1rlenhz/260304_ningning_instagram_live_addressing_the",
+        "https://www.reddit.com/r/Aespa/comments/1pjatv3/251211_ningning_instagram_story_update",
+        "https://www.reddit.com/r/Aespa/comments/1qltg4d/260125_ningning_instagram_story_update"
+      ],
+      "headline_hash": "c630b24c66b4e792244cc39f9b6fafac3e4e4e4882150a6b7bdf16d41c7ce7ce",
+      "content_fingerprint": "149fc9a0a429650ec7aa6dd8aeb300ec7684e3cb3d951e4de8e271334696ce5e",
+      "template_id": "general_entertainment_001",
+      "layout_id": "layout_07",
+      "published_at": "2026-11-09T02:43:13.426202+00:00",
+      "youtube_video_id": "qkSPvqMQN0o"
     }
   ]
 }
