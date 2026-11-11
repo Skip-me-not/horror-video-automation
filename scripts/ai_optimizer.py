@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Low-usage AI packaging optimizer for the K-pop ranked Short."""
+"""Low-usage OpenCode-compatible AI packaging optimizer for the K-pop ranked Short."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ from typing import Any, Iterable
 import requests
 
 
-DEFAULT_ENDPOINT = "https://models.github.ai/inference/chat/completions"
-DEFAULT_MODEL = "openai/gpt-4o-mini"
+DEFAULT_ENDPOINT = "https://opencode.ai/inference/openai/v1/chat/completions"
+DEFAULT_MODEL = "glm-5.3-flash"
 PROMPT_VERSION = "kpop-packaging-v1"
 
 
@@ -132,7 +132,7 @@ def validate_optimization(payload: Any, topic: str) -> OptimizationResult:
         hook=hook,
         subtitle=subtitle,
         cta=cta,
-        engine="github_models",
+        engine="opencode_api",
         model=DEFAULT_MODEL,
     )
 
@@ -202,7 +202,7 @@ Source signals:
             hook=result.hook,
             subtitle=result.subtitle,
             cta=result.cta,
-            engine="github_models",
+            engine="opencode_api",
             model=model,
         )
     except (requests.RequestException, TimeoutError, ValueError, TypeError, AIOptimizationError) as exc:

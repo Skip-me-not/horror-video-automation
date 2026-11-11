@@ -1,7 +1,7 @@
 # Lululala K-pop Entertainment Shorts Automation
 
 An AI-assisted, low-usage YouTube Shorts pipeline for K-pop countdown videos. It uses public
-Reddit-hosted media, FFmpeg, GitHub Actions, one optional GitHub Models packaging call, and the
+Reddit-hosted media, FFmpeg, GitHub Actions, one optional OpenCode-compatible packaging call, and the
 YouTube Data API.
 
 ## Architecture
@@ -123,11 +123,11 @@ retry at 14:40. A retry reads actual successful YouTube IDs and exits when the d
 Workflow concurrency serializes publishers so two runs cannot publish the same state. When no unused
 safe clips are available, scheduled runs finish as a clean skip instead of a failure.
 
-The optional AI call uses the built-in Actions token with the `models: read` permission. Set the
-repository variables `AI_ENDPOINT` and `AI_MODEL` only when an OpenAI-compatible provider or a
-different GitHub Models model is required. `ai_mode=off` disables the call, `auto` falls back to
-deterministic packaging on an API failure, and `required` intentionally fails if the model is
-unavailable.
+The optional AI call uses an OpenCode-compatible OpenAI endpoint. Add the OpenCode Console key as
+`OPENCODE_API_KEY` in the repository Actions secrets. Set the repository variables `AI_ENDPOINT` and
+`AI_MODEL` only when using another OpenCode-compatible provider or model. `ai_mode=off` disables the
+call, `auto` falls back to deterministic packaging when the key or endpoint is unavailable, and
+`required` intentionally fails if the model is unavailable.
 
 The only required secrets for real uploads are `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and
 `YOUTUBE_REFRESH_TOKEN`. `YOUTUBE_COOKIES_B64` is not used. `CHANNEL_NAME` remains optional and

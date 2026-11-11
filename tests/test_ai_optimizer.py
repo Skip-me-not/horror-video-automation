@@ -45,8 +45,8 @@ def test_optimizer_uses_one_structured_low_token_request():
 
     result = optimize_packaging(stories(), token="github-token", mode="required", session=session)
 
-    assert result.engine == "github_models"
-    assert result.model == "openai/gpt-4o-mini"
+    assert result.engine == "opencode_api"
+    assert result.model == "glm-5.3-flash"
     assert result.title.startswith("The Jennie")
     request = session.post.call_args.kwargs["json"]
     assert request["max_tokens"] == 220

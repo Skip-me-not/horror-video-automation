@@ -31,7 +31,6 @@ on:
 
 permissions:
   contents: write
-  models: read
 
 concurrency:
   group: youtube-publisher-${{ github.ref }}
@@ -52,9 +51,9 @@ jobs:
       INPUT_NARRATION_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.narration_mode || 'auto' }}
       INPUT_ALLOW_REVIEW: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_review || false }}
       INPUT_AI_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.ai_mode || 'auto' }}
-      GITHUB_MODELS_TOKEN: ${{ github.token }}
-      AI_ENDPOINT: ${{ vars.AI_ENDPOINT || 'https://models.github.ai/inference/chat/completions' }}
-      AI_MODEL: ${{ vars.AI_MODEL || 'openai/gpt-4o-mini' }}
+      AI_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+      AI_ENDPOINT: ${{ vars.AI_ENDPOINT || 'https://opencode.ai/inference/openai/v1/chat/completions' }}
+      AI_MODEL: ${{ vars.AI_MODEL || 'glm-5.3-flash' }}
 
     steps:
       - name: Check out repository

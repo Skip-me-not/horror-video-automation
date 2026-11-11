@@ -190,8 +190,9 @@ def test_kpop_workflow_supports_optional_low_usage_ai():
     assert "story_file" not in workflow
     assert "AI_SCRIPT_MODE" not in workflow
     optimizer = (ROOT / "scripts" / "ai_optimizer.py").read_text(encoding="utf-8")
-    assert "models.github.ai" in optimizer
-    assert "GITHUB_MODELS_TOKEN" in workflow
+    assert "opencode.ai/inference" in optimizer
+    assert "OPENCODE_API_KEY" in workflow
+    assert "AI_ENDPOINT" in workflow
     assert "AI_MODEL" in workflow
     assert "OPENVERSE_CLIENT_ID" not in workflow
     assert "python -m scripts.bl_pipeline" in workflow
@@ -214,7 +215,7 @@ def test_workflow_yaml_preserves_public_schedule_and_success_only_rotation():
     assert "Require a video from manual upload runs" in text
     # PyYAML 1.1 treats the unquoted GitHub Actions key `on` as boolean true.
     assert payload[True]["workflow_dispatch"]["inputs"]["dry_run"]["default"] is False
-    assert payload["permissions"]["models"] == "read"
+    assert "models" not in payload["permissions"]
 
 
 def test_story_json_round_trips_as_utf8():

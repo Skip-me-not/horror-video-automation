@@ -88,9 +88,9 @@ def main() -> None:
         stories, origin = collect_kpop_ranked(6)
         optimization = optimize_packaging(
             stories,
-            token=os.environ.get("GITHUB_MODELS_TOKEN", "").strip(),
-            endpoint=os.environ.get("AI_ENDPOINT", "https://models.github.ai/inference/chat/completions"),
-            model=os.environ.get("AI_MODEL", "openai/gpt-4o-mini"),
+            token=os.environ.get("AI_API_KEY", "").strip(),
+            endpoint=os.environ.get("AI_ENDPOINT", "https://opencode.ai/inference/openai/v1/chat/completions"),
+            model=os.environ.get("AI_MODEL", "glm-5.3-flash"),
             mode=args.ai_mode,
         )
         package = ranked_package(stories, load_state(), optimization)
