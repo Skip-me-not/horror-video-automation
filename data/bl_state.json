@@ -20,6 +20,7 @@
     "general_entertainment_002",
     "general_entertainment_003",
     "general_entertainment_001",
+    "general_entertainment_004",
     "general_entertainment_004"
   ],
   "hook_history": [
@@ -42,6 +43,7 @@
     "general_entertainment_hook_2",
     "general_entertainment_hook_3",
     "general_entertainment_hook_1",
+    "general_entertainment_hook_4",
     "general_entertainment_hook_4"
   ],
   "layout_history": [
@@ -64,6 +66,7 @@
     "layout_08",
     "layout_09",
     "layout_07",
+    "layout_10",
     "layout_10"
   ],
   "title_pattern_history": [
@@ -86,12 +89,13 @@
     50,
     34,
     12,
-    21
+    21,
+    18
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 18
+    "general_entertainment": 19
   },
   "published": [
     {
@@ -423,6 +427,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-11T08:06:13.851616+00:00",
       "youtube_video_id": "id_UFucuwlo"
+    },
+    {
+      "story_id": "reddit-1wpqvov",
+      "source_urls": [
+        "https://www.reddit.com/r/lesserafim/comments/1wzwsbp/261007_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1wvv4sl/261002_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1wtlr28/a_fan_asked_chaewon_to_sign_their_photocard_but",
+        "https://www.reddit.com/r/lesserafim/comments/1x36w7q/261011_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1wnbe1n/260922_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1wpqvov/260925_kim_chaewon_instagram_update_hate_that_i"
+      ],
+      "headline_hash": "2b8580167ac9bc392d3efe2ba796a5a251364fb55c2a897fa9cd7cb3585c8e40",
+      "content_fingerprint": "1e8c54a76bef45d8682bb0c9dd3689b77a82908e839cfd8c1e6eacfcbf983ac0",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-11T21:10:51.868760+00:00",
+      "youtube_video_id": "tR-0IT761tU"
     }
   ]
 }
