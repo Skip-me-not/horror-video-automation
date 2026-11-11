@@ -1,4 +1,4 @@
-"""Deterministic one-slot accounting; never counts a render as an upload."""
+"""Deterministic four-slot accounting; never counts a render as an upload."""
 
 from __future__ import annotations
 
@@ -17,8 +17,15 @@ def myanmar_date() -> str:
 
 
 def scheduled_slot_target(now: datetime | None = None) -> int:
-    """Keep scheduled publishing to one deliberate Myanmar-time upload per day."""
-    return 1
+    """Maximum uploads allowed by the shifted Myanmar-time publishing windows."""
+    local = now.astimezone(MYANMAR_TIME) if now else datetime.now(MYANMAR_TIME)
+    if local.hour < 7:
+        return 1
+    if local.hour < 10:
+        return 2
+    if local.hour < 13:
+        return 3
+    return 4
 
 
 def tier(score: int, config: dict[str, Any]) -> str | None:

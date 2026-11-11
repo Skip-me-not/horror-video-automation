@@ -118,10 +118,12 @@ Open **Actions → Create K-pop entertainment Short → Run workflow**. For a sa
 4. leave `ai_mode` on `auto` to use one compact GitHub Models call with fallback;
 5. download the `kpop-short-<run id>` artifact and inspect `ai_optimization.json`.
 
-Scheduled publishing now targets one deliberate Myanmar-time upload per day at 14:00, with a guarded
-retry at 14:40. A retry reads actual successful YouTube IDs and exits when the daily target is filled.
-Workflow concurrency serializes publishers so two runs cannot publish the same state. When no unused
-safe clips are available, scheduled runs finish as a clean skip instead of a failure.
+Scheduled publishing now uses four shifted Myanmar-time windows: 04:00, 07:00, 10:00,
+and 13:00, with a guarded retry 40 minutes after each. These are one hour earlier than the previous
+05:00, 08:00, 11:00, and 14:00 windows. A retry reads actual successful YouTube IDs and exits when
+that slot is filled. Workflow concurrency serializes publishers so two runs cannot publish the same
+state. When no unused safe clips are available, scheduled runs finish as a clean skip instead of a
+failure.
 
 The optional AI call uses an OpenCode-compatible OpenAI endpoint. Add the OpenCode Console key as
 `OPENCODE_API_KEY` in the repository Actions secrets. Set the repository variables `AI_ENDPOINT` and

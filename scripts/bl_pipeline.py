@@ -61,7 +61,7 @@ def main() -> None:
     current_ids = daily_ids()
     event_name = os.environ.get("GITHUB_EVENT_NAME", "")
     slot_target = scheduled_slot_target() if event_name == "schedule" else None
-    # Scheduled publishing deliberately targets one upload per day. A manual
+    # Scheduled publishing uses four shifted Myanmar-time windows. A manual
     # workflow_dispatch remains an operator-requested run and is not quota-limited.
     if should_skip_for_daily_quota(
         event_name=event_name,
