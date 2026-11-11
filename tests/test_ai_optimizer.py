@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from scripts.ai_optimizer import AIOptimizationError, optimize_packaging, validate_optimization
+from scripts.ai_optimizer import AIOptimizationError, _parse_json_object, optimize_packaging, validate_optimization
 
 
 def stories():
@@ -71,3 +71,14 @@ def test_auto_mode_falls_back_when_model_times_out():
     result = optimize_packaging(stories(), token="github-token", mode="auto", session=session)
     assert result.engine == "deterministic_fallback"
     assert result.cta == "WHO SHOULD WE RANK NEXT?"
+
+
+def test_optimizer_accepts_json_wrapped_in_model_prose():
+    payload = "Here is the JSON:\n" + json.dumps({
+        "title": "The Jennie Moment Fans Kept Replaying",
+        "hook": "Jennie's most-upvoted moment leads this countdown",
+        "subtitle": "Six Jennie moments ranked by fan discussion",
+        "cta": "Was Jennie number one the right choice?",
+    })
+    result = validate_optimization(_parse_json_object(payload), "Jennie")
+    assert result.title.startswith("The Jennie")

@@ -79,6 +79,23 @@ def _content_from_response(payload: dict[str, Any]) -> str:
     return _strip_json_fence(content)
 
 
+def _parse_json_object(value: str) -> dict[str, Any]:
+    text = _strip_json_fence(value)
+    try:
+        parsed = json.loads(text)
+    except json.JSONDecodeError:
+        start = text.find("{")
+        if start < 0:
+            raise AIOptimizationError("AI response did not contain a JSON object")
+        try:
+            parsed, _ = json.JSONDecoder().raw_decode(text[start:])
+        except json.JSONDecodeError as exc:
+            raise AIOptimizationError("AI response did not contain valid JSON") from exc
+    if not isinstance(parsed, dict):
+        raise AIOptimizationError("AI response JSON must be an object")
+    return parsed
+
+
 def _fallback(topic: str) -> OptimizationResult:
     topic = clean_text(topic) or "K-pop"
     return OptimizationResult(
@@ -179,7 +196,7 @@ Source signals:
             timeout=(10, 45),
         )
         response.raise_for_status()
-        result = validate_optimization(json.loads(_content_from_response(response.json())), topic)
+        result = validate_optimization(_parse_json_object(_content_from_response(response.json())), topic)
         return OptimizationResult(
             title=result.title,
             hook=result.hook,
