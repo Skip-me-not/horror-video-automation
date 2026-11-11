@@ -182,15 +182,17 @@ def test_manual_quote_override_remains_backward_compatible():
     assert all(beat["visual_search"] == "writer desk night" for beat in beats)
 
 
-def test_kpop_workflow_is_ai_free_and_deterministic():
+def test_kpop_workflow_supports_optional_low_usage_ai():
     workflow = (ROOT / ".github" / "workflows" / "create-short.yml").read_text(
         encoding="utf-8"
     )
     assert "Create K-pop entertainment Short" in workflow
     assert "story_file" not in workflow
     assert "AI_SCRIPT_MODE" not in workflow
-    assert "GITHUB_TOKEN" not in workflow
-    assert "models.github.ai" not in workflow
+    optimizer = (ROOT / "scripts" / "ai_optimizer.py").read_text(encoding="utf-8")
+    assert "models.github.ai" in optimizer
+    assert "GITHUB_MODELS_TOKEN" in workflow
+    assert "AI_MODEL" in workflow
     assert "OPENVERSE_CLIENT_ID" not in workflow
     assert "python -m scripts.bl_pipeline" in workflow
     assert "REDDIT_CLIENT_ID" not in workflow
@@ -202,7 +204,7 @@ def test_workflow_yaml_preserves_public_schedule_and_success_only_rotation():
     payload = yaml.safe_load(workflow_path.read_text(encoding="utf-8"))
     assert isinstance(payload, dict)
     text = workflow_path.read_text(encoding="utf-8")
-    assert text.count("- cron:") == 8
+    assert text.count("- cron:") == 2
     assert "python -m scripts.upload_youtube" in text
     assert "steps.youtube.outcome == 'success'" in text
     assert "scripts.merge_reddit_state" in text
@@ -212,7 +214,7 @@ def test_workflow_yaml_preserves_public_schedule_and_success_only_rotation():
     assert "Require a video from manual upload runs" in text
     # PyYAML 1.1 treats the unquoted GitHub Actions key `on` as boolean true.
     assert payload[True]["workflow_dispatch"]["inputs"]["dry_run"]["default"] is False
-    assert "models" not in payload["permissions"]
+    assert payload["permissions"]["models"] == "read"
 
 
 def test_story_json_round_trips_as_utf8():

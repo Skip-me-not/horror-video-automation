@@ -261,14 +261,19 @@ def choose_catalog_item(items: list[Any], story_id: str, label: str, recent: Ite
     return index, items[index]
 
 
-def generate_package(story: dict[str, Any], state: dict[str, Any] | None = None) -> dict[str, Any]:
+def generate_package(
+    story: dict[str, Any],
+    state: dict[str, Any] | None = None,
+    *,
+    enforce_duplicates: bool = True,
+) -> dict[str, Any]:
     config, manifest, metadata_catalog = load_catalogs()
     errors = validate_story(story, config, manifest)
     if errors:
         raise BLEngineError("; ".join(errors))
     state = state or load_state()
     verification = verification_result(story, config)
-    duplicates = duplicate_reasons(story, state)
+    duplicates = duplicate_reasons(story, state) if enforce_duplicates else []
     if duplicates:
         raise BLEngineError("Duplicate blocked: " + "; ".join(duplicates))
     template = choose_template(story, state, config, manifest)

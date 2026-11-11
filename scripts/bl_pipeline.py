@@ -8,10 +8,11 @@ import json
 import os
 from pathlib import Path
 
+from scripts.ai_optimizer import optimize_packaging
 from scripts.bl_engine import BLEngineError, ROOT, generate_package, load_state, read_json, write_json_atomic
 from scripts.bl_ranked_renderer import ranked_package, render_ranked
 from scripts.bl_renderer import render
-from scripts.bl_source import collect_kpop_ranked
+from scripts.bl_source import NoEligibleKpopContentError, collect_kpop_ranked
 from scripts.daily_quota import myanmar_date, scheduled_slot_target, summary, write_summary
 
 OUTPUT = ROOT / "output"
@@ -49,14 +50,19 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--allow-review", action="store_true", help="Render manual-review content but never publish it")
     parser.add_argument("--narration-mode", choices=("auto", "required", "text-only"), default="auto")
+    parser.add_argument(
+        "--ai-mode",
+        choices=("auto", "off", "required"),
+        default=os.environ.get("AI_MODE", "auto"),
+        help="Use one low-token AI packaging call, disable it, or fail if unavailable",
+    )
     args = parser.parse_args()
     OUTPUT.mkdir(parents=True, exist_ok=True)
     current_ids = daily_ids()
     event_name = os.environ.get("GITHUB_EVENT_NAME", "")
     slot_target = scheduled_slot_target() if event_name == "schedule" else None
-    # Retry schedules must never overfill the four daily slots. A deliberate
-    # workflow_dispatch is different: it is an operator-requested extra upload
-    # and must not silently succeed without rendering anything.
+    # Scheduled publishing deliberately targets one upload per day. A manual
+    # workflow_dispatch remains an operator-requested run and is not quota-limited.
     if should_skip_for_daily_quota(
         event_name=event_name,
         dry_run=args.dry_run,
@@ -80,10 +86,18 @@ def main() -> None:
         report = render(OUTPUT / "package.json", narration_mode=args.narration_mode, allow_review=args.allow_review)
     else:
         stories, origin = collect_kpop_ranked(6)
-        package = ranked_package(stories, load_state())
+        optimization = optimize_packaging(
+            stories,
+            token=os.environ.get("GITHUB_MODELS_TOKEN", "").strip(),
+            endpoint=os.environ.get("AI_ENDPOINT", "https://models.github.ai/inference/chat/completions"),
+            model=os.environ.get("AI_MODEL", "openai/gpt-4o-mini"),
+            mode=args.ai_mode,
+        )
+        package = ranked_package(stories, load_state(), optimization)
         decision = package["verification"]["decision"]
         write_json_atomic(OUTPUT / "story.json", {"format": "retention_ranked_countdown_v2", "stories": stories})
         write_json_atomic(OUTPUT / "package.json", package)
+        write_json_atomic(OUTPUT / "ai_optimization.json", optimization.as_dict())
         report = render_ranked(package)
     publish = report["passed"] and decision == "auto_publish" and not args.dry_run
     github_output("publish", "true" if publish else "false")
@@ -94,6 +108,12 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
+    except NoEligibleKpopContentError as exc:
+        github_output("publish", "false")
+        if os.environ.get("GITHUB_EVENT_NAME") == "schedule":
+            print(f"SCHEDULE SKIPPED: {exc}")
+            raise SystemExit(0)
+        raise SystemExit(f"ERROR: {exc}") from exc
     except BLEngineError as exc:
         github_output("publish", "false")
         raise SystemExit(f"ERROR: {exc}") from exc
