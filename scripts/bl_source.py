@@ -50,6 +50,9 @@ CATEGORY_TERMS = [
 NEWS_TERMS = ("announce", "announcement", "official pilot", "official trailer", "teaser", "cast", "casting", "premiere", "release date", "fanmeeting", "fan meeting", "interview", "award", "event", "lineup", "press conference")
 NOISE_PATTERN = re.compile(r"(?:\[bts\]|\[?recap\]?|\blive!?\b|behind\s+the\s+scenes|full\s+episode|\bep\.?\s*\d+|\bepisode\s*\d+|\bpart\s*\d+|\bost\b|official\s+mv|music\s+video|dance\s+practice|reaction)", re.I)
 YOUTUBE_HOSTS = {"youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"}
+DEFAULT_KPOP_SUBREDDITS = ("kpop",)
+
+
 class NoEligibleKpopContentError(BLEngineError):
     """No new, safe K-pop clips were available for this scheduled attempt."""
 
