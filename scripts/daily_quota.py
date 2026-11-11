@@ -17,13 +17,13 @@ def myanmar_date() -> str:
 
 
 def scheduled_slot_target(now: datetime | None = None) -> int:
-    """Maximum uploads allowed by the current Myanmar publishing window."""
+    """Maximum uploads allowed by the shifted Myanmar-time publishing windows."""
     local = now.astimezone(MYANMAR_TIME) if now else datetime.now(MYANMAR_TIME)
-    if local.hour < 8:
+    if local.hour < 7:
         return 1
-    if local.hour < 11:
+    if local.hour < 10:
         return 2
-    if local.hour < 14:
+    if local.hour < 13:
         return 3
     return 4
 

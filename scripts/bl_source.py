@@ -16,7 +16,17 @@ from urllib.parse import urljoin, urlparse, urlunparse
 
 import requests
 
-from scripts.bl_engine import BLEngineError, CONFIG_PATH, ROOT, load_state, normalized_url, read_json, verification_result, write_json_atomic
+from scripts.bl_engine import (
+    BLEngineError,
+    CONFIG_PATH,
+    ROOT,
+    duplicate_reasons,
+    load_state,
+    normalized_url,
+    read_json,
+    verification_result,
+    write_json_atomic,
+)
 from scripts.reddit_source import RedditClient, RedditSourceError, load_idols, parse_subreddits, rank_clip_posts, reddit_post_url
 
 QUEUE_DIR = ROOT / "data" / "queue"
@@ -41,6 +51,10 @@ NEWS_TERMS = ("announce", "announcement", "official pilot", "official trailer", 
 NOISE_PATTERN = re.compile(r"(?:\[bts\]|\[?recap\]?|\blive!?\b|behind\s+the\s+scenes|full\s+episode|\bep\.?\s*\d+|\bepisode\s*\d+|\bpart\s*\d+|\bost\b|official\s+mv|music\s+video|dance\s+practice|reaction)", re.I)
 YOUTUBE_HOSTS = {"youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"}
 DEFAULT_KPOP_SUBREDDITS = ("kpop",)
+
+
+class NoEligibleKpopContentError(BLEngineError):
+    """No new, safe K-pop clips were available for this scheduled attempt."""
 
 
 def strip_markup(value: str) -> str:
@@ -335,6 +349,7 @@ def kpop_reddit_story(post: dict[str, Any], topic: str = "K-pop") -> dict[str, A
 def collect_kpop_ranked(count: int = 6) -> tuple[list[dict[str, Any]], str]:
     """Collect distinct public Reddit-hosted K-pop videos without cookies or API keys."""
     state = load_state()
+    used_ids = {item.get("story_id") for item in state.get("published", [])}
     used_urls = {
         normalized_url(url)
         for item in state.get("published", [])
@@ -353,11 +368,16 @@ def collect_kpop_ranked(count: int = 6) -> tuple[list[dict[str, Any]], str]:
             errors.append(f"{idol}: {exc}")
             continue
         ranked = rank_clip_posts(posts, idol, excluded_urls=used_urls)
+        ranked = [
+            post for post in ranked
+            if "reddit-" + str(post.get("id") or "") not in used_ids
+            and not duplicate_reasons(kpop_reddit_story(post, idol), state)
+        ]
         if len(ranked) >= count:
             return [kpop_reddit_story(post, idol) for post in ranked[:count]], f"public_reddit_kpop_videos:{idol}"
         errors.append(f"{idol}: only {len(ranked)} unused hosted clips")
     detail = f" Last fetch error: {errors[-1]}" if errors else ""
-    raise BLEngineError(f"Need {count} unused public Reddit-hosted K-pop idol videos.{detail}")
+    raise NoEligibleKpopContentError(f"Need {count} unused public Reddit-hosted K-pop idol videos.{detail}")
 
 
 def main() -> None:

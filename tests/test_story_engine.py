@@ -182,15 +182,18 @@ def test_manual_quote_override_remains_backward_compatible():
     assert all(beat["visual_search"] == "writer desk night" for beat in beats)
 
 
-def test_kpop_workflow_is_ai_free_and_deterministic():
+def test_kpop_workflow_supports_optional_low_usage_ai():
     workflow = (ROOT / ".github" / "workflows" / "create-short.yml").read_text(
         encoding="utf-8"
     )
     assert "Create K-pop entertainment Short" in workflow
     assert "story_file" not in workflow
     assert "AI_SCRIPT_MODE" not in workflow
-    assert "GITHUB_TOKEN" not in workflow
-    assert "models.github.ai" not in workflow
+    optimizer = (ROOT / "scripts" / "ai_optimizer.py").read_text(encoding="utf-8")
+    assert "opencode.ai/inference" in optimizer
+    assert "OPENCODE_API_KEY" in workflow
+    assert "AI_ENDPOINT" in workflow
+    assert "AI_MODEL" in workflow
     assert "OPENVERSE_CLIENT_ID" not in workflow
     assert "python -m scripts.bl_pipeline" in workflow
     assert "REDDIT_CLIENT_ID" not in workflow

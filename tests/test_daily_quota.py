@@ -21,12 +21,12 @@ def test_quality_tiers_preserve_absolute_floor():
     ]
 
 
-def test_retry_windows_never_overfill_a_daily_slot():
-    assert scheduled_slot_target(datetime(2026, 10, 19, 22, 30, tzinfo=timezone.utc)) == 1
-    assert scheduled_slot_target(datetime(2026, 10, 19, 23, 10, tzinfo=timezone.utc)) == 1
-    assert scheduled_slot_target(datetime(2026, 10, 20, 1, 30, tzinfo=timezone.utc)) == 2
-    assert scheduled_slot_target(datetime(2026, 10, 20, 4, 30, tzinfo=timezone.utc)) == 3
-    assert scheduled_slot_target(datetime(2026, 10, 20, 7, 30, tzinfo=timezone.utc)) == 4
+def test_scheduled_windows_allow_four_shifted_uploads_per_day():
+    assert scheduled_slot_target(datetime(2026, 10, 19, 21, 30, tzinfo=timezone.utc)) == 1
+    assert scheduled_slot_target(datetime(2026, 10, 20, 0, 30, tzinfo=timezone.utc)) == 2
+    assert scheduled_slot_target(datetime(2026, 10, 20, 3, 30, tzinfo=timezone.utc)) == 3
+    assert scheduled_slot_target(datetime(2026, 10, 20, 6, 30, tzinfo=timezone.utc)) == 4
+    assert scheduled_slot_target(datetime(2026, 10, 20, 7, 10, tzinfo=timezone.utc)) == 4
 
 
 def test_rank_uses_quality_and_daily_diversity():

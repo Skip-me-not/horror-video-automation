@@ -15,6 +15,7 @@ from urllib.parse import urlparse
 
 from PIL import Image, ImageDraw
 
+from scripts.ai_optimizer import OptimizationResult
 from scripts.bl_engine import BLEngineError, ROOT, clean_text, generate_package, normalized_url, write_json_atomic
 from scripts.bl_renderer import FONT, LOG_DIR, OUTPUT_DIR, REPORT_DIR, ass_escape, ass_time, download_asset, ffprobe, filter_path
 
@@ -64,14 +65,18 @@ def fan_score(value: Any) -> str:
     return str(score)
 
 
-def ranked_package(stories: list[dict[str, Any]], state: dict[str, Any]) -> dict[str, Any]:
+def ranked_package(
+    stories: list[dict[str, Any]],
+    state: dict[str, Any],
+    optimization: OptimizationResult | None = None,
+) -> dict[str, Any]:
     if len(stories) != 6:
         raise BLEngineError("The reference format requires exactly six K-pop stories")
     # Reddit media is handled by the dedicated ranked downloader.  Do not falsely
     # label a public user upload as rights-authorized for the generic asset path.
     package_story = copy.deepcopy(stories[0])
     package_story["assets"] = []
-    package = generate_package(package_story, state)
+    package = generate_package(package_story, state, enforce_duplicates=False)
     topic = clean_text(stories[0].get("ranked_topic") or "K-pop")
     display_items = []
     seen_labels: dict[str, int] = {}
@@ -99,8 +104,9 @@ def ranked_package(stories: list[dict[str, Any]], state: dict[str, Any]) -> dict
         "title_line_1": "Top 6",
         "title_line_2_white": topic,
         "title_line_2_accent": "Moments",
-        "hook_line": "WAIT FOR #1",
-        "hook_subline": f"FANS RANKED THESE {topic.upper()} MOMENTS",
+        "hook_line": optimization.hook if optimization else "WAIT FOR #1",
+        "hook_subline": optimization.subtitle if optimization else f"FANS RANKED THESE {topic.upper()} MOMENTS",
+        "cta": optimization.cta if optimization else "WHO SHOULD WE RANK NEXT?",
         "hook_duration": HOOK_DURATION,
         "segment_durations": SEGMENT_DURATIONS,
         "total_duration": TOTAL_DURATION,
@@ -119,12 +125,16 @@ def ranked_package(stories: list[dict[str, Any]], state: dict[str, Any]) -> dict
             "sensitive_topics": [],
         }
     package["metadata"].update({
-        "title": f"6 {topic} Moments Fans Ranked Highest",
-        "description": f"Six {topic} K-pop moments ranked by Reddit fan upvotes.\n\nOriginal posts:\n" + "\n".join(source_lines) + f"\n\n#Kpop #{re.sub(r'[^A-Za-z0-9]', '', topic)} #KpopShorts #Shorts",
+        "title": optimization.title if optimization else f"6 {topic} Moments Fans Ranked Highest",
+        "description": (optimization.subtitle if optimization else f"Six {topic} K-pop moments ranked by Reddit fan upvotes.")
+        + "\n\nOriginal posts:\n" + "\n".join(source_lines)
+        + f"\n\n#Kpop #{re.sub(r'[^A-Za-z0-9]', '', topic)} #KpopShorts #Shorts",
         "tags": ["Kpop", topic, "KpopShorts", "Shorts"],
         "format": "kpop_entertainment_short",
         "source_urls": [item["source_url"] for item in display_items],
     })
+    if optimization:
+        package["ai_optimization"] = optimization.as_dict()
     return package
 
 
@@ -158,7 +168,7 @@ def build_ranked_ass(package: dict[str, Any]) -> str:
         events.append(f"Dialogue: 4,{ass_time(cursor + 0.18)},{ass_time(end)},Context,,0,0,0,,{{\\an4\\pos(170,292)}}RANKED BY {item['fan_score']} FAN UPVOTES")
         cursor += span
     final_start = duration - SEGMENT_DURATIONS[-1] + 4.8
-    events.append(f"Dialogue: 4,{ass_time(final_start)},{ass_time(duration)},CTA,,0,0,0,,{{\\an2\\pos(360,1115)}}WHO SHOULD WE RANK NEXT?")
+    events.append(f"Dialogue: 4,{ass_time(final_start)},{ass_time(duration)},CTA,,0,0,0,,{{\\an2\\pos(360,1115)}}{ass_escape(clean_text(package['countdown'].get('cta') or 'WHO SHOULD WE RANK NEXT?'))}")
     channel = ass_escape(os.environ.get("CHANNEL_NAME", "Lululala").strip() or "Lululala")
     events.append(f"Dialogue: 2,{ass_time(0)},{ass_time(duration)},Watermark,,0,0,0,,{{\\an2\\pos(360,1215)}}{channel}")
     return "\n".join([

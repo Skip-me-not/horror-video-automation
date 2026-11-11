@@ -1,8 +1,8 @@
 # Lululala K-pop Entertainment Shorts Automation
 
-A deterministic, AI-free YouTube Shorts pipeline for K-pop countdown videos. It uses public
-Reddit-hosted media, FFmpeg, GitHub Actions, and the YouTube Data API. It does not call an LLM,
-generative image service, speech-to-text service, or AI voice API.
+An AI-assisted, low-usage YouTube Shorts pipeline for K-pop countdown videos. It uses public
+Reddit-hosted media, FFmpeg, GitHub Actions, one optional OpenCode-compatible packaging call, and the
+YouTube Data API.
 
 ## Architecture
 
@@ -10,7 +10,9 @@ generative image service, speech-to-text service, or AI voice API.
    cookie export, Reddit API key, or AI service.
 2. `bl_engine.py` validates the story, scores its sources, blocks sensitive claims, checks
    duplicates, chooses a template/layout deterministically, and produces script/captions/metadata.
-3. `bl_ranked_renderer.py` merges each Reddit clip's original audio and renders a retention-first
+3. `ai_optimizer.py` makes at most one compact model request per video to improve the title, first
+   hook, subtitle, and comment CTA. If the model is unavailable, deterministic packaging continues.
+4. `bl_ranked_renderer.py` merges each Reddit clip's original audio and renders a retention-first
    35-second 720x1280 countdown with a #1 teaser, scene-aware starts, compact labels, and watermark.
 4. QA probes the output and blocks upload on technical, source, metadata, placeholder, or duplicate
    failure.
@@ -113,11 +115,21 @@ Open **Actions → Create K-pop entertainment Short → Run workflow**. For a sa
 1. keep `dry_run` enabled;
 2. leave narration mode on `auto` (the countdown preserves original clip audio);
 3. leave `allow_review` off;
-4. download the `kpop-short-<run id>` artifact.
+4. leave `ai_mode` on `auto` to use one compact OpenCode Go call with fallback;
+5. download the `kpop-short-<run id>` artifact and inspect `ai_optimization.json`.
 
-Scheduled runs retain four primary Myanmar-time slots (05:00, 08:00, 11:00, 14:00) plus a guarded
-retry 40 minutes after each.  A retry reads actual successful YouTube IDs and exits when its slot is
-filled.  Workflow concurrency serializes publishers so two runs cannot publish the same state.
+Scheduled publishing now uses four shifted Myanmar-time windows: 04:00, 07:00, 10:00,
+and 13:00, with a guarded retry 40 minutes after each. These are one hour earlier than the previous
+05:00, 08:00, 11:00, and 14:00 windows. A retry reads actual successful YouTube IDs and exits when
+that slot is filled. Workflow concurrency serializes publishers so two runs cannot publish the same
+state. When no unused safe clips are available, scheduled runs finish as a clean skip instead of a
+failure.
+
+The default AI endpoint is OpenCode Go's OpenAI-compatible endpoint. Add the Go personal API key
+as the repository Actions secret `OPENCODE_API_KEY`. Set `AI_ENDPOINT` and `AI_MODEL` only when using
+another provider or model. `ai_mode=off` disables the call, `auto` falls back to deterministic
+packaging when the key or endpoint is unavailable, and `required` intentionally fails if the model is
+unavailable.
 
 The only required secrets for real uploads are `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and
 `YOUTUBE_REFRESH_TOKEN`. `YOUTUBE_COOKIES_B64` is not used. `CHANNEL_NAME` remains optional and
@@ -139,13 +151,17 @@ the workflow still uploads diagnostics.
 
 ## Troubleshooting
 
-- **Fewer than six clips:** broaden `KPOP_REDDIT_SUBREDDITS` or wait for the public Reddit endpoints
-  to recover; the workflow refuses thumbnail and black-screen substitutes.
+- **Fewer than six clips:** scheduled runs cleanly skip and retry later; broaden `KPOP_REDDIT_SUBREDDITS`
+  if the channel needs more variety. The workflow refuses thumbnail and black-screen substitutes.
+- **AI packaging unavailable:** `auto` mode keeps the deterministic title, hook, and CTA; use
+  `required` only when a model response is a hard requirement.
 - **Manual review required:** inspect the source and claim; do not bypass it for production.
 - **Asset rejected:** mark only genuinely authorized/configured assets with `authorized: true`.
-- **FFprobe missing:** install the full FFmpeg package, not a standalone `ffmpeg` executable.
+- **FFprobe missing:** the workflow checks for both FFmpeg and FFprobe, retries apt installation, and
+  fails clearly if the GitHub runner cannot resolve package servers.
 - **Upload credentials missing:** use dry-run or add the three existing YouTube secrets.
-- **Duplicate blocked:** use a new factual story; do not delete history to repost the same item.
+- **Duplicate blocked:** source collection now filters published IDs, URLs, fingerprints, and headlines;
+  do not delete history to repost the same item.
 - **Feed has no usable entries:** verify it is RSS/Atom and its URL is reachable from GitHub Actions.
 
 GitHub scheduling and YouTube availability are external systems: no repository can guarantee a run

@@ -2,14 +2,14 @@ name: Create K-pop entertainment Short
 
 on:
   schedule:
-    - cron: "30 22 * * *" # Myanmar time 05:00
-    - cron: "10 23 * * *" # guarded retry at 05:40
-    - cron: "30 1 * * *"  # Myanmar time 08:00
-    - cron: "10 2 * * *"  # guarded retry at 08:40
-    - cron: "30 4 * * *"  # Myanmar time 11:00
-    - cron: "10 5 * * *"  # guarded retry at 11:40
-    - cron: "30 7 * * *"  # Myanmar time 14:00
-    - cron: "10 8 * * *"  # guarded retry at 14:40
+    - cron: "30 21 * * *" # Myanmar time 04:00; one hour before the first peak window
+    - cron: "10 22 * * *" # guarded retry at Myanmar time 04:40
+    - cron: "30 0 * * *"  # Myanmar time 07:00; one hour before the second peak window
+    - cron: "10 1 * * *"  # guarded retry at Myanmar time 07:40
+    - cron: "30 3 * * *"  # Myanmar time 10:00; one hour before the third peak window
+    - cron: "10 4 * * *"  # guarded retry at Myanmar time 10:40
+    - cron: "30 6 * * *"  # Myanmar time 13:00; one hour before the fourth peak window
+    - cron: "10 7 * * *"  # guarded retry at Myanmar time 13:40
   workflow_dispatch:
     inputs:
       dry_run:
@@ -28,6 +28,12 @@ on:
         required: true
         default: false
         type: boolean
+      ai_mode:
+        description: "Optimize title, hook, subtitle, and CTA with one low-token call"
+        required: true
+        default: "auto"
+        type: choice
+        options: ["auto", "off", "required"]
 
 permissions:
   contents: write
@@ -50,6 +56,10 @@ jobs:
       INPUT_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
       INPUT_NARRATION_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.narration_mode || 'auto' }}
       INPUT_ALLOW_REVIEW: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_review || false }}
+      INPUT_AI_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.ai_mode || 'auto' }}
+      AI_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+      AI_ENDPOINT: ${{ vars.AI_ENDPOINT || 'https://opencode.ai/inference/go/openai/v1/chat/completions' }}
+      AI_MODEL: ${{ vars.AI_MODEL || 'glm-5.3-flash' }}
 
     steps:
       - name: Check out repository
@@ -65,11 +75,30 @@ jobs:
           cache-dependency-path: requirements.txt
 
       - name: Install FFmpeg and Python dependencies
+        shell: bash
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes ffmpeg
+          set -euo pipefail
+          installed=false
+          for attempt in 1 2 3; do
+            if command -v ffmpeg >/dev/null 2>&1 && command -v ffprobe >/dev/null 2>&1; then
+              installed=true
+              break
+            fi
+            if sudo apt-get update -o Acquire::Retries=3 && sudo apt-get install --yes --no-install-recommends ffmpeg; then
+              installed=true
+              break
+            fi
+            echo "FFmpeg installation attempt $attempt failed; retrying" >&2
+            sleep $((attempt * 5))
+          done
+          if [[ "$installed" != "true" ]]; then
+            echo "FFmpeg and FFprobe are unavailable after retries" >&2
+            exit 1
+          fi
+          ffmpeg -version | head -n 1
+          ffprobe -version | head -n 1
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install -r requirements.txt
 
       - name: Validate configuration and catalogs
         shell: bash
@@ -89,7 +118,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          args=(--narration-mode "$INPUT_NARRATION_MODE")
+          args=(--narration-mode "$INPUT_NARRATION_MODE" --ai-mode "$INPUT_AI_MODE")
           if [[ "$INPUT_DRY_RUN" == "true" ]]; then args+=(--dry-run); fi
           if [[ "$INPUT_ALLOW_REVIEW" == "true" ]]; then
             if [[ "$INPUT_DRY_RUN" != "true" ]]; then
@@ -146,6 +175,7 @@ jobs:
             output/story.json
             output/package.json
             output/metadata.json
+            output/ai_optimization.json
             quality_reports/*.json
             logs/run.json
           if-no-files-found: warn
