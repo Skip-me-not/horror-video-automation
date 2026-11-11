@@ -115,7 +115,7 @@ Open **Actions → Create K-pop entertainment Short → Run workflow**. For a sa
 1. keep `dry_run` enabled;
 2. leave narration mode on `auto` (the countdown preserves original clip audio);
 3. leave `allow_review` off;
-4. leave `ai_mode` on `auto` to use one compact GitHub Models call with fallback;
+4. leave `ai_mode` on `auto` to use one compact OpenCode Go call with fallback;
 5. download the `kpop-short-<run id>` artifact and inspect `ai_optimization.json`.
 
 Scheduled publishing now uses four shifted Myanmar-time windows: 04:00, 07:00, 10:00,
@@ -125,11 +125,11 @@ that slot is filled. Workflow concurrency serializes publishers so two runs cann
 state. When no unused safe clips are available, scheduled runs finish as a clean skip instead of a
 failure.
 
-The optional AI call uses an OpenCode-compatible OpenAI endpoint. Add the OpenCode Console key as
-`OPENCODE_API_KEY` in the repository Actions secrets. Set the repository variables `AI_ENDPOINT` and
-`AI_MODEL` only when using another OpenCode-compatible provider or model. `ai_mode=off` disables the
-call, `auto` falls back to deterministic packaging when the key or endpoint is unavailable, and
-`required` intentionally fails if the model is unavailable.
+The default AI endpoint is OpenCode Go's OpenAI-compatible endpoint. Add the Go personal API key
+as the repository Actions secret `OPENCODE_API_KEY`. Set `AI_ENDPOINT` and `AI_MODEL` only when using
+another provider or model. `ai_mode=off` disables the call, `auto` falls back to deterministic
+packaging when the key or endpoint is unavailable, and `required` intentionally fails if the model is
+unavailable.
 
 The only required secrets for real uploads are `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, and
 `YOUTUBE_REFRESH_TOKEN`. `YOUTUBE_COOKIES_B64` is not used. `CHANNEL_NAME` remains optional and

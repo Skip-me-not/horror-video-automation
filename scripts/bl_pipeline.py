@@ -89,7 +89,7 @@ def main() -> None:
         optimization = optimize_packaging(
             stories,
             token=os.environ.get("AI_API_KEY", "").strip(),
-            endpoint=os.environ.get("AI_ENDPOINT", "https://opencode.ai/inference/openai/v1/chat/completions"),
+            endpoint=os.environ.get("AI_ENDPOINT", "https://opencode.ai/inference/go/openai/v1/chat/completions"),
             model=os.environ.get("AI_MODEL", "glm-5.3-flash"),
             mode=args.ai_mode,
         )

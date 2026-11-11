@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import asdict, dataclass
 from typing import Any, Iterable
@@ -11,7 +12,7 @@ from typing import Any, Iterable
 import requests
 
 
-DEFAULT_ENDPOINT = "https://opencode.ai/inference/openai/v1/chat/completions"
+DEFAULT_ENDPOINT = "https://opencode.ai/inference/go/openai/v1/chat/completions"
 DEFAULT_MODEL = "glm-5.3-flash"
 PROMPT_VERSION = "kpop-packaging-v1"
 
@@ -182,6 +183,8 @@ Source signals:
                 "Authorization": f"Bearer {token}",
                 "Content-Type": "application/json",
                 "Accept": "application/json",
+                "User-Agent": "lululala-kpop-shorts/1.0",
+                "x-opencode-session": f"github-actions-{os.environ.get('GITHUB_RUN_ID', 'local')}",
             },
             json={
                 "model": model,

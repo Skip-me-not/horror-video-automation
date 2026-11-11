@@ -58,7 +58,7 @@ jobs:
       INPUT_ALLOW_REVIEW: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_review || false }}
       INPUT_AI_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.ai_mode || 'auto' }}
       AI_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-      AI_ENDPOINT: ${{ vars.AI_ENDPOINT || 'https://opencode.ai/inference/openai/v1/chat/completions' }}
+      AI_ENDPOINT: ${{ vars.AI_ENDPOINT || 'https://opencode.ai/inference/go/openai/v1/chat/completions' }}
       AI_MODEL: ${{ vars.AI_MODEL || 'glm-5.3-flash' }}
 
     steps:

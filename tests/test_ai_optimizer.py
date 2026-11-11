@@ -51,6 +51,9 @@ def test_optimizer_uses_one_structured_low_token_request():
     request = session.post.call_args.kwargs["json"]
     assert request["max_tokens"] == 220
     assert request["response_format"] == {"type": "json_object"}
+    headers = session.post.call_args.kwargs["headers"]
+    assert headers["User-Agent"] == "lululala-kpop-shorts/1.0"
+    assert headers["x-opencode-session"].startswith("github-actions-")
     assert len(request["messages"]) == 2
 
 
