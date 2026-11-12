@@ -23,7 +23,8 @@
     "general_entertainment_004",
     "general_entertainment_004",
     "general_entertainment_004",
-    "general_entertainment_002"
+    "general_entertainment_002",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -48,7 +49,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_4",
     "general_entertainment_hook_4",
-    "general_entertainment_hook_2"
+    "general_entertainment_hook_2",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -73,7 +75,8 @@
     "layout_10",
     "layout_10",
     "layout_10",
-    "layout_08"
+    "layout_08",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -98,12 +101,13 @@
     21,
     18,
     26,
-    1
+    1,
+    28
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 21
+    "general_entertainment": 22
   },
   "published": [
     {
@@ -486,6 +490,23 @@
       "layout_id": "layout_08",
       "published_at": "2026-11-12T07:35:06.281653+00:00",
       "youtube_video_id": "QZ4BvkW0mLs"
+    },
+    {
+      "story_id": "reddit-1w37pet",
+      "source_urls": [
+        "https://www.reddit.com/r/bangtan/comments/1w7liez/260905_jungkook_on_instagram",
+        "https://www.reddit.com/r/bangtan/comments/1wcf6h1/260910_jungkook_at_spotify_house_seoul",
+        "https://www.reddit.com/r/bangtan/comments/1whcvp3/260916_jungkook_cf_compilation",
+        "https://www.reddit.com/r/bangtan/comments/1xt8vei/261111_jungkook_at_the_graff_event_in_tokyo",
+        "https://www.reddit.com/r/bangtan/comments/1wovcup/260924_jungkook_at_the_hublot_boutique_in_tokyo",
+        "https://www.reddit.com/r/bangtan/comments/1w37pet/260831_jungkook_on_weverse"
+      ],
+      "headline_hash": "53f974ea36406f46955ecea9f0f9aeff2243c31b9598cd32a5069f77782806c6",
+      "content_fingerprint": "482309d1e7a940aad1ad72dffde3c54ad64672a03bb52e601279ae8fa90391fe",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-12T08:16:41.977661+00:00",
+      "youtube_video_id": "RMLGHZ2i9Ms"
     }
   ]
 }
