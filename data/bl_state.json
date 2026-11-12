@@ -22,7 +22,8 @@
     "general_entertainment_001",
     "general_entertainment_004",
     "general_entertainment_004",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_002"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -46,7 +47,8 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
     "general_entertainment_hook_4",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_2"
   ],
   "layout_history": [
     "layout_01",
@@ -70,7 +72,8 @@
     "layout_07",
     "layout_10",
     "layout_10",
-    "layout_10"
+    "layout_10",
+    "layout_08"
   ],
   "title_pattern_history": [
     34,
@@ -94,12 +97,13 @@
     12,
     21,
     18,
-    26
+    26,
+    1
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 20
+    "general_entertainment": 21
   },
   "published": [
     {
@@ -465,6 +469,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-12T02:22:56.067322+00:00",
       "youtube_video_id": "NQEkl1kNgwg"
+    },
+    {
+      "story_id": "reddit-1xpdtqb",
+      "source_urls": [
+        "https://www.reddit.com/r/Aespa/comments/1xsv4fx/261110_karinas_maknae_side_of_throwing_a_tantrum",
+        "https://www.reddit.com/r/Aespa/comments/1xp7o2p/261106_eyop_instagram_update_with_karina",
+        "https://www.reddit.com/r/Aespa/comments/1xpnaer/261106_hip_instagram_update_with_karina_2",
+        "https://www.reddit.com/r/Aespa/comments/1xrdwjw/261109_daily_fashion_news_instagram_update_with",
+        "https://www.reddit.com/r/Aespa/comments/1xrbuyu/261109_karina_winter_departing_for_atlanta_us_for",
+        "https://www.reddit.com/r/Aespa/comments/1xpdtqb/throwback_to_that_time_karina_got_so_annoyed_by"
+      ],
+      "headline_hash": "21addfe4fa1f759b664149d0c64ef9b3b1f6b7040749db674fd2bd2fcf61f71d",
+      "content_fingerprint": "abaee534c27cb6cbf0b8dc069f7fb83295abb2a766f641f80aa07c2f17f4e62e",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-12T07:35:06.281653+00:00",
+      "youtube_video_id": "QZ4BvkW0mLs"
     }
   ]
 }
