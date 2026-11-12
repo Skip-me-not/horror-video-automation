@@ -21,6 +21,7 @@
     "general_entertainment_003",
     "general_entertainment_001",
     "general_entertainment_004",
+    "general_entertainment_004",
     "general_entertainment_004"
   ],
   "hook_history": [
@@ -43,6 +44,7 @@
     "general_entertainment_hook_2",
     "general_entertainment_hook_3",
     "general_entertainment_hook_1",
+    "general_entertainment_hook_4",
     "general_entertainment_hook_4",
     "general_entertainment_hook_4"
   ],
@@ -67,6 +69,7 @@
     "layout_09",
     "layout_07",
     "layout_10",
+    "layout_10",
     "layout_10"
   ],
   "title_pattern_history": [
@@ -90,12 +93,13 @@
     34,
     12,
     21,
-    18
+    18,
+    26
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 19
+    "general_entertainment": 20
   },
   "published": [
     {
@@ -444,6 +448,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-11T21:10:51.868760+00:00",
       "youtube_video_id": "tR-0IT761tU"
+    },
+    {
+      "story_id": "reddit-1xqgwxx",
+      "source_urls": [
+        "https://www.reddit.com/r/Aespa/comments/1xs4igw/261110_gucci_instagram_update_with_ningning_2026",
+        "https://www.reddit.com/r/Aespa/comments/1xjdxx5/261030_ningning_instagram_story_update_with",
+        "https://www.reddit.com/r/Aespa/comments/1xqqk0g/261108_glamourau_instagram_update_with_ningning",
+        "https://www.reddit.com/r/Aespa/comments/1xiq7nn/261030_ningning_instagram_story_update_with",
+        "https://www.reddit.com/r/Aespa/comments/1x3z0y1/261012_ningning_instagram_story_update",
+        "https://www.reddit.com/r/Aespa/comments/1xqgwxx/261108_ningning_instagram_story_update"
+      ],
+      "headline_hash": "6d8d32bc896b177180ea0a71e8afe7de82d2ad3ebd0c38085b9cc7ce14208d6d",
+      "content_fingerprint": "2bb335b34d9dd2a75c4d8a875a5089c041bfa48f9ad9c930f609a45574ec6ab3",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-12T02:22:56.067322+00:00",
+      "youtube_video_id": "NQEkl1kNgwg"
     }
   ]
 }
