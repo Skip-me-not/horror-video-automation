@@ -25,7 +25,8 @@
     "general_entertainment_004",
     "general_entertainment_002",
     "general_entertainment_003",
-    "general_entertainment_001"
+    "general_entertainment_001",
+    "general_entertainment_004"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -52,7 +53,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_2",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_1"
+    "general_entertainment_hook_1",
+    "general_entertainment_hook_4"
   ],
   "layout_history": [
     "layout_01",
@@ -79,7 +81,8 @@
     "layout_10",
     "layout_08",
     "layout_09",
-    "layout_07"
+    "layout_07",
+    "layout_10"
   ],
   "title_pattern_history": [
     34,
@@ -106,12 +109,13 @@
     26,
     1,
     28,
-    41
+    41,
+    6
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 23
+    "general_entertainment": 24
   },
   "published": [
     {
@@ -528,6 +532,23 @@
       "layout_id": "layout_07",
       "published_at": "2026-11-13T02:02:21.025583+00:00",
       "youtube_video_id": "dGzoaQjcivU"
+    },
+    {
+      "story_id": "reddit-1xp9m6z",
+      "source_urls": [
+        "https://www.reddit.com/r/Aespa/comments/1xp45dh/261106_karina_for_converse_run_star_crush",
+        "https://www.reddit.com/r/Aespa/comments/1xp9u78/261106_zirasimag_instagram_update_with_karina",
+        "https://www.reddit.com/r/Aespa/comments/1xp8562/261106_izit_instagram_update_with_karina",
+        "https://www.reddit.com/r/Aespa/comments/1xsp9q5/261110_how_karina_han_sua_gotten_close_and_when",
+        "https://www.reddit.com/r/Aespa/comments/1xp8yuc/261106_hip_instagram_update_with_karina",
+        "https://www.reddit.com/r/Aespa/comments/1xp9m6z/261106_eyop_instagram_update_with_karina_2"
+      ],
+      "headline_hash": "b7146f9898c0951d3b0f33f88fe03d553c4f477e3ca89f8e27530e9e1b80e96d",
+      "content_fingerprint": "9450d9cd4137348b0e72ddcbca551eaee94a7530525da2c0039fef92bd429526",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-13T07:04:26.751404+00:00",
+      "youtube_video_id": "9XITg0zQm14"
     }
   ]
 }
