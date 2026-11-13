@@ -26,7 +26,8 @@
     "general_entertainment_002",
     "general_entertainment_003",
     "general_entertainment_001",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_002"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -54,7 +55,8 @@
     "general_entertainment_hook_2",
     "general_entertainment_hook_3",
     "general_entertainment_hook_1",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_2"
   ],
   "layout_history": [
     "layout_01",
@@ -82,7 +84,8 @@
     "layout_08",
     "layout_09",
     "layout_07",
-    "layout_10"
+    "layout_10",
+    "layout_08"
   ],
   "title_pattern_history": [
     34,
@@ -110,12 +113,13 @@
     1,
     28,
     41,
-    6
+    6,
+    3
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 24
+    "general_entertainment": 25
   },
   "published": [
     {
@@ -549,6 +553,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-13T07:04:26.751404+00:00",
       "youtube_video_id": "9XITg0zQm14"
+    },
+    {
+      "story_id": "reddit-1w7430g",
+      "source_urls": [
+        "https://www.reddit.com/r/straykids/comments/1xpzj6d/261107_stray_kids_instagram_update_with_bang_chan",
+        "https://www.reddit.com/r/straykids/comments/1xth1kw/261111_bang_chan_instagram_update",
+        "https://www.reddit.com/r/straykids/comments/1vxnzzj/260825_w_korea_instagram_update_with_bang_chan",
+        "https://www.reddit.com/r/straykids/comments/1w66cgk/260903_stray_kids_instagram_update_with_bang_chan",
+        "https://www.reddit.com/r/straykids/comments/1w1edq7/260829_stray_kids_instagram_update_with_bang_chan",
+        "https://www.reddit.com/r/straykids/comments/1w7430g/260904_epik_high_dj_tukutz_instagram_update"
+      ],
+      "headline_hash": "56a85c6ff9a9f154bc5d2c1addbc86cf049342afd2751fdc392688cde5eaa880",
+      "content_fingerprint": "92bb286579187fd1827f6fe6c0b26c8bdf5854340cf7bd8747b4fe94d7b8bb53",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-13T12:10:21.882642+00:00",
+      "youtube_video_id": "fotwQuA2zVU"
     }
   ]
 }
