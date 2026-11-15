@@ -29,7 +29,8 @@
     "general_entertainment_004",
     "general_entertainment_002",
     "general_entertainment_003",
-    "general_entertainment_003"
+    "general_entertainment_003",
+    "general_entertainment_002"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -60,7 +61,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_2",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_3"
+    "general_entertainment_hook_3",
+    "general_entertainment_hook_2"
   ],
   "layout_history": [
     "layout_01",
@@ -91,7 +93,8 @@
     "layout_10",
     "layout_08",
     "layout_09",
-    "layout_09"
+    "layout_09",
+    "layout_08"
   ],
   "title_pattern_history": [
     34,
@@ -122,12 +125,13 @@
     6,
     3,
     49,
-    17
+    17,
+    38
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 27
+    "general_entertainment": 28
   },
   "published": [
     {
@@ -612,6 +616,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-15T07:50:12.686043+00:00",
       "youtube_video_id": "NApKH2P9es4"
+    },
+    {
+      "story_id": "reddit-1sfwa0e",
+      "source_urls": [
+        "https://www.reddit.com/r/twice/comments/1vinev2/260808_sana_instagram_update_yslbeauty",
+        "https://www.reddit.com/r/twice/comments/1suxa6f/sana_right_hand_girl_in_denver",
+        "https://www.reddit.com/r/twice/comments/1vkoltj/260810_harpersbazaarkorea_instagram_update_on_the",
+        "https://www.reddit.com/r/twice/comments/1t8c2nv/sana_dancing_with_me_and_my_cousin",
+        "https://www.reddit.com/r/twice/comments/1tx448j/sana_is_a_bias_wrecker",
+        "https://www.reddit.com/r/twice/comments/1sfwa0e/mad_sana_is_still_cute_sana"
+      ],
+      "headline_hash": "fa956f73f69d1e0d0c1e34e6d08c6ef4e36a8c330d3f265b2331cbe7cc367e86",
+      "content_fingerprint": "5d35f0c62767704b5860449acc0258d836520535ea3f8953ed484be0757c1f90",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-15T11:56:51.732637+00:00",
+      "youtube_video_id": "oe_Cuz5zI-Y"
     }
   ]
 }
