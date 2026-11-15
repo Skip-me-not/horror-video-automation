@@ -28,6 +28,7 @@
     "general_entertainment_001",
     "general_entertainment_004",
     "general_entertainment_002",
+    "general_entertainment_003",
     "general_entertainment_003"
   ],
   "hook_history": [
@@ -58,6 +59,7 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
     "general_entertainment_hook_2",
+    "general_entertainment_hook_3",
     "general_entertainment_hook_3"
   ],
   "layout_history": [
@@ -88,6 +90,7 @@
     "layout_07",
     "layout_10",
     "layout_08",
+    "layout_09",
     "layout_09"
   ],
   "title_pattern_history": [
@@ -118,12 +121,13 @@
     41,
     6,
     3,
-    49
+    49,
+    17
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 26
+    "general_entertainment": 27
   },
   "published": [
     {
@@ -591,6 +595,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-15T06:58:27.195944+00:00",
       "youtube_video_id": "BdMLWTeh4g0"
+    },
+    {
+      "story_id": "reddit-1wo4auy",
+      "source_urls": [
+        "https://www.reddit.com/r/straykids/comments/1x27nqs/261010_harpers_bazaar_singapore_instagram_update",
+        "https://www.reddit.com/r/straykids/comments/1wqm4p1/260926_bang_chan_for_vogue_korea_x_fendi",
+        "https://www.reddit.com/r/straykids/comments/1xmiy3p/261103_pepero_twitter_update_with_bang_chan",
+        "https://www.reddit.com/r/straykids/comments/1x5ngzc/261014_bang_chan_instagram_story_update_with",
+        "https://www.reddit.com/r/straykids/comments/1wwlpda/261003_bang_chan_instagram_update_3",
+        "https://www.reddit.com/r/straykids/comments/1wo4auy/260923_harpers_bazaar_thailand_instagram_update"
+      ],
+      "headline_hash": "2459eb81057140c6f43f21236cfd3b2e6837c644de7f068a190ad7fb7232bc60",
+      "content_fingerprint": "63ec8471fc8c1c8f63df2065d3b7832c599387cb60c9b30b3ffe88d4b5c27c1d",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-15T07:50:12.686043+00:00",
+      "youtube_video_id": "NApKH2P9es4"
     }
   ]
 }
