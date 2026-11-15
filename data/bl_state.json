@@ -27,7 +27,8 @@
     "general_entertainment_003",
     "general_entertainment_001",
     "general_entertainment_004",
-    "general_entertainment_002"
+    "general_entertainment_002",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -56,7 +57,8 @@
     "general_entertainment_hook_3",
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
-    "general_entertainment_hook_2"
+    "general_entertainment_hook_2",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -85,7 +87,8 @@
     "layout_09",
     "layout_07",
     "layout_10",
-    "layout_08"
+    "layout_08",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -114,12 +117,13 @@
     28,
     41,
     6,
-    3
+    3,
+    49
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 25
+    "general_entertainment": 26
   },
   "published": [
     {
@@ -570,6 +574,23 @@
       "layout_id": "layout_08",
       "published_at": "2026-11-13T12:10:21.882642+00:00",
       "youtube_video_id": "fotwQuA2zVU"
+    },
+    {
+      "story_id": "reddit-1v7b65l",
+      "source_urls": [
+        "https://www.reddit.com/r/IVE/comments/1uv5hsc/260713_wonyoung_arena_homme_x_barrie_august_2026",
+        "https://www.reddit.com/r/IVE/comments/1v1b6k6/260720_wonyoung_arena_homme_x_barrie_august_2026",
+        "https://www.reddit.com/r/IVE/comments/1xuvfny/261112_wonyoung_w_korea_x_bvlgari_decemeber_2026",
+        "https://www.reddit.com/r/IVE/comments/1xsiia1/261110_mmm_magazine_instagram_update_with_wonyoung",
+        "https://www.reddit.com/r/IVE/comments/1v7amxc/260726_sny_mets_twitter_update_with_wonyoung",
+        "https://www.reddit.com/r/IVE/comments/1v7b65l/260726_mlb_official_twitter_update_with_wonyoung"
+      ],
+      "headline_hash": "a3ddc3f6dd882d7e51118edb8948708a005a97353ff0ec9132c46b017385b61e",
+      "content_fingerprint": "bd11b8d50727e6c736a0f0417497be3ab85bea152de665f737ba2dfce94f2c73",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-15T06:58:27.195944+00:00",
+      "youtube_video_id": "BdMLWTeh4g0"
     }
   ]
 }
