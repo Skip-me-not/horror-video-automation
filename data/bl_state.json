@@ -30,7 +30,8 @@
     "general_entertainment_002",
     "general_entertainment_003",
     "general_entertainment_003",
-    "general_entertainment_002"
+    "general_entertainment_002",
+    "general_entertainment_001"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -62,7 +63,8 @@
     "general_entertainment_hook_2",
     "general_entertainment_hook_3",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_2"
+    "general_entertainment_hook_2",
+    "general_entertainment_hook_1"
   ],
   "layout_history": [
     "layout_01",
@@ -94,7 +96,8 @@
     "layout_08",
     "layout_09",
     "layout_09",
-    "layout_08"
+    "layout_08",
+    "layout_07"
   ],
   "title_pattern_history": [
     34,
@@ -126,12 +129,13 @@
     3,
     49,
     17,
-    38
+    38,
+    42
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 28
+    "general_entertainment": 29
   },
   "published": [
     {
@@ -633,6 +637,23 @@
       "layout_id": "layout_08",
       "published_at": "2026-11-15T11:56:51.732637+00:00",
       "youtube_video_id": "oe_Cuz5zI-Y"
+    },
+    {
+      "story_id": "reddit-1xtgn2y",
+      "source_urls": [
+        "https://www.reddit.com/r/lesserafim/comments/1xjlkdr/261030_matin_kim_magazine_instagram_update_with",
+        "https://www.reddit.com/r/lesserafim/comments/1wsdlit/260928_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1x4xw20/261013_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1wwoeng/261003_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1wu39av/260930_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1xtgn2y/261111_miyawaki_sakura_weverse_update_feat_kim"
+      ],
+      "headline_hash": "f84f9b9a6a7a49fa13972ffd06cf57367e8c8715caaafe09fda5dd6d01e3060c",
+      "content_fingerprint": "e5f7aeb0eb7b2dd5c379f2cd0bf0f9ae4fd0eed4454bc3628cba4ed49425cec7",
+      "template_id": "general_entertainment_001",
+      "layout_id": "layout_07",
+      "published_at": "2026-11-15T14:18:27.605982+00:00",
+      "youtube_video_id": "3vUM5KSXUxk"
     }
   ]
 }
