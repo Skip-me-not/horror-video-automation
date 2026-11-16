@@ -33,6 +33,7 @@
     "general_entertainment_002",
     "general_entertainment_001",
     "general_entertainment_004",
+    "general_entertainment_004",
     "general_entertainment_004"
   ],
   "hook_history": [
@@ -67,6 +68,7 @@
     "general_entertainment_hook_3",
     "general_entertainment_hook_2",
     "general_entertainment_hook_1",
+    "general_entertainment_hook_4",
     "general_entertainment_hook_4",
     "general_entertainment_hook_4"
   ],
@@ -103,6 +105,7 @@
     "layout_08",
     "layout_07",
     "layout_10",
+    "layout_10",
     "layout_10"
   ],
   "title_pattern_history": [
@@ -138,12 +141,13 @@
     38,
     42,
     46,
-    5
+    5,
+    13
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 31
+    "general_entertainment": 32
   },
   "published": [
     {
@@ -696,6 +700,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-16T01:58:58.333617+00:00",
       "youtube_video_id": "soPndDYhkIM"
+    },
+    {
+      "story_id": "reddit-1xjd0wc",
+      "source_urls": [
+        "https://www.reddit.com/r/Aespa/comments/1xr7hct/261109_gina_alice_instagram_story_update_with",
+        "https://www.reddit.com/r/Aespa/comments/1xtcjo6/261111_daily_fashion_news_instagram_update_with",
+        "https://www.reddit.com/r/Aespa/comments/1xsxm9u/261111_ningning_instagram_story_update",
+        "https://www.reddit.com/r/Aespa/comments/1xuy6gb/261113_daily_fashion_news_instagram_update",
+        "https://www.reddit.com/r/Aespa/comments/1xj5gtn/261030_jw_healthpedia_youtube_shorts_update_with",
+        "https://www.reddit.com/r/Aespa/comments/1xjd0wc/261030_winter_ningning_karina_attended_giselles"
+      ],
+      "headline_hash": "3f0407cda5fbf7c4f71082c809bc48f6730c06d72e4edd829d7361881ef9757d",
+      "content_fingerprint": "a54687e5a657bbf08496f0676ce35caa04435042da6473aa5d32eb4ed18ab2ce",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-16T07:03:23.973402+00:00",
+      "youtube_video_id": "R5Fq78lug8c"
     }
   ]
 }
