@@ -34,7 +34,8 @@
     "general_entertainment_001",
     "general_entertainment_004",
     "general_entertainment_004",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -70,7 +71,8 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
     "general_entertainment_hook_4",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -106,7 +108,8 @@
     "layout_07",
     "layout_10",
     "layout_10",
-    "layout_10"
+    "layout_10",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -142,12 +145,13 @@
     42,
     46,
     5,
-    13
+    13,
+    14
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 32
+    "general_entertainment": 33
   },
   "published": [
     {
@@ -717,6 +721,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-16T07:03:23.973402+00:00",
       "youtube_video_id": "R5Fq78lug8c"
+    },
+    {
+      "story_id": "reddit-1t6x4v3",
+      "source_urls": [
+        "https://www.reddit.com/r/twice/comments/1u4puxb/260613_milktouch_global_instagram_update_a",
+        "https://www.reddit.com/r/twice/comments/1vi6smf/260808_jihyo_instagram_story_update_go_get_em_my",
+        "https://www.reddit.com/r/twice/comments/1uby6lh/260621_xports_news_youtube_short_update_twices",
+        "https://www.reddit.com/r/twice/comments/1t0w5aq/260502_jihyo_instagram_update_so_hvnly",
+        "https://www.reddit.com/r/twice/comments/1tm2oc2/260524_twitter_update_cha_cha_cha_twice_jihyo",
+        "https://www.reddit.com/r/twice/comments/1t6x4v3/260508_jihyo_instagram_update_hvnly_feat_jihyo"
+      ],
+      "headline_hash": "5ba2c101cb13bc71968681555b9171e952e9932531ee27bff3b2d1d2210d0783",
+      "content_fingerprint": "8dd8acdaf30a1290c85d3cea031d23220b00bba1f35ad28d0f4f46c562711d5b",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-16T07:57:12.780319+00:00",
+      "youtube_video_id": "aWpc7L7pz1s"
     }
   ]
 }
