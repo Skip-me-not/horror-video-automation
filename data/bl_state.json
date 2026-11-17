@@ -35,7 +35,8 @@
     "general_entertainment_004",
     "general_entertainment_004",
     "general_entertainment_004",
-    "general_entertainment_003"
+    "general_entertainment_003",
+    "general_entertainment_002"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -72,7 +73,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_4",
     "general_entertainment_hook_4",
-    "general_entertainment_hook_3"
+    "general_entertainment_hook_3",
+    "general_entertainment_hook_2"
   ],
   "layout_history": [
     "layout_01",
@@ -109,7 +111,8 @@
     "layout_10",
     "layout_10",
     "layout_10",
-    "layout_09"
+    "layout_09",
+    "layout_08"
   ],
   "title_pattern_history": [
     34,
@@ -146,12 +149,13 @@
     46,
     5,
     13,
-    14
+    14,
+    35
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 33
+    "general_entertainment": 34
   },
   "published": [
     {
@@ -738,6 +742,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-16T07:57:12.780319+00:00",
       "youtube_video_id": "aWpc7L7pz1s"
+    },
+    {
+      "story_id": "reddit-1xqyw5m",
+      "source_urls": [
+        "https://www.reddit.com/r/straykids/comments/1whkt8m/260916_gong_cha_korea_instagram_update_with_felix",
+        "https://www.reddit.com/r/straykids/comments/1wrpzk2/260928_tet_instagram_update_with_changbin_han",
+        "https://www.reddit.com/r/straykids/comments/1xollzu/261104_peter_ash_lee_instagram_update_with_felix",
+        "https://www.reddit.com/r/straykids/comments/1wm0rbk/260921_hera_instagram_update_with_felix",
+        "https://www.reddit.com/r/straykids/comments/1xpxsrh/261107_felix_instagram_story_update_with_stray",
+        "https://www.reddit.com/r/straykids/comments/1xqyw5m/261108_felix_instagram_story_update_with_lee_know"
+      ],
+      "headline_hash": "490b28daa53ccb10a510cb32710eee1d35c122b47aaa57b834d1f50c30222611",
+      "content_fingerprint": "12a1e1f2dc5e28672190ca50738fde4a6bbd7016451dd08a98a27f6cfe599cac",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-17T04:04:52.926508+00:00",
+      "youtube_video_id": "iZjsmqR-e2M"
     }
   ]
 }
