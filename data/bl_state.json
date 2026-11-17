@@ -36,7 +36,8 @@
     "general_entertainment_004",
     "general_entertainment_004",
     "general_entertainment_003",
-    "general_entertainment_002"
+    "general_entertainment_002",
+    "general_entertainment_001"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -74,7 +75,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_2"
+    "general_entertainment_hook_2",
+    "general_entertainment_hook_1"
   ],
   "layout_history": [
     "layout_01",
@@ -112,7 +114,8 @@
     "layout_10",
     "layout_10",
     "layout_09",
-    "layout_08"
+    "layout_08",
+    "layout_07"
   ],
   "title_pattern_history": [
     34,
@@ -150,12 +153,13 @@
     5,
     13,
     14,
-    35
+    35,
+    45
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 34
+    "general_entertainment": 35
   },
   "published": [
     {
@@ -759,6 +763,23 @@
       "layout_id": "layout_08",
       "published_at": "2026-11-17T04:04:52.926508+00:00",
       "youtube_video_id": "iZjsmqR-e2M"
+    },
+    {
+      "story_id": "reddit-1xuzaac",
+      "source_urls": [
+        "https://www.reddit.com/r/bangtan/comments/1wwgub0/261003_jungkook_cf_compilation",
+        "https://www.reddit.com/r/bangtan/comments/1xvqe4o/261114_jungkook_cf_compilation",
+        "https://www.reddit.com/r/bangtan/comments/1wd4pgn/260911_jungkook_on_instagram",
+        "https://www.reddit.com/r/bangtan/comments/1xv7bez/261113_jungkook_cf_compilation",
+        "https://www.reddit.com/r/bts7/comments/1xuzail/jungkook_weverse_131126",
+        "https://www.reddit.com/r/bangtan/comments/1xuzaac/261113_jungkook_on_weverse"
+      ],
+      "headline_hash": "bed399ff7cf4b1514103d6c6f7228747e8d916f360788385ce15cab9c4c9a6fa",
+      "content_fingerprint": "e4b2383cb16ef6006ab8b5b0422e4cd47d0321d32828cb9eed3807853ad886f5",
+      "template_id": "general_entertainment_001",
+      "layout_id": "layout_07",
+      "published_at": "2026-11-17T04:29:24.941170+00:00",
+      "youtube_video_id": "sm0WR3JgRwU"
     }
   ]
 }
