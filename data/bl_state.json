@@ -38,7 +38,8 @@
     "general_entertainment_003",
     "general_entertainment_002",
     "general_entertainment_001",
-    "general_entertainment_002"
+    "general_entertainment_002",
+    "general_entertainment_001"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -78,7 +79,8 @@
     "general_entertainment_hook_3",
     "general_entertainment_hook_2",
     "general_entertainment_hook_1",
-    "general_entertainment_hook_2"
+    "general_entertainment_hook_2",
+    "general_entertainment_hook_1"
   ],
   "layout_history": [
     "layout_01",
@@ -118,7 +120,8 @@
     "layout_09",
     "layout_08",
     "layout_07",
-    "layout_08"
+    "layout_08",
+    "layout_07"
   ],
   "title_pattern_history": [
     34,
@@ -158,12 +161,13 @@
     14,
     35,
     45,
-    18
+    18,
+    2
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 36
+    "general_entertainment": 37
   },
   "published": [
     {
@@ -801,6 +805,23 @@
       "layout_id": "layout_08",
       "published_at": "2026-11-17T08:18:19.148837+00:00",
       "youtube_video_id": "N16rkCUIlok"
+    },
+    {
+      "story_id": "reddit-1xwpj3g",
+      "source_urls": [
+        "https://www.reddit.com/r/Aespa/comments/1vm8sft/260812_karina_for_chanel_beauty_behind_the_scenes",
+        "https://www.reddit.com/r/Aespa/comments/1vn60qu/260813_aespa_tiktok_update_with_winter_karina",
+        "https://www.reddit.com/r/Aespa/comments/1vlnitg/260812_karina_for_nike_studio_fleece",
+        "https://www.reddit.com/r/Aespa/comments/1vgxyzs/260806_aespa_tiktok_update_with_karina_watch_me",
+        "https://www.reddit.com/r/Aespa/comments/1vjljdz/260809_aespa_tiktok_update_with_karina_winter",
+        "https://www.reddit.com/r/Aespa/comments/1xwpj3g/261115_aespa_tiktok_update_with_karina_winter"
+      ],
+      "headline_hash": "e98ba3310a40fdaa59c7d1d58bc6bd52d81de08fd9e6d81771630718e33c1c40",
+      "content_fingerprint": "40ecd8c5403240af05e59d40ced58a9bcd1204d3f19bb8de3f6250bd119dc0cf",
+      "template_id": "general_entertainment_001",
+      "layout_id": "layout_07",
+      "published_at": "2026-11-17T09:09:04.925277+00:00",
+      "youtube_video_id": "JQJhyZ_bt-Y"
     }
   ]
 }
