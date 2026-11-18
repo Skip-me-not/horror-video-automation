@@ -40,7 +40,8 @@
     "general_entertainment_001",
     "general_entertainment_002",
     "general_entertainment_001",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -82,7 +83,8 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_2",
     "general_entertainment_hook_1",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -124,7 +126,8 @@
     "layout_07",
     "layout_08",
     "layout_07",
-    "layout_10"
+    "layout_10",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -166,12 +169,13 @@
     45,
     18,
     2,
-    0
+    0,
+    4
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 38
+    "general_entertainment": 39
   },
   "published": [
     {
@@ -843,6 +847,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-18T03:01:39.481347+00:00",
       "youtube_video_id": "HKntoRdqlcU"
+    },
+    {
+      "story_id": "reddit-1x389ts",
+      "source_urls": [
+        "https://www.reddit.com/r/straykids/comments/1wpw15d/260925_bang_chan_for_vogue_korea_x_fendi",
+        "https://www.reddit.com/r/straykids/comments/1x2a166/261010_mensfolio_instagram_update_with_bang_chan",
+        "https://www.reddit.com/r/straykids/comments/1xxi36p/261116_bang_chan_x_pyrenex_for_men_noblesse",
+        "https://www.reddit.com/r/straykids/comments/1wnzwfj/260923_bang_chan_instagram_story_update",
+        "https://www.reddit.com/r/straykids/comments/1wp7f8k/260924_dazed_korea_instagram_update_with_bang_chan",
+        "https://www.reddit.com/r/straykids/comments/1x389ts/261011_aston_martin_aramco_formula_one_team"
+      ],
+      "headline_hash": "23543a86518036755a425664d3c4e269f005f53a4940f5c8e6f48e850a880e71",
+      "content_fingerprint": "66df409abd9188c9f26ba1a3f3930557cd7cb363bfcb8e65febfe8ba1390586d",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-18T08:31:33.594380+00:00",
+      "youtube_video_id": "qprAXqUcd-0"
     }
   ]
 }
