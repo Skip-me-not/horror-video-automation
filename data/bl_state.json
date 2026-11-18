@@ -41,6 +41,7 @@
     "general_entertainment_002",
     "general_entertainment_001",
     "general_entertainment_004",
+    "general_entertainment_003",
     "general_entertainment_003"
   ],
   "hook_history": [
@@ -84,6 +85,7 @@
     "general_entertainment_hook_2",
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
+    "general_entertainment_hook_3",
     "general_entertainment_hook_3"
   ],
   "layout_history": [
@@ -127,6 +129,7 @@
     "layout_08",
     "layout_07",
     "layout_10",
+    "layout_09",
     "layout_09"
   ],
   "title_pattern_history": [
@@ -170,12 +173,13 @@
     18,
     2,
     0,
-    4
+    4,
+    44
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 39
+    "general_entertainment": 40
   },
   "published": [
     {
@@ -864,6 +868,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-18T08:31:33.594380+00:00",
       "youtube_video_id": "qprAXqUcd-0"
+    },
+    {
+      "story_id": "reddit-1xvwfnb",
+      "source_urls": [
+        "https://www.reddit.com/r/twice/comments/1t8cd6e/260509_this_is_for_in_lisbon_i_asked_sana_to_do",
+        "https://www.reddit.com/r/twice/comments/1xoewpt/261105_japan_twitter_update_twice_live_dvd",
+        "https://www.reddit.com/r/twice/comments/1xsj4de/261110_japan_twitter_update_twice_live_dvd",
+        "https://www.reddit.com/r/twice/comments/1xz8nzo/261118_mmm_magazine_instagram_uhoh_weve_got_a",
+        "https://www.reddit.com/r/twice/comments/1xwipdt/261114_sana_graff_instagram_update_a_vision_in",
+        "https://www.reddit.com/r/twice/comments/1xvwfnb/261114_graff_instagram_update_a_flawless_arrival"
+      ],
+      "headline_hash": "e475a6efdb684975d37d256691a0d1e341d4cbed845e20cdc598fd53106c0fd6",
+      "content_fingerprint": "05629e6aa78f94791e422ef2b7e82e0211150464dc4d152de478240603a39033",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-18T13:00:39.315375+00:00",
+      "youtube_video_id": "REF8bvd1_dk"
     }
   ]
 }
