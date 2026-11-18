@@ -42,7 +42,8 @@
     "general_entertainment_001",
     "general_entertainment_004",
     "general_entertainment_003",
-    "general_entertainment_003"
+    "general_entertainment_003",
+    "general_entertainment_001"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -86,7 +87,8 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_3"
+    "general_entertainment_hook_3",
+    "general_entertainment_hook_1"
   ],
   "layout_history": [
     "layout_01",
@@ -130,7 +132,8 @@
     "layout_07",
     "layout_10",
     "layout_09",
-    "layout_09"
+    "layout_09",
+    "layout_07"
   ],
   "title_pattern_history": [
     34,
@@ -174,12 +177,13 @@
     2,
     0,
     4,
-    44
+    44,
+    39
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 40
+    "general_entertainment": 41
   },
   "published": [
     {
@@ -885,6 +889,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-18T13:00:39.315375+00:00",
       "youtube_video_id": "REF8bvd1_dk"
+    },
+    {
+      "story_id": "reddit-1qizpp4",
+      "source_urls": [
+        "https://www.reddit.com/r/seventeen/comments/1p90sj9/251128_seventeen_instagram_update_with_mingyu",
+        "https://www.reddit.com/r/seventeen/comments/1o4yk4u/251012_seventeen_tiktok_update_with_mingyu_and",
+        "https://www.reddit.com/r/seventeen/comments/1nv9cjf/251001_seventeen_instagram_update_with_mingyu_5_4",
+        "https://www.reddit.com/r/seventeen/comments/1qkrbjg/260123_seventeen_instagram_update_with_scoups_x",
+        "https://www.reddit.com/r/seventeen/comments/1o16b81/251008_seventeen_instagram_update_with_scoups_and",
+        "https://www.reddit.com/r/seventeen/comments/1qizpp4/260121_wwd_editor_tianwei_zhang_instagram_update"
+      ],
+      "headline_hash": "6d60021a93ded065d69ccffefc231b4b5afcb2726099d5e1c6a78860f7bb1448",
+      "content_fingerprint": "3602c7695d28c77fc996368bf1e758085c56a65f5a20421ba9a4c14ca701f51c",
+      "template_id": "general_entertainment_001",
+      "layout_id": "layout_07",
+      "published_at": "2026-11-18T15:56:24.802538+00:00",
+      "youtube_video_id": "cM32eANbVHo"
     }
   ]
 }
