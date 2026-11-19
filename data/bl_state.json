@@ -43,7 +43,8 @@
     "general_entertainment_004",
     "general_entertainment_003",
     "general_entertainment_003",
-    "general_entertainment_001"
+    "general_entertainment_001",
+    "general_entertainment_002"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -88,7 +89,8 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_1"
+    "general_entertainment_hook_1",
+    "general_entertainment_hook_2"
   ],
   "layout_history": [
     "layout_01",
@@ -133,7 +135,8 @@
     "layout_10",
     "layout_09",
     "layout_09",
-    "layout_07"
+    "layout_07",
+    "layout_08"
   ],
   "title_pattern_history": [
     34,
@@ -178,12 +181,13 @@
     0,
     4,
     44,
-    39
+    39,
+    43
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 41
+    "general_entertainment": 42
   },
   "published": [
     {
@@ -906,6 +910,23 @@
       "layout_id": "layout_07",
       "published_at": "2026-11-18T15:56:24.802538+00:00",
       "youtube_video_id": "cM32eANbVHo"
+    },
+    {
+      "story_id": "reddit-1wfql1q",
+      "source_urls": [
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1wgw4y6/260915_yeonjun_x_miu_miu_for_harpers_bazaar_korea",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1xya2vm/261117_soobin_yeonjun_hyungazs_angel_bite_tiktok",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1xxmtze/261116_yeonjun_beomgyu_what_now_tiktok",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1wo5fkm/260923_yeonjun_hueningkai_thats_too_bad_tiktok",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1wpsp6g/260925_i_love_beomgyu_yeonjun_hueningkai_so_much",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1wfql1q/260914_yeonjun_siriusxm_can_we_expect_to_see_a"
+      ],
+      "headline_hash": "16d31166c38100a5ac7f84feeb87e0050edcfe8322a29099cb389aede2da5d85",
+      "content_fingerprint": "f2917cbd6fd76626e728e434921153330b7e30946c1aa0c9106cb816b3e30c5f",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-19T02:43:43.169906+00:00",
+      "youtube_video_id": "LonhTwRi0yc"
     }
   ]
 }
