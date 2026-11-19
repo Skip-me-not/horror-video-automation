@@ -46,7 +46,8 @@
     "general_entertainment_001",
     "general_entertainment_002",
     "general_entertainment_002",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -94,7 +95,8 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_2",
     "general_entertainment_hook_2",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -142,7 +144,8 @@
     "layout_07",
     "layout_08",
     "layout_08",
-    "layout_10"
+    "layout_10",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -190,12 +193,13 @@
     39,
     43,
     36,
-    8
+    8,
+    22
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 44
+    "general_entertainment": 45
   },
   "published": [
     {
@@ -969,6 +973,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-19T07:48:25.215267+00:00",
       "youtube_video_id": "Ue6uvElQ6ms"
+    },
+    {
+      "story_id": "reddit-1xu43x1",
+      "source_urls": [
+        "https://www.reddit.com/r/bts7/comments/1xsqost/calvin_klein_on_twitter2_ft_jungkook_111126",
+        "https://www.reddit.com/r/bts7/comments/1xwjkvh/graff_ig_post_feat_jungkook_151126",
+        "https://www.reddit.com/r/bts7/comments/1xyknpi/calvin_klein_ig_post_feat_jungkook_video_2_171126",
+        "https://www.reddit.com/r/bts7/comments/1xykodu/calvin_klein_ig_post_2_feat_jungkook_171126",
+        "https://www.reddit.com/r/bts7/comments/1xt9c0b/wwd_japan_tiktok_feat_jungkook_at_the_graff_65th",
+        "https://www.reddit.com/r/bts7/comments/1xu43x1/vogue_korea_ig_post_feat_jungkook_121126"
+      ],
+      "headline_hash": "c7738aeb829c0fb90794ffcb68cc6b398e6bb304f822094a6777c8ddde6db085",
+      "content_fingerprint": "81a6d514549096af187b150db516da9ec3cf9670fcb3f96c5e6e74d4c9bc157e",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-19T08:47:00.451962+00:00",
+      "youtube_video_id": "GujCUAl80Co"
     }
   ]
 }
