@@ -44,6 +44,7 @@
     "general_entertainment_003",
     "general_entertainment_003",
     "general_entertainment_001",
+    "general_entertainment_002",
     "general_entertainment_002"
   ],
   "hook_history": [
@@ -90,6 +91,7 @@
     "general_entertainment_hook_3",
     "general_entertainment_hook_3",
     "general_entertainment_hook_1",
+    "general_entertainment_hook_2",
     "general_entertainment_hook_2"
   ],
   "layout_history": [
@@ -136,6 +138,7 @@
     "layout_09",
     "layout_09",
     "layout_07",
+    "layout_08",
     "layout_08"
   ],
   "title_pattern_history": [
@@ -182,12 +185,13 @@
     4,
     44,
     39,
-    43
+    43,
+    36
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 42
+    "general_entertainment": 43
   },
   "published": [
     {
@@ -927,6 +931,23 @@
       "layout_id": "layout_08",
       "published_at": "2026-11-19T02:43:43.169906+00:00",
       "youtube_video_id": "LonhTwRi0yc"
+    },
+    {
+      "story_id": "reddit-1xzf05g",
+      "source_urls": [
+        "https://www.reddit.com/r/lesserafim/comments/1x1ffsu/261009_le_sserafim_tiktok_update_with_huh_yunjin",
+        "https://www.reddit.com/r/lesserafim/comments/1xxw33r/kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1xyzul7/261118_kim_chaewon_miyawaki_sakura_sharing_is",
+        "https://www.reddit.com/r/lesserafim/comments/1xrqln4/261109_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1xtgsi5/261111_le_sserafim_tiktok_update_with_kim_chaewon",
+        "https://www.reddit.com/r/lesserafim/comments/1xzf05g/261118_le_sserafim_tiktok_update_with_kim_chaewon"
+      ],
+      "headline_hash": "ea2aa4565bc7dd5f152b79abc6aa547e3451d0ab67ff7b78c75c03f252a023c6",
+      "content_fingerprint": "b4308315b4ab798b8557bd40c7c04e45dcc1e30e6a2c088234d91d1e3ec4edcf",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-19T03:18:44.206303+00:00",
+      "youtube_video_id": "oBl8wwdyCbs"
     }
   ]
 }
