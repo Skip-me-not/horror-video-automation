@@ -48,7 +48,8 @@
     "general_entertainment_002",
     "general_entertainment_004",
     "general_entertainment_003",
-    "general_entertainment_001"
+    "general_entertainment_001",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -98,7 +99,8 @@
     "general_entertainment_hook_2",
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_1"
+    "general_entertainment_hook_1",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -148,7 +150,8 @@
     "layout_08",
     "layout_10",
     "layout_09",
-    "layout_07"
+    "layout_07",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -198,12 +201,13 @@
     36,
     8,
     22,
-    34
+    34,
+    16
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 46
+    "general_entertainment": 47
   },
   "published": [
     {
@@ -1011,6 +1015,23 @@
       "layout_id": "layout_07",
       "published_at": "2026-11-20T02:33:03.233555+00:00",
       "youtube_video_id": "8oCapcpINBk"
+    },
+    {
+      "story_id": "reddit-1xtavuh",
+      "source_urls": [
+        "https://www.reddit.com/r/bts7/comments/1xrs18q/calvin_klein_ig_post_feat_jungkook_video_4_091126",
+        "https://www.reddit.com/r/bts7/comments/1xsqokq/calvin_klein_on_twitter_ft_jungkook_111126",
+        "https://www.reddit.com/r/bts7/comments/1xt9yvf/harpers_bazaar_japan_feat_jungkook_at_the_graff",
+        "https://www.reddit.com/r/bts7/comments/1xquzpz/graff_ig_post_video_feat_jungkook_081126",
+        "https://www.reddit.com/r/bts7/comments/1xsqn69/calvin_klein_on_instagram_ft_jungkook_111126",
+        "https://www.reddit.com/r/bts7/comments/1xtavuh/elle_japan_ig_post_feat_jungkook_at_the_graff"
+      ],
+      "headline_hash": "c3ff6b59eec76c1d1bc91f36c871a5cb8c1373ae1942a842e74500c2caec44d4",
+      "content_fingerprint": "1477d95cc1fc1e7202f0ac341d9e847bd0acd3fc476bcfaf34ad16b9c70d1921",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-20T03:08:39.521835+00:00",
+      "youtube_video_id": "Jp_C4JyX9Lo"
     }
   ]
 }
