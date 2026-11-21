@@ -49,6 +49,7 @@
     "general_entertainment_004",
     "general_entertainment_003",
     "general_entertainment_001",
+    "general_entertainment_003",
     "general_entertainment_003"
   ],
   "hook_history": [
@@ -100,6 +101,7 @@
     "general_entertainment_hook_4",
     "general_entertainment_hook_3",
     "general_entertainment_hook_1",
+    "general_entertainment_hook_3",
     "general_entertainment_hook_3"
   ],
   "layout_history": [
@@ -151,6 +153,7 @@
     "layout_10",
     "layout_09",
     "layout_07",
+    "layout_09",
     "layout_09"
   ],
   "title_pattern_history": [
@@ -202,12 +205,13 @@
     8,
     22,
     34,
-    16
+    16,
+    42
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 47
+    "general_entertainment": 48
   },
   "published": [
     {
@@ -1032,6 +1036,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-20T03:08:39.521835+00:00",
       "youtube_video_id": "Jp_C4JyX9Lo"
+    },
+    {
+      "story_id": "reddit-1xzydz5",
+      "source_urls": [
+        "https://www.reddit.com/r/BlackPink/comments/1vn0707/260813_jennie_jennie_hq_ig_update",
+        "https://www.reddit.com/r/BlackPink/comments/1vlbeea/260811_melon_ig_update_w_jennie",
+        "https://www.reddit.com/r/BlackPink/comments/1vpr3w8/260816_jennie_ig_story_update",
+        "https://www.reddit.com/r/BlackPink/comments/1xt4axw/261111_jennie_for_lotte_department_store",
+        "https://www.reddit.com/r/BlackPink/comments/1vg041x/260805_lollapalooza_ig_update_w_jennie",
+        "https://www.reddit.com/r/BlackPink/comments/1xzydz5/261119_jennie_jennie_hq_ig_update"
+      ],
+      "headline_hash": "0b88ddd4a371b49810bda046b91c6fc626a6d4e5317dff01e2216a42e0f9594c",
+      "content_fingerprint": "0a54513daec39b788d8fc9cc099099aebda3488eedd36b5429da5137aef6137f",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-21T02:39:33.160017+00:00",
+      "youtube_video_id": "rLIG-SGc3RE"
     }
   ]
 }
