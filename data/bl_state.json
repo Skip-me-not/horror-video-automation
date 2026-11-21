@@ -50,7 +50,8 @@
     "general_entertainment_003",
     "general_entertainment_001",
     "general_entertainment_003",
-    "general_entertainment_003"
+    "general_entertainment_003",
+    "general_entertainment_002"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -102,7 +103,8 @@
     "general_entertainment_hook_3",
     "general_entertainment_hook_1",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_3"
+    "general_entertainment_hook_3",
+    "general_entertainment_hook_2"
   ],
   "layout_history": [
     "layout_01",
@@ -154,7 +156,8 @@
     "layout_09",
     "layout_07",
     "layout_09",
-    "layout_09"
+    "layout_09",
+    "layout_08"
   ],
   "title_pattern_history": [
     34,
@@ -206,12 +209,13 @@
     22,
     34,
     16,
-    42
+    42,
+    13
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 48
+    "general_entertainment": 49
   },
   "published": [
     {
@@ -1053,6 +1057,23 @@
       "layout_id": "layout_09",
       "published_at": "2026-11-21T02:39:33.160017+00:00",
       "youtube_video_id": "rLIG-SGc3RE"
+    },
+    {
+      "story_id": "reddit-1xz9np2",
+      "source_urls": [
+        "https://www.reddit.com/r/Aespa/comments/1xyg8l5/261117_karina_for_marie_claire_korea_x_boucheron",
+        "https://www.reddit.com/r/Aespa/comments/1xwijc4/261115_karina_for_marie_claire_korea_x_boucheron",
+        "https://www.reddit.com/r/Aespa/comments/1y04yyb/261119_eyesmag_instagram_update_with_karina",
+        "https://www.reddit.com/r/Aespa/comments/1xwsgr7/261115_karina_for_marie_claire_korea_x_boucheron",
+        "https://www.reddit.com/r/Aespa/comments/1xuxdoz/261113_karina_at_mlb_korea_popup_in_seoul_film",
+        "https://www.reddit.com/r/Aespa/comments/1xz9np2/261118_imbc_youtube_shorts_update_with_karina"
+      ],
+      "headline_hash": "8b58e484394389d406b4621fc8194ca6e4b345a3abc56b5eb7bf1738b620b5e1",
+      "content_fingerprint": "f4fdd05fe4bbff3a7ef4618997c18d0cfadfc802a152d3e06ed4438837281c4e",
+      "template_id": "general_entertainment_002",
+      "layout_id": "layout_08",
+      "published_at": "2026-11-21T03:11:37.419063+00:00",
+      "youtube_video_id": "722jY6civqI"
     }
   ]
 }
