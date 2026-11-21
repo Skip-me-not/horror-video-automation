@@ -52,7 +52,8 @@
     "general_entertainment_003",
     "general_entertainment_003",
     "general_entertainment_002",
-    "general_entertainment_004"
+    "general_entertainment_004",
+    "general_entertainment_003"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -106,7 +107,8 @@
     "general_entertainment_hook_3",
     "general_entertainment_hook_3",
     "general_entertainment_hook_2",
-    "general_entertainment_hook_4"
+    "general_entertainment_hook_4",
+    "general_entertainment_hook_3"
   ],
   "layout_history": [
     "layout_01",
@@ -160,7 +162,8 @@
     "layout_09",
     "layout_09",
     "layout_08",
-    "layout_10"
+    "layout_10",
+    "layout_09"
   ],
   "title_pattern_history": [
     34,
@@ -214,12 +217,13 @@
     16,
     42,
     13,
-    50
+    50,
+    48
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 50
+    "general_entertainment": 51
   },
   "published": [
     {
@@ -1095,6 +1099,23 @@
       "layout_id": "layout_10",
       "published_at": "2026-11-21T07:34:41.643271+00:00",
       "youtube_video_id": "EbAXE5Nj7OA"
+    },
+    {
+      "story_id": "reddit-1y134by",
+      "source_urls": [
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1xv90zz/261113_roh_jeongui_steal_the_wind_in_seoul_d1_w",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1xzeub8/261118_yeonjun_chaeryeong_itzy_blows_my_mind",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1xxlmwb/261116_yeonjun_taehyun_i_keep_keep_keep_missing",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1y0a49i/261119_soobin_yeonjun_wassup_tiktok",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1xzzhwq/261119_yeonjun_beomgyu_with_you_tiktok",
+        "https://www.reddit.com/r/TomorrowByTogether/comments/1y134by/261120_txt_wins_worldwide_fans_choice_top_10"
+      ],
+      "headline_hash": "6c128571b792d4fefe293f2b54543706724f52f9daa0f8f5477038c30c6f9523",
+      "content_fingerprint": "6512b5b49fbd79e4e619d61627aa6a6c91ff24f0e8269acb6fa22a0b79bcde80",
+      "template_id": "general_entertainment_003",
+      "layout_id": "layout_09",
+      "published_at": "2026-11-21T08:18:47.588528+00:00",
+      "youtube_video_id": "whC9UNbyTTM"
     }
   ]
 }
