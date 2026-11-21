@@ -51,7 +51,8 @@
     "general_entertainment_001",
     "general_entertainment_003",
     "general_entertainment_003",
-    "general_entertainment_002"
+    "general_entertainment_002",
+    "general_entertainment_004"
   ],
   "hook_history": [
     "release_date_hook_3",
@@ -104,7 +105,8 @@
     "general_entertainment_hook_1",
     "general_entertainment_hook_3",
     "general_entertainment_hook_3",
-    "general_entertainment_hook_2"
+    "general_entertainment_hook_2",
+    "general_entertainment_hook_4"
   ],
   "layout_history": [
     "layout_01",
@@ -157,7 +159,8 @@
     "layout_07",
     "layout_09",
     "layout_09",
-    "layout_08"
+    "layout_08",
+    "layout_10"
   ],
   "title_pattern_history": [
     34,
@@ -210,12 +213,13 @@
     34,
     16,
     42,
-    13
+    13,
+    50
   ],
   "category_counts": {
     "release_date": 1,
     "fan_meeting": 1,
-    "general_entertainment": 49
+    "general_entertainment": 50
   },
   "published": [
     {
@@ -1074,6 +1078,23 @@
       "layout_id": "layout_08",
       "published_at": "2026-11-21T03:11:37.419063+00:00",
       "youtube_video_id": "722jY6civqI"
+    },
+    {
+      "story_id": "reddit-1y079a8",
+      "source_urls": [
+        "https://www.reddit.com/r/IVE/comments/1v7z293/260727_wonyoung_harpers_bazaar_korea_x_hapa",
+        "https://www.reddit.com/r/IVE/comments/1vf3ofr/260804_harpers_bazaar_korea_instagram_update_with",
+        "https://www.reddit.com/r/IVE/comments/1usgk9s/260710_amuse_korea_instagram_update_with_wonyoung",
+        "https://www.reddit.com/r/IVE/comments/1xz9vw8/261118_ive_official_tiktok_update_with_wonyoung",
+        "https://www.reddit.com/r/IVE/comments/1y082jj/261119_ive_official_tiktok_update_with_wonyoung_2",
+        "https://www.reddit.com/r/IVE/comments/1y079a8/261119_ive_official_tiktok_update_with_wonyoung"
+      ],
+      "headline_hash": "a5ad21bbda9820aaff959e61d9a4e557aff88fadae6e8e574f56e2885773f8b8",
+      "content_fingerprint": "ba418e3644234a55662189f6956d0b9f913cf565857580231a1a971b7f0934d4",
+      "template_id": "general_entertainment_004",
+      "layout_id": "layout_10",
+      "published_at": "2026-11-21T07:34:41.643271+00:00",
+      "youtube_video_id": "EbAXE5Nj7OA"
     }
   ]
 }
